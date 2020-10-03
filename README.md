@@ -1,2 +1,2 @@
-# welkin
+# Welkin App
 Senior Project
