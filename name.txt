@@ -1,3 +1,8 @@
 Phongchai Pongchaloem 6080728
+<<<<<<< HEAD
 Santhisa Chen 6080779
 Kanin Sirisuksakulchai 6080718
+=======
+Kanin Sirisuksakulchai 6080718
+Kuy Phat
+>>>>>>> a9ad0228e9ed044d075bebab21181781c597a452
