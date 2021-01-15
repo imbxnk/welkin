@@ -1,6 +1,6 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welkin"/>
+  <HelloWorld msg="Welkin App"/>
 </template>
 
 <script>
