@@ -1,5 +1,5 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.svg">
+  <img class="logo" src="./assets/logo.svg">
   <HelloWorld msg="Welkin App"/>
 </template>
 
@@ -22,5 +22,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.logo {
+  width: 200px;
 }
 </style>
