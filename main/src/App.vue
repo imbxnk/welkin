@@ -25,6 +25,6 @@ export default {
 }
 
 .logo {
-  width: 200px;
+  width: 100px;
 }
 </style>
