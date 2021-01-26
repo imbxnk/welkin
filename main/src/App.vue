@@ -1,10 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <v-navigation-drawer
-        permanent
-        expand-on-hover
-      >
+      <v-navigation-drawer permanent expand-on-hover>
         <v-list>
           <v-list-item class="px-2">
             <v-list-item-avatar>
@@ -24,10 +21,7 @@
 
         <v-divider></v-divider>
 
-        <v-list
-          nav
-          dense
-        >
+        <v-list nav dense>
           <v-list-item link>
             <v-list-item-icon>
               <v-icon>mdi-folder</v-icon>
@@ -48,20 +42,19 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
-    
+
     </v-main>
   </v-app>
-</template> 
+</template>
 
 <script>
-export default {
-  name: 'App',
+  export default {
+    name: 'App',
 
-  components: {
-    
-  },
+    components: {
 
-  data: () => ({
-  }),
-};
+    },
+
+    data: () => ({}),
+  };
 </script>
