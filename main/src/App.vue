@@ -11,9 +11,7 @@
 
           <v-list-item link>
             <v-list-item-content>
-              <v-list-item-title class="title">
-                Sandra Adams
-              </v-list-item-title>
+              <v-list-item-title class="title"> Sandra Adams </v-list-item-title>
               <v-list-item-subtitle>sandra_a88@gmail.com</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -42,19 +40,16 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
-
     </v-main>
   </v-app>
 </template>
 
 <script>
-  export default {
-    name: 'App',
+export default {
+  name: "App",
 
-    components: {
+  components: {},
 
-    },
-
-    data: () => ({}),
-  };
+  data: () => ({}),
+};
 </script>
