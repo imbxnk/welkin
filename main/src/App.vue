@@ -15,7 +15,6 @@
         color="white"
       >
         <v-list>
-            <v-list-item-avatar>
           <v-list-item>
             <!-- <v-app-bar-nav-icon @click.stop="toggleMini = !toggleMini"></v-app-bar-nav-icon> -->
             <v-list-item-action>
