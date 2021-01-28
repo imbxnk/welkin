@@ -47,10 +47,13 @@
         <div class="bg">
           <v-content>
             <!-- add content here -->
-            <v-card class="ma-4">hello </v-card>
-          </v-content>
-        </div></template
-      >
+            <v-card class="ma-4">
+              <router-link :to="{ name: 'home' }"></router-link>
+              <router-link :to="{ name: 'manage' }"></router-link>
+              <router-view class="ma-4"></router-view>
+            </v-card>
+          </v-content></div
+      ></template>
     </v-app>
   </div>
 </template>
@@ -70,10 +73,10 @@ export default {
     toggleMini: false,
     items: [
       { title: "Home", href: "/", icon: "mdi-home-outline" },
-      { title: "Student List", href: "/reports", icon: "mdi-account-multiple-outline" },
-      { title: "Course List", href: "/inbox", icon: "mdi-file-document-multiple-outline" },
-      { title: "Course Curriculum", href: "/premiums", icon: "mdi-book-open-outline" },
-      { title: "Manage", href: "/alerts", icon: "mdi-cog-outline" },
+      { title: "Student List", href: "/student_list", icon: "mdi-account-multiple-outline" },
+      { title: "Course List", href: "/course_list", icon: "mdi-file-document-multiple-outline" },
+      { title: "Course Curriculum", href: "/course_curriculum", icon: "mdi-book-open-outline" },
+      { title: "Manage", href: "/manage", icon: "mdi-cog-outline" },
     ],
   }),
 };
