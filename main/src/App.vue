@@ -11,6 +11,7 @@
         app
         floating
         :permanent="sidebarMenu"
+        :temporary="toggleMini == true ? $vuetify.breakpoint.smAndDown : permanent"
         :mini-variant.sync="mini"
         color="white"
       >
@@ -65,7 +66,16 @@ export default {
   components: {},
   computed: {
     mini() {
-      return this.$vuetify.breakpoint.smAndDown || this.toggleMini;
+      // return this.$vuetify.breakpoint.smAndDown || this.toggleMini;
+      if (this.$vuetify.breakpoint.smAndDown === true && this.toggleMini === false) {
+        return true;
+      } else if (this.$vuetify.breakpoint.smAndDown === false && this.toggleMini === false) {
+        return true;
+      } else return false;
+    },
+    icondisable() {
+      if (this.$vuetify.breakpoint.smAndDown) return true;
+      else return false;
     },
   },
   data: () => ({
