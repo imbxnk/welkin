@@ -8,7 +8,7 @@ const {
 } = require('../controllers/studentsController');
 
 router.route('/students').get(getStudents);
-router.route('/student/id/:id').get(getStudent)
+router.route('/student/:id').get(getStudent)
 router.route('/student/new').post(newStudent);
 
 module.exports = router;
