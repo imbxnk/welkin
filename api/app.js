@@ -9,14 +9,17 @@ dotenv.config({path: './config/.env'});
 const connectDatabase = require('./config/database');
 connectDatabase();
 
+// Setup body parser
+app.use(express.json());
+
 // Importing all routes
 const students = require('./routes/students');
-
 app.use('/v1', students);
 
 // Show "Not Found" if route does not exist
 app.get('*', function(req, res){
-    res.status(404).send('<pre style="word-wrap: break-word; white-space: pre-wrap;">Not Found</pre>');
+    res.setHeader('content-type', 'text/plain');
+    res.status(404).send('Not Found');
 });
 
 // Start listening to PORT

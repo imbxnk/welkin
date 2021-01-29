@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
 const studentSchema = new mongoose.Schema({
-    id : {
+    sid : {
         type : String,
         required : [true, 'Please enter the student id'],
         trim : true,
-        length : [7, 'Please enter the correct format of id'],
-        unique : true
+        unique : true,
+        validate : [sidValidator, 'Please enter the correct format of Student ID']
     },
     prefix : {
         type : String,
         required : true,
         enum : {
-            value : [
+            values : [
                 'Mr.',
                 'Ms.',
                 'Mrs.',
@@ -20,6 +20,9 @@ const studentSchema = new mongoose.Schema({
             ],
             message : 'Please select correct options for the Prefix'
         }
+    },
+    batch : {
+        type : String
     },
     first_name : {
         type : String,
@@ -30,6 +33,7 @@ const studentSchema = new mongoose.Schema({
     },
     last_name : {
         type : String,
+        uppercase : true,
         required : true
     },
     nick_name : {
@@ -39,7 +43,7 @@ const studentSchema = new mongoose.Schema({
         type : String,
         required : true,
         enum : {
-            value : [
+            values : [
                 'ICBE',
                 'ICCI',
                 'ICCS',
@@ -58,15 +62,14 @@ const studentSchema = new mongoose.Schema({
                 'ICPY',
                 'ICFS'
             ],
-            message : 'Please select the correct Program code'
+            message : 'Please enter the correct Program code'
         }
     },
     avatar_url : {
         type : String
     },
     line_id : {
-        type : String,
-        unique : true
+        type : String
     },
     entry_trimester : {
         type : String,
@@ -80,5 +83,15 @@ const studentSchema = new mongoose.Schema({
         type : [Object]
     }
 });
+
+// Automatic assign batch according to ID
+studentSchema.pre('save', function(next) {
+    this.batch = this.sid.substring(0,3);
+    next();
+});
+
+function sidValidator(sid) {
+    return sid.length == 7;
+}
 
 module.exports = mongoose.model('Student', studentSchema)
