@@ -1,66 +1,50 @@
-const Student = require('../models/students')
+const Student = require('../models/students');
+const ErrorHandler = require('../utils/errorhandler');
+const catchAsyncErrors = require('../middlewares/catchAsyncError');
 
 // Get all students => /v1/students
-exports.getStudents = async (req, res, next) => {
-    const students = await Student.find().catch((err) => {
-        console.log(err);
-    });
+exports.getStudents = catchAsyncErrors ( async (req, res, next) => {
+    const students = await Student.find();
     
     res.status(200).json({
         success : true,
         total : students.length,
         data : students
     });
-}
+});
 
 // Add a new Student => /v1/students/new
-exports.newStudent = async (req, res, next) => {
-    const student = await Student.create(req.body).catch((err) => {
-        console.log(err);
-    });
+exports.newStudent = catchAsyncErrors ( async (req, res, next) => {
+    const student = await Student.create(req.body);
 
     res.status(200).json({
         success : true,
         message : 'Student is added.',
         data : student
     });
-}
+});
 
 // Get a student by ID => /v1/student/:sid
-exports.getStudent = async (req, res, next) => {
+exports.getStudent = catchAsyncErrors ( async (req, res, next) => {
     const student = await Student.find({
         sid : req.params.sid
-    }).catch((err) => {
-        console.log(err);
     });
 
-    if(!student) {
-        return res.status(404).json({
-            success : false,
-            message : 'Student not found.'
-        });
-    }
+    if(student.length == 0) return next(new ErrorHandler('Student not found', 404));
 
     res.status(200).json({
         success : true,
         data : student
     });
-}
+});
 
 // Update a Student Information => /v1/student/:sid
-exports.updateStudent = async (req, res, next) => {
+exports.updateStudent = catchAsyncErrors ( async (req, res, next) => {
     let student = await Student.find({
         sid : req.params.sid
-    }).catch((err) => {
-        console.log(err);
     });
 
-    if(!student) {
-        return res.status(404).json({
-            success : false,
-            message : 'Student not found.'  
-        });
-    }
+    if(student.length == 0) return next(new ErrorHandler('Student not found', 404));
 
     student = await Student.findOneAndUpdate({sid : req.params.sid}, req.body, {
         new : true,
@@ -75,20 +59,15 @@ exports.updateStudent = async (req, res, next) => {
         message : 'Student Information has been updated',
         data : student
     });
-}
+});
 
 // Delete a student => /v1/student/:sid
-exports.deleteStudent = async (req, res, next) => {
+exports.deleteStudent = catchAsyncErrors ( async (req, res, next) => {
     let student = await Student.find({
         sid : req.params.sid
     });
 
-    if (!student) {
-        return res.status(404).json({
-            success : false,
-            message : 'Student not found.'
-        });
-    }
+    if(student.length == 0) return next(new ErrorHandler('Student not found', 404));
 
     student = await Student.deleteOne({sid : req.params.sid});
 
@@ -96,15 +75,15 @@ exports.deleteStudent = async (req, res, next) => {
         success : true,
         message : 'Deleted successfully.'
     });
-}
+});
 
 // Get Students by Batch => /v1/students/:batch
-exports.getStudentsByBatch = async (req, res, next) => {
+exports.getStudentsByBatch = catchAsyncErrors ( async (req, res, next) => {
     const students = await Student.find({
         batch : req.params.batch
-    }).catch((err) => {
-        console.log(err);
     });
+
+    if(students.length != 3) return next(new ErrorHandler('Batch not found', 404));
 
     res.status(200).json({
         success : true,
@@ -112,16 +91,16 @@ exports.getStudentsByBatch = async (req, res, next) => {
         total : students.length,
         data : students
     });
-}
+});
 
 // Get Students by Batch and Trimester => /v1/students/:batch/:trimester
-exports.getStudentsByBatchAndTrimester = async (req, res, next) => {
+exports.getStudentsByBatchAndTrimester = catchAsyncErrors ( async (req, res, next) => {
     const students = await Student.find({
         batch : req.params.batch,
         entry_trimester : req.params.trimester
-    }).catch((err) => {
-        console.log(err);
     });
+
+    if(students.length != 3) return next(new ErrorHandler('Batch not found', 404));
 
     res.status(200).json({
         success : true,
@@ -130,4 +109,4 @@ exports.getStudentsByBatchAndTrimester = async (req, res, next) => {
         total : students.length,
         data : students
     });
-}
+});

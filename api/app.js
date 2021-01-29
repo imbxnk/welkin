@@ -9,6 +9,9 @@ dotenv.config({path: './config/.env'});
 const connectDatabase = require('./config/database');
 connectDatabase();
 
+// Error Handler
+const errorMiddleware = require('./middlewares/errors');
+
 // Setup body parser
 app.use(express.json());
 
@@ -16,6 +19,7 @@ app.use(express.json());
 const students = require('./routes/students');
 app.use('/v1', students);
 
+app.use(errorMiddleware);
 // Show "Not Found" if route does not exist
 app.get('*', function(req, res){
     res.setHeader('content-type', 'text/plain');
