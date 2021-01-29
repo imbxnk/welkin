@@ -16,9 +16,6 @@ process.on('uncaughtException', err => {
 const connectDatabase = require('./config/database');
 connectDatabase();
 
-// Error Handler
-const errorMiddleware = require('./middlewares/errors');
-
 // Setup body parser
 app.use(express.json());
 
@@ -26,12 +23,15 @@ app.use(express.json());
 const students = require('./routes/students');
 app.use('/v1', students);
 
-app.use(errorMiddleware);
 // Show "Not Found" if route does not exist
 app.all('*', function(req, res){
     res.setHeader('content-type', 'text/plain');
     res.status(404).send('Not Found');
 });
+
+// Error Handler
+const errorMiddleware = require('./middlewares/errors');
+app.use(errorMiddleware);
 
 // Start listening to PORT
 const PORT = process.env.PORT;
