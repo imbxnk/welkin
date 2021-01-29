@@ -30,7 +30,7 @@ exports.getStudent = catchAsyncErrors ( async (req, res, next) => {
         sid : req.params.sid
     });
 
-    if(student.length == 0) return next(new ErrorHandler('Student not found', 404));
+    if(student.length === 0) return next(new ErrorHandler('Student not found', 404));
 
     res.status(200).json({
         success : true,
@@ -44,7 +44,7 @@ exports.updateStudent = catchAsyncErrors ( async (req, res, next) => {
         sid : req.params.sid
     });
 
-    if(student.length == 0) return next(new ErrorHandler('Student not found', 404));
+    if(student.length === 0) return next(new ErrorHandler('Student not found', 404));
 
     student = await Student.findOneAndUpdate({sid : req.params.sid}, req.body, {
         new : true,
@@ -67,7 +67,7 @@ exports.deleteStudent = catchAsyncErrors ( async (req, res, next) => {
         sid : req.params.sid
     });
 
-    if(student.length == 0) return next(new ErrorHandler('Student not found', 404));
+    if(student.length === 0) return next(new ErrorHandler('Student not found', 404));
 
     student = await Student.deleteOne({sid : req.params.sid});
 

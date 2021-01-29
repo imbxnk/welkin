@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const studentSchema = new mongoose.Schema({
     sid : {
         type : String,
-        required : [true, 'Please enter the student id'],
+        required : [true, 'Please enter the student id.'],
         trim : true,
         unique : true,
-        validate : [sidValidator, 'Please enter the correct format of Student ID']
+        validate : [sidValidator, 'Please enter the correct format of Student ID.']
     },
     prefix : {
         type : String,
@@ -18,7 +18,7 @@ const studentSchema = new mongoose.Schema({
                 'Mrs.',
                 'Miss'
             ],
-            message : 'Please select correct options for the Prefix'
+            message : 'Please select correct options for the Prefix.'
         }
     },
     batch : {
@@ -41,7 +41,7 @@ const studentSchema = new mongoose.Schema({
     },
     program : {
         type : String,
-        required : true,
+        required : [true, 'Please enter the program of the student.'],
         enum : {
             values : [
                 'ICBE',
@@ -62,7 +62,7 @@ const studentSchema = new mongoose.Schema({
                 'ICPY',
                 'ICFS'
             ],
-            message : 'Please enter the correct Program code'
+            message : 'Please enter the correct Program code.'
         }
     },
     avatar_url : {
@@ -73,14 +73,14 @@ const studentSchema = new mongoose.Schema({
     },
     entry_trimester : {
         type : String,
-        required : true,
+        required : [true, 'Please enter the entry trimester of the student.'],
         enum : {
             values : [
                 '1',
                 '2',
                 '3'
             ],
-            message : 'Please enter the correct trimester'
+            message : 'Please enter the correct trimester.'
         }
     },
     entry_year : {
