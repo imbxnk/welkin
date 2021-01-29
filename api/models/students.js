@@ -73,14 +73,55 @@ const studentSchema = new mongoose.Schema({
     },
     entry_trimester : {
         type : String,
-        required : true
+        required : true,
+        enum : {
+            values : [
+                '1',
+                '2',
+                '3'
+            ],
+            message : 'Please enter the correct trimester'
+        }
     },
     entry_year : {
         type : String,
         required : true
     },
     taken_courses : {
-        type : [Object]
+        core_courses : {
+            type : [Object]
+        },
+        required_courses : {
+            type : [Object]
+        },
+        elective_courses : {
+            type : [Object]
+        }
+    },
+    advisor : {
+        type : Object
+    },
+    remark : {
+        type : String
+    },
+    status : {
+        current : {
+            type : String,
+            default : 'Studying',
+            enum : {
+                values : [
+                    'Studying',
+                    'Leave of absence',
+                    'On Exchange',
+                    'Retired',
+                    'Resigned',
+                    'Alumni'
+                ]
+            }
+        },
+        history : {
+            type : [Object]
+        }
     }
 });
 
