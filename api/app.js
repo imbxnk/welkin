@@ -28,6 +28,15 @@ app.get('*', function(req, res){
 
 // Start listening to PORT
 const PORT = process.env.PORT;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server started on port ${process.env.PORT} in ${process.env.NODE_ENV} mode.`);
 });
+
+// Handling Unhandled Promise Rejection
+process.on('unhandledRejection', err => {
+    console.log(`Error: ${err.message}`);
+    console.log(`Shutting down the server due to handled promise rejection.`);
+    server.close( () => {
+        process.exit(1);
+    });
+})
