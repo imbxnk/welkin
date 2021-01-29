@@ -5,6 +5,13 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config({path: './config/.env'});
 
+/// Handling Uncaught Exception
+process.on('uncaughtException', err => {
+    console.log(`Error: ${err.message}`);
+    console.log(`Shutting down the server due to uncaught exception.`);
+    process.exit(1);
+});
+
 // Connect to MongoDB
 const connectDatabase = require('./config/database');
 connectDatabase();
@@ -21,7 +28,7 @@ app.use('/v1', students);
 
 app.use(errorMiddleware);
 // Show "Not Found" if route does not exist
-app.get('*', function(req, res){
+app.all('*', function(req, res){
     res.setHeader('content-type', 'text/plain');
     res.status(404).send('Not Found');
 });
