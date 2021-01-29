@@ -87,6 +87,9 @@ const studentSchema = new mongoose.Schema({
         type : String,
         required : true
     },
+    gpa : {
+        type : Number,
+    },
     taken_courses : {
         core_courses : {
             type : [Object]
@@ -127,7 +130,7 @@ const studentSchema = new mongoose.Schema({
 
 // Automatic assign batch according to ID
 studentSchema.pre('save', function(next) {
-    this.batch = this.sid.substring(0,3);
+    this.batch = this.sid.slice(0, -4);
     next();
 });
 
