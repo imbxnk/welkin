@@ -78,37 +78,3 @@ exports.deleteStudent = catchAsyncErrors ( async (req, res, next) => {
         message : 'Deleted successfully.'
     });
 });
-
-// // Get Students by Batch => /v1/students/:batch
-// exports.getStudentsByBatch = catchAsyncErrors ( async (req, res, next) => {
-//     const students = await Student.find({
-//         batch : req.params.batch
-//     });
-
-//     if(students.length != 3) return next(new ErrorHandler('Batch not found', 404));
-
-//     res.status(200).json({
-//         success : true,
-//         batch : req.params.batch,
-//         total : students.length,
-//         data : students
-//     });
-// });
-
-// // Get Students by Batch and Trimester => /v1/students/:batch/:trimester
-// exports.getStudentsByBatchAndTrimester = catchAsyncErrors ( async (req, res, next) => {
-//     const students = await Student.find({
-//         batch : req.params.batch,
-//         entry_trimester : req.params.trimester
-//     });
-
-//     if(students.length != 3) return next(new ErrorHandler('Batch not found', 404));
-
-//     res.status(200).json({
-//         success : true,
-//         batch : req.params.batch,
-//         entry_trimester : req.params.trimester,
-//         total : students.length,
-//         data : students
-//     });
-// });
