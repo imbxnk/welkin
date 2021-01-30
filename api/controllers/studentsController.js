@@ -1,10 +1,12 @@
 const Student = require('../models/students');
 const ErrorHandler = require('../utils/errorhandler');
 const catchAsyncErrors = require('../middlewares/catchAsyncError');
+const APIFilters = require('../utils/apiFilters');
 
 // Get all students => /v1/students
 exports.getStudents = catchAsyncErrors ( async (req, res, next) => {
-    const students = await Student.find();
+    const apiFilters = new APIFilters(Student.find(), req.query).filter();
+    const students = await apiFilters.query;
     
     res.status(200).json({
         success : true,
@@ -30,7 +32,7 @@ exports.getStudent = catchAsyncErrors ( async (req, res, next) => {
         sid : req.params.sid
     });
 
-    if(student.length === 0) return next(new ErrorHandler('Student not found', 404));
+    if(student.length === 0) return next(new ErrorHandler('Student not found.', 404));
 
     res.status(200).json({
         success : true,
@@ -44,7 +46,7 @@ exports.updateStudent = catchAsyncErrors ( async (req, res, next) => {
         sid : req.params.sid
     });
 
-    if(student.length === 0) return next(new ErrorHandler('Student not found', 404));
+    if(student.length === 0) return next(new ErrorHandler('Student not found.', 404));
 
     student = await Student.findOneAndUpdate({sid : req.params.sid}, req.body, {
         new : true,
@@ -56,7 +58,7 @@ exports.updateStudent = catchAsyncErrors ( async (req, res, next) => {
 
     res.status(200).json({
         success : true,
-        message : 'Student Information has been updated',
+        message : 'Student Information has been updated.',
         data : student
     });
 });
@@ -67,7 +69,7 @@ exports.deleteStudent = catchAsyncErrors ( async (req, res, next) => {
         sid : req.params.sid
     });
 
-    if(student.length === 0) return next(new ErrorHandler('Student not found', 404));
+    if(student.length === 0) return next(new ErrorHandler('Student not found.', 404));
 
     student = await Student.deleteOne({sid : req.params.sid});
 
@@ -77,36 +79,36 @@ exports.deleteStudent = catchAsyncErrors ( async (req, res, next) => {
     });
 });
 
-// Get Students by Batch => /v1/students/:batch
-exports.getStudentsByBatch = catchAsyncErrors ( async (req, res, next) => {
-    const students = await Student.find({
-        batch : req.params.batch
-    });
+// // Get Students by Batch => /v1/students/:batch
+// exports.getStudentsByBatch = catchAsyncErrors ( async (req, res, next) => {
+//     const students = await Student.find({
+//         batch : req.params.batch
+//     });
 
-    if(students.length != 3) return next(new ErrorHandler('Batch not found', 404));
+//     if(students.length != 3) return next(new ErrorHandler('Batch not found', 404));
 
-    res.status(200).json({
-        success : true,
-        batch : req.params.batch,
-        total : students.length,
-        data : students
-    });
-});
+//     res.status(200).json({
+//         success : true,
+//         batch : req.params.batch,
+//         total : students.length,
+//         data : students
+//     });
+// });
 
-// Get Students by Batch and Trimester => /v1/students/:batch/:trimester
-exports.getStudentsByBatchAndTrimester = catchAsyncErrors ( async (req, res, next) => {
-    const students = await Student.find({
-        batch : req.params.batch,
-        entry_trimester : req.params.trimester
-    });
+// // Get Students by Batch and Trimester => /v1/students/:batch/:trimester
+// exports.getStudentsByBatchAndTrimester = catchAsyncErrors ( async (req, res, next) => {
+//     const students = await Student.find({
+//         batch : req.params.batch,
+//         entry_trimester : req.params.trimester
+//     });
 
-    if(students.length != 3) return next(new ErrorHandler('Batch not found', 404));
+//     if(students.length != 3) return next(new ErrorHandler('Batch not found', 404));
 
-    res.status(200).json({
-        success : true,
-        batch : req.params.batch,
-        entry_trimester : req.params.trimester,
-        total : students.length,
-        data : students
-    });
-});
+//     res.status(200).json({
+//         success : true,
+//         batch : req.params.batch,
+//         entry_trimester : req.params.trimester,
+//         total : students.length,
+//         data : students
+//     });
+// });
