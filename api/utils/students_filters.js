@@ -8,7 +8,7 @@ class APIFilters {
         const queryCopy = {...this.queryStr}
 
         // Removing fields from the query
-        const removeFields = ['sort'];
+        const removeFields = ['sort', 'fields', 'limit', 'page'];
         removeFields.forEach(element => delete queryCopy[element]);
 
         // Advanced filter using: lt(<), lte(<=), gt(>), gte(>=)
@@ -28,8 +28,26 @@ class APIFilters {
             // If sort is not specify ps. to inverse sort put - infron (-sid)
             this.query = this.query.sort('sid');
         }
+        return this;
+    }
 
-        return this
+    limitFields() {
+        if(this.queryStr.fields) {
+            const fields = this.queryStr.fields.split(',').join(' ');
+            this.query = this.query.select(fields);
+        } else {
+            // If not limit field, remove __v field
+            this.query = this.query.select('-__v');
+        }
+        return this;
+    }
+
+    pagination() {
+        const page = parseInt(this.queryStr.page, 10) || 1;
+        const limit = parseInt(this.queryStr.limit, 10) || 25;
+        const skipResults = (page - 1) * limit;
+        this.query = this.query.skip(skipResults).limit(limit);
+        return this;
     }
 }
 

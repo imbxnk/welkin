@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+// Student Controller
 const {
     getStudents,
     newStudent,
@@ -9,6 +10,7 @@ const {
     deleteStudent
 } = require('../controllers/studentsController');
 
+// Student Routes
 router.route('/students').get(getStudents);
 router.route('/student/new').post(newStudent);
 router.route('/student/:sid').get(getStudent);
