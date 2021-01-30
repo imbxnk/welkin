@@ -134,8 +134,9 @@ studentSchema.pre('save', function(next) {
     next();
 });
 
+// Simple Student ID Validator
 function sidValidator(sid) {
-    return sid.length == 7;
+    return sid.length == 7 && (string.match(/^[0-9]+$/) != null);
 }
 
 module.exports = mongoose.model('Student', studentSchema)
