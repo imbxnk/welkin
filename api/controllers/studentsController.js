@@ -5,7 +5,7 @@ const APIFilters = require('../utils/apiFilters');
 
 // Get all students => /v1/students
 exports.getStudents = catchAsyncErrors ( async (req, res, next) => {
-    const apiFilters = new APIFilters(Student.find(), req.query).filter();
+    const apiFilters = new APIFilters(Student.find(), req.query).filter().sort();
     const students = await apiFilters.query;
     
     res.status(200).json({
