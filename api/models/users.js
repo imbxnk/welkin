@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     username : {
         type : String,
-        unique : true
+        required : true,
+        lowercase : true,
+        unique : [true, 'This username is already existed.']
     },
     password : {
         type : String,
@@ -25,21 +28,24 @@ const userSchema = new mongoose.Schema({
     email : {
         type : String,
         required : [true, 'Please enter the email address.'],
-        unique : true,
-        validate : [validator.isEmail, 'Please enter a valid email address']
+        unique : [true, 'This email is already existed.'],
+        validate : [validator.isEmail, 'Please enter a valid email address.']
     },
     group: {
-        type : [String],
+        type : String,
         enum : {
             values : [
                 'coordinator',
                 'program director',
-                'advisor',
                 'lecturer'
             ],
             message : 'Please select correct group type.'
         },
         default : 'lecturer'
+    },
+    isAdvisor : {
+        type : Boolean,
+        default : false
     },
     avatar_url : {
         type : String
@@ -52,15 +58,9 @@ const userSchema = new mongoose.Schema({
     resetPasswordExpire : Date
 });
 
-userSchema.pre('save', function(next) {
-    let username = this.first_name + '.';
-    if(this.last_name.length >= 3) {
-        username += this.last_name.substring(0,3);
-    } else {
-        username += this.last_name
-    }    
-    this.username = username;
-    next();
+// Hashing Password
+userSchema.pre('save', async function(next) {
+    this.password = await bcrypt.hash(this.password, 10)
 });
 
-exports.userSchema = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);
