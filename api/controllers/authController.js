@@ -2,6 +2,9 @@ const User = require('../models/users');
 const catchAsyncErrors = require('../middlewares/catchAsyncError');
 const ErrorHandler = require('../utils/errorhandler');
 const sendToken = require('../utils/jwt');
+const sendEmail = require('../utils/send_email');
+const crypto = require('crypto');
+
 
 // Create Admin User (Only when there's no admin) [Username : admin will automatically assigned]
 exports.createAdmin = catchAsyncErrors( async (req, res, next) => {
@@ -70,4 +73,65 @@ exports.loginUser = catchAsyncErrors( async (req, res, next) => {
     }
 
     sendToken(user, 200, res, 'Login successful.');
+});
+
+// Forgot Password => /v1/password/reset
+exports.requestPasswordRecovery = catchAsyncErrors( async (req, res, next) => {
+    const user = await User.findOne({email : req.body.email});
+
+    // Check user email in database
+    if(!user) {
+        return next(new ErrorHandler('Email not found in database.', 404));
+    }
+    
+    // Get Reset Token and Save
+    const resetToken = user.getResetPasswordToken();
+    await user.save({ validateBeforeSave : false });
+
+    // Create reset password url
+    const resetUrl = `${req.protocol}://${req.get('host')}/v1/password/reset/${resetToken}`;
+    const message = `Your password reset link: ${resetUrl}\n\n
+    The reset password link will expire in 30 minutes.\n
+    Ps. Do not reply to this email.`;
+    
+    try {
+        await sendEmail({
+            email : user.email,
+            subject : 'Welkin Password Recovery',
+            message
+        });
+    
+        res.status(200).json({
+            success : true,
+            message : `Password Recovery URL has been sent to ${user.email}`
+        });
+    } catch (error) {
+        // If email cannot be sent, remove token
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+
+        await user.save({ validateBeforeSave : false });
+        return next(new ErrorHandler('Password Recovery has not been sent.', 500));
+    }
+});
+
+// Reset Password => /vi/password/reset/:token
+exports.resetPassword = catchAsyncErrors( async (req, res, next) => {
+    const resetPasswordToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+    const user = await User.findOne({
+        resetPasswordToken,
+        resetPasswordExpire: {$gt : Date.now()}
+    });
+
+    if(!user) {
+        return next(new ErrorHandler('Password Reset token is invalid.', 400));
+    }
+
+    // Set up new password
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    sendToken(user, 200, res);
 });
