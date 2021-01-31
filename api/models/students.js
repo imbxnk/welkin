@@ -91,14 +91,18 @@ const studentSchema = new mongoose.Schema({
         type : Number,
     },
     taken_courses : {
+        select : false,
         core_courses : {
-            type : [Object]
+            type : [mongoose.Schema.ObjectID],
+            ref : 'Course'
         },
         required_courses : {
-            type : [Object]
+            type : [mongoose.Schema.ObjectID],
+            ref : 'Course'
         },
         elective_courses : {
-            type : [Object]
+            type : [mongoose.Schema.ObjectID],
+            ref : 'Course'
         }
     },
     advisor : {
@@ -136,7 +140,7 @@ studentSchema.pre('save', function(next) {
 
 // Simple Student ID Validator
 function sidValidator(sid) {
-    return sid.length == 7 && (sid.match(/^[0-9]+$/) != null);
+    return sid.length === 7 && (sid.match(/^[0-9]+$/) != null);
 }
 
 module.exports = mongoose.model('Student', studentSchema);
