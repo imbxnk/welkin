@@ -139,4 +139,4 @@ function sidValidator(sid) {
     return sid.length == 7 && (string.match(/^[0-9]+$/) != null);
 }
 
-module.exports = mongoose.model('Student', studentSchema)
+module.exports = mongoose.model('Student', studentSchema);
