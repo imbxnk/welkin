@@ -19,6 +19,10 @@ connectDatabase();
 // Setup body parser
 app.use(express.json());
 
+// Setup cookie parser
+// const cookieParser = require('cookie-parser');
+// app.use(cookieParser);
+
 // Importing all routes
 const students = require('./routes/students');
 const auth = require('./routes/auth');
