@@ -1,6 +1,6 @@
 const Student = require('../models/students');
-const ErrorHandler = require('../utils/errorhandler');
 const catchAsyncErrors = require('../middlewares/catchAsyncError');
+const ErrorHandler = require('../utils/errorhandler');
 const APIFilters = require('../utils/students_filters');
 
 // Get all students => /v1/students
