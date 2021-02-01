@@ -52,7 +52,7 @@ exports.createUser = catchAsyncErrors( async (req, res, next) => {
 });
 
 // Login => /v1/login
-exports.loginUser = catchAsyncErrors( async (req, res, next) => {
+exports.login = catchAsyncErrors( async (req, res, next) => {
     const { username, password } = req.body;
     
     // Check if username / password is empty
@@ -134,4 +134,17 @@ exports.resetPassword = catchAsyncErrors( async (req, res, next) => {
     await user.save();
 
     sendToken(user, 200, res);
+});
+
+// Logout user => /v1/logout
+exports.logout = catchAsyncErrors( async (req, res, next) => {
+    res.cookie('token', 'none', {
+        expires : new Date(Date.now()),
+        httpOnly : true
+    });
+
+    res.status(200).json({
+        success : true,
+        message : 'Logout successful.'
+    })
 });

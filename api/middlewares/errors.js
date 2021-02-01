@@ -34,6 +34,18 @@ module.exports = (err, req, res, next) => {
             error = new ErrorHandler(message, 400);
         }
 
+        // Handling Wrong JSON Web Token Error
+        if(err.name === 'JsonWebTokenError') {
+            const message = 'JSON Web Token is invalid.';
+            error = new ErrorHandler(message, 500);
+        }
+
+        // Handling Expired JSON Web Token Error
+        if(err.name === 'TokenExpiredError') {
+            const message = 'JSON Web Token is expired.';
+            error = new ErrorHandler(message, 500);
+        }
+
         res.status(error.statusCode).json({
             success : false,
             message : error.message || 'Internal Server Error.'

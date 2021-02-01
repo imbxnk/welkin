@@ -5,7 +5,8 @@ const router = express.Router();
 const {
     createAdmin,
     createUser,
-    loginUser,
+    login,
+    logout,
     requestPasswordRecovery,
     resetPassword
 } = require('../controllers/authController');
@@ -18,8 +19,9 @@ const {
 
 router.route('/admin/create').post(createAdmin);    
 router.route('/user/create').post(isAuthenticated, authorizedGroups('coordinator', 'admin'), createUser);
-router.route('/login').post(loginUser);
+router.route('/login').post(login);
 router.route('/password/reset').post(requestPasswordRecovery);
 router.route('/password/reset/:token').put(resetPassword);
+router.route('/logout').get(isAuthenticated, logout);
 
 module.exports = router;
