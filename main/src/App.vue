@@ -9,11 +9,12 @@
       <v-navigation-drawer
         v-model="sidebarMenu"
         app
-        floating
+        floating  
         :permanent="sidebarMenu"
         :temporary="toggleMini == true ? $vuetify.breakpoint.smAndDown : permanent"
         :mini-variant.sync="mini"
         color="white"
+
       >
         <v-list>
           <v-list-item>
@@ -24,7 +25,7 @@
           </v-list-item>
         </v-list>
 
-        <v-list>
+        <v-list style="padding: 0px">
           <v-list-item v-for="item in items" :key="item.title" link :to="item.href">
             <v-list-item-icon>
               <v-icon color="black">{{ item.icon }}</v-icon>
@@ -42,8 +43,10 @@
             :width="7"
             color="#FDE2A6"
             indeterminate
-          ></v-progress-circular></div
-      ></template>
+          >
+          </v-progress-circular>
+        </div>
+      </template>
       <template v-else>
         <div class="bg">
           <v-content>
@@ -53,8 +56,9 @@
               <router-link :to="{ name: 'manage' }"></router-link>
               <router-view class="ma-4"></router-view>
             </v-card>
-          </v-content></div
-      ></template>
+          </v-content>
+        </div>
+      </template>
     </v-app>
   </div>
 </template>
@@ -83,9 +87,9 @@ export default {
     toggleMini: false,
     items: [
       { title: "Home", href: "/", icon: "mdi-home-outline" },
-      { title: "Student List", href: "/student_list", icon: "mdi-account-multiple-outline" },
-      { title: "Course List", href: "/course_list", icon: "mdi-file-document-multiple-outline" },
-      { title: "Course Curriculum", href: "/course_curriculum", icon: "mdi-book-open-outline" },
+      { title: "Student List", href: "/student", icon: "mdi-account-multiple-outline" },
+      { title: "Course List", href: "/course", icon: "mdi-file-document-multiple-outline" },
+      { title: "Course Curriculum", href: "/curriculum", icon: "mdi-book-open-outline" },
       { title: "Manage", href: "/manage", icon: "mdi-cog-outline" },
     ],
   }),
@@ -93,8 +97,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.bg {
-  min-height: 100vh;
-  background: #f8f8f8;
-}
+  a:hover {
+    text-decoration: none;
+  }
+  .bg {
+    min-height: 100vh;
+    background: #f8f8f8;
+  }
 </style>
