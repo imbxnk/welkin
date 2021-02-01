@@ -26,8 +26,10 @@ app.use(express.json());
 // Importing all routes
 const students = require('./routes/students');
 const auth = require('./routes/auth');
+const user = require('./routes/user');
 app.use('/v1', students);
 app.use('/v1', auth);
+app.use('/v1', user);
 
 // Show "Not Found" if route does not exist
 app.all('*', function(req, res){

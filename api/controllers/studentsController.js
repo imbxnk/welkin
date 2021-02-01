@@ -81,3 +81,8 @@ exports.deleteStudent = catchAsyncErrors ( async (req, res, next) => {
         message : 'Deleted successfully.'
     });
 });
+
+// Show Student Profile
+exports.getStudentProfile = catchAsyncErrors ( async (req, res, next) => {
+    const student = await Student.find({ sid : req.user.sid })
+});
