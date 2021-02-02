@@ -49,14 +49,15 @@
       </template>
       <template v-else>
         <div class="bg">
-          <v-content>
+          <v-main>
             <!-- add content here -->
             <v-card class="ma-4">
               <router-link :to="{ name: 'home' }"></router-link>
+              <router-link :to="{ name: 'student' }"></router-link>
               <router-link :to="{ name: 'manage' }"></router-link>
               <router-view class="ma-4"></router-view>
             </v-card>
-          </v-content>
+          </v-main>
         </div>
       </template>
     </v-app>
@@ -87,9 +88,9 @@ export default {
     toggleMini: false,
     items: [
       { title: "Home", href: "/", icon: "mdi-home-outline" },
-      { title: "Student List", href: "/student", icon: "mdi-account-multiple-outline" },
-      { title: "Course List", href: "/course", icon: "mdi-file-document-multiple-outline" },
-      { title: "Course Curriculum", href: "/curriculum", icon: "mdi-book-open-outline" },
+      { title: "Student", href: "/student", icon: "mdi-account-multiple-outline" },
+      { title: "Course", href: "/course", icon: "mdi-file-document-multiple-outline" },
+      { title: "Curriculum", href: "/curriculum", icon: "mdi-book-open-outline" },
       { title: "Manage", href: "/manage", icon: "mdi-cog-outline" },
     ],
   }),

@@ -5,6 +5,9 @@ import vuetify from "./plugins/vuetify";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import Home from "./components/home";
 import Import from "./components/import.vue";
+import Student from "./components/student";
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import "bootstrap/dist/css/bootstrap.css";
@@ -15,17 +18,24 @@ Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
+// Axios
+Vue.use(VueAxios,axios);
 
 const routes = [
   {
-    name: "home",
-    path: "/",
+    name : "home",
+    path : "/",
     component: Home,
   },
   {
-    name: "manage",
-    path: "/manage",
-    component: Import,
+    name : "student",
+    path : "/student",
+    component : Student
+  },
+  {
+    name : "manage",
+    path : "/manage",
+    component : Import,
   },
 ];
 
