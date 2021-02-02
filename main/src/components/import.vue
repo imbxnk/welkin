@@ -75,12 +75,12 @@
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ]
     }),
-    method: {
+    methods: {
       submit: function () {
         this.$refs.form.validate()
       },
       reset: function () {
-        this.$refs.form.reset()
+        this.$refs.form.reset();
       },
       addNewStudent: function () {
         this.newStudent.push({
