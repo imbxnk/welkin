@@ -17,7 +17,7 @@ const {
 } = require('../middlewares/auth');
 
 // Student Routes
-router.route('/students').get(isAuthenticated, getStudents);
+router.route('/students').get(getStudents);
 router.route('/student/new').post(isAuthenticated, authorizedGroups('coordinator', 'admin'), newStudent);
 router.route('/student/:sid').get(isAuthenticated, getStudent)
     .put(isAuthenticated, authorizedGroups('coordinator', 'admin'), updateStudent)

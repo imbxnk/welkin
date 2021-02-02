@@ -1,6 +1,14 @@
 const express = require('express');
 const app = express();
 
+// Enable CORS
+const cors = require('cors');
+var corsOptions = {
+    origin: 'http://localhost:8080',
+    optionsSuccessStatus: 200 // For legacy browser support
+}
+app.use(cors(corsOptions));
+
 // Setting up config variables
 const dotenv = require('dotenv');
 dotenv.config({path: './config/.env'});
