@@ -51,7 +51,7 @@
         <div class="bg">
           <v-main>
             <!-- add content here -->
-            <v-card class="ma-4">
+            <v-card class="ma-4 main-content">
               <router-link :to="{ name: 'home' }"></router-link>
               <router-link :to="{ name: 'student' }"></router-link>
               <router-link :to="{ name: 'manage' }"></router-link>
@@ -104,5 +104,8 @@ export default {
   .bg {
     min-height: 100vh;
     background: #f8f8f8;
+  }
+  .main-content {
+    padding: 10px 0;
   }
 </style>
