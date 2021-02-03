@@ -66,7 +66,7 @@
         this.$refs.form.validate()
       },
       reset: function () {
-        this.$refs.form.reset()
+        this.$refs.form.reset();
       },
       addNewStudent: function () {
         this.newStudent.push({
