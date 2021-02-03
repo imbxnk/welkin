@@ -25,6 +25,7 @@
                   <v-icon right dark>
                     mdi-cloud-upload
                   </v-icon>
+                  <v-file-input v-model="files"></v-file-input>
                 </v-btn>
               </v-form>
             </v-card-text>
@@ -45,6 +46,7 @@
       dialog: false,
       loading: false,
       loader: null,
+      files: [],
       newData: {
         firstname: "",
         lastname: "",
@@ -82,15 +84,14 @@
           lastname: this.newData.lastname,
           email: this.newData.email,
         });
+        this.dialog = false;
       },
     },
     watch: {
       loader() {
         const l = this.loader
         this[l] = !this[l]
-
         setTimeout(() => (this[l] = false), 3000)
-
         this.loader = null
       },
     },
@@ -107,9 +108,7 @@
   @-moz-keyframes loader {
     from {
       transform: rotate(0);
-    }
-
-    to {
+    }to {
       transform: rotate(360deg);
     }
   }
@@ -117,9 +116,7 @@
   @-webkit-keyframes loader {
     from {
       transform: rotate(0);
-    }
-
-    to {
+    }to {
       transform: rotate(360deg);
     }
   }
@@ -127,9 +124,7 @@
   @-o-keyframes loader {
     from {
       transform: rotate(0);
-    }
-
-    to {
+    }to {
       transform: rotate(360deg);
     }
   }
@@ -137,9 +132,7 @@
   @keyframes loader {
     from {
       transform: rotate(0);
-    }
-
-    to {
+    }to {
       transform: rotate(360deg);
     }
   }
