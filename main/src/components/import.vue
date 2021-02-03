@@ -9,20 +9,26 @@
           <v-card-title>
             <h3>Add new student</h3>
           </v-card-title>
-          <v-card-text>
-            <v-form class="px-3" v-model="valid" ref="form" lazy-validation>
-              <v-text-field label="First name" v-model='newData.firstname' :counter="20" :rules="firstnameRules"
-                required></v-text-field>
-              <v-text-field label="Last name" v-model="newData.lastname" :counter="20" :rules="lastnameRules" required>
-              </v-text-field>
-              <v-text-field label="Email" v-model="email" :rules="emailRules" required></v-text-field>
-              <v-btn flat color='error' class="mr-4" @click="reset">Clear</v-btn>
-              <v-btn flat color='dark' class="mr-4" @click="addNewStudent">Add</v-btn>
-              <v-btn flat color='green' class="mr-4">
-                <v-file append-icon=""></v-file>
-              </v-btn>
-            </v-form>
-          </v-card-text>
+          <v-row>
+            <v-card-text>
+              <v-form class="px-3" v-model="valid" ref="form" lazy-validation>
+                <v-text-field label="First name" v-model='newData.firstname' :counter="20" :rules="firstnameRules"
+                  required></v-text-field>
+                <v-text-field label="Last name" v-model="newData.lastname" :counter="20" :rules="lastnameRules"
+                  required>
+                </v-text-field>
+                <v-text-field label="Email" v-model="email" :rules="emailRules" required></v-text-field>
+                <v-btn flat color='error' class="mr-4" @click="reset">Clear</v-btn>
+                <v-btn flat color='dark' class="mr-4" @click="addNewStudent">Add</v-btn>
+                <v-btn :loading="loading" color="blue-grey" class="ma-2 white--text" @click="loader = 'loading'">
+                  Upload
+                  <v-icon right dark>
+                    mdi-cloud-upload
+                  </v-icon>
+                </v-btn>
+              </v-form>
+            </v-card-text>
+          </v-row>
         </v-card>
       </v-dialog>
     </v-content>
@@ -37,6 +43,8 @@
     data: () => ({
       valid: true,
       dialog: false,
+      loading: false,
+      loader: null,
       newData: {
         firstname: "",
         lastname: "",
@@ -74,8 +82,65 @@
           lastname: this.newData.lastname,
           email: this.newData.email,
         });
-        
-      }
-    }
+      },
+    },
+    watch: {
+      loader() {
+        const l = this.loader
+        this[l] = !this[l]
+
+        setTimeout(() => (this[l] = false), 3000)
+
+        this.loader = null
+      },
+    },
   }
 </script>
+
+
+<style>
+  .custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
