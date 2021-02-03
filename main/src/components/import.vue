@@ -18,27 +18,13 @@
               <v-text-field label="Email" v-model="email" :rules="emailRules" required></v-text-field>
               <v-btn flat color='error' class="mr-4" @click="reset">Clear</v-btn>
               <v-btn flat color='dark' class="mr-4" @click="addNewStudent">Add</v-btn>
+              <v-btn flat color='green' class="mr-4">
+                <v-file append-icon=""></v-file>
+              </v-btn>
             </v-form>
           </v-card-text>
         </v-card>
       </v-dialog>
-
-      <br><br>
-
-      <template>
-        <v-expansion-panels>
-          <v-expansion-panel v-for="firstname in newStudent" :key="firstname.firstname">
-            <v-expansion-panel-header>
-              Student
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-      </template>
-
-
     </v-content>
   </v-app>
 
@@ -75,7 +61,7 @@
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ]
     }),
-    method: {
+    methods: {
       submit: function () {
         this.$refs.form.validate()
       },
