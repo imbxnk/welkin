@@ -25,7 +25,7 @@
                   <v-icon right dark>
                     mdi-cloud-upload
                   </v-icon>
-                  <v-file-input v-model="files"></v-file-input>
+                  
                 </v-btn>
               </v-form>
             </v-card-text>
