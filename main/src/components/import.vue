@@ -53,9 +53,9 @@
         email: "",
       },
       newStudent: [{
-        firstname: "phat",
-        lastname: "phatphat",
-        email: "phatza131@gmail.com",
+        firstname: "test",
+        lastname: "test",
+        email: "test@welkin.com",
       }, ],
 
       firstnameRules: [
@@ -84,6 +84,7 @@
           lastname: this.newData.lastname,
           email: this.newData.email,
         });
+        console.log(this.newData.firstname,this.newData.lastname,this.newData.email)
         this.dialog = false;
       },
     },
