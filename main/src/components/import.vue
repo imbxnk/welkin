@@ -1,38 +1,25 @@
 <template>
   <v-app>
+    <v-tabs>
+      <v-tab>Add student</v-tab>
+      <v-tab-item>
+    <v-card>
     <v-content>
-      <v-dialog max-width="600px" v-model="dialog">
-        <template v-slot:activator="{ on, attrs}">
-          <v-btn flat class="dark" v-bind="attrs" v-on="on">+ New student</v-btn>
-        </template>
-        <v-card>
-          <v-card-title>
-            <h3>Add new student</h3>
-          </v-card-title>
-          <v-row>
-            <v-card-text>
-              <v-form class="px-3" v-model="valid" ref="form" lazy-validation>
-                <v-text-field label="First name" v-model='newData.firstname' :counter="20" :rules="firstnameRules"
-                  required></v-text-field>
-                <v-text-field label="Last name" v-model="newData.lastname" :counter="20" :rules="lastnameRules"
-                  required>
-                </v-text-field>
-                <v-text-field label="Email" v-model="email" :rules="emailRules" required></v-text-field>
-                <v-btn flat color='error' class="mr-4" @click="reset">Clear</v-btn>
-                <v-btn flat color='dark' class="mr-4" @click="addNewStudent">Add</v-btn>
-                <v-btn :loading="loading" color="blue-grey" class="ma-2 white--text" @click="loader = 'loading'">
-                  Upload
-                  <v-icon right dark>
-                    mdi-cloud-upload
-                  </v-icon>
-                  
-                </v-btn>
-              </v-form>
-            </v-card-text>
-          </v-row>
-        </v-card>
-      </v-dialog>
+      <v-form class="px-3" v-model="valid" ref="form" lazy-validation>
+        <v-text-field label="First name" v-model='newData.firstname' :counter="20" :rules="firstnameRules" required>
+        </v-text-field>
+        <v-text-field label="Last name" v-model="newData.lastname" :counter="20" :rules="lastnameRules" required>
+        </v-text-field>
+        <v-text-field label="Email" v-model="newData.email" :rules="emailRules" required></v-text-field>
+        <v-btn flat color='error' class="mr-4" @click="reset">Clear</v-btn>
+        <v-btn flat color='dark' class="mr-4" @click="addNewStudent">Add</v-btn>
+      </v-form>
     </v-content>
+    </v-card>
+         </v-tab-item>
+      <v-tab>Upload</v-tab>
+      <v-tab>Item Three</v-tab>
+    </v-tabs>
   </v-app>
 
 
@@ -79,12 +66,14 @@
         this.$refs.form.reset();
       },
       addNewStudent: function () {
-        this.newStudent.push({
-          firstname: this.newData.firstname,
-          lastname: this.newData.lastname,
-          email: this.newData.email,
-        });
-        console.log(this.newData.firstname,this.newData.lastname,this.newData.email)
+        if (this.$refs.form.validate()) {
+          this.newStudent.push({
+            firstname: this.newData.firstname,
+            lastname: this.newData.lastname,
+            email: this.newData.email,
+          });
+        }
+        console.log(this.newData.firstname, this.newData.lastname, this.newData.email)
         this.dialog = false;
       },
     },
@@ -109,7 +98,9 @@
   @-moz-keyframes loader {
     from {
       transform: rotate(0);
-    }to {
+    }
+
+    to {
       transform: rotate(360deg);
     }
   }
@@ -117,7 +108,9 @@
   @-webkit-keyframes loader {
     from {
       transform: rotate(0);
-    }to {
+    }
+
+    to {
       transform: rotate(360deg);
     }
   }
@@ -125,7 +118,9 @@
   @-o-keyframes loader {
     from {
       transform: rotate(0);
-    }to {
+    }
+
+    to {
       transform: rotate(360deg);
     }
   }
@@ -133,7 +128,9 @@
   @keyframes loader {
     from {
       transform: rotate(0);
-    }to {
+    }
+
+    to {
       transform: rotate(360deg);
     }
   }
