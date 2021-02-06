@@ -17,7 +17,7 @@
                 <v-text-field label="Last name" v-model="newData.lastname" :counter="20" :rules="lastnameRules"
                   required>
                 </v-text-field>
-                <v-text-field label="Email" v-model="email" :rules="emailRules" required></v-text-field>
+                <v-text-field label="Email" v-model="newData.email" :rules="emailRules" required></v-text-field>
                 <v-btn flat color='error' class="mr-4" @click="reset">Clear</v-btn>
                 <v-btn flat color='dark' class="mr-4" @click="addNewStudent">Add</v-btn>
                 <v-btn :loading="loading" color="blue-grey" class="ma-2 white--text" @click="loader = 'loading'">
@@ -82,9 +82,11 @@
         this.newStudent.push({
           firstname: this.newData.firstname,
           lastname: this.newData.lastname,
-          email: this.newData.email,
+          email: this.newData.email
         });
-        console.log(this.newData.firstname,this.newData.lastname,this.newData.email)
+        console.log("first name: ",this.newStudent[1].firstname);
+        console.log("last name: ", this.newStudent[1].lastname);
+        console.log("email: ",this.newStudent[1].email);
         this.dialog = false;
       },
     },
