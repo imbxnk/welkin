@@ -2,19 +2,51 @@
   <div id="app">
     <v-app>
       <v-app-bar app flat color="white">
-        <v-toolbar-title class="primary--text">Welkin</v-toolbar-title>
+        <v-toolbar-title class="primary--text" @click="$router.push('/')">Welkin</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-avatar color="primary" size="35"><span class="white--text ">hi</span></v-avatar>
+
+        <v-menu bottom max-width="300px" rounded offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-avatar color="primary" size="35" v-bind="attrs" v-on="on"
+              ><span class="white--text ">{{ user.initials }}</span></v-avatar
+            >
+          </template>
+          <v-list>
+            <v-list-item-content class="justify-center">
+              <div class="text-center">
+                <v-avatar color="primary">
+                  <span class="white--text">{{ user.initials }}</span>
+                </v-avatar>
+                <br /><br />
+                <h6>{{ user.fullName }}</h6>
+                <p class="caption mt-1">
+                  {{ user.email }}
+                </p>
+                <v-btn @click="$router.push('/profile')" depressed outlined rounded text
+                  >Manage Your Account</v-btn
+                >
+                <v-divider class=""></v-divider>
+              </div>
+              <!-- <v-list-item v-for="(account, i) in accounts" :key="i" :to="account.href">
+                <v-list-item-title>{{ account.title }}</v-list-item-title>
+              </v-list-item> -->
+              <v-list-item class="my-n4 px-16">
+                <v-btn @click="$router.push('/')" block outlined depressed text>Logout</v-btn>
+              </v-list-item>
+              <v-divider class="mb-n5 py-2"></v-divider>
+            </v-list-item-content>
+          </v-list>
+        </v-menu>
       </v-app-bar>
+
       <v-navigation-drawer
         v-model="sidebarMenu"
         app
-        floating  
+        floating
         :permanent="sidebarMenu"
         :temporary="toggleMini == true ? $vuetify.breakpoint.smAndDown : permanent"
         :mini-variant.sync="mini"
         color="white"
-
       >
         <v-list>
           <v-list-item>
@@ -38,12 +70,7 @@
       </v-navigation-drawer>
       <template v-if="loading">
         <div class="text-center">
-          <v-progress-circular
-            :size="70"
-            :width="7"
-            color="#FDE2A6"
-            indeterminate
-          >
+          <v-progress-circular :size="70" :width="7" color="#FDE2A6" indeterminate>
           </v-progress-circular>
         </div>
       </template>
@@ -51,12 +78,11 @@
         <div class="bg">
           <v-main>
             <!-- add content here -->
-            <v-card class="ma-4 main-content">
-              <router-link :to="{ name: 'home' }"></router-link>
-              <router-link :to="{ name: 'student' }"></router-link>
-              <router-link :to="{ name: 'manage' }"></router-link>
-              <router-view class="ma-4"></router-view>
-            </v-card>
+            <router-link :to="{ name: 'profile' }"></router-link>
+            <router-link :to="{ name: 'home' }"></router-link>
+            <router-link :to="{ name: 'student' }"></router-link>
+            <router-link :to="{ name: 'manage' }"></router-link>
+            <router-view class="ma-4"></router-view>
           </v-main>
         </div>
       </template>
@@ -78,10 +104,10 @@ export default {
         return true;
       } else return false;
     },
-    icondisable() {
-      if (this.$vuetify.breakpoint.smAndDown) return true;
-      else return false;
-    },
+    // icondisable() {
+    //   if (this.$vuetify.breakpoint.smAndDown) return true;
+    //   else return false;
+    // },
   },
   data: () => ({
     sidebarMenu: true,
@@ -93,19 +119,27 @@ export default {
       { title: "Curriculum", href: "/curriculum", icon: "mdi-book-open-outline" },
       { title: "Manage", href: "/manage", icon: "mdi-cog-outline" },
     ],
+    // accounts: [{ title: "Edit Profile", href: "/profile" }],
+    user: {
+      initials: "MS",
+      fullName: "Mingmanas Sivaraksa",
+      email: "Mingmanas.siv@mahidol.com",
+    },
   }),
+
+  methods: {},
 };
 </script>
 
 <style lang="scss" scoped>
-  a:hover {
-    text-decoration: none;
-  }
-  .bg {
-    min-height: 100vh;
-    background: #f8f8f8;
-  }
-  .main-content {
-    padding: 10px 0;
-  }
+a:hover {
+  text-decoration: none;
+}
+.bg {
+  min-height: 100vh;
+  background: #f8f8f8;
+}
+.main-content {
+  padding: 10px 0;
+}
 </style>
