@@ -14,7 +14,7 @@
                   <v-text-field label="ID" v-model="newData.id" :rules="idRules" required></v-text-field>
                 </v-col>
                 <v-col class='d-flex' col='6' md='4' sm='2'>
-                  <v-select :items="newData.prefix" label="Prefix" outlined :rules='prefixRules'></v-select>
+                  <v-select v-model="newData.prefix" :items="newData.prefix" label="Prefix" outlined :rules='prefixRules'></v-select>
                 </v-col>
                 <v-col class='d-flex' col='12' sm='6'>
                   <v-text-field label="First name" v-model='newData.firstname' :rules="firstnameRules" required></v-text-field>
@@ -29,7 +29,7 @@
                   <v-text-field label="Email" v-model="newData.email" :rules="emailRules" required></v-text-field>
                 </v-col>
                  <v-col class='d-flex' col='6' sm='6'>
-                  <v-select :items="newData.entry_trimester" label="Entry Trimester" outlined :rules="entry_trimesterRules"></v-select>
+                  <v-select v-model="newData.entry_trimester" :items="newData.entry_trimester" label="Entry Trimester" outlined :rules="entry_trimesterRules"></v-select>
                 </v-col>
                 <v-col class='d-flex' col='6' sm='6'>
                   <v-text-field label="Entry Year" v-model="newData.entry_year" :rules="entry_yearRules" required></v-text-field>
@@ -214,7 +214,6 @@
           })
         }
         console.log(this.newStudent[1].id, this.newStudent[1].prefix.v, this.newStudent[1].firstname, this.newStudent[1].lastname,this.newStudent[1].nickname, this.newStudent[1].email, this.newStudent[1].entry_trimester, this.newStudent[1].entry_year)
-        this.$refs.form.reset();
       },
     },
   }
