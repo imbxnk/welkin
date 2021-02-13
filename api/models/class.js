@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 
 const classSchema = new mongoose.Schema({
     course : {
-        type : mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Course',
         required : true
     },
-    instructor : {
-        type : mongoose.Schema.ObjectId,
-        ref : 'Instructor',
+    instructor : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Instructor',
         required : true
-    },
+    }],
     trimester : {
         type : String,
         uppercase : true,
@@ -29,10 +29,10 @@ const classSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    students : {
-        type : [mongoose.Schema.ObjectId],
-        ref : 'Student',
-    }
+    enrollments : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Enrollment'
+    }]
 });
 
 module.exports = mongoose.model('Course', classSchema);

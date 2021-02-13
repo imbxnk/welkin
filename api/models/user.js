@@ -16,16 +16,13 @@ const userSchema = new mongoose.Schema({
         required : true,
         select : false
     },
-    first_name : {
+    given_name : {
         type : String,
-        required : [true, 'Please enter the first name.']
+        required : [true, 'Please enter the given name.']
     },
-    middle_name : {
-        type : String
-    },
-    last_name : {
+    family_name : {
         type : String,
-        required : [true, 'Please enter the last name.']
+        required : [true, 'Please enter the family name.']
     },
     email : {
         type : String,
@@ -33,7 +30,7 @@ const userSchema = new mongoose.Schema({
         unique : [true, 'This email is already existed.'],
         validate : [validator.isEmail, 'Please enter a valid email address.']
     },
-    group: {
+    group : {
         type : String,
         enum : {
             values : [
@@ -46,6 +43,10 @@ const userSchema = new mongoose.Schema({
         },
         default : 'lecturer'
     },
+    linked_instructor : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Instructor'
+    },
     isAdvisor : {
         type : Boolean,
         default : false
@@ -57,6 +58,10 @@ const userSchema = new mongoose.Schema({
         type : Date,
         default : Date.now
     },
+    remarks : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Remarks'
+    }],
     resetPasswordToken : String,
     resetPasswordExpire : Date
 });

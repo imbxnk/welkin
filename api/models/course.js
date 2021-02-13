@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+mongoose.set('useFindAndModify', false);
 
 const courseSchema = new mongoose.Schema({
     name : {
@@ -19,20 +20,20 @@ const courseSchema = new mongoose.Schema({
     },
     code : {
         type : String,
+        unique : true,
         required : true,
         uppercase : true,
-        validate : [codeValidator, 'Please enter the correct format of course code']
+        validate : [codeValidator, 'Please enter the correct format of course code.']
     },
     description : {
-        type : String,
+        type : String
     },
     credit : {
         type : Number,
         required : true
     },
     credit_description : {
-        type : String,
-        required : true
+        type : String
     },
     prerequisite: {
         type : String
