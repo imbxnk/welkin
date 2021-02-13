@@ -4,7 +4,7 @@
       <!-- Add Student tab -->
       <v-tab>Add student</v-tab>
       <v-tab-item>
-        <v-container fluid >
+        <v-container fluid>
         <v-card max-height="1200px" max-width="900px" class="indigo lighten-5">
           <v-card-title>Add new student</v-card-title>
           <v-content>
@@ -14,7 +14,7 @@
                   <v-text-field label="ID" v-model="newData.id" :rules="idRules" required></v-text-field>
                 </v-col>
                 <v-col class='d-flex' col='6' md='4' sm='2'>
-                  <v-select v-model="newData.prefix" :items="newData.prefix" label="Prefix" outlined :rules='prefixRules'></v-select>
+                  <v-select label="Prefix"  :items="newData.prefix" outlined change :rules='prefixRules' :required="!newData.prefix"></v-select>
                 </v-col>
                 <v-col class='d-flex' col='12' sm='6'>
                   <v-text-field label="First name" v-model='newData.firstname' :rules="firstnameRules" required></v-text-field>
@@ -29,10 +29,10 @@
                   <v-text-field label="Email" v-model="newData.email" :rules="emailRules" required></v-text-field>
                 </v-col>
                  <v-col class='d-flex' col='6' sm='6'>
-                  <v-select v-model="newData.entry_trimester" :items="newData.entry_trimester" label="Entry Trimester" outlined :rules="entry_trimesterRules"></v-select>
+                  <v-select v-model="newData.entry_trimester" :items="newData.entry_trimester" label="Entry Trimester" outlined :rules="entry_trimesterRules" required></v-select>
                 </v-col>
                 <v-col class='d-flex' col='6' sm='6'>
-                  <v-text-field label="Entry Year" v-model="newData.entry_year" :rules="entry_yearRules" required></v-text-field>
+                  <v-text-field label="Entry Year" v-model="newData.entry_year" :rules="entry_yearRules" ></v-text-field>
                 </v-col>
                 <v-col class='d-flex' col='4' sm='2'>
                   <v-btn  color='error' class="mr-4" @click="reset">Clear</v-btn>
@@ -44,7 +44,7 @@
             </v-form>
           </v-content>
         </v-card>
-        </v-container>
+        </v-container> 
 
         <template>
           <v-container>
@@ -55,8 +55,16 @@
               class="elevation-1"
               dark>
               </v-data-table>
+              <v-btn
+          color="primary"
+          elevation="2"
+          right
+          outlined
+        >Save</v-btn>
           </v-container>
         </template>
+
+        
 
 
       </v-tab-item>
@@ -66,11 +74,39 @@
 
       <v-tab>Upload</v-tab>
       <v-tab-item>
-        <v-container>
-          <v-card>
-            <v-card-title>Test</v-card-title>
-          </v-card>
-        </v-container>
+        <v-main>
+          <v-container>
+          <v-file-input
+            label="File input"
+          ></v-file-input>
+
+          <v-select
+              :items="newData.prefix"
+              label="Standard"
+            ></v-select>
+
+          <v-btn
+            color="primary"
+            elevation="2"
+            outlined
+          >Get table</v-btn>
+
+
+          <template>
+            <v-data-table
+              :items-per-page="5"
+              class="elevation-1"
+            ></v-data-table>
+          </template>
+
+          <v-btn
+            color="primary"
+            elevation="2"
+            outlined
+          >Submit</v-btn>
+
+          </v-container>
+        </v-main>
       </v-tab-item>
       <v-tab>Item Three</v-tab>
     </v-tabs>
@@ -87,6 +123,7 @@
       dialog: false,
       loading: false,
       files: [],
+      keep_prefix: "",
       newData: {
         id: "",
         prefix: ['Mr', 'Ms', 'Mrs', "Dr"],
@@ -201,7 +238,9 @@
             nickname: this.newData.nickname,
             entry_trimester: this.newData.entry_trimester,
             entry_year: this.newData.entry_year,
+            
           });
+
           this.tablevalue.push({
             table_id: this.newData.id,
             table_prefix: this.newData.prefix,

@@ -37,6 +37,16 @@ const routes = [
     name: "manage",
     path: "/manage",
     component: Import,
+    // children: [
+    //   {
+    //     path: '/addnewstudent',
+    //     component: Addnewstudent
+    //   },
+    //   {
+    //     path: '/importfile',
+    //     component: import_file
+    //   }
+    // ]
   },
   {
     name: "profile",
