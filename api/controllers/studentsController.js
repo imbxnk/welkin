@@ -1,4 +1,4 @@
-const Student = require('../models/students');
+const Student = require('../models/student');
 const catchAsyncErrors = require('../middlewares/catchAsyncError');
 const ErrorHandler = require('../utils/errorhandler');
 const APIFilters = require('../utils/students_filters');
