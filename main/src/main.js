@@ -9,7 +9,8 @@ import Student from "./components/student";
 import Profile from "./components/proflie";
 import axios from "axios";
 import VueAxios from "vue-axios";
-
+import Addnewstudent from "./components/manage_page/add_new_student";
+import Import_file from "./components/manage_page/import_file";
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
@@ -37,16 +38,18 @@ const routes = [
     name: "manage",
     path: "/manage",
     component: Import,
-    // children: [
-    //   {
-    //     path: '/addnewstudent',
-    //     component: Addnewstudent
-    //   },
-    //   {
-    //     path: '/importfile',
-    //     component: import_file
-    //   }
-    // ]
+    children: [
+      {
+        name: "add_new_student",
+        path: '/manage/addnewstudent',
+        component: Addnewstudent
+      },
+      {
+        name: "import_file",
+        path: '/manage/importfile',
+        component: Import_file
+      }
+    ]
   },
   {
     name: "profile",
