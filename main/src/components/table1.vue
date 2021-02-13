@@ -8,7 +8,7 @@
       multi-sort
       class="elevation-1"
     > -->
-    <v-data-table :headers="headers" :items="student" class="elevation-1">
+    <v-data-table :headers="headers" :items="student" class="">
       <template v-slot:[`item.status`]="{ item }">
         <v-chip :color="getColor(item.status)" dark class="d-flex justify-center">
           {{ item.status }}</v-chip
