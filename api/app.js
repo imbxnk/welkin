@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 
+// Make JSON Pretty
+app.set('json spaces', 2)
+
 // Enable CORS
 const cors = require('cors');
 var corsOptions = {
