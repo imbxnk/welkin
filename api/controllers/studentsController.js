@@ -5,11 +5,11 @@ const APIFilters = require('../utils/students_filters');
 
 // Get all students => /v1/students
 exports.getStudents = catchAsyncErrors ( async (req, res, next) => {
-    const apiFilters = new APIFilters(Student.find(), req.query)
+    const apiFilters = new APIFilters(Student.find({}, {_id : 0}), req.query)
         .filter()
         .sort()
-        // .limitFields()
-        // .pagination();
+        .limitFields()
+//        .pagination();
     const students = await apiFilters.query;
     
     res.status(200).json({
@@ -32,7 +32,7 @@ exports.newStudent = catchAsyncErrors ( async (req, res, next) => {
 
 // Get a student by ID => /v1/student/:sid
 exports.getStudent = catchAsyncErrors ( async (req, res, next) => {
-    const apiFilters = new APIFilters(Student.find({sid : req.params.sid}), req.query).limitFields();
+    const apiFilters = new APIFilters(Student.find({sid : req.params.sid}, {_id : 0}), req.query).limitFields();
     const student = await apiFilters.query;
 
     if(student.length === 0) return next(new ErrorHandler('Student not found.', 404));
@@ -82,7 +82,7 @@ exports.deleteStudent = catchAsyncErrors ( async (req, res, next) => {
     });
 });
 
-// Show Student Profile
-exports.getStudentProfile = catchAsyncErrors ( async (req, res, next) => {
-    const student = await Student.find({ sid : req.user.sid })
-});
+// // Show Student Profile
+// exports.getStudentProfile = catchAsyncErrors ( async (req, res, next) => {
+//     const student = await Student.find({ sid : req.user.sid })
+// });
