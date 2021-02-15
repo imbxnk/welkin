@@ -8,8 +8,8 @@ exports.getStudents = catchAsyncErrors ( async (req, res, next) => {
     const apiFilters = new APIFilters(Student.find(), req.query)
         .filter()
         .sort()
-        .limitFields()
-        .pagination();
+        // .limitFields()
+        // .pagination();
     const students = await apiFilters.query;
     
     res.status(200).json({
