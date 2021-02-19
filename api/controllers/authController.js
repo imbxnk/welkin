@@ -1,4 +1,4 @@
-const User = require('../models/users');
+const User = require('../models/user');
 const catchAsyncErrors = require('../middlewares/catchAsyncError');
 const ErrorHandler = require('../utils/errorhandler');
 const sendToken = require('../utils/jwt');
@@ -24,24 +24,24 @@ exports.createAdmin = catchAsyncErrors( async (req, res, next) => {
 
 // Create a new user => /v1/user/create
 exports.createUser = catchAsyncErrors( async (req, res, next) => {
-    const {first_name, last_name} = req.body;
+    const {given_name, family_name} = req.body;
 
     if(req.body.group === 'admin') {
         return next(new ErrorHandler('Admin user cannot be created.', 400));
     }
 
     // Automatically create Username according to firstname.las
-    let firstname = first_name.trim() + '.';    
-    let lastname = last_name.trim();
-    req.body.username = firstname + lastname.substring(0,3);
+    let givenname = given_name.trim() + '.';    
+    let familyname = family_name.trim();
+    req.body.username = givenname + familyname.substring(0,3);
     // If Lastname has more than or equal to 3 characters
-    if(lastname.length >= 3) {
+    if(familyname.length >= 3) {
         // Check if the username exists
         let user = await User.findOne({username: req.body.username});
         // If exist use => firstname.lat instead
-        while(user && lastname.length > 3) {
-            lastname = lastname.slice(0,2) + lastname.slice(3);
-            req.body.username = firstname + lastname.substring(0,3);
+        while(user && familyname.length > 3) {
+            familyname = familyname.slice(0,2) + familyname.slice(3);
+            req.body.username = givenname + familyname.substring(0,3);
             user = await User.findOne({username: req.body.username});
         }
     }

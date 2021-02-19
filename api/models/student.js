@@ -8,37 +8,6 @@ const studentSchema = new mongoose.Schema({
         unique : true,
         validate : [sidValidator, 'Please enter the correct format of Student ID.']
     },
-    prefix : {
-        type : String,
-        required : true,
-        enum : {
-            values : [
-                'Mr.',
-                'Ms.',
-                'Mrs.',
-                'Miss'
-            ],
-            message : 'Please select correct options for the Prefix.'
-        }
-    },
-    batch : {
-        type : String
-    },
-    first_name : {
-        type : String,
-        required : true
-    },
-    middle_name : {
-        type : String
-    },
-    last_name : {
-        type : String,
-        uppercase : true,
-        required : true
-    },
-    nick_name : {
-        type : String
-    },
     program : {
         type : String,
         required : [true, 'Please enter the program of the student.'],
@@ -65,11 +34,27 @@ const studentSchema = new mongoose.Schema({
             message : 'Please enter the correct Program code.'
         }
     },
-    avatar_url : {
-        type : String
+    prefix : {
+        type : String,
+        required : true,
+        enum : {
+            values : [
+                'Mr.',
+                'Ms.',
+                'Mrs.',
+                'Miss'
+            ],
+            message : 'Please select correct options for the Prefix.'
+        }
     },
-    line_id : {
-        type : String
+    given_name : {
+        type : String,
+        required : true
+    },
+    family_name : {
+        type : String,
+        uppercase : true,
+        required : true
     },
     entry_trimester : {
         type : String,
@@ -87,29 +72,35 @@ const studentSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    gpa : {
-        type : Number,
+    nick_name : {
+        type : String
     },
-    taken_courses : {
+    batch : {
+        type : String
+    },
+    avatar_url : {
+        type : String
+    },
+    email : {
+        type : String
+    },
+    phone : {
+        type : String
+    },
+    line_id : {
+        type : String
+    },
+    line_uid : {
         select : false,
-        core_courses : {
-            type : [mongoose.Schema.ObjectID],
-            ref : 'Course'
-        },
-        required_courses : {
-            type : [mongoose.Schema.ObjectID],
-            ref : 'Course'
-        },
-        elective_courses : {
-            type : [mongoose.Schema.ObjectID],
-            ref : 'Course'
-        }
+        type : String
     },
     advisor : {
-        type : Object
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Instructor'
     },
-    remark : {
-        type : String
+    remarks : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Remark'
     },
     status : {
         current : {
@@ -126,9 +117,25 @@ const studentSchema = new mongoose.Schema({
                 ]
             }
         },
-        history : {
-            type : [Object]
-        }
+        history : [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'StatusLog'
+        }]
+    },
+    taken_courses : {
+        select : false,
+        core_courses : [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Enrollment'
+        }],
+        required_courses : [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Enrollment'
+        }],
+        elective_courses : [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Enrollment'
+        }]
     }
 });
 

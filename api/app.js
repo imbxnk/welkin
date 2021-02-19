@@ -1,10 +1,14 @@
 const express = require('express');
 const app = express();
 
+// Make JSON Pretty
+app.set('json spaces', 2)
+
 // Enable CORS
 const cors = require('cors');
 var corsOptions = {
-    origin: 'http://localhost:8080',
+    origin: '*',
+    // origin: 'http://localhost:8080',
     optionsSuccessStatus: 200 // For legacy browser support
 }
 app.use(cors(corsOptions));
@@ -35,9 +39,14 @@ app.use(express.json());
 const students = require('./routes/students');
 const auth = require('./routes/auth');
 const user = require('./routes/user');
+const courses = require('./routes/courses');
+const curriculums = require('./routes/curriculums');
+
 app.use('/v1', students);
 app.use('/v1', auth);
 app.use('/v1', user);
+app.use('/v1', courses);
+app.use('/v1', curriculums);
 
 // Show "Not Found" if route does not exist
 app.all('*', function(req, res){
