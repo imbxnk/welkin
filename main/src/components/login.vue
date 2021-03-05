@@ -36,7 +36,9 @@ export default {
                         }
                     }
                 `
-            })
+                }, 
+                { withCredentials : true }
+            )
             console.log(response)
         }
     },
