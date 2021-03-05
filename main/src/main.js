@@ -3,23 +3,30 @@ import VueRouter from "vue-router";
 import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+import axios from "axios";
+import VueAxios from "vue-axios";
+import JsonExcel from "vue-json-excel";
+import vSelect from "vue-select"
+
+//Routes
 import Home from "./components/home";
 import Import from "./components/import.vue";
 import Student from "./components/student";
 import Profile from "./components/proflie";
-import axios from "axios";
-import VueAxios from "vue-axios";
 import Addnewstudent from "./components/manage_page/add_new_student";
 import Import_file from "./components/manage_page/import_file";
 import Course from "./components/course";
 import Pasted_course from "./components/course_page/pasted_course";
 import Remain_course from "./components/course_page/remain_course";
-import JsonExcel from "vue-json-excel";
+import Login from "./components/login"
+
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
 Vue.component("downloadExcel", JsonExcel);
+
+Vue.component('v-select', vSelect)
 
 Vue.use(VueRouter);
 // Make BootstrapVue available throughout your project
@@ -30,6 +37,11 @@ Vue.use(IconsPlugin);
 Vue.use(VueAxios, axios);
 
 const routes = [
+  {
+    name: "login",
+    path: "/login",
+    component: Login,
+  },
   {
     name: "home",
     path: "/",
@@ -54,9 +66,10 @@ const routes = [
         name: "import_file",
         path: '/manage/importfile',
         component: Import_file
-      }
+      },
     ]
   },
+  
   {
     name: "profile",
     path: "/profile",
