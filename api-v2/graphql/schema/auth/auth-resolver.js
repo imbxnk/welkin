@@ -6,7 +6,15 @@ const crypto = require('crypto')
 
 module.exports = {
     Query : {
-        
+        // Logout user
+        logout : async (_, args, { res }) => {
+            // Clear cookie and set expired
+            res.cookie('token', 'none', {
+                expires : new Date(Date.now()),
+                httpOnly : true
+            })
+            return { token : '', userId : '', message : 'Logout successful.' }
+        },
     },
 
     Mutation : {
@@ -20,7 +28,7 @@ module.exports = {
             const isPasswordMatched = await user.comparePassword(password)          // Check Password
             if (!isPasswordMatched) throw new ErrorHandler(`Invalid Username or Password`, 400)
 
-            return sendToken(user, res)     // Send Token
+            return sendToken(user, res, 'Login Successful !')     // Send Token
         },
         createUser : async (_, { userInput }, { res }) => {
             // Generate Username If username is empty
@@ -47,7 +55,7 @@ module.exports = {
             if (userInput.group === 'admin' && userInput.secret_key !== process.env.ADMIN_SECRET_KEY) throw new ErrorHandler(`Invalid secret key.`, 400)
             // Create User and Set Token
             const user = await User.create(userInput).catch( err => { throw new ErrorHandler(err.message, 400) })
-            return sendToken(user, res)
+            return sendToken(user, res, 'Login Successful!')
         }
     }
 }

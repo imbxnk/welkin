@@ -4,9 +4,9 @@ const app = express()
 // Enable CORS
 const cors = require('cors')    
 var corsOptions = {
+    // origin: '*',    
+    origin: ['http://localhost:8080', 'http://localhost:8081', /\.welkin\.app$/],
     credentials: true,
-    origin: '*',
-    // origin: ['http://localhost:8080', /\.welkin\.app$/],
     optionsSuccessStatus: 200 // For legacy browser support
 }
 app.use(cors(corsOptions))
@@ -27,6 +27,10 @@ const credentials = {key: privateKey, cert: certificate}
 
 // Setup body parser
 app.use(express.json())
+
+// Add Auth Middleware
+const { isAuthenticated } = require('./middlewares/auth')
+app.use(isAuthenticated)
 
 const cookieParser = require('cookie-parser')
 app.use(cookieParser())
@@ -62,15 +66,15 @@ app.use('/v2/graphql', (req, res) => graphqlHTTP({
         introspection: true,
         graphiql: process.env.NODE_ENV === 'development',
         customFormatErrorFn(err) {
-            if(!err.originalError) return err
+            if(!err.originalError) return { success : false, ...err }
 
             if (process.env.NODE_ENV === 'development')
-                return { ...err, custom_err_message : err.message, status : err.originalError.statusCode }
+                return { success : false, ...err, custom_err_message : err.message, status : err.originalError.statusCode }
             
             if (process.env.NODE_ENV === 'production') {
                 err.message = err.message || 'An error occured.'
                 err.statusCode = err.originalError.statusCode || 500
-                return { message : err.message, status : err.statusCode, data : err.originalError.data, path : err.path }
+                return { success : false, message : err.message, status : err.statusCode, data : err.originalError.data, path : err.path }
             }
         }
     })(req, res)

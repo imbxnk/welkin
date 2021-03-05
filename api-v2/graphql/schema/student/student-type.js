@@ -21,6 +21,16 @@ module.exports = gql`
         remarks: [ID]
     }
 
+    type MessageType {
+        succes: Boolean!
+        message: String!
+    }
+
+    type StudentResultType {
+        total: Int!
+        students: [StudentType]!
+    }
+
     input StudentInputData {
         sid: String
         program: String
@@ -40,7 +50,7 @@ module.exports = gql`
         remarks: [ID]
     }
 
-    input SearchStudentInputData {
+    input SearchOptions {
         _id: String
         sid: String
         program: String
@@ -56,12 +66,13 @@ module.exports = gql`
     }
 
     type Query {
-        students: [StudentType!]!
-        student(searchInput: SearchStudentInputData!): StudentType!
+        students(searchInput: SearchOptions): StudentResultType!
+        student(searchInput: SearchOptions!): StudentType!
     }
 
     type Mutation {
         addStudent(studentInput: StudentInputData!): StudentType!
-        updateStudent(searchInput: SearchStudentInputData!, studentInput: StudentInputData!): StudentType!
+        updateStudent(searchInput: SearchOptions!, studentInput: StudentInputData!): StudentType!
+        deleteStudent(searchInput: SearchOptions!): MessageType!
     }
 `
