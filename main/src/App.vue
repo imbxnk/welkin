@@ -78,6 +78,7 @@
         <div class="bg">
           <v-main>
             <!-- add content here -->
+            <router-link :to="{ name: 'login' }"></router-link>
             <router-link :to="{ name: 'profile' }"></router-link>
             <router-link :to="{ name: 'home' }"></router-link>
             <router-link :to="{ name: 'student' }"></router-link>
