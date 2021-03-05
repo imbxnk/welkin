@@ -24,10 +24,16 @@ module.exports = {
             
             // Authentication
             const user = await User.findOne({username}).select('+password')         // Get User from Database
-            if(!user) throw new ErrorHandler(`Invalid Username or Password`, 400)
+            if(!user) {
+                console.log(`🛑 [${username}] Attemp to Login (Username not found)`)
+                throw new ErrorHandler(`Invalid Username or Password`, 400)
+            }
             const isPasswordMatched = await user.comparePassword(password)          // Check Password
-            if (!isPasswordMatched) throw new ErrorHandler(`Invalid Username or Password`, 400)
-
+            if (!isPasswordMatched) {
+                console.log(`🛑 [${username}] Attemp to Login (Wrong Password)`)
+                throw new ErrorHandler(`Invalid Username or Password`, 400)
+            }
+            console.log(`✔️  [${username}] Login successful!`)
             return sendToken(user, res, 'Login Successful !')     // Send Token
         },
         createUser : async (_, { userInput }, { res }) => {

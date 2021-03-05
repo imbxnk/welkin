@@ -9,7 +9,6 @@ const sendToken = (user, res, message) => {
         domain : '.welkin.app',
         httpOnly : true
     };
-    console.log(`${user.username} ${message}`)
 
     if(process.env.NODE_ENV === 'production') {
         options.secure = true
