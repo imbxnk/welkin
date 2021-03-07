@@ -117,7 +117,6 @@
         <div class="bg">
           <v-main>
             <!-- add content here -->
-            <router-link :to="{ name: 'login' }"></router-link>
             <router-link :to="{ name: 'profile' }"></router-link>
             <router-link :to="{ name: 'home' }"></router-link>
             <router-link :to="{ name: 'student' }"></router-link>
@@ -127,13 +126,13 @@
         </div>
       </template>
     </v-app>
+
   </div>
 </template>
 
 <script>
 export default {
   name: "App",
-
   components: {},
   computed: {
     mini() {
