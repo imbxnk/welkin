@@ -4,8 +4,8 @@ const app = express()
 // Enable CORS
 const cors = require('cors')    
 var corsOptions = {
-    // origin: '*',    
     origin: ['http://localhost:8080', 'http://localhost:8081', /\.welkin\.app$/],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 200 // For legacy browser support
 }
@@ -25,13 +25,14 @@ const privateKey  = fs.readFileSync(process.env.SSL_KEY, 'utf8')
 const certificate = fs.readFileSync(process.env.SSL_CERT, 'utf8')
 const credentials = {key: privateKey, cert: certificate}
 
-// Setup body parser
+// Setup Body Parser
 app.use(express.json())
 
-// Add Auth Middleware
+// Setup Auth Middleware
 const { isAuthenticated } = require('./middlewares/auth')
 app.use(isAuthenticated)
 
+// Setup Cookie Parser
 const cookieParser = require('cookie-parser')
 app.use(cookieParser())
 
@@ -62,7 +63,7 @@ const graphqlSchema = makeExecutableSchema({
 
 app.use('/v2/graphql', (req, res) => graphqlHTTP({
         schema: graphqlSchema,
-        context: { res, req },
+        context: { req, res },
         introspection: true,
         graphiql: process.env.NODE_ENV === 'development',
         customFormatErrorFn(err) {
