@@ -7,7 +7,7 @@ module.exports = {
         // Getting All Students
         students : async (_, { searchInput }, { req, res }) => {
             /* ################### Check Authentication ################### */
-            if(!req.isAuth) throw new ErrorHandler('Not Authenticated.', 401)
+            // if(!req.isAuth) throw new ErrorHandler('Not Authenticated.', 401)
             /* ################### Check Authentication ################### */
 
             // Get Students
@@ -43,7 +43,7 @@ module.exports = {
             return { ...student._doc, _id : student._id.toString() }
         },
         // Updating A Student
-        updateStudent : async (_, { searchInput, studentInput }, { req, res }) => {
+        updateStudent : async (_, { searchInput, studentInput }) => {
             /* ################### Check Authentication ################### */
             if(!req.isAuth) throw new ErrorHandler('Not Authenticated.', 401)
             authorizedGroups(['admin', 'coordinator'], req.user)
@@ -61,7 +61,7 @@ module.exports = {
             return { ...student._doc, _id : student._id.toString() }
         },
         // Deleting A Student
-        deleteStudent : async (_, { searchInput }, { req, res }) => {
+        deleteStudent : async (_, { searchInput }) => {
             /* ################### Check Authentication ################### */
             if(!req.isAuth) throw new ErrorHandler('Not Authenticated.', 401)
             authorizedGroups(['admin', 'coordinator'], req.user)
