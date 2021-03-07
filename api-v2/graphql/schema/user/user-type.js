@@ -3,10 +3,10 @@ const gql = require('graphql-tag')
 module.exports = gql`
     type UserType {
         username: String
-        password: String!
-        given_name: String!
-        family_name: String!
-        email: String!
+        password: String
+        given_name: String
+        family_name: String
+        email: String
         group: String
         linked_instructor: ID
         isAdvisor: Boolean
@@ -34,7 +34,7 @@ module.exports = gql`
     }
 
     type Query {
-        user: UserType!
+        me: UserType!
     }
 
     type Mutation {

@@ -20,7 +20,7 @@ module.exports = gql`
     type AuthType {
         token: String!
         userId: String!
-        username: String
+        message: String
     }
 
     input CreateUserInputData {
@@ -31,6 +31,10 @@ module.exports = gql`
         email: String!
         group: String
         secret_key: String
+    }
+
+    type Query {
+        logout: AuthType!
     }
 
     type Mutation {

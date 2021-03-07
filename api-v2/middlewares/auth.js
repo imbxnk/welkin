@@ -8,24 +8,30 @@ exports.isAuthenticated = async (req, res, next) => {
 
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1]
+    } else {
+        req.isAuth = false
+        return next()
     }
 
-    if(!token) {
-        return next(new ErrorHandler('Unauthorized.', 401))
+    // if(!token) {
+    //     throw new ErrorHandler('Not authenticated.', 401)
+    // }
+
+    let decoded
+    try {
+        decoded = JWT.verify(token, process.env.JWT_SECRET)
+    } catch (err) {
+        req.isAuth = false
+        return next()
     }
 
-    const decoded = JWT.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findById(decoded.id);
+    if (!decoded) {
+        req.isAuth = false
+        return next()
+    }
+    
+    req.user = await User.findById(decoded.id)
+    req.isAuth = true
 
     next()
-}
-
-// Handling Users Groups
-exports.authorizedGroups = (...groups) => {
-    return (req, res, next) => {
-        if(!groups.includes(req.user.group)) {
-            return next(new ErrorHandler('Unauthorized.', 401));
-        }
-        next();
-    }
 }

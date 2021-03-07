@@ -3,9 +3,9 @@ const ErrorHandler = require('../../../utils/errorHandlers')
 
 module.exports = {
     Query : {
-        user : async (_, { userInput }) => {
-            let user = await User.find({ userInput })
-            return { ...user._doc, _id : students._id.toString() }
+        me : async (_, args, { req, res }) => {
+            let user = await User.findById(req.user.id)
+            return { ...user._doc, _id : user._id.toString() }
         }
     },
 

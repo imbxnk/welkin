@@ -11,6 +11,7 @@
               ><span class="white--text ">{{ user.initials }}</span></v-avatar
             >
           </template>
+
           <v-list>
             <v-list-item-content class="justify-center">
               <div class="text-center">
@@ -39,6 +40,7 @@
         </v-menu>
       </v-app-bar>
 
+      <!-- nav menu: -->
       <v-navigation-drawer
         v-model="sidebarMenu"
         app
@@ -48,6 +50,7 @@
         :mini-variant.sync="mini"
         color="white"
       >
+        <!-- list menu -->
         <v-list>
           <v-list-item>
             <!-- <v-app-bar-nav-icon @click.stop="toggleMini = !toggleMini"></v-app-bar-nav-icon> -->
@@ -56,25 +59,61 @@
             </v-list-item-action>
           </v-list-item>
         </v-list>
+        <!-- lists that have no children -->
+        <v-list expand nav>
+          <template v-for="item in items">
+            <v-list-item
+              v-if="!item.children"
+              :key="item.title"
+              link
+              :to="item.href"
+              color="primary"
+            >
+              <v-list-item-icon>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <!-- lists with children -->
+            <v-list-group
+              v-else
+              :group="item.href"
+              :key="item.title"
+              link
+              :to="item.href"
+              color="primary"
+            >
+              <template #activator>
+                <v-list-item-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </template>
 
-        <v-list style="padding: 0px">
-          <v-list-item v-for="item in items" :key="item.title" link :to="item.href">
-            <v-list-item-icon>
-              <v-icon color="black">{{ item.icon }}</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title class="black--text">{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+              <v-list-item v-for="(subitem, j) in item.children" :key="j" link :to="subitem.href">
+                <v-list-item-icon>
+                  <v-icon>{{ subitem.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>{{ subitem.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+          </template>
         </v-list>
       </v-navigation-drawer>
-      <template v-if="loading">
+
+      <!-- content -->
+      <!-- <template v-if="loading">
         <div class="text-center">
           <v-progress-circular :size="70" :width="7" color="#FDE2A6" indeterminate>
           </v-progress-circular>
         </div>
-      </template>
-      <template v-else>
+      </template> -->
+      <!-- <template v-else> -->
+      <template>
         <div class="bg">
           <v-main>
             <!-- add content here -->
@@ -113,11 +152,24 @@ export default {
     sidebarMenu: true,
     toggleMini: false,
     items: [
-      { title: "Home", href: "/", icon: "mdi-home-outline" },
-      { title: "Student", href: "/student", icon: "mdi-account-multiple-outline" },
+      {
+        title: "Home",
+        href: "/",
+        icon: "mdi-home-outline",
+      },
+      {
+        title: "Student",
+        href: "/student",
+        icon: "mdi-account-multiple-outline",
+      },
       { title: "Course", href: "/course", icon: "mdi-file-document-multiple-outline" },
       { title: "Curriculum", href: "/curriculum", icon: "mdi-book-open-outline" },
-      { title: "Manage", href: "/manage", icon: "mdi-cog-outline" },
+      {
+        title: "Manage",
+        href: "/manage",
+        icon: "mdi-cog-outline",
+        children: [{ title: "Add new student", href: "/manage/addnewstudent", icon: "mdi-plus" }],
+      },
     ],
     // accounts: [{ title: "Edit Profile", href: "/profile" }],
     user: {
