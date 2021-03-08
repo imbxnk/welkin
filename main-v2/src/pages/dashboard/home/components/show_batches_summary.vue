@@ -20,6 +20,7 @@
   </v-card>
 </template>
 <script>
+
 export default {
   name: "batches_summary",
   components: {},
