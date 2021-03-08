@@ -42,7 +42,10 @@ export default {
           `
           await this.axios
             .post(process.env.VUE_APP_GRAPHQL_URL,{ query }, { withCredentials: true })
-            .then(res => { console.log(res) })
+            .then(res => {
+              console.log(res)
+              window.location.href = "/";
+            })
             .catch(err => { console.log(err.message)})
       },
     },

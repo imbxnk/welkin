@@ -45,10 +45,29 @@ const routes = [
 // Create Router
 const router = new VueRouter({ mode: "history", routes });
 
+// router.beforeEach(async (to, from, next) => {
+//   var query = `
+//     query {
+//         me {
+//             username
+//             given_name
+//             family_name
+//             group
+//         }
+//     }
+//   `
+//   let user = await axios.post(process.env.APP_VUE_GRAPHQL_URL, { query }, { withCredentials : true })
+//   if(!user.data.data.username) {
+//     return window.location.href = "/login";
+//   }
+//   console.log(user.data.data)
+//   next();
+// })
+
 Vue.config.productionTip = false;
 
 new Vue({
   vuetify,
   render: h => h(App),
-  router
+  router,
 }).$mount('#app')
