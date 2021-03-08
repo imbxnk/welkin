@@ -2,19 +2,18 @@
   <v-card class="pa-4">
     <div class="overline my-n1">current students</div>
     <div class="h3 text-right totaltxt mr-3">
-      0
+      {{ total }}
     </div>
-
     <!-- <div style="display: flex; line-height: 40px; vertical-align: middle">
       <div>current students</div>
       <h3 class="text-right">{{ 100 }}</h3>
     </div> -->
     <v-divider class="mb-1"></v-divider>
     <v-list>
-      <v-list-item v-for="batch in total" :key="batch">
-        <v-list-item-content>xxxx:</v-list-item-content>
+      <v-list-item v-for="batch in Object.keys(batches)" :key="batch">
+        <v-list-item-content>{{ batch.replace( /^\D+/g, '') }}xxxx:</v-list-item-content>
         <v-list-item-content>
-          <div class="text-right totaltxt">TEST</div>
+          <div class="text-right totaltxt">{{ batches[batch] }}</div>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -26,7 +25,8 @@ export default {
   components: {},
   data() {
     return {
-      total: {},
+      total: 0,
+      batches: {},
       started_batch: 598,
     };
   },
@@ -49,9 +49,10 @@ export default {
         .then((res) => {
           var result = {...res.data.data};
           for(const i in result) {
-            this.total[i] = result[i].total
+            this.batches[i] = result[i].total;
+            this.total += result[i].total;
           }
-          console.log(this.total);
+          console.log(this.batches);
         })
         .catch((err) => {
           console.log(err);
