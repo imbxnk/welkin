@@ -20,23 +20,5 @@ export default {
     ShowStudentsTable,
     ShowBatchesSummary,
   },
-  mounted() {
-    this.getUserData()
-  },
-  methods: {
-    getUserData: async function () {
-      var query = `
-        query {
-            me {
-                username
-                given_name
-                family_name
-                group
-            }
-        }
-      `
-      await this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials : true }).then(res => { console.log(res) }).catch( err => { console.log(err) } );
-    }
-  }
 };
 </script>

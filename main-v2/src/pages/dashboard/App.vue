@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import auth from "../../services/auth"
+import auth from "../../utils/auth"
 
 export default {
   name: 'App',
@@ -132,7 +132,7 @@ export default {
     if(await auth.getUser()) {
       this.isAuth = true
     } else {
-      window.location.href = "/login";
+      window.location.replace("/login/");
     }
   },
 
