@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app v-if="isAuth">
     <v-app-bar app flat color="white" height="50">
       <v-toolbar-title class="primary--text" @click="$router.push('/')">{{ SITE_NAME }}</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -123,9 +123,18 @@
 </template>
 
 <script>
+import auth from "../../services/auth"
 
 export default {
   name: 'App',
+
+  created: async function() {
+    if(await auth.getUser()) {
+      this.isAuth = true
+    } else {
+      window.location.href = "/login";
+    }
+  },
 
   computed: {
     mini: {
@@ -143,6 +152,7 @@ export default {
 
   data: () => ({
     SITE_NAME: process.env.VUE_APP_SITE_NAME,
+    isAuth: false,
     sidebarMenu: true,
     toggleMini: false,
     items: [
@@ -183,7 +193,7 @@ export default {
     user: {
       initials: "MS",
       fullName: "Mingmanas Sivaraksa",
-      email: "Mingmanas.siv@mahidol.com",
+      email: "mingmanas.siv@mahidol.edu",
     },
   }),
   methods: {
