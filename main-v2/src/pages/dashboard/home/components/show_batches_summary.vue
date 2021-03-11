@@ -28,7 +28,7 @@ export default {
     return {
       total: 0,
       batches: {},
-      started_batch: 598,
+      started_batch: 60,
     };
   },
   mounted() {
@@ -38,11 +38,11 @@ export default {
     getTotalBatches() {
       let query = `
               query {
-                batch${this.started_batch}:students (searchInput: { batch : "${this.started_batch}"}) { total }
-                batch${this.started_batch+10}:students (searchInput: { batch : "${this.started_batch+10}"}) { total }
-                batch${this.started_batch+20}:students (searchInput: { batch : "${this.started_batch+20}"}) { total }
-                batch${this.started_batch+30}:students (searchInput: { batch : "${this.started_batch+30}"}) { total }
-                batch${this.started_batch+40}:students (searchInput: { batch : "${this.started_batch+40}"}) { total }
+                batch${this.started_batch}8:students (searchInput: { batch : "${this.started_batch}8"}) { total }
+                batch${this.started_batch+1}8:students (searchInput: { batch : "${this.started_batch+1}8"}) { total }
+                batch${this.started_batch+2}8:students (searchInput: { batch : "${this.started_batch+2}8"}) { total }
+                batch${this.started_batch+3}8:students (searchInput: { batch : "${this.started_batch+3}8"}) { total }
+                batch${this.started_batch+4}8:students (searchInput: { batch : "${this.started_batch+4}8"}) { total }
               }
           `
       this.axios

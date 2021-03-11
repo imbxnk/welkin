@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app v-if="isAuth">
     <v-app-bar app flat color="white" height="50">
       <v-toolbar-title class="primary--text" @click="$router.push('/')">{{ SITE_NAME }}</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -7,7 +7,7 @@
       <v-menu bottom max-width="300px" rounded offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-avatar color="primary" size="35" v-bind="attrs" v-on="on">
-            <span class="white--text ">{{ user.initials }}</span>
+            <span class="white--text ">{{ user.given_name.charAt(0) + user.family_name.charAt(0) }}</span>
           </v-avatar>
         </template>
 
@@ -15,10 +15,10 @@
           <v-list-item-content class="justify-center">
             <div class="text-center">
               <v-avatar color="primary">
-                <span class="white--text">{{ user.initials }}</span>
+                <span class="white--text">{{ user.given_name.charAt(0) + user.family_name.charAt(0) }}</span>
               </v-avatar>
               <br /><br />
-              <h6>{{ user.fullName }}</h6>
+              <h6>{{ user.given_name + ' ' + user.family_name }}</h6>
               <p class="caption mt-1">
                 {{ user.email }}
               </p>
@@ -29,7 +29,7 @@
               <v-list-item-title>{{ account.title }}</v-list-item-title>
             </v-list-item> -->
             <v-list-item class="my-n4 px-16">
-              <v-btn @click="$router.push('/')" block outlined depressed text>Logout</v-btn>
+              <v-btn @click="logout()" block outlined depressed text>Logout</v-btn>
             </v-list-item>
             <v-divider class="mb-n5 py-2"></v-divider>
           </v-list-item-content>
@@ -123,9 +123,21 @@
 </template>
 
 <script>
+import auth from "../../utils/auth"
 
 export default {
   name: 'App',
+
+  created: async function() {
+    this.user = await auth.getUser()
+    if(this.user) {
+      this.user = this.user.data.data.me
+      console.log(this.user)
+      this.isAuth = true
+    } else {
+      window.location.replace("/login/");
+    }
+  },
 
   computed: {
     mini: {
@@ -143,6 +155,7 @@ export default {
 
   data: () => ({
     SITE_NAME: process.env.VUE_APP_SITE_NAME,
+    isAuth: false,
     sidebarMenu: true,
     toggleMini: false,
     items: [
@@ -185,17 +198,37 @@ export default {
       },
     ],
     // accounts: [{ title: "Edit Profile", href: "/profile" }],
-    user: {
-      initials: "MS",
-      fullName: "Mingmanas Sivaraksa",
-      email: "Mingmanas.siv@mahidol.com",
-    },
+    // user: {
+    //   initials: "MS",
+    //   fullName: "Mingmanas Sivaraksa",
+    //   email: "mingmanas.siv@mahidol.edu",
+    // },
+    user: {},
   }),
   methods: {
     navOnOutsideClick() {
       if (this.sidebarMenu && this.$vuetify.breakpoint.smAndDown) {
         this.toggleMini = false
       }
+    },
+    async logout() {
+      //axios post to check token, userId compare with the username and password
+      let query = `
+          query {
+              logout {
+                  token
+                  userId
+                  message
+              }
+          }
+      `
+      await this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL,{ query }, { withCredentials: true })
+        .then(res => {
+          console.log(res)
+          window.location.replace("/login")
+        })
+        .catch(err => { console.log(err.message)})
     },
   },
 };
