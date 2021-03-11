@@ -10,6 +10,7 @@ import VueAxios from "vue-axios";
 import Home from "./home/home";
 import AddStudents from "./manage/add_students";
 import Profile from "./profile/profile";
+import ImportStudents from "./manage/import_students";
 
 // Import Bootstrap an BootstrapVue CSS files
 import "bootstrap/dist/css/bootstrap.css";
@@ -39,6 +40,11 @@ const routes = [
     name: "profile",
     path: "/profile",
     component: Profile,
+  },
+  {
+    name: "import_files",
+    path: "manage/students/import",
+    component: ImportStudents,
   }
 ]
 
