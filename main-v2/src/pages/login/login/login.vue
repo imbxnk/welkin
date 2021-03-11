@@ -19,36 +19,36 @@
 
 <script>
 export default {
-    data(){
-        return{
-                username: "",
-                password: "",
-                token: "",
-                userId: "",
-                message: "",
-        }
+  data(){
+    return{
+      username: "",
+      password: "",
+      token: "",
+      userId: "",
+      message: "",
+    }
+  },
+  methods: {
+    async handleSubmit(){
+      //axios post to check token, userId compare with the username and password
+      let query = `
+          mutation {
+            login ( username : "${this.username}" , password : "${this.password}") {
+              token
+              userId
+              message
+            }
+          }
+      `
+      await this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL,{ query }, { withCredentials: true })
+        .then(res => {
+          console.log(res)
+          window.location.replace("/")
+        })
+        .catch(err => { console.log(err.message)})
     },
-    methods: {
-      async handleSubmit(){
-          //axios post to check token, userId compare with the username and password
-          let query = `
-              mutation {
-                login ( username : "${this.username}" , password : "${this.password}") {
-                  token
-                  userId
-                  message
-                }
-              }
-          `
-          await this.axios
-            .post(process.env.VUE_APP_GRAPHQL_URL,{ query }, { withCredentials: true })
-            .then(res => {
-              console.log(res)
-              window.location.replace("/")
-            })
-            .catch(err => { console.log(err.message)})
-      },
-    },
+  },
 }
 </script>
 

@@ -42,7 +42,7 @@ export default {
     user: {
       initials: "MS",
       fullName: "Mingmanas Sivaraksa",
-      email: "mingmanas.siv@mahidol.edu",
+      email: "Mingmanas.siv@mahidol.com",
       role: "Advisor",
     },
   }),

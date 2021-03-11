@@ -29,7 +29,7 @@
               <v-list-item-title>{{ account.title }}</v-list-item-title>
             </v-list-item> -->
             <v-list-item class="my-n4 px-16">
-              <v-btn @click="$router.push('/')" block outlined depressed text>Logout</v-btn>
+              <v-btn @click="logout()" block outlined depressed text>Logout</v-btn>
             </v-list-item>
             <v-divider class="mb-n5 py-2"></v-divider>
           </v-list-item-content>
@@ -205,6 +205,25 @@ export default {
       if (this.sidebarMenu && this.$vuetify.breakpoint.smAndDown) {
         this.toggleMini = false
       }
+    },
+    async logout() {
+      //axios post to check token, userId compare with the username and password
+      let query = `
+          query {
+              logout {
+                  token
+                  userId
+                  message
+              }
+          }
+      `
+      await this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL,{ query }, { withCredentials: true })
+        .then(res => {
+          console.log(res)
+          window.location.replace("/login")
+        })
+        .catch(err => { console.log(err.message)})
     },
   },
 };
