@@ -117,27 +117,28 @@
         <router-link :to="{ name: 'home' }"></router-link>
         <!-- <router-link :to="{ name: 'student' }"></router-link> -->
         <router-link :to="{ name: 'profile' }"></router-link>
+        <router-link :to="{ name: 'import_students'}"></router-link>"
         <router-view class="ma-4"></router-view>
       </template>
   </v-app>
 </template>
 
 <script>
-import auth from "../../utils/auth"
+
 
 export default {
   name: 'App',
 
-  created: async function() {
-    this.user = await auth.getUser()
-    if(this.user) {
-      this.user = this.user.data.data.me
-      console.log(this.user)
-      this.isAuth = true
-    } else {
-      window.location.replace("/login/");
-    }
-  },
+  // created: async function() {
+  //   this.user = await auth.getUser()
+  //   if(this.user) {
+  //     this.user = this.user.data.data.me
+  //     console.log(this.user)
+  //     this.isAuth = true
+  //   } else {
+  //     window.location.replace("/login/");
+  //   }
+  // },
 
   computed: {
     mini: {
