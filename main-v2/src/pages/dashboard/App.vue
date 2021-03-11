@@ -117,27 +117,28 @@
         <router-link :to="{ name: 'home' }"></router-link>
         <!-- <router-link :to="{ name: 'student' }"></router-link> -->
         <router-link :to="{ name: 'profile' }"></router-link>
+        <router-link :to="{ name: 'import_students'}"></router-link>"
         <router-view class="ma-4"></router-view>
       </template>
   </v-app>
 </template>
 
 <script>
-import auth from "../../utils/auth"
+// import auth from "../../utils/auth"
 
 export default {
   name: 'App',
 
-  created: async function() {
-    this.user = await auth.getUser()
-    if(this.user) {
-      this.user = this.user.data.data.me
-      console.log(this.user)
-      this.isAuth = true
-    } else {
-      window.location.replace("/login/");
-    }
-  },
+  // created: async function() {
+  //   this.user = await auth.getUser()
+  //   if(this.user) {
+  //     this.user = this.user.data.data.me
+  //     console.log(this.user)
+  //     this.isAuth = true
+  //   } else {
+  //     window.location.replace("/login/");
+  //   }
+  // },
 
   computed: {
     mini: {
@@ -155,7 +156,8 @@ export default {
 
   data: () => ({
     SITE_NAME: process.env.VUE_APP_SITE_NAME,
-    isAuth: false,
+    //isAuth: false,
+    isAuth: true,
     sidebarMenu: true,
     toggleMini: false,
     items: [
@@ -189,6 +191,11 @@ export default {
             href: "/manage/students/add",
             icon: "mdi-plus"
           },
+          {
+            title: "Import Students",
+            href: "/manage/students/import",
+            icon: "mdi-import"
+          }
         ],
       },
     ],
@@ -198,7 +205,12 @@ export default {
     //   fullName: "Mingmanas Sivaraksa",
     //   email: "mingmanas.siv@mahidol.edu",
     // },
-    user: {},
+    user: {
+      given_name: "Demo",
+      family_name: "User",
+      username: "demo",
+      email: "demo@welkin.app"
+    },
   }),
   methods: {
     navOnOutsideClick() {
