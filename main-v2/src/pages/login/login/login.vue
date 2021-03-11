@@ -44,7 +44,7 @@ export default {
             .post(process.env.VUE_APP_GRAPHQL_URL,{ query }, { withCredentials: true })
             .then(res => {
               console.log(res)
-              window.location.replace = "/";
+              window.location.replace("/")
             })
             .catch(err => { console.log(err.message)})
       },
