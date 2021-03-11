@@ -43,7 +43,7 @@ const routes = [
   },
   {
     name: "import_students",
-    path: "manage/students/import",
+    path: "/manage/students/import",
     component: ImportStudents,
   }
 ]
