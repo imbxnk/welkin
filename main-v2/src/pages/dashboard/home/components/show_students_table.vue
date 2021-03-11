@@ -8,7 +8,7 @@
       multi-sort
       class="elevation-1"
     > -->
-    <v-data-table :headers="headers" :items="student">
+    <v-data-table :headers="headers" :items="student" mobile-breakpoint="0">
       <template v-slot:[`item.status`]="{ item }">
         <v-chip :color="getColor(item.status)" dark class="d-flex justify-center">
           {{ item.status }}
@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       headers: [
-        { text: "Name", align: "start", sortable: false, value: "name", },
+        { text: "Name", align: "start", sortable: false, value: "name" },
         { text: "Student ID", sortable: false, value: "stdID" },
         { text: "Advisor", sortable: false, value: "avs", align: "center" },
         { text: "% Lesson Completion", sortable: false, value: "completion", align: "center" },
