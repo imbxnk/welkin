@@ -176,6 +176,11 @@ export default {
             href: "/manage/students/add",
             icon: "mdi-plus"
           },
+          {
+            title: "Import Students",
+            href: "/manage/students/import",
+            icon: "mdi-import"
+          }
         ],
       },
     ],
