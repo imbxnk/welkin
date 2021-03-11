@@ -1,79 +1,81 @@
 <template>
-    <div class="container-sm-fliud p-5 my-3 border ">
-        <div class="row mt-3">
-            <div class='col-lg-12 mt-1'>
-              <h1>Import Student</h1>
+    <v-main>
+        <div class="container-sm-fliud p-5 my-3 border ">
+            <div class="row mt-3">
+                <div class='col-lg-12 mt-1'>
+                <h1>Import Student</h1>
+                </div>
+                <div class="col-lg-12 col-sm-12 mt-4">
+                <input type="file" @change="selectFile" accept=".xls,.xlsx" label="Choose a file">
+                </div>
+                <div class="col-6 mt-4">
+                <select class="form-control" name="sheetName" id="sheetName" @change="getSelectedValue($event)">
+                    <label>Please select a sheet</label>
+                    <option v-for="(item, index) in this.sheetNames" :key="index" :value="item">{{ item }}</option>
+                </select>
+                </div>
+                <br>
             </div>
-            <div class="col-lg-12 col-sm-12 mt-4">
-              <input type="file" @change="selectFile" accept=".xls,.xlsx" label="Choose a file">
+            <div class="row mt-3">
+                <div class="col-12 mt-3">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Program</th>
+                            <th>Prefix</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Advisor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item,index) in studentsData" :key="index" :value="item">
+                            <td scope="row">{{item.ID}}</td>
+                            <td scope="row">{{item.Program}}</td>
+                            <td scope="row">{{item.Prefix}}</td>
+                            <td scope="row">{{item.Name}}</td>
+                            <td scope="row">{{item.LastName}}</td>
+                            <td scope="row">{{item.Advisor}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
             </div>
-            <div class="col-6 mt-4">
-            <select class="form-control" name="sheetName" id="sheetName" @change="getSelectedValue($event)">
-                <label>Please select a sheet</label>
-                <option v-for="(item, index) in this.sheetNames" :key="index" :value="item">{{ item }}</option>
-            </select>
-            </div>
-            <br>
-        </div>
-        <div class="row mt-3">
+            <button class="btn btn-primary" @click="upload()">Upload</button>
+            <div v-show="showContent">
+            <div class="row mt-3">
             <div class="col-12 mt-3">
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Program</th>
-                        <th>Prefix</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Advisor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item,index) in studentsData" :key="index" :value="item">
-                        <td scope="row">{{item.ID}}</td>
-                        <td scope="row">{{item.Program}}</td>
-                        <td scope="row">{{item.Prefix}}</td>
-                        <td scope="row">{{item.Name}}</td>
-                        <td scope="row">{{item.LastName}}</td>
-                        <td scope="row">{{item.Advisor}}</td>
-                    </tr>
-                </tbody>
-            </table>
+                <h2>Duplicated Students: </h2>
+            </div>
+            <div class="col-12 mt-3">
+                <table class="table table-stripped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Program</th>
+                            <th>Prefix</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Advisor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item,index) in duplicateStudents" :key="index" :value="item">
+                            <td scope="row">{{item.ID}}</td>
+                            <td scope="row">{{item.Program}}</td>
+                            <td scope="row">{{item.Prefix}}</td>
+                            <td scope="row">{{item.Name}}</td>
+                            <td scope="row">{{item.LastName}}</td>
+                            <td scope="row">{{item.Advisor}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
             </div>
         </div>
-        <button class="btn btn-primary" @click="upload()">Upload</button>
-        <div v-show="showContent">
-        <div class="row mt-3">
-          <div class="col-12 mt-3">
-            <h2>Duplicated Students: </h2>
-          </div>
-          <div class="col-12 mt-3">
-            <table class="table table-stripped table-bordered">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Program</th>
-                        <th>Prefix</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Advisor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item,index) in duplicateStudents" :key="index" :value="item">
-                        <td scope="row">{{item.ID}}</td>
-                        <td scope="row">{{item.Program}}</td>
-                        <td scope="row">{{item.Prefix}}</td>
-                        <td scope="row">{{item.Name}}</td>
-                        <td scope="row">{{item.LastName}}</td>
-                        <td scope="row">{{item.Advisor}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            </div>
-        </div>
-        </div>
-    </div>
+    </v-main>
 </template>
 
 <script>
