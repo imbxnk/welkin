@@ -7,7 +7,7 @@
       <v-menu bottom max-width="300px" rounded offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-avatar color="primary" size="35" v-bind="attrs" v-on="on">
-            <span class="white--text ">{{ user.initials }}</span>
+            <span class="white--text ">{{ user.given_name.charAt(0) + user.family_name.charAt(0) }}</span>
           </v-avatar>
         </template>
 
@@ -15,10 +15,10 @@
           <v-list-item-content class="justify-center">
             <div class="text-center">
               <v-avatar color="primary">
-                <span class="white--text">{{ user.initials }}</span>
+                <span class="white--text">{{ user.given_name.charAt(0) + user.family_name.charAt(0) }}</span>
               </v-avatar>
               <br /><br />
-              <h6>{{ user.fullName }}</h6>
+              <h6>{{ user.given_name + ' ' + user.family_name }}</h6>
               <p class="caption mt-1">
                 {{ user.email }}
               </p>
@@ -129,7 +129,10 @@ export default {
   name: 'App',
 
   created: async function() {
-    if(await auth.getUser()) {
+    this.user = await auth.getUser()
+    this.user = this.user.data.data.me
+    if(this.user) {
+      console.log(this.user)
       this.isAuth = true
     } else {
       window.location.replace("/login/");
@@ -190,11 +193,12 @@ export default {
       },
     ],
     // accounts: [{ title: "Edit Profile", href: "/profile" }],
-    user: {
-      initials: "MS",
-      fullName: "Mingmanas Sivaraksa",
-      email: "mingmanas.siv@mahidol.edu",
-    },
+    // user: {
+    //   initials: "MS",
+    //   fullName: "Mingmanas Sivaraksa",
+    //   email: "mingmanas.siv@mahidol.edu",
+    // },
+    user: {},
   }),
   methods: {
     navOnOutsideClick() {
