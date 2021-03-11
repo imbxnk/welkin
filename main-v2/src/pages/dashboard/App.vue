@@ -130,8 +130,8 @@ export default {
 
   created: async function() {
     this.user = await auth.getUser()
-    this.user = this.user.data.data.me
     if(this.user) {
+      this.user = this.user.data.data.me
       console.log(this.user)
       this.isAuth = true
     } else {
