@@ -3,12 +3,12 @@
     <v-row class="vh-100">
       <!-- 1st column -->
       <v-col>
-        <v-card class="vh-100">
+        <v-card class="vh-100 scroll">
           <v-list class="pa-3">
             <v-subheader>Class List</v-subheader>
             <v-list-item-group v-model="selected" active-class="primary--text">
-              <template v-for="item in items">
-                <v-list-item :key="item.title" @click="showdata(item)">
+              <template v-for="(item, index) in items">
+                <v-list-item :key="item.title" @click="showdata(item)" class="my-n3">
                   <v-list-item-content>
                     <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
                   </v-list-item-content>
@@ -16,6 +16,8 @@
                     <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
                   </v-list-item-action>
                 </v-list-item>
+                <!-- <v-divider v-if="index < items.length - 1" :key="index"></v-divider> -->
+                <v-divider v-if="index !== items.length - 1" :key="index" class=""></v-divider>
               </template>
             </v-list-item-group>
           </v-list>
@@ -39,7 +41,7 @@ export default {
   name: "class_list",
   components: {},
   mounted() {
-    this.getClasses()
+    this.getClasses();
   },
   data() {
     return {
@@ -81,11 +83,11 @@ export default {
                 }
               }
             }
-          `
+          `;
       this.axios
-        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true } )
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          this.items = {...res.data.data.courses.courses};
+          this.items = [...res.data.data.courses.courses];
         })
         .catch((err) => {
           console.log(err);
@@ -100,5 +102,8 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.scroll {
+  overflow-y: scroll;
 }
 </style>
