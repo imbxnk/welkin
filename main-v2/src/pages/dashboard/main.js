@@ -1,6 +1,6 @@
-import Vue from 'vue';
-import App from './App.vue';
-import vuetify from '../../plugins/vuetify';
+import Vue from "vue";
+import App from "./App.vue";
+import vuetify from "../../plugins/vuetify";
 import VueRouter from "vue-router";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import axios from "axios";
@@ -11,6 +11,8 @@ import Home from "./home/home";
 import AddStudents from "./manage/add_students";
 import Profile from "./profile/profile";
 import ImportStudents from "./manage/import_students";
+import StudentList from "./students/students";
+import ClassList from "./classlist/classlist";
 
 // Import Bootstrap an BootstrapVue CSS files
 import "bootstrap/dist/css/bootstrap.css";
@@ -32,6 +34,16 @@ const routes = [
     component: Home,
   },
   {
+    name: "student_list",
+    path: "/student",
+    component: StudentList,
+  },
+  {
+    name: "class_list",
+    path: "/class",
+    component: ClassList,
+  },
+  {
     name: "add_students",
     path: "/manage/students/add",
     component: AddStudents,
@@ -45,8 +57,8 @@ const routes = [
     name: "import_students",
     path: "/manage/students/import",
     component: ImportStudents,
-  }
-]
+  },
+];
 
 // Create Router
 const router = new VueRouter({ mode: "history", routes });
@@ -55,6 +67,6 @@ Vue.config.productionTip = false;
 
 new Vue({
   vuetify,
-  render: h => h(App),
+  render: (h) => h(App),
   router,
-}).$mount('#app')
+}).$mount("#app");
