@@ -11,6 +11,7 @@ import Home from "./home/home";
 import AddStudents from "./manage/add_students";
 import Profile from "./profile/profile";
 import ImportStudents from "./manage/import_students";
+import Manage from "./manage/manage.vue"
 
 // Import Bootstrap an BootstrapVue CSS files
 import "bootstrap/dist/css/bootstrap.css";
@@ -45,6 +46,11 @@ const routes = [
     name: "import_students",
     path: "/manage/students/import",
     component: ImportStudents,
+  },
+  {
+    name: "manage",
+    path: "/manage",
+    component: Manage
   }
 ]
 
