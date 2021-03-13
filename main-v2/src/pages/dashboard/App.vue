@@ -117,7 +117,7 @@
         <router-link :to="{ name: 'home' }"></router-link>
         <!-- <router-link :to="{ name: 'student' }"></router-link> -->
         <router-link :to="{ name: 'profile' }"></router-link>
-        <router-link :to="{ name: 'import_students'}"></router-link>"
+        <router-link :to="{ name: 'manage'}"></router-link>
         <router-view class="ma-4"></router-view>
       </template>
   </v-app>
@@ -188,14 +188,9 @@ export default {
         children: [
           {
             title: "Add New Students",
-            href: "/manage/students/add",
+            href: "/manage/student",
             icon: "mdi-plus"
           },
-          {
-            title: "Import Students",
-            href: "/manage/students/import",
-            icon: "mdi-import"
-          }
         ],
       },
     ],
