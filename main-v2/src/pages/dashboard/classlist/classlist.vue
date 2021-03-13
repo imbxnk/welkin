@@ -10,10 +10,10 @@
               <template v-for="item in items">
                 <v-list-item :key="item.title" @click="showdata(item)">
                   <v-list-item-content>
-                    <v-list-item-title v-text="item.title"></v-list-item-title>
+                    <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-action>
-                    <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
+                    <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
                   </v-list-item-action>
                 </v-list-item>
               </template>
@@ -27,7 +27,7 @@
           <div class="center grey--text">select the course to see more detail</div>
         </v-card>
         <v-card v-else class="vh-100 pa-4">
-          <h4>{{ course.title }}</h4>
+          <h4>{{ course.name }}</h4>
         </v-card></v-col
       >
     </v-row>
@@ -38,33 +38,58 @@
 export default {
   name: "class_list",
   components: {},
+  mounted() {
+    this.getClasses()
+  },
   data() {
     return {
       selected: [2],
       course: {},
       status: false,
-      items: [
-        {
-          headline: "",
-          title: "EGCI100: Introduction to Computer Engineering",
-          course: {
-            message: "",
-          },
-        },
-        {
-          headline: "bnk",
-          title: "EGCI101: Introduction to Computer Programming",
-          course: {
-            message: "",
-          },
-        },
-      ],
+      items: [],
+      // items: [
+      //   {
+      //     headline: "",
+      //     title: "EGCI100: Introduction to Computer Engineering",
+      //     course: {
+      //       message: "",
+      //     },
+      //   },
+      //   {
+      //     headline: "bnk",
+      //     title: "EGCI101: Introduction to Computer Programming",
+      //     course: {
+      //       message: "",
+      //     },
+      //   },
+      // ],
     };
   },
   methods: {
     showdata(item) {
       this.status = true;
       return (this.course = item);
+    },
+    getClasses() {
+      let query = `
+              query {
+              courses {
+                total
+                courses {
+                  name
+                  code
+                }
+              }
+            }
+          `
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true } )
+        .then((res) => {
+          this.items = {...res.data.data.courses.courses};
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
