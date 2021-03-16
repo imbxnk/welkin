@@ -1,13 +1,17 @@
 <template>
   <v-app v-if="isAuth">
     <v-app-bar app flat color="white" height="50">
-      <v-toolbar-title class="primary--text" @click="$router.push('/')">{{ SITE_NAME }}</v-toolbar-title>
+      <v-toolbar-title class="primary--text" @click="$router.push('/')">{{
+        SITE_NAME
+      }}</v-toolbar-title>
       <v-spacer></v-spacer>
 
       <v-menu bottom max-width="300px" rounded offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-avatar color="primary" size="35" v-bind="attrs" v-on="on">
-            <span class="white--text ">{{ user.given_name.charAt(0) + user.family_name.charAt(0) }}</span>
+            <span class="white--text ">{{
+              user.given_name.charAt(0) + user.family_name.charAt(0)
+            }}</span>
           </v-avatar>
         </template>
 
@@ -15,14 +19,18 @@
           <v-list-item-content class="justify-center">
             <div class="text-center">
               <v-avatar color="primary">
-                <span class="white--text">{{ user.given_name.charAt(0) + user.family_name.charAt(0) }}</span>
+                <span class="white--text">{{
+                  user.given_name.charAt(0) + user.family_name.charAt(0)
+                }}</span>
               </v-avatar>
               <br /><br />
-              <h6>{{ user.given_name + ' ' + user.family_name }}</h6>
+              <h6>{{ user.given_name + " " + user.family_name }}</h6>
               <p class="caption mt-1">
                 {{ user.email }}
               </p>
-              <v-btn @click="$router.push('/profile')" depressed outlined rounded text>Manage Your Account</v-btn>
+              <v-btn @click="$router.push('/profile')" depressed outlined rounded text
+                >Manage Your Account</v-btn
+              >
               <v-divider class=""></v-divider>
             </div>
             <!-- <v-list-item v-for="(account, i) in accounts" :key="i" :to="account.href">
@@ -60,13 +68,7 @@
       <!-- lists that have no children -->
       <v-list expand nav>
         <template v-for="item in items">
-          <v-list-item
-            v-if="!item.children"
-            :key="item.title"
-            link
-            :to="item.href"
-            color="primary"
-          >
+          <v-list-item v-if="!item.children" :key="item.title" link :to="item.href" color="primary">
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -93,7 +95,13 @@
               </v-list-item-content>
             </template>
 
-            <v-list-item v-for="(subitem, j) in item.children" :key="j" link :to="subitem.href" @click.stop="toggleMini = true">
+            <v-list-item
+              v-for="(subitem, j) in item.children"
+              :key="j"
+              link
+              :to="subitem.href"
+              @click.stop="toggleMini = true"
+            >
               <v-list-item-icon>
                 <v-icon>{{ subitem.icon }}</v-icon>
               </v-list-item-icon>
@@ -104,8 +112,8 @@
       </v-list>
     </v-navigation-drawer>
 
-      <!-- content -->
-      <!-- <template v-if="loading">
+    <!-- content -->
+    <!-- <template v-if="loading">
         <div class="text-center">
           <v-progress-circular :size="70" :width="7" color="#FDE2A6" indeterminate>
           </v-progress-circular>
@@ -127,7 +135,7 @@
 // import auth from "../../utils/auth"
 
 export default {
-  name: 'App',
+  name: "App",
 
   // created: async function() {
   //   this.user = await auth.getUser()
@@ -148,7 +156,8 @@ export default {
       get: function() {
         // return this.$vuetify.breakpoint.smAndDown || this.toggleMini;
         if (this.$vuetify.breakpoint.smAndDown === true && this.toggleMini === false) return true;
-        else if (this.$vuetify.breakpoint.smAndDown === false && this.toggleMini === false) return true;
+        else if (this.$vuetify.breakpoint.smAndDown === false && this.toggleMini === false)
+          return true;
         return false;
       },
     },
@@ -172,14 +181,14 @@ export default {
         icon: "mdi-account-multiple-outline",
       },
       {
-        title: "Course",
-        href: "/course",
-        icon: "mdi-file-document-multiple-outline"
+        title: "Class",
+        href: "/class",
+        icon: "mdi-file-document-multiple-outline",
       },
       {
         title: "Curriculum",
         href: "/curriculum",
-        icon: "mdi-book-open-outline"
+        icon: "mdi-book-open-outline",
       },
       {
         title: "Manage",
@@ -204,13 +213,13 @@ export default {
       given_name: "Demo",
       family_name: "User",
       username: "demo",
-      email: "demo@welkin.app"
+      email: "demo@welkin.app",
     },
   }),
   methods: {
     navOnOutsideClick() {
       if (this.sidebarMenu && this.$vuetify.breakpoint.smAndDown) {
-        this.toggleMini = false
+        this.toggleMini = false;
       }
     },
     async logout() {
@@ -223,14 +232,16 @@ export default {
                   message
               }
           }
-      `
+      `;
       await this.axios
-        .post(process.env.VUE_APP_GRAPHQL_URL,{ query }, { withCredentials: true })
-        .then(res => {
-          console.log(res)
-          window.location.replace("/login")
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          console.log(res);
+          window.location.replace("/login");
         })
-        .catch(err => { console.log(err.message)})
+        .catch((err) => {
+          console.log(err.message);
+        });
     },
   },
 };
