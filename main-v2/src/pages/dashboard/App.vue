@@ -165,7 +165,7 @@ export default {
 
   data: () => ({
     SITE_NAME: process.env.VUE_APP_SITE_NAME,
-    //isAuth: false,
+    isAuth: false,
     isAuth: true,
     sidebarMenu: true,
     toggleMini: false,
@@ -220,12 +220,7 @@ export default {
     //   username: "demo",
     //   email: "demo@welkin.app",
     // },
-    user: {
-      given_name: "Demo",
-      family_name: "User",
-      username: "demo",
-      email: "demo@welkin.app",
-    },
+    user: {},
   }),
   methods: {
     navOnOutsideClick() {
