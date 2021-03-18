@@ -166,7 +166,7 @@ export default {
   data: () => ({
     SITE_NAME: process.env.VUE_APP_SITE_NAME,
     isAuth: false,
-    isAuth: true,
+    // isAuth: true,
     sidebarMenu: true,
     toggleMini: false,
     items: [
