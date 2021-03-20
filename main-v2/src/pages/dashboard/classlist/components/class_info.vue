@@ -2,7 +2,7 @@
     <div class="wk-detail">
         <!-- <a  @click="$router.push('/class_history')">class history</a> -->
         <div class="float-right overline primary--text"><a  @click="$router.push('/class_history')">class history</a></div>
-        <div class="overline my-n1">{{this.code}} : {{this.name}}</div>
+        <div class="overline my-n1">{{code}} : {{name}}</div>
         <v-divider></v-divider>
         <table style="width:100%;">
             <tr >
@@ -49,7 +49,9 @@ export default {
     props: ["name","code"],
     component:[],
     data(){
-        return
+        return {
+
+        }
     }
 }
 </script>
