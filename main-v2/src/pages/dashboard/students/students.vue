@@ -1,7 +1,22 @@
 <template>
   <v-main>
     <v-card>
-      <v-data-table :headers="headers" :items="students" mobile-breakpoint="0">
+          <v-row class="mr-3">
+      <v-col >
+        <v-card-title class="">
+          Student
+        </v-card-title>
+      </v-col>
+      <v-col cols="3">
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          type="text"
+        ></v-text-field>
+      </v-col>
+          </v-row>
+      <v-data-table :headers="headers" :items="students" :search="search" mobile-breakpoint="0">
         <template v-slot:[`item.email`]="{ item }">
           {{ item.email == null ? "-" : item.email }}
         </template>
@@ -21,6 +36,7 @@ export default {
   },
   data() {
     return {
+      search: "",
       headers: [
         { text: "Student ID", sortable: false, value: "sid", width: 80 },
         { text: "First Name", align: "start", sortable: false, value: "given_name", width: 200 },

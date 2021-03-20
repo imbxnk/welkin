@@ -13,6 +13,7 @@ import Profile from "./profile/profile";
 import ImportStudents from "./manage/import_students";
 import StudentList from "./students/students";
 import ClassList from "./classlist/classlist";
+import ClassHistory from "./classlist/class_history";
 
 // Import Bootstrap an BootstrapVue CSS files
 import "bootstrap/dist/css/bootstrap.css";
@@ -57,6 +58,11 @@ const routes = [
     name: "import_students",
     path: "/manage/students/import",
     component: ImportStudents,
+  },
+    {
+    name: "class_history",
+    path: "/class_history",
+    component: ClassHistory,
   },
 ];
 

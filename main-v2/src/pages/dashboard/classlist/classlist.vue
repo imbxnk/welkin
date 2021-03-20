@@ -29,7 +29,7 @@
           <div class="center grey--text">select the course to see more detail</div>
         </v-card>
         <v-card v-else class="vh-100 pa-4">
-          <h4>{{ course.name }}</h4>
+          <ClassInfo :name="this.course.name" :code="this.course.code"></ClassInfo>
         </v-card></v-col
       >
     </v-row>
@@ -37,9 +37,10 @@
 </template>
 
 <script>
+import ClassInfo from "./components/class_info.vue"
 export default {
-  name: "class_list",
-  components: {},
+  name: "Class_list",
+  components: {ClassInfo},
   mounted() {
     this.getClasses();
   },
