@@ -3,7 +3,7 @@
     <!-- 1st column -->
     <v-col style="padding: 0 8px 0 0">
       <v-card>
-        <v-card-title>Class List</v-card-title>
+        <v-card-title class="pt-7">Class List</v-card-title>
         <v-list class="pa-3">
           <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list">
           <v-list-item-group v-model="selected" style="margin-top:10px;" active-class="primary--text">
