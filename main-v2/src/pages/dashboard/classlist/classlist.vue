@@ -8,7 +8,7 @@
           <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list">
           <v-list-item-group v-model="selected" style="margin-top:10px;" active-class="primary--text">
             <template v-for="(item, index) in items">
-              <v-list-item :key="item.title" @click="showdata(item)" class="my-n3">
+              <v-list-item :key="item.title" @click="showdata(item)" class="my-n4">
                 <v-list-item-content>
                   <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
                 </v-list-item-content>
