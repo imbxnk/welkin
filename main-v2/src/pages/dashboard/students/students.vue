@@ -1,10 +1,9 @@
 <template>
-  <v-main>
-    <v-card>
-          <v-row class="mr-3">
-      <v-col >
-        <v-card-title class="">
-          Student
+  <v-card>
+    <v-row class="mt-4">
+      <v-col>
+        <v-card-title>
+          Students
         </v-card-title>
       </v-col>
       <v-col cols="3">
@@ -13,19 +12,19 @@
           append-icon="mdi-magnify"
           label="Search"
           type="text"
+          class="mr-3"
         ></v-text-field>
       </v-col>
-          </v-row>
-      <v-data-table :headers="headers" :items="students" :search="search" mobile-breakpoint="0">
-        <template v-slot:[`item.email`]="{ item }">
-          {{ item.email == null ? "-" : item.email }}
-        </template>
-        <template v-slot:[`item.phone`]="{ item }">
-          {{ item.phone == null ? "-" : item.phone }}
-        </template>
-      </v-data-table></v-card
-    ></v-main
-  >
+    </v-row>
+    <v-data-table :headers="headers" :items="students" :search="search" mobile-breakpoint="0">
+      <template v-slot:[`item.email`]="{ item }">
+        {{ item.email == null ? "-" : item.email }}
+      </template>
+      <template v-slot:[`item.phone`]="{ item }">
+        {{ item.phone == null ? "-" : item.phone }}
+      </template>
+    </v-data-table>
+  </v-card>
 </template>
 <script>
 export default {

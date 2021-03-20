@@ -122,23 +122,22 @@
         </div>
       </template> -->
     <!-- <template v-else> -->
-    <template>
-      <!-- add content here -->
-      <router-link :to="{ name: 'home' }"></router-link>
-      <router-link :to="{ name: 'student_list' }"></router-link>
-      <router-link :to="{ name: 'profile' }"></router-link>
-      <router-link :to="{ name: 'import_students' }"></router-link>"
-      <router-view class="ma-4"></router-view>
-    </template>
+    <v-main style="margin:0 !im portant;">
+      <simplebar data-simplebar-auto-hide="true" class="wk-container">
+        <router-view class="ma-4"></router-view>
+      </simplebar>
+    </v-main>
+
   </v-app>
 </template>
 
 <script>
 // import auth from "../../utils/auth"
+import simplebar from 'simplebar-vue';
+import 'simplebar/dist/simplebar.min.css';
 
 export default {
   name: "App",
-
   // created: async function() {
   //   this.user = await auth.getUser()
   //   if(this.user) {
@@ -149,7 +148,9 @@ export default {
   //     window.location.replace("/login/");
   //   }
   // },
-
+  components: {
+    simplebar
+  },
   computed: {
     mini: {
       set: function() {
@@ -259,11 +260,8 @@ export default {
 a:hover {
   text-decoration: none;
 }
-.main-content {
-  padding: 10px 0;
-}
 .theme--light.v-application {
-  background: #f7f7f7;
+  background: #f7f7f8;
 }
 .toggleMenu {
   margin: -6px auto;
