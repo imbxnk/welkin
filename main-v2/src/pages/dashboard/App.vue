@@ -1,9 +1,11 @@
 <template>
   <v-app v-if="isAuth">
     <v-app-bar app flat color="white" height="50">
-      <v-toolbar-title class="primary--text" @click="$router.push('/')">{{
-        SITE_NAME
-      }}</v-toolbar-title>
+      <router-link to="/">
+        <v-toolbar-title class="primary--text">
+          <img :src="require(`../../assets/logo.svg`)" class="logo">
+        </v-toolbar-title>
+      </router-link>
       <v-spacer></v-spacer>
 
       <v-menu bottom max-width="300px" rounded offset-y>
@@ -123,7 +125,7 @@
     <template>
       <!-- add content here -->
       <router-link :to="{ name: 'home' }"></router-link>
-      <router-link :to="{ name: 'student' }"></router-link>
+      <router-link :to="{ name: 'student_list' }"></router-link>
       <router-link :to="{ name: 'profile' }"></router-link>
       <router-link :to="{ name: 'import_students' }"></router-link>"
       <router-view class="ma-4"></router-view>
@@ -271,5 +273,8 @@ a:hover {
 }
 .v-list-item__icon {
   margin: auto 0;
+}
+.logo {
+  height: 30px;
 }
 </style>
