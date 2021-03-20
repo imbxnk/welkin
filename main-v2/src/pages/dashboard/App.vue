@@ -132,21 +132,21 @@
 </template>
 
 <script>
-import auth from "../../utils/auth"
+// import auth from "../../utils/auth"
 
 export default {
   name: "App",
 
-  created: async function() {
-    this.user = await auth.getUser()
-    if(this.user) {
-      this.user = this.user.data.data.me
-      console.log(this.user)
-      this.isAuth = true
-    } else {
-      window.location.replace("/login/");
-    }
-  },
+  // created: async function() {
+  //   this.user = await auth.getUser()
+  //   if(this.user) {
+  //     this.user = this.user.data.data.me
+  //     console.log(this.user)
+  //     this.isAuth = true
+  //   } else {
+  //     window.location.replace("/login/");
+  //   }
+  // },
 
   computed: {
     mini: {
@@ -165,8 +165,8 @@ export default {
 
   data: () => ({
     SITE_NAME: process.env.VUE_APP_SITE_NAME,
-    isAuth: false,
-    // isAuth: true,
+    // isAuth: false,
+    isAuth: true,
     sidebarMenu: true,
     toggleMini: false,
     items: [
