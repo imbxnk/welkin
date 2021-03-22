@@ -1,0 +1,38 @@
+html, body {
+  min-height: -webkit-fill-available;
+  display: flex;
+  height: 100% !important;
+  width: 100% !important;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Remove scrollbar */
+body::-webkit-scrollbar, .wk-container::-webkit-scrollbar, .v-navigation-drawer__content::-webkit-scrollbar {
+  width: 0px;
+}
+
+.scrollable-area {
+  position: relative;
+  height: 100%;
+}
+
+main {
+  overflow: hidden !important;
+  width: 100%!important;
+  height: 100%!important;
+  display: flex!important;
+  flex-direction: column!important;
+  position: relative!important;
+}
+
+.wk-container {
+  height: calc(100vh - 50px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.simplebar-scrollbar.simplebar-visible:before{
+  opacity:.6 !important;
+  transition:opacity 0.1s linear !important
+}

@@ -1,9 +1,11 @@
 <template>
   <v-app v-if="isAuth">
     <v-app-bar app flat color="white" height="50">
-      <v-toolbar-title class="primary--text" @click="$router.push('/')">{{
-        SITE_NAME
-      }}</v-toolbar-title>
+      <router-link to="/">
+        <v-toolbar-title class="primary--text">
+          <img :src="require(`../../assets/logo.svg`)" class="logo">
+        </v-toolbar-title>
+      </router-link>
       <v-spacer></v-spacer>
 
       <v-menu bottom max-width="300px" rounded offset-y>
@@ -119,24 +121,23 @@
           </v-progress-circular>
         </div>
       </template> -->
-      <!-- <template v-else> -->
-      <template>
-        <!-- add content here -->
-        <router-link :to="{ name: 'home' }"></router-link>
-        <!-- <router-link :to="{ name: 'student' }"></router-link> -->
-        <router-link :to="{ name: 'profile' }"></router-link>
-        <router-link :to="{ name: 'manage'}"></router-link>
+    <!-- <template v-else> -->
+    <v-main style="margin:0 !im portant;">
+      <simplebar data-simplebar-auto-hide="true" class="wk-container">
         <router-view class="ma-4"></router-view>
-      </template>
+      </simplebar>
+    </v-main>
+
   </v-app>
 </template>
 
 <script>
 // import auth from "../../utils/auth"
+import simplebar from 'simplebar-vue';
+import 'simplebar/dist/simplebar.min.css';
 
 export default {
   name: "App",
-
   // created: async function() {
   //   this.user = await auth.getUser()
   //   if(this.user) {
@@ -147,7 +148,9 @@ export default {
   //     window.location.replace("/login/");
   //   }
   // },
-
+  components: {
+    simplebar
+  },
   computed: {
     mini: {
       set: function() {
@@ -165,7 +168,7 @@ export default {
 
   data: () => ({
     SITE_NAME: process.env.VUE_APP_SITE_NAME,
-    //isAuth: false,
+    // isAuth: false,
     isAuth: true,
     sidebarMenu: true,
     toggleMini: false,
@@ -215,6 +218,7 @@ export default {
       username: "demo",
       email: "demo@welkin.app",
     },
+    // user: {},
   }),
   methods: {
     navOnOutsideClick() {
@@ -251,11 +255,8 @@ export default {
 a:hover {
   text-decoration: none;
 }
-.main-content {
-  padding: 10px 0;
-}
 .theme--light.v-application {
-  background: #f7f7f7;
+  background: #f7f7f8;
 }
 .toggleMenu {
   margin: -6px auto;
@@ -265,5 +266,8 @@ a:hover {
 }
 .v-list-item__icon {
   margin: auto 0;
+}
+.logo {
+  height: 30px;
 }
 </style>

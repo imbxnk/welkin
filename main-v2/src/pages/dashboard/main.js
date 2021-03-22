@@ -10,6 +10,9 @@ import VueAxios from "vue-axios";
 import Home from "./home/home";
 import Profile from "./profile/profile";
 import Manage from "./manage/manage"
+import StudentList from "./students/students";
+import ClassList from "./classlist/classlist";
+import ClassHistory from "./classlist/class_history";
 
 // Import Bootstrap an BootstrapVue CSS files
 import "bootstrap/dist/css/bootstrap.css";
@@ -39,8 +42,13 @@ const routes = [
     name: "manage",
     path: "/manage/student",
     component: Manage
-  }
-]
+  },
+    {
+    name: "class_history",
+    path: "/class_history",
+    component: ClassHistory,
+  },
+];
 
 // Create Router
 const router = new VueRouter({ mode: "history", routes });

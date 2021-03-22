@@ -1,45 +1,57 @@
 <template>
-  <v-main>
-    <v-row class="vh-100">
-      <!-- 1st column -->
-      <v-col>
-        <v-card class="vh-100 scroll">
-          <v-list class="pa-3">
-            <v-subheader>Class List</v-subheader>
-            <v-list-item-group v-model="selected" active-class="primary--text">
-              <template v-for="(item, index) in items">
-                <v-list-item :key="item.title" @click="showdata(item)" class="my-n3">
-                  <v-list-item-content>
-                    <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
-                  </v-list-item-content>
-                  <v-list-item-action>
-                    <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
-                  </v-list-item-action>
-                </v-list-item>
-                <!-- <v-divider v-if="index < items.length - 1" :key="index"></v-divider> -->
-                <v-divider v-if="index !== items.length - 1" :key="index" class=""></v-divider>
-              </template>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
-      </v-col>
-      <!-- 2nd column -->
-      <v-col>
-        <v-card v-if="!status" class="vh-100 pa-4">
+  <v-row>
+    <!-- 1st column -->
+    <v-col style="padding: 0 8px 0 0">
+      <v-card>
+        <v-card-title class="pt-7">Class List</v-card-title>
+        <v-list class="pa-3">
+          <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list">
+          <v-list-item-group v-model="selected" style="margin-top:10px;" active-class="primary--text">
+            <template v-for="(item, index) in items">
+              <v-list-item :key="item.title" @click="showdata(item)" class="my-n4">
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
+                </v-list-item-action>
+              </v-list-item>
+              <!-- <v-divider v-if="index < items.length - 1" :key="index"></v-divider> -->
+              <v-divider v-if="index !== items.length - 1" :key="index" class=""></v-divider>
+            </template>
+          </v-list-item-group>
+          </simplebar>
+        </v-list>
+
+      </v-card>
+    </v-col>
+    <!-- 2nd column -->
+    <v-col style="padding: 0 0 0 8px">
+      <v-card v-if="!status" class="pa-3">
+        <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height">
           <div class="center grey--text">select the course to see more detail</div>
-        </v-card>
-        <v-card v-else class="vh-100 pa-4">
-          <h4>{{ course.name }}</h4>
-        </v-card></v-col
-      >
-    </v-row>
-  </v-main>
+        </simplebar>
+      </v-card>
+      <v-card v-else class="pa-3">
+        <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height">
+          <ClassInfo :name="this.course.name" :code="this.course.code"></ClassInfo>
+        </simplebar>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
+import ClassInfo from "./components/class_info.vue"
+import simplebar from 'simplebar-vue'
+import 'simplebar/dist/simplebar.min.css'
+
 export default {
-  name: "class_list",
-  components: {},
+  name: "Class_list",
+  components: {
+    ClassInfo,
+    simplebar
+  },
   mounted() {
     this.getClasses();
   },
@@ -105,5 +117,13 @@ export default {
 }
 .scroll {
   overflow-y: scroll;
+}
+.wk-content-full-height {
+  height: calc(100vh - 110px);
+  overflow: auto;
+}
+.wk-content-full-height-list {
+  height: calc(100vh - 186px);
+  overflow: auto;
 }
 </style>

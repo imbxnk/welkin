@@ -1,1 +1,15 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 87.5 100"><defs><style>.cls-1{fill:#1697f6;}.cls-2{fill:#7bc6ff;}.cls-3{fill:#1867c0;}.cls-4{fill:#aeddff;}</style></defs><title>Artboard 46</title><polyline class="cls-1" points="43.75 0 23.31 0 43.75 48.32"/><polygon class="cls-2" points="43.75 62.5 43.75 100 0 14.58 22.92 14.58 43.75 62.5"/><polyline class="cls-3" points="43.75 0 64.19 0 43.75 48.32"/><polygon class="cls-4" points="64.58 14.58 87.5 14.58 43.75 100 43.75 62.5 64.58 14.58"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="136.585" height="106.425" viewBox="0 0 1365.846 1064.249">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #3c84fb;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 110.74px;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="Shape_2_copy_2" data-name="Shape 2 copy 2" class="cls-1" d="M1244,646c167.42,184.379,71.86,468.02-185,531,0,0-398.09.35-718,0C-64.822,1089.74-4.181,482.46,479,533c43.766-417.928,623.76-412.56,656,17,0,0-131.56,444-154,444s-86-220-86-220-74.282,221-96,221-83-223-83-223" transform="translate(-17.094 -168.281)"/>
+</svg>
