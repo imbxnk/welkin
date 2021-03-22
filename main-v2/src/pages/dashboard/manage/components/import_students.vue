@@ -1,14 +1,27 @@
 <template>
-    <v-main>
-        <div class="container-sm-fliud p-5 my-3 border ">
-            <div class="row mt-3">
-                <div class='col-lg-12 mt-1'>
-                <h1>Import Student</h1>
+    <div>
+        <v-card style="width: 800px; padding: 10px 10px;">
+        <v-card-title id="cardTitle">
+            <v-row>
+                <v-col cols="12" xl="8" lg="8" md="12" sm="12" xs="12">
+                    <h2>Import Student</h2>
+                </v-col>
+                <v-col cols="4"  xl="4" lg="4" md="4" sm="4" xs="4">
+                    <v-btn class="primary" :value="importStatus" @click="changeToAddManually">Add Manually</v-btn>
+                </v-col>
+            </v-row>
+        </v-card-title>
+        <v-card-text>
+            <div class="row mt-1">
+                <div class="col-lg-12 col-sm-12 mt-1">
+                <!-- <input type="file" @change="selectFile" accept=".xls,.xlsx" label="Choose a file"> -->
+                <vue-dropzone 
+                    ref="myVueDropzone" 
+                    id="dropzone" 
+                    :options="dropzoneOptions"
+                    @vdropzone-success="selectFile"></vue-dropzone>
                 </div>
-                <div class="col-lg-12 col-sm-12 mt-4">
-                <input type="file" @change="selectFile" accept=".xls,.xlsx" label="Choose a file">
-                </div>
-                <div class="col-6 mt-4">
+                <div class="col-6 mt-4" v-show="uploadSuccess">
                 <select class="form-control" name="sheetName" id="sheetName" @change="getSelectedValue($event)">
                     <label>Please select a sheet</label>
                     <option v-for="(item, index) in this.sheetNames" :key="index" :value="item">{{ item }}</option>
@@ -16,6 +29,8 @@
                 </div>
                 <br>
             </div>
+        </v-card-text>
+        </v-card>
             <div class="row mt-3">
                 <div class="col-12 mt-3">
                 <table class="table table-striped table-bordered">
@@ -75,13 +90,15 @@
             </div>
             </div>
         </div>
-    </v-main>
 </template>
 
 <script>
 //already downloaded the package "npm i xlsx axios", and import some vaiables from them
 import XLSX from 'xlsx'
 import axios from 'axios'
+import vue2Dropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+
 export default {
     data(){
         return{
@@ -97,8 +114,26 @@ export default {
             workbook: {},
             duplicateStudents: [],
             url: "https://api.welkin.app/v2/graphql",
-            showContent: false
+            showContent: false,
+            dropzoneOptions: {
+                url: 'https://httpbin.org/post',
+                thumbnailWidth: 150,
+                maxFilesize: 2,
+                parallelUploads: 1,
+                acceptedFiles: ".xls, .xlsx",
+                maxFiles: 1,
+                addRemoveLinks: true
+            },
+            uploadSuccess: false,
+            importStatus: true,
+            tableStudentsData:[]
         };
+    },
+    props:[
+        "cpnStatus"
+    ],
+    components:{
+        vueDropzone: vue2Dropzone
     },
     methods:{
         upload:async function () {
@@ -140,12 +175,13 @@ export default {
         readMyFile: function (workbook,currentSheetName){
             return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[currentSheetName]);
         },
-        selectFile(event){
+        selectFile(file){
             //get the selected file' info
-            this.selectedFile = event.target.files[0];
+            this.selectedFile = file;
             XLSX.utils.json_to_sheet(this.data,'out.xlsx');
             //if file is selected
             if(this.selectedFile){
+                this.uploadSuccess = true
                 //read data and store it in our variable
                 let fileReader = new FileReader();
                 fileReader.readAsBinaryString(this.selectedFile);
@@ -162,6 +198,7 @@ export default {
                     [this.entryYear,this.entryTrimester] = this.sheetName.split("T");
                 }
             }
+
         },
         getSelectedValue(event){
             //clear the duplicatedStudents
@@ -174,6 +211,13 @@ export default {
             this.studentsData = this.readMyFile(this.workbook,this.sheetName);
             // get entry_year and entry_trimester
             [this.entryYear,this.entryTrimester] = this.sheetName.split("T");
+            this.tableStudentsData = this.studentsData
+            this.$emit("tabelContent", this.tableStudentsData)
+            console.log(this.tableStudentsData)
+        },
+        changeToAddManually(event){
+            this.$emit("importCardStatus", event.target.value)
+            console.log(event.target.value)
         }
     }
 }
