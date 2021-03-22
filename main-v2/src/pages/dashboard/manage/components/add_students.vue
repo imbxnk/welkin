@@ -1,13 +1,12 @@
 <template>
-<div>
     <v-card style="width: 800px; padding: 20px 20px;">
         <v-card-title id="cardTitle">
             <v-row>
                 <v-col cols="12" xl="8" lg="8"  md="12" sm="12" xs="12">
-                    <h2>Add new Student</h2>
+                    Add new Student
                 </v-col>
                 <v-col cols="4" xl="4" lg=4 md="4" sm="4" xs="4">
-                    <v-btn class="primary" :value="manuallyStatus" @click="changeToImportFile">Import File</v-btn>
+                    <v-btn plain text class="float-right overline primary--text" style="font-size:0.8rem; font-weight: normal;"  :value="manuallyStatus" @click="changeToImportFile">Import File</v-btn>
                 </v-col>
             </v-row>
         </v-card-title>
@@ -36,7 +35,6 @@
         </v-form>
         </v-card-text>
     </v-card>
-    </div>
 </template>
 
 <script>

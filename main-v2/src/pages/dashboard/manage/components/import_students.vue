@@ -4,10 +4,10 @@
         <v-card-title id="cardTitle">
             <v-row>
                 <v-col cols="12" xl="8" lg="8" md="12" sm="12" xs="12">
-                    <h2>Import Student</h2>
+                    Import Student
                 </v-col>
                 <v-col cols="4"  xl="4" lg="4" md="4" sm="4" xs="4">
-                    <v-btn class="primary" :value="importStatus" @click="changeToAddManually">Add Manually</v-btn>
+                    <v-btn plain text class="float-right overline primary--text" style="font-size:0.8rem; font-weight: normal" :value="importStatus" @click="changeToAddManually">Add Manually</v-btn>
                 </v-col>
             </v-row>
         </v-card-title>
@@ -15,9 +15,9 @@
             <div class="row mt-1">
                 <div class="col-lg-12 col-sm-12 mt-1">
                 <!-- <input type="file" @change="selectFile" accept=".xls,.xlsx" label="Choose a file"> -->
-                <vue-dropzone 
-                    ref="myVueDropzone" 
-                    id="dropzone" 
+                <vue-dropzone
+                    ref="myVueDropzone"
+                    id="dropzone"
                     :options="dropzoneOptions"
                     @vdropzone-success="selectFile"></vue-dropzone>
                 </div>

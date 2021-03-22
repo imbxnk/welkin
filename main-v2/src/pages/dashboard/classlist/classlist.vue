@@ -115,9 +115,6 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.scroll {
-  overflow-y: scroll;
-}
 .wk-content-full-height {
   height: calc(100vh - 110px);
   overflow: auto;

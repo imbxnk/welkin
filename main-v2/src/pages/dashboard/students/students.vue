@@ -39,8 +39,9 @@ export default {
       search: "",
       headers: [
         { text: "Student ID",sortable: false, value: "sid", width: 80 },
-        { text: "First Name", align: "start", sortable: false, value: "given_name", width: 200 },
-        { text: "Last Name", align: "start", sortable: false, value: "family_name", width: 200 },
+        //{ text: "First Name", align: "start", sortable: false, value: "given_name", width: 200 },
+        //{ text: "Last Name", align: "start", sortable: false, value: "family_name", width: 200 },
+        { text: "Name", align: "start", sortable: false, value: "name", width: 200 },
         { text: "Email", align: "start", sortable: false, value: "email", width: 200 },
         { text: "Phone", align: "start", sortable: false, value: "phone", width: 200 },
         // { text: "Advisor", sortable: false, value: "avs", align: "center" },
@@ -105,6 +106,9 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.students = [...res.data.data.students.students];
+          this.students.forEach((student) => {
+            student["name"] = [student.given_name, student.family_name].join(" ")
+          })
         })
         .catch((err) => {
           console.log(err);
@@ -113,4 +117,4 @@ export default {
   },
 };
 </script>
-<style lang=""></style>
+<style scoped></style>
