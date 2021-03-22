@@ -29,7 +29,10 @@
     <v-col style="padding: 0 0 0 8px">
       <v-card v-if="!status" class="pa-3">
         <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height">
-          <div class="center grey--text">select the course to see more detail</div>
+          <div class="center grey--text">
+            <div class="logo-watermark"></div>
+            select the course to see more detail
+          </div>
         </simplebar>
       </v-card>
       <v-card v-else class="pa-3">
@@ -122,5 +125,12 @@ export default {
 .wk-content-full-height-list {
   height: calc(100vh - 186px);
   overflow: auto;
+}
+.logo-watermark {
+  filter: grayscale(100%);
+  opacity: 0.25;
+  background: url('/img/logo.1fbb96f9.svg') center no-repeat;
+  width: 100%;
+  height: 120px;
 }
 </style>
