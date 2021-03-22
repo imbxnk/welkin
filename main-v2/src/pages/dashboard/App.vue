@@ -1,50 +1,52 @@
 <template>
   <v-app v-if="isAuth">
     <v-app-bar app flat color="white" height="50">
-      <router-link to="/">
-        <v-toolbar-title class="primary--text">
-          <img :src="require(`../../assets/logo.svg`)" class="logo">
-        </v-toolbar-title>
-      </router-link>
-      <v-spacer></v-spacer>
+      <div class="wk-header">
+        <router-link to="/">
+          <v-toolbar-title class="primary--text">
+            <img :src="require(`../../assets/logo.svg`)" class="logo">
+          </v-toolbar-title>
+        </router-link>
+        <v-spacer></v-spacer>
 
-      <v-menu bottom max-width="300px" rounded offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-avatar color="primary" size="35" v-bind="attrs" v-on="on">
-            <span class="white--text ">{{
-              user.given_name.charAt(0) + user.family_name.charAt(0)
-            }}</span>
-          </v-avatar>
-        </template>
+        <v-menu bottom max-width="300px" rounded offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-avatar color="primary" size="35" v-bind="attrs" v-on="on">
+              <span class="white--text ">{{
+                user.given_name.charAt(0) + user.family_name.charAt(0)
+              }}</span>
+            </v-avatar>
+          </template>
 
-        <v-list>
-          <v-list-item-content class="justify-center">
-            <div class="text-center">
-              <v-avatar color="primary">
-                <span class="white--text">{{
-                  user.given_name.charAt(0) + user.family_name.charAt(0)
-                }}</span>
-              </v-avatar>
-              <br /><br />
-              <h6>{{ user.given_name + " " + user.family_name }}</h6>
-              <p class="caption mt-1">
-                {{ user.email }}
-              </p>
-              <v-btn @click="$router.push('/profile')" depressed outlined rounded text
-                >Manage Your Account</v-btn
-              >
-              <v-divider class=""></v-divider>
-            </div>
-            <!-- <v-list-item v-for="(account, i) in accounts" :key="i" :to="account.href">
-              <v-list-item-title>{{ account.title }}</v-list-item-title>
-            </v-list-item> -->
-            <v-list-item class="my-n4 px-16">
-              <v-btn @click="logout()" block outlined depressed text>Logout</v-btn>
-            </v-list-item>
-            <v-divider class="mb-n5 py-2"></v-divider>
-          </v-list-item-content>
-        </v-list>
-      </v-menu>
+          <v-list>
+            <v-list-item-content class="justify-center">
+              <div class="text-center">
+                <v-avatar color="primary">
+                  <span class="white--text">{{
+                    user.given_name.charAt(0) + user.family_name.charAt(0)
+                  }}</span>
+                </v-avatar>
+                <br /><br />
+                <h6>{{ user.given_name + " " + user.family_name }}</h6>
+                <p class="caption mt-1">
+                  {{ user.email }}
+                </p>
+                <v-btn @click="$router.push('/profile')" depressed outlined rounded text
+                  >Manage Your Account</v-btn
+                >
+                <v-divider class=""></v-divider>
+              </div>
+              <!-- <v-list-item v-for="(account, i) in accounts" :key="i" :to="account.href">
+                <v-list-item-title>{{ account.title }}</v-list-item-title>
+              </v-list-item> -->
+              <v-list-item class="my-n4 px-16">
+                <v-btn @click="logout()" block outlined depressed text>Logout</v-btn>
+              </v-list-item>
+              <v-divider class="mb-n5 py-2"></v-divider>
+            </v-list-item-content>
+          </v-list>
+        </v-menu>
+      </div>
     </v-app-bar>
 
     <!-- nav menu: -->
