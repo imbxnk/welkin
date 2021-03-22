@@ -29,7 +29,7 @@
     <v-col style="padding: 0 0 0 8px">
       <v-card v-if="!status" class="pa-3">
         <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height">
-          <div class="center grey--text">
+          <div class="center grey--text small--text">
             <div class="logo-watermark"></div>
             select the course to see more detail
           </div>
@@ -132,5 +132,9 @@ export default {
   background: url('/img/logo.1fbb96f9.svg') center no-repeat;
   width: 100%;
   height: 120px;
+}
+.small--text {
+  font-size: 1rem;
+  font-weight: lighter;
 }
 </style>
