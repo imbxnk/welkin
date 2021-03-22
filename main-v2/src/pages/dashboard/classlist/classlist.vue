@@ -6,7 +6,7 @@
         <v-card-title class="pt-7">Class List</v-card-title>
         <v-list class="pa-3">
           <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list">
-          <v-list-item-group v-model="selected" style="margin-top:10px;" active-class="primary--text">
+          <v-list-item-group v-model="selected" style="margin-top:15px;" active-class="primary--text">
             <template v-for="(item, index) in items">
               <v-list-item :key="item.title" @click="showdata(item)" class="my-n4">
                 <v-list-item-content>

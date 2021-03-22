@@ -1,7 +1,7 @@
 <template>
     <div class="wk-detail">
         <!-- <a  @click="$router.push('/class_history')">class history</a> -->
-        <div class="float-right overline primary--text"><a  @click="$router.push('/class_history')">class history</a></div>
+        <div class="float-right overline primary--text"><a  @click="$router.push(`/class/${code.toLowerCase()}`)">class history</a></div>
         <div class="overline my-n1">{{code}} : {{name}}</div>
         <v-divider></v-divider>
         <table style="width:100%;">
@@ -57,14 +57,8 @@ export default {
 </script>
 <style scoped>
 table,th,tr,td{
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(139, 139, 139, 0.2);
     padding: 5px;
-}
-table tr:last-child td:first-child {
-    border-bottom-left-radius: 10px;
-}
-table tr:last-child td:last-child {
-    border-bottom-right-radius: 10px;
 }
 .wk-detail {
     width: 100%;
