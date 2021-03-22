@@ -11,7 +11,7 @@
     <v-divider class="mb-1"></v-divider>
     <v-list>
       <v-list-item v-for="batch in Object.keys(batches)" :key="batch">
-        <v-list-item-content>{{ batch.replace( /^\D+/g, '') }}xxxx:</v-list-item-content>
+        <v-list-item-content>{{ batch.replace( /^\D+/g, '') }}</v-list-item-content>
         <v-list-item-content>
           <div class="text-right totaltxt">{{ batches[batch] }}</div>
         </v-list-item-content>

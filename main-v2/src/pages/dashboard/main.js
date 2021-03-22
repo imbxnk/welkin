@@ -34,6 +34,16 @@ const routes = [
     component: Home,
   },
   {
+    name: "student_list",
+    path: "/student",
+    component: StudentList,
+  },
+  {
+    name: "class_list",
+    path: "/class",
+    component: ClassList,
+  },
+  {
     name: "profile",
     path: "/profile",
     component: Profile,
