@@ -27,7 +27,7 @@
     </v-col>
     <!-- 2nd column -->
     <v-col style="padding: 0 0 0 8px">
-      <v-card v-if="!status" class="pa-3">
+      <v-card v-if="!status" class="pa-3 box">
         <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height">
           <div class="center grey--text small--text">
             <div class="logo-watermark"></div>
@@ -130,11 +130,19 @@ export default {
   filter: grayscale(100%);
   opacity: 0.25;
   background: url('/img/logo.1fbb96f9.svg') center no-repeat;
-  width: 100%;
-  height: 120px;
+  width: auto;
+  min-height: 120px;
+}
+.box {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
 }
 .small--text {
   font-size: 1rem;
   font-weight: lighter;
+  width: 100%;
+  text-align: center;
+  flex-grow : 1;
 }
 </style>
