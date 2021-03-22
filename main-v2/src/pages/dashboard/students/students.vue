@@ -1,6 +1,6 @@
 <template>
-  <v-card>
-    <v-row class="mt-4">
+<div>
+    <v-row class="">
       <v-col>
         <v-card-title>
           Students
@@ -16,7 +16,8 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-data-table :headers="headers" :items="students" :search="search" mobile-breakpoint="0">
+    <v-card>
+    <v-data-table  :headers="headers" :items="students" :search="search" mobile-breakpoint="0">
       <template v-slot:[`item.email`]="{ item }">
         {{ item.email == null ? "-" : item.email }}
       </template>
@@ -24,7 +25,7 @@
         {{ item.phone == null ? "-" : item.phone }}
       </template>
     </v-data-table>
-  </v-card>
+  </v-card></div>
 </template>
 <script>
 export default {
@@ -37,7 +38,7 @@ export default {
     return {
       search: "",
       headers: [
-        { text: "Student ID", sortable: false, value: "sid", width: 80 },
+        { text: "Student ID",sortable: false, value: "sid", width: 80 },
         { text: "First Name", align: "start", sortable: false, value: "given_name", width: 200 },
         { text: "Last Name", align: "start", sortable: false, value: "family_name", width: 200 },
         { text: "Email", align: "start", sortable: false, value: "email", width: 200 },
