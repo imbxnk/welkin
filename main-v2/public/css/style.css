@@ -9,9 +9,9 @@ html, body {
   position: relative;
 }
 
-.v-application {
+/* .v-application {
   font-family: 'Quicksand', sans-serif !important;
-}
+} */
 
 /* Remove scrollbar */
 body::-webkit-scrollbar, .wk-container::-webkit-scrollbar, .v-navigation-drawer__content::-webkit-scrollbar {
