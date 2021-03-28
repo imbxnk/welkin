@@ -134,22 +134,18 @@
 </template>
 
 <script>
-// import auth from "../../utils/auth"
+import welkin from "../../utils/auth"
 import simplebar from 'simplebar-vue';
 import 'simplebar/dist/simplebar.min.css';
 
 export default {
   name: "App",
-  // created: async function() {
-  //   this.user = await auth.getUser()
-  //   if(this.user) {
-  //     this.user = this.user.data.data.me
-  //     console.log(this.user)
-  //     this.isAuth = true
-  //   } else {
-  //     window.location.replace("/login/");
-  //   }
-  // },
+  created: async function() {
+    this.user = (await welkin.auth()).currentUser
+    if(this.user) {
+      this.isAuth = true
+    }
+  },
   components: {
     simplebar
   },
@@ -170,8 +166,7 @@ export default {
 
   data: () => ({
     SITE_NAME: process.env.VUE_APP_SITE_NAME,
-    // isAuth: false,
-    isAuth: true,
+    isAuth: false,
     sidebarMenu: true,
     toggleMini: false,
     items: [
@@ -214,13 +209,13 @@ export default {
     //   fullName: "Mingmanas Sivaraksa",
     //   email: "mingmanas.siv@mahidol.edu",
     // },
-    user: {
-      given_name: "Demo",
-      family_name: "User",
-      username: "demo",
-      email: "demo@welkin.app",
-    },
-    // user: {},
+    // user: {
+    //   given_name: "Demo",
+    //   family_name: "User",
+    //   username: "demo",
+    //   email: "demo@welkin.app",
+    // },
+    user: {},
   }),
   methods: {
     navOnOutsideClick() {

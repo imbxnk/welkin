@@ -2,8 +2,9 @@
   <v-row>
     <v-col cols="12" sm="6" md="4" lg="4" align="center">
       <v-card class="pa-3 ">
-        <v-img max-width="200" src="https://picsum.photos/id/11/500/300"></v-img>
-        <div class="overline text-center">{{ user.role }}</div>
+        <v-img v-if="user.avatar_url" max-width="200" :src="user.avatar_url"></v-img>
+        <v-img v-else max-width="200" src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png"></v-img>
+        <div class="overline text-center">{{ user.group }}</div>
       </v-card>
     </v-col>
     <v-col cols="12" sm="10" md="8" lg="8">
@@ -12,7 +13,7 @@
           Profile
         </div>
         <v-list-item-title class="h3 mb-1">
-          {{ user.fullName }}
+          {{ user.given_name + ' ' + user.family_name }}
         </v-list-item-title>
         <v-divider class="pb-3"></v-divider>
         <!-- <v-list-item-title class="mb-1"> Email: {{ user.email }} </v-list-item-title> -->
@@ -32,19 +33,27 @@
   </v-row>
 </template>
 <script>
+import welkin from "../../../utils/auth"
 export default {
   name: "profile",
   components: {},
   computed: {},
   data: () => ({
-    user: {
-      initials: "MS",
-      fullName: "Mingmanas Sivaraksa",
-      email: "Mingmanas.siv@mahidol.com",
-      role: "Advisor",
-    },
+    // user: {
+    //   initials: "MS",
+    //   fullName: "Mingmanas Sivaraksa",
+    //   email: "Mingmanas.siv@mahidol.com",
+    //   role: "Advisor",
+    // },
+    user: {}
   }),
-
-  methods: {},
+  mounted() {
+    this.getCurrentUser()
+  },
+  methods: {
+    getCurrentUser: async function() {
+      this.user = (await welkin.auth()).currentUser
+    }
+  },
 };
 </script>
