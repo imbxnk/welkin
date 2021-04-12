@@ -89,7 +89,7 @@ router.beforeEach(async (to, from, next) => {
 
   if(requiresAuth && !currentUser) window.location.replace("/login")
 
-  if(requiresAuth && authorizedGroup.length > 0) {
+  if(requiresAuth && authorizedGroup) {
     console.log('true')
     if(!authorizedGroup.includes(currentUser.group)) next('/')
     next()
