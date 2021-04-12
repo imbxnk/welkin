@@ -83,7 +83,7 @@ router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const authorizedGroup = to.matched.some(record => record.meta.authorizedGroup)
   if(currentUser.group == 'admin') next()
-  
+
   if (requiresAuth && !currentUser) {
     if(authorizedGroup.length > 0) {
       if(authorizedGroup.includes(currentUser.group)) next()
@@ -94,7 +94,7 @@ router.beforeEach(async (to, from, next) => {
 
   next()
   console.log(to, from ,next)
-  // console.log(currentUser)
+  console.log(currentUser)
 })
 
 export default router
