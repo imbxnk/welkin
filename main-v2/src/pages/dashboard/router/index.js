@@ -81,7 +81,7 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   const currentUser = (await welkin.auth()).currentUser
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-  const authorizedGroup = to.matched.some(record => record.meta.authorizedGroup)
+  const authorizedGroup = to.meta.authorizedGroup
   console.log(authorizedGroup)
   console.log(requiresAuth)
   console.log(currentUser)
