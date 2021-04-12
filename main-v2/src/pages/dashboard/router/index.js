@@ -84,12 +84,12 @@ router.beforeEach(async (to, from, next) => {
   const authorizedGroup = to.matched.some(record => record.meta.authorizedGroup)
   if(currentUser.group == 'admin') next()
 
-  if (requiresAuth && !currentUser) {
-    if(authorizedGroup.length > 0) {
-      if(authorizedGroup.includes(currentUser.group)) next()
-      next('/')
-    }
-    window.location.replace("/login");
+  if(requiresAuth && !currentUser) window.location.replace("/login")
+
+  if(requiresAuth && authorizedGroup.length > 0) {
+    console.log('true')
+    if(!authorizedGroup.includes(currentUser.group)) next('/')
+    next()
   }
 
   next()
