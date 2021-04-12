@@ -82,16 +82,16 @@ router.beforeEach(async (to, from, next) => {
   const currentUser = (await welkin.auth()).currentUser
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const authorizedGroup = to.matched.some(record => record.meta.authorizedGroup)
+  if(currentUser.group == 'admin') next()
+  
   if (requiresAuth && !currentUser) {
+    if(authorizedGroup.length > 0) {
+      if(authorizedGroup.includes(currentUser.group)) next()
+      next('/')
+    }
     window.location.replace("/login");
   }
 
-  if(currentUser.group == 'admin') next()
-
-  if(authorizedGroup.length > 0) {
-    if(authorizedGroup.includes(currentUser.group)) next()
-    next('/')
-  }
   next()
   console.log(to, from ,next)
   // console.log(currentUser)
