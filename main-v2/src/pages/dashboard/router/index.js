@@ -53,6 +53,9 @@ const routes = [
     component: Manage,
     meta: {
       requiresAuth: true,
+      authorizedGroup: [
+        'coordinator'
+      ]
     }
   },
   {
@@ -78,12 +81,20 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   const currentUser = (await welkin.auth()).currentUser
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const authorizedGroup = to.matched.some(record => record.meta.authorizedGroup)
   if (requiresAuth && !currentUser) {
     window.location.replace("/login");
   }
+
+  if(currentUser.group == 'admin') next()
+
+  if(authorizedGroup.length > 0) {
+    if(authorizedGroup.includes(currentUser.group)) next()
+    next('/')
+  }
   next()
   console.log(to, from ,next)
-  console.log(currentUser)
+  // console.log(currentUser)
 })
 
 export default router

@@ -31,7 +31,7 @@
                 <p class="caption mt-1">
                   {{ user.email }}
                 </p>
-                <v-btn @click="$router.push('/profile')" depressed outlined rounded text
+                <v-btn @click="$router.push({ name: 'profile' })" depressed outlined rounded text
                   >Manage Your Account</v-btn
                 >
                 <v-divider class=""></v-divider>
@@ -157,8 +157,7 @@ export default {
       get: function() {
         // return this.$vuetify.breakpoint.smAndDown || this.toggleMini;
         if (this.$vuetify.breakpoint.smAndDown === true && this.toggleMini === false) return true;
-        else if (this.$vuetify.breakpoint.smAndDown === false && this.toggleMini === false)
-          return true;
+        else if (this.$vuetify.breakpoint.smAndDown === false && this.toggleMini === false) return true;
         return false;
       },
     },
