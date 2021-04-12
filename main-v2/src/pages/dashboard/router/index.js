@@ -84,7 +84,7 @@ router.beforeEach(async (to, from, next) => {
   const authorizedGroup = to.meta.authorizedGroup
   console.log(authorizedGroup)
   console.log(requiresAuth)
-  console.log(currentUser)
+  console.log(currentUser.group)
   if(currentUser.group === 'admin') next()
 
   if(requiresAuth && !currentUser) window.location.replace("/login")
