@@ -1,17 +1,18 @@
-import Vue from "vue"
-import VueRouter from 'vue-router'
-import welkin from "../../../utils/auth"
+import Vue from "vue";
+import VueRouter from "vue-router";
+import welkin from "../../../utils/auth";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 // Import All Routes
-import Home from "../home/home"
-import Profile from "../profile/profile"
-import Manage from "../manage/manage"
-import StudentList from "../students/students"
-import ClassList from "../classlist/classlist"
-import ClassHistory from "../classlist/class_history"
-import ClassDetail from "../classlist/class_detail"
+import Home from "../home/home";
+import Profile from "../profile/profile";
+import Manage from "../manage/manage";
+import StudentList from "../students/students";
+import ClassList from "../classlist/classlist";
+import ClassHistory from "../classlist/class_history";
+import ClassDetail from "../classlist/class_detail";
+import Curriculum from "../curriculum/curriculum";
 
 // Define All Routes
 const routes = [
@@ -21,7 +22,7 @@ const routes = [
     component: Home,
     meta: {
       requiresAuth: true,
-    }
+    },
   },
   {
     name: "student_list",
@@ -29,7 +30,7 @@ const routes = [
     component: StudentList,
     meta: {
       requiresAuth: true,
-    }
+    },
   },
   {
     name: "class_list",
@@ -37,7 +38,7 @@ const routes = [
     component: ClassList,
     meta: {
       requiresAuth: true,
-    }
+    },
   },
   {
     name: "profile",
@@ -45,7 +46,7 @@ const routes = [
     component: Profile,
     meta: {
       requiresAuth: true,
-    }
+    },
   },
   {
     name: "manage",
@@ -53,15 +54,13 @@ const routes = [
     component: Manage,
     meta: {
       requiresAuth: true,
-      authorizedGroup: [
-        'coordinator'
-      ]
-    }
+      authorizedGroup: ["coordinator"],
+    },
   },
   {
     name: "class_history",
     path: "/class_history",
-    component: ClassHistory
+    component: ClassHistory,
   },
   {
     name: "class_detail",
@@ -69,33 +68,43 @@ const routes = [
     component: ClassDetail,
     meta: {
       requiresAuth: true,
-    }
+    },
+  },
+  {
+    name: "Curriculum",
+    path: "/curriculum",
+    component: Curriculum,
+    meta: {
+      requiresAuth: true,
+    },
   },
 ];
 
 const router = new VueRouter({
   mode: "history",
-  routes
+  routes,
 });
 
 router.beforeEach(async (to, from, next) => {
-  const currentUser = (await welkin.auth()).currentUser
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-  const authorizedGroup = to.meta.authorizedGroup
+  const currentUser = (await welkin.auth()).currentUser;
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const authorizedGroup = to.meta.authorizedGroup;
 
-  try{
-    if(currentUser.group === 'admin') return next()
-  } catch (err) { console.log(err) }
-
-  if(requiresAuth && !currentUser) window.location.replace("/login")
-
-  if(requiresAuth && authorizedGroup) {
-    if(!authorizedGroup.includes(currentUser.group)) return next('/')
-    return next()
+  try {
+    if (currentUser.group === "admin") return next();
+  } catch (err) {
+    console.log(err);
   }
 
-  next()
-  console.log(to, from ,next)
-})
+  if (requiresAuth && !currentUser) window.location.replace("/login");
 
-export default router
+  if (requiresAuth && authorizedGroup) {
+    if (!authorizedGroup.includes(currentUser.group)) return next("/");
+    return next();
+  }
+
+  next();
+  console.log(to, from, next);
+});
+
+export default router;
