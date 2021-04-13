@@ -7,13 +7,13 @@
         <table style="width:100%;">
             <tr >
             <th class="text-left" > Year:</th>
-            <th class="text-center" > 598 </th>
-            <th class="text-center" > 608 </th>
-            <th class="text-center" > 618 </th>
-            <th class="text-center" > 628 </th>
-            <th class="text-center" > 638 </th>
-            <th class="text-center" > 648 </th>
-            <th class="text-center" > 658 </th>
+            <th class="text-center" > 59 </th>
+            <th class="text-center" > 60 </th>
+            <th class="text-center" > 61 </th>
+            <th class="text-center" > 62 </th>
+            <th class="text-center" > 63 </th>
+            <th class="text-center" > 64 </th>
+            <th class="text-center" > 65 </th>
             </tr>
             <tr >
             <th class="text-left" > Remain student: </th>

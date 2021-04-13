@@ -69,10 +69,11 @@
           </v-list-item-action>
         </v-list-item>
       </v-list>
-      <!-- lists that have no children -->
+
       <v-list expand nav>
-        <template v-for="item in items">
-          <v-list-item v-if="!item.children" :key="item.title" link :to="item.href" color="primary">
+        <template v-for="(item, i) in items">
+          <!-- lists that have no children -->
+          <v-list-item v-if="!item.children && checkAuthGroup(i)" :key="item.title" link :to="item.href" color="primary">
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -82,7 +83,7 @@
           </v-list-item>
           <!-- lists with children -->
           <v-list-group
-            v-else
+            v-else-if="item.children && checkAuthGroup(i)"
             :group="item.href"
             :key="item.title"
             link
@@ -124,7 +125,7 @@
         </div>
       </template> -->
     <!-- <template v-else> -->
-    <v-main style="margin:0 !im portant;">
+    <v-main style="margin:0 !important;">
       <simplebar data-simplebar-auto-hide="true" class="wk-container">
         <router-view class="ma-4"></router-view>
       </simplebar>
@@ -193,6 +194,7 @@ export default {
         title: "Manage",
         href: "/manage",
         icon: "mdi-cog-outline",
+        authorizedGroup: ['coordinator', 'admin'],
         children: [
           {
             title: "Add New Students",
@@ -221,6 +223,14 @@ export default {
       if (this.sidebarMenu && this.$vuetify.breakpoint.smAndDown) {
         this.toggleMini = false;
       }
+    },
+    checkAuthGroup(i) {
+      try{
+        if(!this.items[i].authorizedGroup.includes(this.user.group)) return false
+      } catch (err) {
+        console.log(err)
+      }
+      return true
     },
     async logout() {
       //axios post to check token, userId compare with the username and password

@@ -38,11 +38,11 @@ export default {
     getTotalBatches() {
       let query = `
               query {
-                batch${this.started_batch}8:students (searchInput: { batch : "${this.started_batch}8"}) { total }
-                batch${this.started_batch+1}8:students (searchInput: { batch : "${this.started_batch+1}8"}) { total }
-                batch${this.started_batch+2}8:students (searchInput: { batch : "${this.started_batch+2}8"}) { total }
-                batch${this.started_batch+3}8:students (searchInput: { batch : "${this.started_batch+3}8"}) { total }
-                batch${this.started_batch+4}8:students (searchInput: { batch : "${this.started_batch+4}8"}) { total }
+                batch${this.started_batch}:students (searchInput: { batch : "${this.started_batch}"}) { total }
+                batch${this.started_batch+1}:students (searchInput: { batch : "${this.started_batch+1}"}) { total }
+                batch${this.started_batch+2}:students (searchInput: { batch : "${this.started_batch+2}"}) { total }
+                batch${this.started_batch+3}:students (searchInput: { batch : "${this.started_batch+3}"}) { total }
+                batch${this.started_batch+4}:students (searchInput: { batch : "${this.started_batch+4}"}) { total }
               }
           `
       this.axios
