@@ -83,9 +83,9 @@ router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const authorizedGroup = to.meta.authorizedGroup
 
-  if(currentUser) {
+  try{
     if(currentUser.group === 'admin') return next()
-  }
+  } catch (err) { console.log(err) }
 
   if(requiresAuth && !currentUser) window.location.replace("/login")
 
