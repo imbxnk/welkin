@@ -83,8 +83,8 @@ router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const authorizedGroup = to.meta.authorizedGroup
 
-  if(currentUser.group === 'admin') {
-    return next()
+  if(currentUser) {
+    if(currentUser.group === 'admin') return next()
   }
 
   if(requiresAuth && !currentUser) window.location.replace("/login")
@@ -96,7 +96,6 @@ router.beforeEach(async (to, from, next) => {
 
   next()
   console.log(to, from ,next)
-  
 })
 
 export default router
