@@ -30,7 +30,6 @@
             <v-col cols="12" sm="6">
               <v-img
                 src="https://semantic-ui.com/images/avatar2/large/matthew.png"
-                center
                 contain
                 max-width="250"
                 class="center"
@@ -134,6 +133,6 @@ export default {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 80%;
+  width: 100%;
 }
 </style>
