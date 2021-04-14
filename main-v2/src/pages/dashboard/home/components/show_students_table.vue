@@ -8,14 +8,55 @@
       multi-sort
       class="elevation-1"
     > -->
-    <v-data-table :headers="headers" :items="student" mobile-breakpoint="0">
+    <v-data-table :headers="headers" :items="student" mobile-breakpoint="0" @click:row="showDialog">
       <template v-slot:[`item.status`]="{ item }">
         <v-chip :color="getColor(item.status)" dark class="d-flex justify-center">
           {{ item.status }}
         </v-chip>
       </template>
-      <template v-slot:[`item.completion`]="{ item }"> {{ item.completion }} % </template>
+      <template v-slot:[`item.completion`]="{ item }">
+        {{ item.completion }} / {{ item.averageCredit }}
+      </template>
     </v-data-table>
+
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-title class="overline lighten-2">
+          {{ stdDetail.name }}
+        </v-card-title>
+
+        <v-card-text>
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-img
+                src="https://semantic-ui.com/images/avatar2/large/matthew.png"
+                center
+                contain
+                max-width="250"
+                class="center"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <b>ID:</b> {{ stdDetail.stdID }}<br />
+              <b>Email:</b> {{}}<br />
+              <b>GPA:</b> {{}}<br />
+              <b>Core Courses:</b> {{}}<br />
+              <b>Required Courses:</b> {{}}<br />
+              <b>Elective Courses:</b> {{}}<br />
+              <b>Remark:</b> {{}}<br /><br />
+              <v-btn small>See student record</v-btn>
+            </v-col>
+          </v-row>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green" text @click="dialog = false">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 <script>
@@ -24,11 +65,12 @@ export default {
   components: {},
   data() {
     return {
+      dialog: false,
       headers: [
         { text: "Name", align: "start", sortable: false, value: "name" },
         { text: "Student ID", sortable: false, value: "stdID" },
         { text: "Advisor", sortable: false, value: "avs", align: "center" },
-        { text: "% Lesson Completion", sortable: false, value: "completion", align: "center" },
+        { text: "Taken Credits", sortable: false, value: "completion", align: "center" },
         { text: "Status", sortable: false, value: "status", align: "center" },
       ],
       student: [
@@ -36,31 +78,36 @@ export default {
           name: "Kanin Sirisuksakulchai",
           stdID: 6080718,
           avs: "Mingmanas",
-          completion: 87,
+          completion: 150,
+          averageCredit: 150,
           status: "On track",
         },
         {
           name: "Phattharaporn Roekduangchan",
           stdID: 6080727,
           avs: "Mingmanas",
-          completion: 70,
+          completion: 146,
+          averageCredit: 150,
           status: "On track",
         },
         {
           name: "Phongchai Pongchaloem",
           stdID: 6080728,
           avs: "Mingmanas",
-          completion: 91,
+          completion: 153,
+          averageCredit: 150,
           status: "Ahead",
         },
         {
           name: "Santhisa Chen",
           stdID: 6080779,
           avs: "Mingmanas",
-          completion: 60,
+          completion: 102,
+          averageCredit: 150,
           status: "Behind",
         },
       ],
+      stdDetail: [],
     };
   },
   methods: {
@@ -69,11 +116,24 @@ export default {
       else if (status == "On track") return "orange";
       else return "green";
     },
+    showDialog(row) {
+      this.dialog = true;
+      // console.log(this.student.stdID);
+      console.log(row);
+      this.stdDetail = row;
+      console.log(this.stdDetail);
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
 .totaltxt {
   color: #3c84fb;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
 }
 </style>
