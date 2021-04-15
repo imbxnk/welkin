@@ -1,10 +1,14 @@
 <template>
-  <v-app v-if="isAuth">
+<div>
+  <v-app v-if="$route.name === 'login'">
+    <router-view class="ma-4"></router-view>
+  </v-app>
+  <v-app v-else-if="$route.name !== 'login' && isAuth">
     <v-app-bar app flat color="white" height="50">
       <div class="wk-header">
         <router-link to="/">
           <v-toolbar-title class="primary--text">
-            <img :src="require(`../../assets/logo.svg`)" class="logo">
+            <img :src="require(`../assets/logo.svg`)" class="logo">
           </v-toolbar-title>
         </router-link>
         <v-spacer></v-spacer>
@@ -126,16 +130,17 @@
       </template> -->
     <!-- <template v-else> -->
     <v-main style="margin:0 !important;">
-      <simplebar data-simplebar-auto-hide="true" class="wk-container">
+      <simplebar data-simplebar-auto-hide="true" class="wk-container" :class="{ home: $route.name === 'home'}">
         <router-view class="ma-4"></router-view>
       </simplebar>
     </v-main>
 
   </v-app>
+</div>
 </template>
 
 <script>
-import welkin from "../../utils/auth"
+import welkin from "../utils/auth"
 import simplebar from 'simplebar-vue';
 import 'simplebar/dist/simplebar.min.css';
 

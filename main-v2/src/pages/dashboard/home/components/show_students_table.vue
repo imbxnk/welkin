@@ -8,7 +8,7 @@
       multi-sort
       class="elevation-1"
     > -->
-    <v-data-table :headers="headers" :items="student" mobile-breakpoint="0" @click:row="showDialog">
+    <v-data-table :headers="headers" :items="student" mobile-breakpoint="680" class="home" @click:row="showDialog">
       <template v-slot:[`item.status`]="{ item }">
         <v-chip :color="getColor(item.status)" dark class="d-flex justify-center">
           {{ item.status }}
@@ -36,14 +36,14 @@
               />
             </v-col>
             <v-col cols="12" sm="6">
-              <b>ID:</b> {{ stdDetail.stdID }}<br />
-              <b>Email:</b> {{}}<br />
-              <b>GPA:</b> {{}}<br />
-              <b>Core Courses:</b> {{}}<br />
-              <b>Required Courses:</b> {{}}<br />
-              <b>Elective Courses:</b> {{}}<br />
-              <b>Remark:</b> {{}}<br /><br />
-              <v-btn small>See student record</v-btn>
+              <b>ID:</b> <span>{{ stdDetail.sid }}</span><br />
+              <b>Email:</b> <span v-if="stdDetail.email">{{}}</span><span v-else>-</span><br />
+              <b>GPA:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
+              <b>Core Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
+              <b>Required Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
+              <b>Elective Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
+              <b>Remark:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
+              <div class="w-100 d-flex justify-content-center mt-3"><v-btn small>See student record</v-btn></div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -66,8 +66,8 @@ export default {
     return {
       dialog: false,
       headers: [
-        { text: "Name", align: "start", sortable: false, value: "name" },
         { text: "Student ID", sortable: false, value: "stdID" },
+        { text: "Name", align: "start", sortable: false, value: "name" },
         { text: "Advisor", sortable: false, value: "avs", align: "center" },
         { text: "Taken Credits", sortable: false, value: "completion", align: "center" },
         { text: "Status", sortable: false, value: "status", align: "center" },

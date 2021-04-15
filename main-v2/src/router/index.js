@@ -1,18 +1,20 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import welkin from "../../../utils/auth";
+import welkin from "../utils/auth";
 
 Vue.use(VueRouter);
 
 // Import All Routes
-import Home from "../home/home";
-import Profile from "../profile/profile";
-import Manage from "../manage/manage";
-import StudentList from "../students/students";
-import ClassList from "../classlist/classlist";
-import ClassHistory from "../classlist/class_history";
-import ClassDetail from "../classlist/class_detail";
-import Curriculum from "../curriculum/curriculum";
+import Home from "../pages/dashboard/home/home";
+import Profile from "../pages/dashboard/profile/profile";
+import Manage from "../pages/dashboard/manage/manage";
+import StudentList from "../pages/dashboard/students/students";
+import ClassList from "../pages/dashboard/classlist/classlist";
+import ClassHistory from "../pages/dashboard/classlist/class_history";
+import ClassDetail from "../pages/dashboard/classlist/class_detail";
+import Curriculum from "../pages/dashboard/curriculum/curriculum";
+// Login Route
+import Login from "../pages/login/login"
 
 // Define All Routes
 const routes = [
@@ -78,6 +80,14 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    name: "login",
+    path: "/login",
+    component: Login,
+    meta: {
+      requiresAuth: false,
+    },
+  },
 ];
 
 const router = new VueRouter({
@@ -86,25 +96,26 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const currentUser = (await welkin.auth()).currentUser;
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const authorizedGroup = to.meta.authorizedGroup;
+  const currentUser = (await welkin.auth()).currentUser
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+  const authorizedGroup = to.meta.authorizedGroup
 
   try {
-    if (currentUser.group === "admin") return next();
+    if (requiresAuth && currentUser.group === "admin") return next();
   } catch (err) {
     console.log(err);
   }
 
-  if (requiresAuth && !currentUser) window.location.replace("/login");
+  if (requiresAuth && !currentUser) router.push("/login")
+
+  if (!requiresAuth && currentUser) router.push("/")
 
   if (requiresAuth && authorizedGroup) {
-    if (!authorizedGroup.includes(currentUser.group)) return next("/");
-    return next();
+    if (!authorizedGroup.includes(currentUser.group)) return next("/")
+    return next()
   }
-
-  next();
-  console.log(to, from, next);
+  next()
+  console.log(to, from, next)
 });
 
 export default router;
