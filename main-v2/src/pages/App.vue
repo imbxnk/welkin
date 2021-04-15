@@ -1,7 +1,7 @@
 <template>
 <div>
   <v-app v-if="$route.name === 'login'">
-    <router-view class="ma-4"></router-view>
+    <router-view></router-view>
   </v-app>
   <v-app v-else-if="$route.name !== 'login' && isAuth">
     <v-app-bar app flat color="white" height="50">
