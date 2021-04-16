@@ -6,23 +6,26 @@
         <v-card-title class="pt-7">Class List</v-card-title>
         <v-list class="pa-3">
           <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list">
-          <v-list-item-group v-model="selected" style="margin-top:15px;" active-class="primary--text">
-            <template v-for="(item, index) in items">
-              <v-list-item :key="item.title" @click="showdata(item)" class="my-n4">
-                <v-list-item-content>
-                  <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
-                </v-list-item-action>
-              </v-list-item>
-              <!-- <v-divider v-if="index < items.length - 1" :key="index"></v-divider> -->
-              <v-divider v-if="index !== items.length - 1" :key="index" class=""></v-divider>
-            </template>
-          </v-list-item-group>
+            <v-list-item-group
+              v-model="selected"
+              style="margin-top:15px;"
+              active-class="primary--text"
+            >
+              <template v-for="(item, index) in items">
+                <v-list-item :key="item.title" @click="showdata(item)" class="my-n4">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
+                  </v-list-item-action>
+                </v-list-item>
+                <!-- <v-divider v-if="index < items.length - 1" :key="index"></v-divider> -->
+                <v-divider v-if="index !== items.length - 1" :key="index" class=""></v-divider>
+              </template>
+            </v-list-item-group>
           </simplebar>
         </v-list>
-
       </v-card>
     </v-col>
     <!-- 2nd column -->
@@ -45,15 +48,15 @@
 </template>
 
 <script>
-import ClassInfo from "./components/class_info.vue"
-import simplebar from 'simplebar-vue'
-import 'simplebar/dist/simplebar.min.css'
+import ClassInfo from "./components/class_info.vue";
+import simplebar from "simplebar-vue";
+import "simplebar/dist/simplebar.min.css";
 
 export default {
   name: "Class_list",
   components: {
     ClassInfo,
-    simplebar
+    simplebar,
   },
   mounted() {
     this.getClasses();
@@ -129,7 +132,7 @@ export default {
 .logo-watermark {
   filter: grayscale(100%);
   opacity: 0.25;
-  background: url('/img/logo.1fbb96f9.svg') center no-repeat;
+  background: url("/img/logo.1fbb96f9.svg") center no-repeat;
   width: auto;
   min-height: 120px;
 }
@@ -143,6 +146,6 @@ export default {
   font-weight: lighter;
   width: 100%;
   text-align: center;
-  flex-grow : 1;
+  flex-grow: 1;
 }
 </style>

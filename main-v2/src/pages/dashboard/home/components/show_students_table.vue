@@ -8,7 +8,13 @@
       multi-sort
       class="elevation-1"
     > -->
-    <v-data-table :headers="headers" :items="student" mobile-breakpoint="680" class="home" @click:row="showDialog">
+    <v-data-table
+      :headers="headers"
+      :items="student"
+      mobile-breakpoint="680"
+      class="home"
+      @click:row="showDialog"
+    >
       <template v-slot:[`item.status`]="{ item }">
         <v-chip :color="getColor(item.status)" dark class="d-flex justify-center">
           {{ item.status }}
@@ -36,14 +42,17 @@
               />
             </v-col>
             <v-col cols="12" sm="6">
-              <b>ID:</b> <span>{{ stdDetail.sid }}</span><br />
+              <b>ID:</b> <span>{{ stdDetail.stdID }}</span
+              ><br />
               <b>Email:</b> <span v-if="stdDetail.email">{{}}</span><span v-else>-</span><br />
               <b>GPA:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
               <b>Core Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
               <b>Required Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
               <b>Elective Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
               <b>Remark:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
-              <div class="w-100 d-flex justify-content-center mt-3"><v-btn small>See student record</v-btn></div>
+              <div class="w-100 d-flex justify-content-center mt-3">
+                <v-btn small>See student record</v-btn>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
