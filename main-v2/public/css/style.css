@@ -95,7 +95,7 @@ main {
   display: none;
 }
 
-.home .v-data-table__wrapper > table > tbody > tr:not(:last-child) > td:last-child {
+.home .v-data-table__wrapper > table > tbody > tr:not(:last-child) > .v-data-table__mobile-table-row:last-child, .home .v-data-table__wrapper > table > .v-data-table-header-mobile > tr:last-child > th  {
   border-bottom: none !important;
 }
 
