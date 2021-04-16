@@ -88,6 +88,10 @@ const routes = [
       requiresAuth: false,
     },
   },
+  {
+    path: "/:catchAll(.*)",
+    redirect: "/"
+  }
 ];
 
 const router = new VueRouter({
