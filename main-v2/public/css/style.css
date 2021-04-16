@@ -95,6 +95,9 @@ main {
   display: none;
 }
 
+.home .v-data-table__wrapper > table > tbody > tr:not(:last-child) > td:last-child {
+  border-bottom: none !important;
+}
 
 .home .v-data-table__wrapper table tbody .v-data-table__mobile-table-row .v-data-table__mobile-row__cell {
   text-align: start !important;

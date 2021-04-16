@@ -48,7 +48,7 @@
                 </v-card-text>
                 <!-- Add Manually content -->
                 <v-card-text v-else-if="!importStatus">
-                    <v-form> 
+                    <v-form>
                         <v-row>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto;">
                                 <v-text-field label="ID"  id="id" dense outlined></v-text-field>
@@ -307,7 +307,7 @@ export default {
         changeToAddManually(){
             this.importStatus = !this.importStatus
         },
-        dataStatus(){ 
+        dataStatus(){
             this.SnackBarStatus = true
         }
     },
