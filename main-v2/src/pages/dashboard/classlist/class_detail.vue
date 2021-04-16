@@ -7,21 +7,50 @@
         <v-card-text>
           <v-btn @click="$router.push('/class')">back to class list</v-btn>
         </v-card-text>
-        <v-list class="pa-3"> </v-list>
+        <v-list class="pa-3">
+          <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list">
+            <v-list-item-group
+              v-model="selected"
+              style="margin-top:15px;"
+              active-class="primary--text"
+            >
+              <template v-for="(item, index) in items">
+                <v-list-item :key="item.title" @click="showdata(item)" class="my-n4">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
+                  </v-list-item-action>
+                </v-list-item>
+                <!-- <v-divider v-if="index < items.length - 1" :key="index"></v-divider> -->
+                <v-divider v-if="index !== items.length - 1" :key="index" class=""></v-divider>
+              </template>
+            </v-list-item-group>
+          </simplebar>
+        </v-list>
       </v-card>
     </v-col>
     <!-- 2nd column -->
     <v-col style="padding: 0 0 0 8px">
-      <v-card class="pa-3 box"><stdTable></stdTable></v-card>
+      <v-card class="box">
+        <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height">
+          <stdTable class="ma-3"></stdTable>
+        </simplebar>
+      </v-card>
     </v-col>
   </v-row>
 </template>
 <script>
 import stdTable from "./components/student_info.vue";
+import simplebar from "simplebar-vue";
+import "simplebar/dist/simplebar.min.css";
+
 export default {
   name: "class_detail",
   components: {
     stdTable,
+    simplebar,
   },
   created() {
     this.loadClass();
