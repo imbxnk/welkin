@@ -17,7 +17,11 @@
       </v-col>
     </v-row>
     <v-card>
+      <!-- if loading -->
+      <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table>
+      <!-- else -->
       <v-data-table
+        v-else
         :headers="headers"
         :items="students"
         :search="search"
@@ -41,23 +45,33 @@
 
           <v-card-text>
             <v-row>
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="5">
+                <!-- <v-progress-circular
+                  :width="3"
+                  class="loading-center  "
+                  color="primary"
+                  indeterminate
+                ></v-progress-circular> -->
                 <v-img
                   src="https://semantic-ui.com/images/avatar2/large/matthew.png"
                   contain
-                  max-width="250"
+                  max-width="180"
                   class="center"
                 />
               </v-col>
               <v-col cols="12" sm="6">
-                <b>ID:</b> <span>{{ stdDetail.sid }}</span><br />
-                <b>Email:</b> <span v-if="stdDetail.email">{{}}</span><span v-else>-</span><br />
+                <b>ID:</b> <span>{{ stdDetail.sid }}</span
+                ><br />
+                <b>Email:</b> <span v-if="stdDetail.email">{{ stdDetail.email }}</span
+                ><span v-else>-</span><br />
                 <b>GPA:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
                 <b>Core Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
                 <b>Required Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
                 <b>Elective Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
                 <b>Remark:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
-                <div class="w-100 d-flex justify-content-center mt-3"><v-btn small>See student record</v-btn></div>
+                <div class="w-100 d-flex justify-content-center mt-3">
+                  <v-btn small>See student record</v-btn>
+                </div>
               </v-col>
             </v-row>
             <!-- edit remark -->
@@ -91,6 +105,7 @@ export default {
   data() {
     return {
       dialog: false,
+      loading: true,
 
       search: "",
       headers: [
@@ -165,6 +180,7 @@ export default {
           this.students = [...res.data.data.students.students];
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
+            this.loading = false;
           });
         })
         .catch((err) => {
@@ -187,5 +203,13 @@ export default {
   margin-left: auto;
   margin-right: auto;
   width: 100%;
+}
+.loading-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 </style>
