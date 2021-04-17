@@ -4,8 +4,21 @@
     <v-col style="padding: 0 8px 0 0">
       <v-card>
         <v-card-title class="pt-7">Class List</v-card-title>
+
         <v-list class="pa-3">
-          <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list">
+          <simplebar
+            v-if="loading"
+            data-simplebar-auto-hide="true"
+            class="wk-content-full-height-list"
+          >
+            <v-progress-circular
+              :size="50"
+              class="loading-center  "
+              color="primary"
+              indeterminate
+            ></v-progress-circular
+          ></simplebar>
+          <simplebar v-else data-simplebar-auto-hide="true" class="wk-content-full-height-list">
             <v-list-item-group
               v-model="selected"
               style="margin-top:15px;"
@@ -66,6 +79,7 @@ export default {
       selected: [2],
       course: {},
       status: false,
+      loading: true,
       items: [],
       // items: [
       //   {
@@ -106,6 +120,7 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.items = [...res.data.data.courses.courses];
+          this.loading = false;
         })
         .catch((err) => {
           console.log(err);
@@ -147,5 +162,13 @@ export default {
   width: 100%;
   text-align: center;
   flex-grow: 1;
+}
+.loading-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 </style>
