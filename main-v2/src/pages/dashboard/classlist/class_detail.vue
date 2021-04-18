@@ -1,5 +1,5 @@
 <template>
-  <v-row class="ma-4">
+  <v-row>
     <!-- 1st column -->
     <v-col style="padding: 0 8px 0 0">
       <v-card>
@@ -95,11 +95,12 @@ export default {
   transform: translate(-50%, -50%);
 }
 .wk-content-full-height {
-  height: calc(100vh - 110px);
-  overflow: auto;
+  height: calc(100vh - 83px);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .wk-content-full-height-list {
-  height: calc(100vh - 186px);
+  height: calc(100vh - 222px);
   overflow: auto;
 }
 .logo-watermark {

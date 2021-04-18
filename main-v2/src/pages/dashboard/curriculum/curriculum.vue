@@ -56,6 +56,13 @@ export default {
   components: {
     simplebar
   },
+  data() {
+    return {
+      selected : [],
+      items: [],
+      status: false,
+    }
+  },
 };
 </script>
 

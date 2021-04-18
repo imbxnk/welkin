@@ -1,12 +1,9 @@
 <template>
   <!-- *not responsive* -->
   <div>
-    <v-row class="">
-      <v-col>
-        <v-card-title>
-          2019-2020T1
-        </v-card-title>
-      </v-col>
+    <!-- <v-row class="">
+      <v-col> -->
+      <!-- </v-col> -->
       <!-- <v-col cols="6" md="5" lg="4" xl="3">
         <v-text-field
           v-model="search"
@@ -16,11 +13,12 @@
           class="mr-3"
         ></v-text-field>
       </v-col> -->
-    </v-row>
-    <v-card>
-      <v-data-table :headers="headers" :items="student" mobile-breakpoint="680" class="home">
-      </v-data-table
-    ></v-card>
+      <v-card-title>
+          2019-2020T1
+      </v-card-title>
+      <v-card>
+        <v-data-table :headers="headers" :items="student" mobile-breakpoint="680" class="home"></v-data-table>
+      </v-card>
   </div>
 </template>
 
