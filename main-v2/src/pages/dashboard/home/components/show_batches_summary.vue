@@ -28,7 +28,7 @@ export default {
     return {
       total: 0,
       batches: {},
-      started_batch: 60,
+      queryBatches: [60,61,63],
     };
   },
   mounted() {
@@ -36,13 +36,14 @@ export default {
   },
   methods: {
     getTotalBatches() {
+      // ALGORITHM TO CREATE QUERY
+      var queryStr = ''
+      this.queryBatches.forEach(batch => {
+        queryStr += `batch${batch}:students (searchInput: { batch : "${batch}"}) { total }`
+      })
       let query = `
               query {
-                batch${this.started_batch}:students (searchInput: { batch : "${this.started_batch}"}) { total }
-                batch${this.started_batch+1}:students (searchInput: { batch : "${this.started_batch+1}"}) { total }
-                batch${this.started_batch+2}:students (searchInput: { batch : "${this.started_batch+2}"}) { total }
-                batch${this.started_batch+3}:students (searchInput: { batch : "${this.started_batch+3}"}) { total }
-                batch${this.started_batch+4}:students (searchInput: { batch : "${this.started_batch+4}"}) { total }
+                ${queryStr}
               }
           `
       this.axios
