@@ -15,36 +15,44 @@
 
         <v-menu bottom max-width="300px" rounded offset-y>
           <template v-slot:activator="{ on, attrs }">
-            <v-avatar color="primary" size="35" v-bind="attrs" v-on="on">
-              <span class="white--text ">{{
-                user.given_name.charAt(0) + user.family_name.charAt(0)
-              }}</span>
+            <v-avatar v-if="user.avatar_url" size="35" v-bind="attrs" v-on="on">
+              <img
+                :src="user.avatar_url"
+              >
+            </v-avatar>
+            <v-avatar color="primary" size="35" v-bind="attrs" v-on="on" v-else>
+              <span class="white--text">
+                {{ user.given_name.charAt(0) + user.family_name.charAt(0) }}
+              </span>
             </v-avatar>
           </template>
 
           <v-list>
             <v-list-item-content class="justify-center">
               <div class="text-center">
-                <v-avatar color="primary">
-                  <span class="white--text">{{
-                    user.given_name.charAt(0) + user.family_name.charAt(0)
-                  }}</span>
+                <v-avatar v-if="user.avatar_url">
+                  <img
+                    :src="user.avatar_url"
+                  >
+                </v-avatar>
+                <v-avatar color="primary" v-else>
+                  <span class="white--text">
+                    {{ user.given_name.charAt(0) + user.family_name.charAt(0) }}
+                  </span>
                 </v-avatar>
                 <br /><br />
                 <h6>{{ user.given_name + " " + user.family_name }}</h6>
-                <p class="caption mt-1">
+                <p class="caption">
                   {{ user.email }}
                 </p>
-                <v-btn @click="$router.push({ name: 'profile' })" depressed outlined rounded text
-                  >Manage Your Account</v-btn
-                >
+                <v-btn @click="$router.push({ path: '/profile' })" depressed outlined rounded text>Manage Your Account</v-btn>
                 <v-divider class=""></v-divider>
               </div>
               <!-- <v-list-item v-for="(account, i) in accounts" :key="i" :to="account.href">
                 <v-list-item-title>{{ account.title }}</v-list-item-title>
               </v-list-item> -->
               <v-list-item class="my-n4 px-16">
-                <v-btn @click="logout()" block outlined depressed text>Logout</v-btn>
+                <v-btn class="my-3" @click="logout()" block outlined depressed text>Logout</v-btn>
               </v-list-item>
               <v-divider class="mb-n5 py-2"></v-divider>
             </v-list-item-content>
@@ -280,5 +288,13 @@ a:hover {
 }
 .logo {
   height: 30px;
+}
+.v-menu__content {
+  top: 50px !important;
+}
+
+h6 {
+  font-size: 0.95rem;
+  margin-bottom: 0;
 }
 </style>

@@ -1,10 +1,17 @@
 <template>
   <div>
-    Settings
+    <v-row>
+      <v-col>
+        <v-card-title>
+          Settings
+        </v-card-title>
+      </v-col>
+    </v-row>
+    <v-card>
     <input type="text" v-model="userInput.currentPassword"/>
     <input type="text" v-model="userInput.newPassword"/>
     <button @click="updatePassword">Submit</button>
-
+    </v-card>
   </div>
 </template>
 

@@ -6,7 +6,6 @@ Vue.use(VueRouter);
 
 // Import All Routes
 import Home from "../pages/dashboard/home/home";
-import Me from "../pages/dashboard/profile/me";
 import Profile from "../pages/dashboard/profile/profile";
 import Settings from "../pages/dashboard/profile/settings";
 import Manage from "../pages/dashboard/manage/manage";
@@ -52,10 +51,6 @@ const routes = [
       requiresAuth: true,
     },
     children: [
-      {
-        path: "/",
-        component: Me,
-      },
       {
         path: "settings",
         component: Settings,

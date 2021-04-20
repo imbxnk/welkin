@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="">
+    <v-row>
       <v-col>
         <v-card-title>
           Students

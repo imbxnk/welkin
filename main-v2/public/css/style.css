@@ -64,8 +64,8 @@ main {
   z-index: -1;
   height: 10px;
   top: 60%;
-  left: 5%;
-  right: 5%;
+  left: 2%;
+  right: 2%;
   border-radius: 100px / 5px;
   box-shadow:0 0 18px rgba(0,0,0,0.6);
 }
