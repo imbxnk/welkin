@@ -8,9 +8,36 @@
       </v-col>
     </v-row>
     <v-card>
-    <input type="text" v-model="userInput.currentPassword"/>
-    <input type="text" v-model="userInput.newPassword"/>
-    <button @click="updatePassword">Submit</button>
+      <v-card-text>
+        <v-text-field
+          label="Current Password"
+          type="password"
+          outlined
+          v-model="userInput.currentPassword"
+        ></v-text-field>
+
+        <v-text-field
+          label="New Password"
+          type="password"
+          outlined
+          v-model="userInput.newPassword"
+        ></v-text-field>
+
+        <v-text-field
+          label="Confirm Password"
+          type="password"
+          outlined
+          v-model="userInput.confirmPassword"
+        ></v-text-field>
+
+        <v-btn
+          depressed
+          color="primary"
+          @click="updatePassword"
+        >
+          Submit
+        </v-btn>
+      </v-card-text>
     </v-card>
   </div>
 </template>
@@ -23,29 +50,31 @@ export default {
       userInput: {
         currentPassword: '',
         newPassword: '',
+        confirmPassword: ''
       }
     }
   },
   methods: {
     updatePassword() {
-      let query = `
-                    mutation {
-                      updatePassword (userInput: { currentPassword: "${this.userInput.currentPassword}", newPassword: "${this.userInput.newPassword}" }) {
-                        token,
-                        userId,
-                        message
+      if(this.userInput.newPassword === this.userInput.newPassword){
+        let query = `
+                      mutation {
+                        updatePassword (userInput: { currentPassword: "${this.userInput.currentPassword}", newPassword: "${this.userInput.newPassword}" }) {
+                          token,
+                          userId,
+                          message
+                        }
                       }
-                    }
-                `;
-      console.log(query)
-      this.axios
-        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+                  `;
+        this.axios
+          .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
   },
 }
