@@ -214,6 +214,11 @@ export default {
             href: "/manage/student",
             icon: "mdi-plus"
           },
+          {
+            title: "Add New Grade",
+            href: "/manage/grade",
+            icon: "mdi-plus"
+          }
         ],
       },
     ],
