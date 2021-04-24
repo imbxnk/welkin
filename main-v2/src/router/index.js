@@ -8,7 +8,7 @@ Vue.use(VueRouter);
 import Home from "../pages/dashboard/home/home";
 import Profile from "../pages/dashboard/profile/profile";
 import Settings from "../pages/dashboard/profile/settings";
-import Manage from "../pages/dashboard/manage/manage";
+import ManageStudents from "../pages/dashboard/manage/manage_students";
 import StudentList from "../pages/dashboard/students/students";
 import ClassList from "../pages/dashboard/classlist/classlist";
 import ClassHistory from "../pages/dashboard/classlist/class_history";
@@ -25,6 +25,7 @@ const routes = [
     component: Home,
     meta: {
       requiresAuth: true,
+      title: 'Dashboard'
     },
   },
   {
@@ -33,6 +34,7 @@ const routes = [
     component: StudentList,
     meta: {
       requiresAuth: true,
+      title: 'Student'
     },
   },
   {
@@ -41,6 +43,7 @@ const routes = [
     component: ClassList,
     meta: {
       requiresAuth: true,
+      title: 'Class'
     },
   },
   {
@@ -49,27 +52,36 @@ const routes = [
     component: Profile,
     meta: {
       requiresAuth: true,
+      title: 'Profile',
     },
     children: [
       {
         path: "settings",
         component: Settings,
+        meta: {
+          title: 'Settings'
+        }
       }
     ]
   },
   {
     name: "manage",
     path: "/manage/student",
-    component: Manage,
+    component: ManageStudents,
     meta: {
       requiresAuth: true,
       authorizedGroup: ["coordinator"],
+      title: 'Student Management'
     },
   },
   {
     name: "class_history",
     path: "/class_history",
     component: ClassHistory,
+    meta: {
+      requiresAuth: true,
+      title: 'Class History'
+    }
   },
   {
     name: "class_detail",
@@ -77,6 +89,7 @@ const routes = [
     component: ClassDetail,
     meta: {
       requiresAuth: true,
+      title: 'Class Detail'
     },
   },
   {
@@ -85,6 +98,7 @@ const routes = [
     component: Curriculum,
     meta: {
       requiresAuth: true,
+      title: 'Curriculum'
     },
   },
   {
@@ -93,6 +107,7 @@ const routes = [
     component: Login,
     meta: {
       requiresAuth: false,
+      title: 'Login'
     },
   },
   {
@@ -112,10 +127,8 @@ router.beforeEach(async (to, from, next) => {
   const authorizedGroup = to.meta.authorizedGroup
 
   try {
-    if (requiresAuth && currentUser.group === "admin") return next();
-  } catch (err) {
-    console.log(err);
-  }
+    if (requiresAuth && currentUser.group === "admin") return next()
+  } catch (err) {}
 
   if (requiresAuth && !currentUser) router.push("/login")
 
@@ -126,7 +139,12 @@ router.beforeEach(async (to, from, next) => {
     return next()
   }
   next()
-  console.log(to, from, next)
 });
+
+router.afterEach((to, from) => {
+  Vue.nextTick( () => {
+    document.title = to.meta.title ? to.meta.title : 'Welkin'
+  })
+})
 
 export default router;

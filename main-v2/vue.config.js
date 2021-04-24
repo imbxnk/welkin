@@ -3,7 +3,7 @@ module.exports = {
     'index': {
       entry: './src/pages/main.js',
       template: 'public/index.html',
-      title: 'Dashboard',
+      title: 'Welkin',
       chunks: [ 'chunk-vendors', 'chunk-common', 'index' ]
     },
   },
