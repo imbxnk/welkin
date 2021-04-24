@@ -243,7 +243,8 @@ export default {
                                     entry_year: "${this.entryYear}"
                                 }
                             ){
-                                sid given_name
+                                sid
+                                given_name
                             }
                         }
                     `
