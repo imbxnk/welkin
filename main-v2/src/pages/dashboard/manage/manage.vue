@@ -51,23 +51,26 @@
                     <v-form>
                         <v-row>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto;">
-                                <v-text-field label="ID"  id="id" dense outlined></v-text-field>
+                                <v-text-field label="ID"  id="id" dense outlined v-model="manualData.ID"></v-text-field>
                             </v-col>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto">
-                                <v-text-field label="Program" dense outlined></v-text-field>
+                                <v-text-field label="Program" dense outlined v-model="manualData.Program"></v-text-field>
                             </v-col>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto">
-                                <v-select :items="prefix" label="Prefix" dense outlined></v-select>
+                                <v-select :items="prefix" label="Prefix" dense outlined v-model="manualData.Prefix"></v-select>
                             </v-col>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto">
-                                <v-text-field label="First Name" dense outlined></v-text-field>
+                                <v-text-field label="First Name" dense outlined v-model="manualData.Name"></v-text-field>
                             </v-col>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto">
-                                <v-text-field label="Last Name" dense outlined></v-text-field>
+                                <v-text-field label="Last Name" dense outlined v-model="manualData.LastName"></v-text-field>
                             </v-col>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto">
-                                <v-text-field label="Advisor" dense outlined></v-text-field>
+                                <v-text-field label="Advisor" dense outlined v-model="manualData.Advisor"></v-text-field>
                             </v-col>
+                        </v-row>
+                        <v-row>
+                            <button class="btn btn-primary" @click.prevent="submitForm();">Submit</button>
                         </v-row>
                     </v-form>
                 </v-card-text>
@@ -216,7 +219,15 @@ export default {
             SnackBarDuplicateStatus: false,
             SnackBarStatus: false,
             timeout: 5000,
-            notDuplicateStudents: true
+            notDuplicateStudents: true,
+            manualData: {
+                ID: "",
+                Program: "",
+                Prefix: "",
+                Name: "",
+                LastName: "",
+                Advisor: ""
+            }
         }
     },
     components:{
@@ -309,6 +320,11 @@ export default {
         },
         dataStatus(){
             this.SnackBarStatus = true
+        },
+        submitForm(){
+            console.log(this.manualData)
+            this.studentsData.push(this.manualData)
+            console.log(this.studentsData)
         }
     },
     props:[
