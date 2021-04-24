@@ -245,9 +245,7 @@ export default {
     checkAuthGroup(i) {
       try{
         if(!this.items[i].authorizedGroup.includes(this.user.group)) return false
-      } catch (err) {
-        console.log(err)
-      }
+      } catch (err) { }
       return true
     },
     async logout() {
@@ -264,12 +262,9 @@ export default {
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res);
           window.location.replace("/login");
         })
-        .catch((err) => {
-          console.log(err.message);
-        });
+        .catch((err) => { })
     },
   },
 };

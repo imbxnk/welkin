@@ -14,7 +14,7 @@
               <template v-for="(item, index) in items">
                 <v-list-item :key="item.title" @click="showdata(item)" class="my-n4">
                   <v-list-item-content>
-                    <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
+                    <v-list-item-title v-text="item.name"></v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-action>
                     <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
@@ -56,11 +56,39 @@ export default {
   components: {
     simplebar
   },
+  mounted() {
+    this.getCurriculums()
+  },
   data() {
     return {
       selected : [],
       items: [],
       status: false,
+    }
+  },
+  methods: {
+    getCurriculums() {
+      let query = `
+              query {
+                curriculums {
+                  total
+                  curriculums {
+                    _id
+                    name
+                    batches
+                  }
+                }
+              }
+          `;
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.items = [...res.data.data.curriculums.curriculums];
+          this.loading = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   },
 };

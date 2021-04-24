@@ -175,7 +175,6 @@
 
 <script>
 import XLSX from 'xlsx'
-import axios from 'axios'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 
@@ -255,13 +254,12 @@ export default {
                                     entry_year: "${this.entryYear}"
                                 }
                             ){
-                                sid given_name
+                                sid
+                                given_name
                             }
                         }
                     `
-                await axios.post(this.url, {
-                    query : gql
-                }).then(res => {
+                await this.axios.post(this.url, { query : gql }, { withCredentials: true }).then(res => {
                     console.log(res);
                 }).catch (err => {
                     console.log(err);
