@@ -14,9 +14,9 @@ import ClassList from "../pages/dashboard/classlist/classlist";
 import ClassHistory from "../pages/dashboard/classlist/class_history";
 import ClassDetail from "../pages/dashboard/classlist/class_detail";
 import Curriculum from "../pages/dashboard/curriculum/curriculum";
-import Manage_grade from "../pages/dashboard/manage/manage_grade"
+import Manage_grade from "../pages/dashboard/manage/manage_grade";
 // Login Route
-import Login from "../pages/login/login"
+import Login from "../pages/login/login";
 
 // Define All Routes
 const routes = [
@@ -26,7 +26,7 @@ const routes = [
     component: Home,
     meta: {
       requiresAuth: true,
-      title: 'Dashboard'
+      title: "Dashboard",
     },
   },
   {
@@ -35,7 +35,7 @@ const routes = [
     component: StudentList,
     meta: {
       requiresAuth: true,
-      title: 'Student'
+      title: "Student",
     },
   },
   {
@@ -44,7 +44,7 @@ const routes = [
     component: ClassList,
     meta: {
       requiresAuth: true,
-      title: 'Class'
+      title: "Class",
     },
   },
   {
@@ -53,31 +53,31 @@ const routes = [
     component: Profile,
     meta: {
       requiresAuth: true,
-      title: 'Profile',
+      title: "Profile",
     },
     children: [
       {
         path: "settings",
         component: Settings,
         meta: {
-          title: 'Settings'
-        }
-      }
-    ]
+          title: "Settings",
+        },
+      },
+    ],
   },
   {
     name: "manage",
-    path: "/manage/student",
+    path: "/manage/student/addstudent",
     component: ManageStudents,
     meta: {
       requiresAuth: true,
       authorizedGroup: ["coordinator"],
-      title: 'Student Management'
+      title: "Student Management",
     },
   },
   {
     name: "manage_grade",
-    path: "/manage/grade",
+    path: "/manage/student/addgrade",
     component: Manage_grade,
     meta: {
       requiresAuth: true,
@@ -90,8 +90,8 @@ const routes = [
     component: ClassHistory,
     meta: {
       requiresAuth: true,
-      title: 'Class History'
-    }
+      title: "Class History",
+    },
   },
   {
     name: "class_detail",
@@ -99,7 +99,7 @@ const routes = [
     component: ClassDetail,
     meta: {
       requiresAuth: true,
-      title: 'Class Detail'
+      title: "Class Detail",
     },
   },
   {
@@ -108,7 +108,7 @@ const routes = [
     component: Curriculum,
     meta: {
       requiresAuth: true,
-      title: 'Curriculum'
+      title: "Curriculum",
     },
   },
   {
@@ -117,13 +117,13 @@ const routes = [
     component: Login,
     meta: {
       requiresAuth: false,
-      title: 'Login'
+      title: "Login",
     },
   },
   {
     path: "/:catchAll(.*)",
-    redirect: "/"
-  }
+    redirect: "/",
+  },
 ];
 
 const router = new VueRouter({
@@ -132,29 +132,29 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const currentUser = (await welkin.auth()).currentUser
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
-  const authorizedGroup = to.meta.authorizedGroup
+  const currentUser = (await welkin.auth()).currentUser;
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const authorizedGroup = to.meta.authorizedGroup;
 
   try {
-    if (requiresAuth && currentUser.group === "admin") return next()
+    if (requiresAuth && currentUser.group === "admin") return next();
   } catch (err) {}
 
-  if (requiresAuth && !currentUser) router.push("/login")
+  if (requiresAuth && !currentUser) router.push("/login");
 
-  if (!requiresAuth && currentUser) router.push("/")
+  if (!requiresAuth && currentUser) router.push("/");
 
   if (requiresAuth && authorizedGroup) {
-    if (!authorizedGroup.includes(currentUser.group)) return next("/")
-    return next()
+    if (!authorizedGroup.includes(currentUser.group)) return next("/");
+    return next();
   }
-  next()
+  next();
 });
 
 router.afterEach((to, from) => {
-  Vue.nextTick( () => {
-    document.title = to.meta.title ? to.meta.title : 'Welkin'
-  })
-})
+  Vue.nextTick(() => {
+    document.title = to.meta.title ? to.meta.title : "Welkin";
+  });
+});
 
 export default router;
