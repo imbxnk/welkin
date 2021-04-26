@@ -1,10 +1,19 @@
 <template>
   <v-row v-resize="onResize">
     <!-- 1st column -->
-    <v-col class="wk-left-col" cols="12" md="6" :class="{ hide: !isHidden}">
+    <v-col class="wk-left-col" cols="12" md="6" :class="{ hide: !isHidden }">
       <v-card>
-        <v-card-title class="pt-7">Class List</v-card-title>
-
+        <v-row>
+          <v-col> <v-card-title class="pt-7">Course List</v-card-title></v-col
+          ><v-col class="mt-3 mr-3">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              type="text"
+            ></v-text-field>
+          </v-col>
+        </v-row>
         <v-list class="pa-3">
           <simplebar
             v-if="loading"
@@ -24,7 +33,7 @@
               style="margin-top:15px;"
               active-class="primary--text"
             >
-              <template v-for="(item, index) in items">
+              <template v-for="(item, index) in filterItems">
                 <v-list-item :key="item.title" @click="showdata(item)" class="my-n4">
                   <v-list-item-content>
                     <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
@@ -42,7 +51,7 @@
       </v-card>
     </v-col>
     <!-- 2nd column -->
-    <v-col class="wk-right-col" cols="12" md="6" :class="{ hide: isHidden}">
+    <v-col class="wk-right-col" cols="12" md="6" :class="{ hide: isHidden }">
       <v-card v-if="!status" class="pa-3 box">
         <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height">
           <div class="center grey--text small--text">
@@ -53,9 +62,22 @@
       </v-card>
       <v-card v-else class="pa-3">
         <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height">
-          <a v-if="windowSize.x < 768" @click="back" class="overline my-n1 back primary--text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-</svg> BACK</a>
+          <a v-if="windowSize.x < 768" @click="back" class="overline my-n1 back primary--text"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-arrow-left"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+              />
+            </svg>
+            BACK</a
+          >
           <ClassInfo :name="this.course.name" :code="this.course.code"></ClassInfo>
         </simplebar>
       </v-card>
@@ -78,6 +100,16 @@ export default {
     this.getClasses();
     this.onResize();
   },
+  computed: {
+    filterItems: function() {
+      return this.items.filter((item) => {
+        return (
+          item.name.toLowerCase().match(this.search.toLowerCase()) ||
+          item.code.toLowerCase().match(this.search.toLowerCase())
+        );
+      });
+    },
+  },
   data() {
     return {
       selected: [2],
@@ -85,6 +117,7 @@ export default {
       status: false,
       loading: true,
       items: [],
+      search: "",
       isHidden: true,
       windowSize: {
         x: 0,
@@ -136,14 +169,14 @@ export default {
           console.log(err);
         });
     },
-    onResize () {
-      console.log("text")
-      this.windowSize = { x: window.innerWidth, y: window.innerHeight }
+    onResize() {
+      console.log("text");
+      this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     },
     back() {
-      this.isHidden = true
-      this.status = false
-    }
+      this.isHidden = true;
+      this.status = false;
+    },
   },
 };
 </script>
@@ -205,7 +238,6 @@ export default {
     opacity: 0 !important;
   }
 }
-
 
 .box {
   display: flex;
