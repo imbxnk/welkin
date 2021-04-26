@@ -117,7 +117,11 @@
               </template>
 
               <template v-for="(subitem, j) in item.children">
-                <v-list-item v-if="!subitem.children" :key="j" :to="item.href + subitem.href">
+                <v-list-item
+                  v-if="!subitem.children && checkAuthGroup(i)"
+                  :key="j"
+                  :to="item.href + subitem.href"
+                >
                   <v-list-item-icon>
                     <v-icon>{{ subitem.icon }}</v-icon>
                   </v-list-item-icon>
@@ -126,7 +130,13 @@
                   </v-list-item-content>
                 </v-list-item>
 
-                <v-list-group v-else :key="j" link :group="subitem.href" sub-group>
+                <v-list-group
+                  v-else-if="subitem.children && checkAuthGroup(i)"
+                  :key="j"
+                  link
+                  :group="subitem.href"
+                  sub-group
+                >
                   <template #activator>
                     <v-list-item-content>
                       <v-list-item-title>{{ subitem.title }}</v-list-item-title>
@@ -266,6 +276,7 @@ export default {
         title: "Manage",
         href: "/manage",
         icon: "mdi-cog-outline",
+        authorizedGroup: ["coordinator", "admin"],
         children: [
           {
             title: "Student",
