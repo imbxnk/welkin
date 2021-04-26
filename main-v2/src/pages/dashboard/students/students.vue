@@ -58,35 +58,49 @@
                   max-width="180"
                   class="center"
                 />
+                <div class="overline text-center">{{ stdDetail.sid }}</div>
               </v-col>
               <v-col cols="12" sm="6">
-                <b>ID:</b> <span>{{ stdDetail.sid }}</span
-                ><br />
                 <b>Email:</b> <span v-if="stdDetail.email">{{ stdDetail.email }}</span
                 ><span v-else>-</span><br />
                 <b>GPA:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
                 <b>Core Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
                 <b>Required Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
                 <b>Elective Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
-                <b>Remark:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
+                <b>Remark:</b> <span v-if="false">{{}} </span><span v-else>-</span
+                ><v-icon class="ml-2" small @click="dialog2 = true">mdi-pencil</v-icon><br />
                 <div class="w-100 d-flex justify-content-center mt-3">
                   <v-btn small>See student record</v-btn>
                 </div>
               </v-col>
             </v-row>
-            <!-- edit remark -->
-            <!-- <v-row class="">
-              <v-col cols="3" sm="2"> <div class="overline mt-5">edit</div> </v-col
-              ><v-col cols="8">
-                <v-text-field v-model="firstname" label="Remark" required></v-text-field
-              ></v-col>
-              <v-col><v-btn x-small color="success" class="mt-5">save</v-btn></v-col>
-            </v-row> -->
           </v-card-text>
 
           <v-card-actions class="mt-n4">
             <v-spacer></v-spacer>
-            <v-btn color="green" text @click="dialog = false">
+            <v-btn color="red" text @click="dialog = false">
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <!-- dialog2 *add remark* -->
+      <v-dialog v-model="dialog2" max-width="300px">
+        <v-card class="pa-3">
+          <br />
+
+          <div class="text-center">
+            <p class="overline primary--text my-n2">Add Remark For</p>
+            <p class="font-weight-bold ">{{ stdDetail.name }}</p>
+          </div>
+
+          <v-divider class=""></v-divider>
+          <v-textarea outlined name="input-7-4" label="Remark" v-model="value"></v-textarea>
+          <v-btn block class="mt-n3" color="primary" :disabled="!value"> save </v-btn>
+          <v-card-actions class="mr-n5">
+            <v-spacer></v-spacer>
+            <v-btn color="red" text @click="closedialog2()">
               Close
             </v-btn>
           </v-card-actions>
@@ -102,10 +116,17 @@ export default {
   mounted() {
     this.getStudents();
   },
+  computed: {
+    isDisable() {
+      return this.value.length > 0;
+    },
+  },
   data() {
     return {
       dialog: false,
+      dialog2: false,
       loading: true,
+      value: "",
 
       search: "",
       headers: [
@@ -193,6 +214,10 @@ export default {
       console.log(row);
       this.stdDetail = row;
       console.log(this.stdDetail);
+    },
+    closedialog2() {
+      this.dialog2 = false;
+      this.value = "";
     },
   },
 };
