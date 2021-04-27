@@ -305,6 +305,12 @@ export default {
               },
             ],
           },
+          {
+            title: "Add Instructor",
+            href: "/addinstructor",
+            icon: "mdi-account-multiple-plus",
+            authorizedGroup: ["coordinator", "admin"],
+          }
         ],
       },
       // {
