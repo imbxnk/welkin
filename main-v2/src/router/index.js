@@ -32,7 +32,7 @@ const routes = [
   },
   {
     name: "student_list",
-    path: "/students/allstudents",
+    path: "/students/all",
     component: StudentList,
     meta: {
       requiresAuth: true,

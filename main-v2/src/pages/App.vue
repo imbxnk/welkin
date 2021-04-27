@@ -235,12 +235,12 @@ export default {
         children: [
           {
             title: "All Students",
-            href: "/allstudents",
+            href: "/all",
             icon: "mdi-account-multiple-outline",
           },
           {
             title: "Advised Students",
-            href: "/advisedstudents",
+            href: "/advised",
             icon: "mdi-account-multiple-outline",
           },
         ],
