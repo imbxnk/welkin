@@ -171,7 +171,6 @@ export default {
         });
     },
     onResize() {
-      console.log("text");
       this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     },
     back() {

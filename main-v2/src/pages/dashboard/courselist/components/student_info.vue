@@ -109,11 +109,8 @@ export default {
           this.class_detail.enrollments.forEach(enrollment => {
             enrollment.student.name = enrollment.student.given_name + " " + enrollment.student.family_name
           });
-          console.log(this.class_detail);
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => { });
     },
   },
 };

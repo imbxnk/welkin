@@ -3,7 +3,7 @@
     <!-- 1st column -->
     <v-col style="padding: 0 8px 0 0">
       <v-card>
-        <v-card-title class="text-uppercase">{{ course.code }}: {{ course.name }}</v-card-title>
+        <v-card-title class="text-uppercase">{{ $route.params.code }}</v-card-title>
         <v-card-text>
           <v-btn @click="$router.push('/course')">back to course list</v-btn>
         </v-card-text>
@@ -14,17 +14,17 @@
               style="margin-top:15px;"
               active-class="primary--text"
             >
-              <template v-for="(item, index) in items">
+              <template v-for="(item, index) in classes">
                 <v-list-item :key="item.title" @click="showdata(item)" class="my-n4">
                   <v-list-item-content>
-                    <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
+                    <v-list-item-title v-text="item.year + 'T' + item.trimester + ' SEC' + item.section"></v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-action>
                     <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
                   </v-list-item-action>
                 </v-list-item>
                 <!-- <v-divider v-if="index < items.length - 1" :key="index"></v-divider> -->
-                <v-divider v-if="index !== items.length - 1" :key="index" class=""></v-divider>
+                <v-divider v-if="index !== classes.length - 1" :key="index" class=""></v-divider>
               </template>
             </v-list-item-group>
           </simplebar>
@@ -53,37 +53,33 @@ export default {
     simplebar,
   },
   created() {
-    this.loadClass();
+    this.loadClasses();
   },
   data() {
     return {
-      course: {},
+      classes: []
     };
   },
   methods: {
-    loadClass() {
+    loadClasses() {
       let query = `
                     query {
-                      class(classId: "6088429b6c8ef139be53ca89") {
-                        course {
-                          code
-                          name
-                          description
-                        }
-                        instructor {
-                          title
-                          name
-                        }
-                        section
-                        trimester
-                        year
-                        enrollments {
-                          student {
-                            sid
-                            given_name
-                            family_name
+                      classes (searchInput: { course_code: "${this.$route.params.code}" }) {
+                        total
+                        classes {
+                          _id
+                          course {
+                            code
+                            name
+                            description
                           }
-                          grade
+                          section
+                          instructor {
+                            title
+                            name
+                          }
+                          trimester
+                          year
                         }
                       }
                     }
@@ -91,12 +87,9 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          this.course = res.data.data.course;
-          console.log(this.course);
+          this.classes = res.data.data.classes.classes
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => { })
     },
   },
 };
