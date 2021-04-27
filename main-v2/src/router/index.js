@@ -33,7 +33,7 @@ const routes = [
   },
   {
     name: "student_list",
-    path: "/student",
+    path: "/students/all",
     component: StudentList,
     meta: {
       requiresAuth: true,
@@ -41,12 +41,12 @@ const routes = [
     },
   },
   {
-    name: "class_list",
-    path: "/class",
+    name: "course_list",
+    path: "/course",
     component: ClassList,
     meta: {
       requiresAuth: true,
-      title: "Class",
+      title: "Course",
     },
   },
   {
@@ -68,8 +68,8 @@ const routes = [
     ],
   },
   {
-    name: "manage",
-    path: "/manage/student/addstudent",
+    name: "add_student",
+    path: "/manage/student/addstudents",
     component: ManageStudents,
     meta: {
       requiresAuth: true,
@@ -84,6 +84,7 @@ const routes = [
     meta: {
       requiresAuth: true,
       authorizedGroup: ["coordinator"],
+      title: "Upload Grade",
     },
   },
   {
@@ -93,6 +94,7 @@ const routes = [
     meta: {
       requiresAuth: true,
       authorizedGroup: ["coordinator"],
+      title: "Add Instructor",
     },
   },
   {

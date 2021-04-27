@@ -2,10 +2,11 @@
   <v-row v-resize="onResize">
     <!-- 1st column -->
     <v-col class="wk-left-col" cols="12" md="6" :class="{ hide: !isHidden }">
-      <v-card>
+      <v-card class="mt-3">
         <v-row>
-          <v-col> <v-card-title class="pt-7">Course List</v-card-title></v-col
-          ><v-col class="mt-3 mr-3">
+          <v-col cols="12" sm="6">
+            <v-card-title class="pt-4 mb-n10">Course List</v-card-title></v-col
+          ><v-col class="mx-4">
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
