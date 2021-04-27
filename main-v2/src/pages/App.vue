@@ -101,10 +101,9 @@
             <v-list-group
               v-else-if="item.children && checkAuthGroup(i)"
               :group="item.href"
-              :key="item.title"
-              link
-              :to="item.href"
+              :key="i"
               color="primary"
+              link
               @click.stop="toggleMini = true"
             >
               <template #activator>
@@ -121,30 +120,33 @@
                   v-if="!subitem.children && checkAuthGroup(i)"
                   :key="j"
                   :to="item.href + subitem.href"
+                  class="mb-2"
                 >
                   <v-list-item-icon>
                     <v-icon>{{ subitem.icon }}</v-icon>
                   </v-list-item-icon>
                   <v-list-item-content>
-                    <v-list-item-title>{{ subitem.title }}</v-list-item-title>
+                    <v-list-item-title class="ml-0">{{ subitem.title }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
-
+                <!-- if there are children in subchildren -->
                 <v-list-group
                   v-else-if="subitem.children && checkAuthGroup(i)"
                   :key="j"
-                  link
                   :group="subitem.href"
                   sub-group
+                  class="mb-2"
                 >
                   <template #activator>
                     <v-list-item-content>
                       <v-list-item-title>{{ subitem.title }}</v-list-item-title>
                     </v-list-item-content>
                   </template>
+                  <!-- show children in subchildren -->
                   <template v-for="(subSubItem, k) in subitem.children">
                     <v-list-item
                       :key="k"
+                      link
                       :value="true"
                       :to="item.href + subitem.href + subSubItem.href"
                     >
@@ -158,19 +160,6 @@
                   </template>
                 </v-list-group>
               </template>
-
-              <!-- <v-list-item
-                v-for="(subitem, j) in item.children"
-                :key="j"
-                link
-                :to="subitem.href"
-                @click.stop="toggleMini = true"
-              >
-                <v-list-item-icon>
-                  <v-icon>{{ subitem.icon }}</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>{{ subitem.title }}</v-list-item-title>
-              </v-list-item> -->
             </v-list-group>
           </template>
         </v-list>
@@ -240,9 +229,21 @@ export default {
         icon: "mdi-home-outline",
       },
       {
-        title: "Student",
-        href: "/student",
-        icon: "mdi-account-multiple-outline",
+        title: "Students",
+        href: "/students",
+        icon: "mdi-account-group-outline",
+        children: [
+          {
+            title: "All Students",
+            href: "/allstudents",
+            icon: "mdi-account-multiple-outline",
+          },
+          {
+            title: "Advised Students",
+            href: "/advisedstudents",
+            icon: "mdi-account-multiple-outline",
+          },
+        ],
       },
       {
         title: "Class",
@@ -279,12 +280,12 @@ export default {
         authorizedGroup: ["coordinator", "admin"],
         children: [
           {
-            title: "Student",
+            title: "Students",
             href: "/student",
             children: [
               {
-                title: "Add Student",
-                href: "/addstudent",
+                title: "Add Students",
+                href: "/addstudents",
                 icon: "mdi-plus",
               },
               {
@@ -310,7 +311,7 @@ export default {
             href: "/addinstructor",
             icon: "mdi-account-multiple-plus",
             authorizedGroup: ["coordinator", "admin"],
-          }
+          },
         ],
       },
       // {

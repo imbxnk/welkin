@@ -15,7 +15,7 @@ import ClassHistory from "../pages/dashboard/classlist/class_history";
 import ClassDetail from "../pages/dashboard/classlist/class_detail";
 import Curriculum from "../pages/dashboard/curriculum/curriculum";
 import Manage_grade from "../pages/dashboard/manage/manage_grade";
-import AddInstructor from "../pages/dashboard/manage/add_instructor"
+import AddInstructor from "../pages/dashboard/manage/add_instructor";
 // Login Route
 import Login from "../pages/login/login";
 
@@ -32,7 +32,7 @@ const routes = [
   },
   {
     name: "student_list",
-    path: "/student",
+    path: "/students/allstudents",
     component: StudentList,
     meta: {
       requiresAuth: true,
@@ -68,7 +68,7 @@ const routes = [
   },
   {
     name: "manage",
-    path: "/manage/student/addstudent",
+    path: "/manage/student/addstudents",
     component: ManageStudents,
     meta: {
       requiresAuth: true,
