@@ -79,7 +79,7 @@
             </svg>
             BACK</a
           >
-          <ClassInfo :name="this.course.name" :code="this.course.code"></ClassInfo>
+          <CourseInfo :name="this.course.name" :code="this.course.code"></CourseInfo>
         </simplebar>
       </v-card>
     </v-col>
@@ -87,14 +87,14 @@
 </template>
 
 <script>
-import ClassInfo from "./components/class_info.vue";
+import CourseInfo from "./components/course_info.vue";
 import simplebar from "simplebar-vue";
 import "simplebar/dist/simplebar.min.css";
 
 export default {
-  name: "Class_list",
+  name: "Course_list",
   components: {
-    ClassInfo,
+    CourseInfo,
     simplebar,
   },
   mounted() {

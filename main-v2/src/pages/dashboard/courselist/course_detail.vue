@@ -5,7 +5,7 @@
       <v-card>
         <v-card-title class="text-uppercase">{{ course.code }}: {{ course.name }}</v-card-title>
         <v-card-text>
-          <v-btn @click="$router.push('/class')">back to class list</v-btn>
+          <v-btn @click="$router.push('/course')">back to course list</v-btn>
         </v-card-text>
         <v-list class="pa-3">
           <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list">
@@ -47,7 +47,7 @@ import simplebar from "simplebar-vue";
 import "simplebar/dist/simplebar.min.css";
 
 export default {
-  name: "class_detail",
+  name: "course_detail",
   components: {
     stdTable,
     simplebar,
@@ -64,19 +64,34 @@ export default {
     loadClass() {
       let query = `
                     query {
-                    courses (searchInput: {code: "${this.$route.params.code}"}) {
-                        total
-                        courses {
-                        name
-                        code
+                      class(classId: "6088429b6c8ef139be53ca89") {
+                        course {
+                          code
+                          name
+                          description
                         }
-                    }
+                        instructor {
+                          title
+                          name
+                        }
+                        section
+                        trimester
+                        year
+                        enrollments {
+                          student {
+                            sid
+                            given_name
+                            family_name
+                          }
+                          grade
+                        }
+                      }
                     }
                 `;
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          this.course = res.data.data.courses.courses[0];
+          this.course = res.data.data.course;
           console.log(this.course);
         })
         .catch((err) => {

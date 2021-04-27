@@ -61,8 +61,8 @@ export default {
           for (const i in result) {
             this.batches[i] = result[i].total;
             this.total += result[i].total;
-            this.loading = false;
           }
+          this.loading = false;
           console.log(this.batches);
         })
         .catch((err) => {
