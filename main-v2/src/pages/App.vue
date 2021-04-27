@@ -310,6 +310,12 @@ export default {
             href: "/addinstructor",
             icon: "mdi-account-multiple-plus",
             authorizedGroup: ["coordinator", "admin"],
+          },
+          {
+            title: "Add User",
+            href: "/adduser",
+            icon: "mdi-account-multiple-plus",
+            authorizedGroup: ["coordinator", "admin"],
           }
         ],
       },
