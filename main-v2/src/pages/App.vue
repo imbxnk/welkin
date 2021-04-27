@@ -246,8 +246,8 @@ export default {
         ],
       },
       {
-        title: "Class",
-        href: "/class",
+        title: "Course",
+        href: "/course",
         icon: "mdi-file-document-multiple-outline",
       },
       {
