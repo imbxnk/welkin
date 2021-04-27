@@ -201,8 +201,8 @@ export default {
           this.students = [...res.data.data.students.students];
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
-            this.loading = false;
           });
+          this.loading = false;
         })
         .catch((err) => {
           console.log(err);
