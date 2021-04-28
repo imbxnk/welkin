@@ -6,7 +6,7 @@
           <v-card-title>Log in</v-card-title>
           <v-card-subtitle>Welcome to Welkin</v-card-subtitle>
           <v-card-text>
-            <form @submit.prevent="login()">
+            <form refs="loginForm" @submit.prevent="login()">
               <v-text-field
                 v-model="username"
                 label="Username"
@@ -48,8 +48,19 @@ export default {
       token: "",
       userId: "",
       message: "",
-      rules: { },
+      rules: {
+        username: true,
+        password: true
+      },
     };
+  },
+  watch: {
+    'username' (val) {
+      this.rules.username = true
+    },
+    'password' (val) {
+      this.rules.password = true
+    }
   },
   methods: {
     login() {
@@ -70,15 +81,17 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          if(res.success) {
-            this.$router.push('/')
-          } else {
-            console.log(res)
-          }
+          setTimeout(function () {
+            if (this.$refs.loginForm.validate()){
+              if(res.success) {
+                this.$router.push('/')
+              } else {
+                alert(res.message);
+              }
+            }
+          })
         })
         .catch((err) => {
-          alert("Incorrect username or password, please try again");
-          this.rules = { }
         });
     },
   },
