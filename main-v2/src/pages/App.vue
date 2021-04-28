@@ -38,7 +38,7 @@
                   </v-avatar>
                   <br /><br />
                   <h6>{{ user.given_name + " " + user.family_name }}</h6>
-                  <p class="caption">
+                  <p class="caption" style="font-weight: 300">
                     {{ user.email }}
                   </p>
                   <v-btn @click="$router.push({ path: '/profile' })" depressed outlined rounded text
@@ -393,10 +393,6 @@ a:hover {
 }
 .v-list-item {
   min-height: 44px;
-}
-.v-list-item__icon {
-  margin-top: auto !important;
-  margin-bottom: auto !important;
 }
 .logo {
   height: 30px;

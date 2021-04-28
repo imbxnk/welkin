@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;600&display=swap');
 
 html, body {
   min-height: -webkit-fill-available;
@@ -9,9 +9,13 @@ html, body {
   position: relative;
 }
 
-/* .v-application {
+.v-application {
   font-family: 'Quicksand', sans-serif !important;
-} */
+}
+
+.v-card__title, h6 {
+  font-weight: 600 !important;
+}
 
 /* Remove scrollbar */
 body::-webkit-scrollbar, .wk-container::-webkit-scrollbar, .v-navigation-drawer__content::-webkit-scrollbar {
