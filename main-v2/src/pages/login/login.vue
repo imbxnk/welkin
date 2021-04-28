@@ -92,8 +92,8 @@ export default {
               }
             })
             .catch((err) => {
-              if(err.includes('500')) alert("Internal Server Error")
-              if(err.includes('400')) alert("Invalid Username or Password")
+              if(err.toString().includes('500')) alert("Internal Server Error")
+              if(err.toString().includes('400')) alert("Invalid Username or Password")
               alert(err);
             });
         }
