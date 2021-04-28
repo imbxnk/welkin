@@ -10,6 +10,7 @@
               <v-text-field
                 v-model="username"
                 label="Username"
+                :rules="[rules.username]"
                 outlined
                 class="pt-5"
               ></v-text-field>
@@ -17,7 +18,7 @@
               <v-text-field
                 v-model="password"
                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="[rules.required]"
+                :rules="[rules.password]"
                 :type="show1 ? 'text' : 'password'"
                 name="input-10-1"
                 label="Password"
@@ -47,13 +48,15 @@ export default {
       token: "",
       userId: "",
       message: "",
-      rules: {
-        required: (value) => !!value || "Required."
-      },
+      rules: { },
     };
   },
   methods: {
     login() {
+      this.rules = {
+        username: (value) => !!value || "Please enter the username",
+        password: (value) => !!value || "Please enter the password"
+      }
       //axios post to check token, userId compare with the username and password
       let query = `
           mutation {
@@ -72,6 +75,7 @@ export default {
         })
         .catch((err) => {
           alert("Incorrect username or password, please try again");
+          this.rules = { }
         });
     },
   },
