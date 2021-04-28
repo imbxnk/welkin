@@ -10,9 +10,9 @@ import Profile from "../pages/dashboard/profile/profile";
 import Settings from "../pages/dashboard/profile/settings";
 import ManageStudents from "../pages/dashboard/manage/manage_students";
 import StudentList from "../pages/dashboard/students/students";
-import ClassList from "../pages/dashboard/classlist/classlist";
-import ClassHistory from "../pages/dashboard/classlist/class_history";
-import ClassDetail from "../pages/dashboard/classlist/class_detail";
+import CourseList from "../pages/dashboard/courselist/courselist";
+import CourseHistory from "../pages/dashboard/courselist/course_history";
+import CourseDetail from "../pages/dashboard/courselist/course_detail";
 import Curriculum from "../pages/dashboard/curriculum/curriculum";
 import Manage_grade from "../pages/dashboard/manage/manage_grade";
 import AddInstructor from "../pages/dashboard/manage/add_instructor"
@@ -41,9 +41,9 @@ const routes = [
     },
   },
   {
-    name: "course_list",
+    name: "Course_list",
     path: "/course",
-    component: ClassList,
+    component: CourseList,
     meta: {
       requiresAuth: true,
       title: "Course",
@@ -107,21 +107,21 @@ const routes = [
     },
   },
   {
-    name: "class_history",
-    path: "/class_history",
-    component: ClassHistory,
+    name: "course_history",
+    path: "/course_history",
+    component: CourseHistory,
     meta: {
       requiresAuth: true,
-      title: "Class History",
+      title: "Course History",
     },
   },
   {
-    name: "class_detail",
-    path: "/class/:code",
-    component: ClassDetail,
+    name: "course_detail",
+    path: "/course/:code",
+    component: CourseDetail,
     meta: {
       requiresAuth: true,
-      title: "Class Detail",
+      title: "Course Detail",
     },
   },
   {

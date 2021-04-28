@@ -106,3 +106,8 @@ main {
 .home .v-data-table__wrapper table tbody .v-data-table__mobile-table-row td:nth-child(1), .home .v-data-table__wrapper table tbody .v-data-table__mobile-table-row td:nth-child(2), .home .v-data-table__wrapper table tbody .v-data-table__mobile-table-row td:nth-child(5) {
   display: table-cell;
 }
+
+.v-list-item__icon {
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
