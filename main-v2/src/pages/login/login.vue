@@ -3,9 +3,9 @@
     <v-row style="height: 100%" justify="center" align="center">
       <v-col>
         <v-card class="mx-auto my-4" style="width: 400px;" elevation="2">
-          <v-card-title v-if="isLoading">Log in</v-card-title>
+          <v-card-title v-if="!isLoading">Log in</v-card-title>
           <v-card-title v-else>Logging in...</v-card-title>
-          <v-card-subtitle v-if="isLoading">Welcome to Welkin</v-card-subtitle>
+          <v-card-subtitle v-if="!isLoading">Welcome to Welkin</v-card-subtitle>
           <v-card-subtitle v-else>We are logging you to Welkin</v-card-subtitle>
           <v-card-text>
             <v-form ref="loginForm" @submit.prevent="login()" >
