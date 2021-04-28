@@ -37,6 +37,49 @@
             </v-form>
         </v-card-text>
     </v-card>
+    <v-snackbar
+      v-model="addingSuccessStatus"
+      :timeout="timeout"
+      top
+      centered
+      outlined
+      color="success"
+    >
+      {{ successText }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="addingSuccessStatus = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+    
+    <v-snackbar
+      v-model="addingFailingStatus"
+      :timeout="timeout"
+      top
+      centered
+      outlined
+      color="error"
+    >
+      {{ failingText }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="addingFailingStatus = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -56,7 +99,12 @@ export default {
             rules:{
                 required: (value) => !!value || "Required.",
                 min: (v) => v.length >= 4 || "Min 4 characters",
-            }
+            },
+            addingSuccessStatus: false,
+            addingFailingStatus: false,
+            successText: 'Adding Success!',
+            failingText: 'Adding Error!',
+            timeout: 2000,
         }
     },
     methods:{
@@ -83,14 +131,16 @@ export default {
             .post("https://api.welkin.app/v2/graphql", { query }, {withcredentials : true})
             .then((res)=>{
                 console.log(res)
+                this.addingSuccessStatus = true
+
             })
             .catch((err)=>{
                 console.log(err)
-                alert("Adding was error, please try again!")
+                this.addingFailingStatus = true
             })
         },
         clearForm(){
-
+            this.instructorData = {}
         }
     }
 }
