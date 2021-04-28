@@ -8,7 +8,7 @@
             <v-form>
                 <v-row>
                     <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
-                        <v-text-field label="Title"  id="title" :value="instructorData.title" v-model="instructorData.title" :rules="[rules.required, rules.min]" outlined dense></v-text-field>
+                        <v-text-field label="Title"  id="title" :value="instructorData.title" v-model="instructorData.title" outlined dense></v-text-field>
                     </v-col>
                     <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
                         <v-text-field label="First Name"  id="firstName" v-model="instructorData.firstName" :rules="[rules.required, rules.min]" outlined dense></v-text-field>
@@ -20,7 +20,7 @@
                         <v-text-field label="Email"  id="email" v-model="instructorData.email" outlined dense></v-text-field>
                     </v-col>
                     <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
-                        <v-text-field label="Phone no."  id="phone" v-model="instructorData.phone" :rules="[rules.required, rules.min]" outlined dense></v-text-field>
+                        <v-text-field label="Phone no."  id="phone" v-model="instructorData.phone"  outlined dense></v-text-field>
                     </v-col>
                 </v-row>
                 <v-spacer></v-spacer>
@@ -90,7 +90,7 @@ export default {
             })
         },
         clearForm(){
-            
+
         }
     }
 }
