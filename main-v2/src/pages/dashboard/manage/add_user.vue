@@ -1,33 +1,34 @@
 <template>
   <v-container>
-    <v-card style="width: 1600px; padding: 20px 20px; margin: 20px 20px;">
+    <v-card style="width: 500px; padding: 20px 20px; margin: 20px 20px;">
         <v-card-title>
             <h2>Add User</h2>
         </v-card-title>
         <v-card-text>
             <v-form>
                 <v-row>
-                    <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto;">
-                        <v-text-field label="First Name" id="firstName" v-model="userData.firstName" outlined></v-text-field>
+                    <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
+                        <v-text-field label="First Name" id="firstName" v-model="userData.firstName" :rules="[rules.required, rules.min]" outlined></v-text-field>
                     </v-col>
-                    <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto;">
-                        <v-text-field label="Family Name"  id="familyName" v-model="userData.familyName" outlined></v-text-field>
+                    <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
+                        <v-text-field label="Family Name"  id="familyName" v-model="userData.familyName" :rules="[rules.required, rules.min]" outlined></v-text-field>
                     </v-col>
-                    <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto;">
+                    <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
                         <v-text-field label="Email"  id="email" v-model="userData.email" outlined></v-text-field>
                     </v-col>
-                    <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto;">
+                    <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
                         <v-text-field label="Password" id="password" 
                             class=""
                             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                             :type="show1 ? 'text' : 'password'"
                             v-model="userData.password"
+                            :rules="[rules.required, rules.min]"
                             outlined
                             @click:append="show1 = !show1">
                         </v-text-field>
                     </v-col>
                 </v-row>
-                <v-btn color="error" class="ma-2 white--text" plain>Clear</v-btn>
+                <v-btn color="error" class="ma-2 white--text" plain @click.prevent="clearForm()">Clear</v-btn>
                 <v-btn
                     :loading="loading5"
                     :disabled="loading5"
@@ -40,6 +41,49 @@
             </v-form>
         </v-card-text>
     </v-card>
+    <v-snackbar
+      v-model="addingSuccessStatus"
+      :timeout="timeout"
+      top
+      centered
+      outlined
+      color="success"
+    >
+      {{ successText }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="addingSuccessStatus = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+    
+    <v-snackbar
+      v-model="addingFailingStatus"
+      :timeout="timeout"
+      top
+      centered
+      outlined
+      color="error"
+    >
+      {{ failingText }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="addingFailingStatus = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -53,7 +97,16 @@ export default {
                 familyName: "",
                 email: "",
                 password: "",
-            }
+            },
+            rules:{
+                required: (value) => !!value || "Required.",
+                min: (v) => v.length >= 4 || "Min 4 characters",
+            },
+            addingSuccessStatus: false,
+            addingFailingStatus: false,
+            successText: 'Adding Success!',
+            failingText: 'Adding Error!',
+            timeout: 2000,
         }
     },
     methods:{
@@ -74,12 +127,16 @@ export default {
             .post("https://api.welkin.app/v2/graphql", { query }, {withcredentials : true})
             .then((res)=>{
                 console.log(res)
+                this.addingSuccessStatus = true
+                this.userData = {}
             })
             .catch((err)=>{
                 console.log(err)
-                alert("Adding was error, please try again!")
+                this.addingFailingStatus = true
             })
-                
+        },
+        clearForm(){
+            this.userData = {}
         }
     }
 }
