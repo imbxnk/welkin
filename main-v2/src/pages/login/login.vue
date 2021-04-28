@@ -6,32 +6,31 @@
           <v-card-title>Log in</v-card-title>
           <v-card-subtitle>Welcome to Welkin</v-card-subtitle>
           <v-card-text>
-            <v-form ref="loginForm" @submit.prevent="login()">
-              <v-text-field
-                v-model="username"
-                label="Username"
-                :rules="[rules.username]"
-                outlined
-                class="pt-5"
-              ></v-text-field>
+            <v-form ref="loginForm" @submit.prevent="login()" >
+              <div v-if="!isLoading">
+                <v-text-field
+                  v-model="username"
+                  label="Username"
+                  outlined
+                  class="pt-5"
+                ></v-text-field>
 
-              <v-text-field
-                v-model="password"
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="[rules.password]"
-                :type="show1 ? 'text' : 'password'"
-                name="input-10-1"
-                label="Password"
-                placeholder=" "
-                outlined
-                @click:append="show1 = !show1"
-              ></v-text-field>
-              <button class="btn btn-primary btn-block wk-login-btn">Login</button>
+                <v-text-field
+                  v-model="password"
+                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="show1 ? 'text' : 'password'"
+                  name="input-10-1"
+                  label="Password"
+                  placeholder=" "
+                  outlined
+                  @click:append="show1 = !show1"
+                ></v-text-field>
+                <button class="btn btn-primary btn-block wk-login-btn">Login</button>
+              </div>
+              <div v-else class="wk-spinner mx-auto my-4"></div>
             </v-form>
           </v-card-text>
-          <v-card-actions>
-
-          </v-card-actions>
+          <v-card-actions></v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -48,26 +47,12 @@ export default {
       token: "",
       userId: "",
       message: "",
-      rules: {
-        username: true,
-        password: true
-      },
+      isLoading: false,
     };
-  },
-  watch: {
-    'username' (val) {
-      this.rules.username = true
-    },
-    'password' (val) {
-      this.rules.password = true
-    }
   },
   methods: {
     login() {
-      this.rules = {
-        username: (value) => !!value || "Please enter the username",
-        password: (value) => !!value || "Please enter the password"
-      }
+      this.isLoading = true
       //axios post to check token, userId compare with the username and password
       let query = `
           mutation {
@@ -78,24 +63,24 @@ export default {
             }
           }
       `;
-      let self = this
-      setTimeout(function () {
-        if (self.$refs.loginForm.validate()){
-          self.axios
-            .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
-            .then((res) => {
-              console.log(res.data)
-              if(res.data) {
-                window.location.replace("/")
-              } else {
-                alert("Invalid Username or Password");
-              }
-            })
-            .catch((err) => {
-              alert(err.response.data.errors[0].message)
-            });
-        }
-      })
+
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          console.log(res.data)
+          if(res.data) {
+            window.location.replace("/")
+          } else {
+            alert("Invalid Username or Password");
+            this.isLoading = false
+          }
+        })
+        .catch((err) => {
+          alert(err.response.data.errors[0].message)
+          this.isLoading = false
+        });
+
+
     },
   },
 };
@@ -109,5 +94,22 @@ export default {
   outline:0px !important;
   -webkit-appearance:none;
   box-shadow: none !important;
+}
+
+.wk-spinner {
+	pointer-events: none;
+	width: 2.5em;
+	height: 2.5em;
+	border: 0.4em solid transparent;
+	border-color: #eee;
+	border-top-color: #3E67EC;
+	border-radius: 50%;
+	animation: loadingspin 1s linear infinite;
+}
+
+@keyframes loadingspin {
+	100% {
+		transform: rotate(360deg)
+	}
 }
 </style>
