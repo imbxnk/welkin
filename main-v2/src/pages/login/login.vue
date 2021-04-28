@@ -84,7 +84,7 @@ export default {
           setTimeout(function () {
             if (this.$refs.loginForm.validate()){
               if(res.success) {
-                this.$router.push('/')
+                this.router.push('/');
               } else {
                 alert(res.message);
               }
