@@ -395,7 +395,8 @@ a:hover {
   min-height: 44px;
 }
 .v-list-item__icon {
-  margin: auto 0;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
 }
 .logo {
   height: 30px;
