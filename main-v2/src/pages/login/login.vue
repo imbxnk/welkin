@@ -70,8 +70,11 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res);
-          window.location.replace("/");
+          if(res.success) {
+            this.$router.push('/')
+          } else {
+            console.log(res)
+          }
         })
         .catch((err) => {
           alert("Incorrect username or password, please try again");
