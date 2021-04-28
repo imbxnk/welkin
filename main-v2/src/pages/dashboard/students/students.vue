@@ -138,7 +138,7 @@ export default {
         { text: "Phone", align: "start", sortable: false, value: "phone", width: 200 },
         // { text: "Advisor", sortable: false, value: "avs", align: "center" },
         // { text: "% Lesson Completion", sortable: false, value: "completion", align: "center" },
-        { text: "Status", sortable: false, value: "status", width: 200 },
+        { text: "Status", sortable: false, value: "status.current", width: 200 },
       ],
       students: [],
       stdDetail: [],
@@ -191,6 +191,9 @@ export default {
                     email
                     phone
                     lineID
+                    status {
+                      current
+                    }
                   }
                 }
               }
