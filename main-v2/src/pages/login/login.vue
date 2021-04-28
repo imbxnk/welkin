@@ -86,7 +86,7 @@ export default {
             .then((res) => {
               console.log(res.data)
               if(res.data) {
-                self.$router.push('/');
+                window.location.replace("/")
               } else {
                 alert(res.errors.join(' '));
               }

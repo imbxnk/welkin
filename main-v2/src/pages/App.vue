@@ -195,9 +195,8 @@ export default {
   name: "App",
   created: async function() {
     this.user = (await welkin.auth()).currentUser;
-    if (this.user) {
-      this.isAuth = true;
-    }
+    if (this.user) this.isAuth = true;
+    else this.isAuth = false;
   },
   components: {
     simplebar,
