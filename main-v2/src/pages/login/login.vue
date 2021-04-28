@@ -6,7 +6,7 @@
           <v-card-title>Log in</v-card-title>
           <v-card-subtitle>Welcome to Welkin</v-card-subtitle>
           <v-card-text>
-            <form refs="loginForm" @submit.prevent="login()">
+            <v-form ref="loginForm" @submit.prevent="login()">
               <v-text-field
                 v-model="username"
                 label="Username"
@@ -27,7 +27,7 @@
                 @click:append="show1 = !show1"
               ></v-text-field>
               <button class="btn btn-primary btn-block wk-login-btn">Login</button>
-            </form>
+            </v-form>
           </v-card-text>
           <v-card-actions>
 
@@ -78,21 +78,24 @@ export default {
             }
           }
       `;
-      this.axios
-        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
-        .then((res) => {
-          setTimeout(function () {
-            if (this.$refs.loginForm.validate()){
-              if(res.success) {
+      let self = this
+      setTimeout(function () {
+        if (self.$refs.loginForm.validate()){
+          self.axios
+            .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+            .then((res) => {
+              console.log(res.data)
+              if(res.data) {
                 this.router.push('/');
               } else {
-                alert(res.message);
+                alert(res.errors.join(' '));
               }
-            }
-          })
-        })
-        .catch((err) => {
-        });
+            })
+            .catch((err) => {
+              alert(err);
+            });
+        }
+      })
     },
   },
 };
