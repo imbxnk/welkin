@@ -132,6 +132,7 @@ export default {
             .then((res)=>{
                 console.log(res)
                 this.addingSuccessStatus = true
+                this.instructorData = {}
 
             })
             .catch((err)=>{
