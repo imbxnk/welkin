@@ -3,8 +3,8 @@
   <div>
     <!-- <v-row class="">
       <v-col> -->
-      <!-- </v-col> -->
-      <!-- <v-col cols="6" md="5" lg="4" xl="3">
+    <!-- </v-col> -->
+    <!-- <v-col cols="6" md="5" lg="4" xl="3">
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
@@ -13,12 +13,17 @@
           class="mr-3"
         ></v-text-field>
       </v-col> -->
-      <v-card-title>
-          {{ class_detail.year }}T{{ class_detail.trimester }} Section{{ class_detail.section }}
-      </v-card-title>
-      <v-card>
-        <v-data-table :headers="headers" :items="class_detail.enrollments" mobile-breakpoint="680" class="home"></v-data-table>
-      </v-card>
+    <v-card-title>
+      {{ class_detail.year }}T{{ class_detail.trimester }} Section{{ class_detail.section }}
+    </v-card-title>
+    <v-card>
+      <v-data-table
+        :headers="headers"
+        :items="class_detail.enrollments"
+        mobile-breakpoint="680"
+        class="home"
+      ></v-data-table>
+    </v-card>
   </div>
 </template>
 
@@ -26,8 +31,9 @@
 export default {
   name: "students_table",
   components: {},
+  props: [],
   mounted() {
-    this.loadClass()
+    this.loadClass();
   },
   data() {
     return {
@@ -70,7 +76,7 @@ export default {
       //     grade: "A",
       //   },
       // ],
-      class_detail: {}
+      class_detail: {},
     };
   },
   methods: {
@@ -106,11 +112,12 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.class_detail = res.data.data.class;
-          this.class_detail.enrollments.forEach(enrollment => {
-            enrollment.student.name = enrollment.student.given_name + " " + enrollment.student.family_name
+          this.class_detail.enrollments.forEach((enrollment) => {
+            enrollment.student.name =
+              enrollment.student.given_name + " " + enrollment.student.family_name;
           });
         })
-        .catch((err) => { });
+        .catch((err) => {});
     },
   },
 };

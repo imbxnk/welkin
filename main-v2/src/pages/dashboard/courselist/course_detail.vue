@@ -15,9 +15,11 @@
               active-class="primary--text"
             >
               <template v-for="(item, index) in classes">
-                <v-list-item :key="item.title" @click="showdata(item)" class="my-n4">
+                <v-list-item :key="item.title" @click="sentData(item)" class="my-n4">
                   <v-list-item-content>
-                    <v-list-item-title v-text="item.year + 'T' + item.trimester + ' SEC' + item.section"></v-list-item-title>
+                    <v-list-item-title
+                      v-text="item.year + 'T' + item.trimester + ' SEC' + item.section"
+                    ></v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-action>
                     <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
@@ -35,21 +37,22 @@
     <v-col style="padding: 0 0 0 8px">
       <v-card class="box">
         <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height">
-          <stdTable class="ma-3"></stdTable>
+          <div v-if="!selected"></div>
+          <studentTable v-else class="ma-3"></studentTable>
         </simplebar>
       </v-card>
     </v-col>
   </v-row>
 </template>
 <script>
-import stdTable from "./components/student_info.vue";
+import studentTable from "./components/student_info.vue";
 import simplebar from "simplebar-vue";
 import "simplebar/dist/simplebar.min.css";
 
 export default {
   name: "course_detail",
   components: {
-    stdTable,
+    studentTable,
     simplebar,
   },
   created() {
@@ -57,10 +60,19 @@ export default {
   },
   data() {
     return {
-      classes: []
+      selected: false,
+      classes: [],
+      details: {
+        insName: "",
+      },
     };
   },
   methods: {
+    sentData(item) {
+      this.selected = true;
+      this.details.insName = item.instructor.name;
+      console.log(this.details.insName);
+    },
     loadClasses() {
       let query = `
                     query {
@@ -87,9 +99,10 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          this.classes = res.data.data.classes.classes
+          this.classes = res.data.data.classes.classes;
+          console.log(this.classes);
         })
-        .catch((err) => { })
+        .catch((err) => {});
     },
   },
 };
