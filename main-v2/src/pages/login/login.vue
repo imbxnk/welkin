@@ -88,13 +88,11 @@ export default {
               if(res.data) {
                 window.location.replace("/")
               } else {
-                alert(res.errors.join(' '));
+                alert("Invalid Username or Password");
               }
             })
             .catch((err) => {
-              if(err.toString().includes('500')) alert("Internal Server Error")
-              if(err.toString().includes('400')) alert("Invalid Username or Password")
-              alert(err);
+              alert(err.response.data.errors[0].message)
             });
         }
       })
