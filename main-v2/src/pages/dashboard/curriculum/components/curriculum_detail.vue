@@ -2,9 +2,9 @@
   <div class="wk-detail">
     <div class="overline my-n1">{{ name }}</div>
     <div class="caption">
-      Note: This curriculum is for students with ID {{ batches.toString() }} only.
+      This curriculum is for students with ID {{ batches.toString() }} only.
     </div>
-    <v-divider></v-divider>
+    <v-divider style="margin-top: 0.5rem !important"></v-divider>
   </div>
 </template>
 <script>
@@ -28,5 +28,9 @@ td {
 .wk-detail {
   width: 100%;
   overflow-x: hidden;
+}
+
+.caption {
+  color: #666;
 }
 </style>

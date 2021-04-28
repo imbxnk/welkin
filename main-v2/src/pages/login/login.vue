@@ -2,28 +2,38 @@
   <v-main>
     <v-row style="height: 100%" justify="center" align="center">
       <v-col>
-        <v-card style="width: 400px; margin: 20px auto">
-          <form @submit.prevent="handleSubmit()" style="padding: 30px">
-            <h4 ou style="text-align:center">Login to your WELKIN account</h4>
-            <v-text-field v-model="username" label="Username" outlined class="pt-5"></v-text-field>
+        <v-card class="mx-auto my-4" style="width: 400px;" elevation="2">
+          <v-card-title>Log in</v-card-title>
+          <v-card-subtitle>Welcome to Welkin</v-card-subtitle>
+          <v-card-text>
+            <form @submit.prevent="login()">
+              <v-text-field
+                v-model="username"
+                label="Username"
+                :rules="[rules.username]"
+                outlined
+                class="pt-5"
+              ></v-text-field>
 
-            <v-text-field
-              v-model="password"
-              class=""
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rules.required, rules.min]"
-              :type="show1 ? 'text' : 'password'"
-              name="input-10-1"
-              label="Password"
-              hint="At least 4 characters"
-              outlined
-              @click:append="show1 = !show1"
-            ></v-text-field>
+              <v-text-field
+                v-model="password"
+                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="[rules.password]"
+                :type="show1 ? 'text' : 'password'"
+                name="input-10-1"
+                label="Password"
+                placeholder=" "
+                outlined
+                @click:append="show1 = !show1"
+              ></v-text-field>
+              <button class="btn btn-primary btn-block wk-login-btn">Login</button>
+            </form>
+          </v-card-text>
+          <v-card-actions>
 
-            <button class="btn btn-primary btn-block">Login</button>
-          </form>
-        </v-card></v-col
-      >
+          </v-card-actions>
+        </v-card>
+      </v-col>
     </v-row>
   </v-main>
 </template>
@@ -38,15 +48,15 @@ export default {
       token: "",
       userId: "",
       message: "",
-      rules: {
-        required: (value) => !!value || "Required.",
-        min: (v) => v.length >= 4 || "Min 4 characters",
-        emailMatch: () => "The email and password you entered don't match",
-      },
+      rules: { },
     };
   },
   methods: {
-    async handleSubmit() {
+    login() {
+      this.rules = {
+        username: (value) => !!value || "Please enter the username",
+        password: (value) => !!value || "Please enter the password"
+      }
       //axios post to check token, userId compare with the username and password
       let query = `
           mutation {
@@ -57,19 +67,31 @@ export default {
             }
           }
       `;
-      await this.axios
+      this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res);
-          window.location.replace("/");
+          if(res.success) {
+            this.$router.push('/')
+          } else {
+            console.log(res)
+          }
         })
         .catch((err) => {
           alert("Incorrect username or password, please try again");
-          console.log(err.message);
+          this.rules = { }
         });
     },
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+.wk-login-btn {
+  height: 48px;
+}
+.wk-login-btn:hover, .wk-login-btn:focus, .wk-login-btn:active {
+  outline:0px !important;
+  -webkit-appearance:none;
+  box-shadow: none !important;
+}
+</style>
