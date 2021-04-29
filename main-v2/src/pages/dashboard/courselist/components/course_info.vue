@@ -74,6 +74,7 @@ export default {
   methods: {
     loadCourse(code) {
       // ALGORITHM TO CREATE QUERY
+      this.loading = true
       var queryStr = `
                 course (searchInput: { code: "${code}" }) {
                         _id
