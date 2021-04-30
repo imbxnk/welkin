@@ -37,7 +37,8 @@
                     </span>
                   </v-avatar>
                   <br /><br />
-                  <h6>{{ user.given_name + " " + user.family_name }}</h6>
+                  <h6 v-if="user.display_name">{{ user.display_name }}</h6>
+                  <h6 v-else>{{ user.given_name + " " + user.family_name }}</h6>
                   <p class="caption" style="font-weight: 300">
                     {{ user.email }}
                   </p>
