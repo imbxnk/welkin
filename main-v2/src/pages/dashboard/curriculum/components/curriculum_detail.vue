@@ -12,8 +12,11 @@
         This curriculum is for students with ID {{ curriculum.batches.toString() }} only.
       </div>
       <v-divider style="margin-top: 0.5rem !important"></v-divider>
+      <h6 style="text-align: right;">Total : XX credits</h6>
       <!-- core -->
-      <v-subheader class="primary--text mx-n4">Core Courses</v-subheader>
+      <v-subheader class="primary--text mx-n4"
+        >Core Courses ( {{ this.detail.passing_conditions.core_courses }} credits )</v-subheader
+      >
       <v-list-item v-for="course in detail.core_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
           <v-list-item-title>{{ course.code }} : {{ course.name }}</v-list-item-title>
@@ -24,7 +27,10 @@
       </v-list-item>
 
       <!-- required -->
-      <v-subheader class="primary--text mx-n4">Required Courses</v-subheader>
+      <v-subheader class="primary--text mx-n4"
+        >Required Major Courses ( {{ this.detail.passing_conditions.required_courses }} credits
+        )</v-subheader
+      >
       <v-list-item v-for="course in detail.required_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
           <v-list-item-title>{{ course.code }} : {{ course.name }}</v-list-item-title>
@@ -35,7 +41,10 @@
       </v-list-item>
 
       <!-- elective -->
-      <v-subheader class="primary--text mx-n4">Elective Courses</v-subheader>
+      <v-subheader class="primary--text mx-n4"
+        >Elective Major Courses ( {{ this.detail.passing_conditions.elective_courses }} credits
+        )</v-subheader
+      >
       <v-list-item v-for="course in detail.elective_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
           <v-list-item-title>{{ course.code }} : {{ course.name }}</v-list-item-title>
@@ -115,6 +124,7 @@ export default {
                 break;
             }
           });
+
           this.loading = false;
         })
         .catch((err) => {});
