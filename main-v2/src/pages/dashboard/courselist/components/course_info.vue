@@ -13,7 +13,8 @@
       </div>
       <div class="overline my-n1">{{ code }} : {{ course.name }}</div>
       <v-divider></v-divider>
-      <table style="width:100%;">
+      <remainChart :batch="b" :total="tt" :passed="p"></remainChart>
+      <!-- <table style="width:100%;">
         <tr>
           <th class="text-left">Year:</th>
           <th v-for="batch in Object.keys(batches)" :key="batch">{{ batch }}</th>
@@ -24,7 +25,7 @@
             {{ batches[batch].total - batches[batch].passed }}/{{ batches[batch].total }}
           </td>
         </tr>
-      </table>
+      </table> -->
 
       <v-divider></v-divider>
       <v-row>
@@ -47,7 +48,6 @@
         students
       </div>
       <v-divider></v-divider>
-      <remainChart :batch="b" :total="tt" :passed="p"></remainChart>
     </div>
   </div>
 </template>
@@ -124,7 +124,6 @@ export default {
                 ...this.batches[i.replace(/\D/g, "")],
                 total: result[i].total,
               };
-            console.log(this.passed);
           }
           var rm = 0;
           for (var i in this.batches) {

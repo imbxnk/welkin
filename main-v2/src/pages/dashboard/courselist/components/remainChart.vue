@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="chart">
-      <apexchart type="bar" height="350" :options="chartOptions" :series="series"></apexchart>
+      <apexchart type="bar" height="200" :options="chartOptions" :series="series"></apexchart>
     </div>
   </div>
 </template>
@@ -26,9 +26,12 @@ export default {
       chartOptions: {
         chart: {
           type: "bar",
-          height: 350,
+          height: 200,
           stacked: true,
           fontFamily: 'Quicksand, sans-serif',
+          toolbar: {
+            show: false,
+          },
         },
         plotOptions: {
           bar: {
@@ -39,6 +42,7 @@ export default {
           width: 1,
           colors: ["#fff"],
         },
+        colors: ["#3c84fb", "#97b8f0"],
         title: {
           text: "Remain students",
         },
@@ -50,6 +54,7 @@ export default {
             },
           },
         },
+
         yaxis: {
           title: {
             text: undefined,
@@ -61,6 +66,11 @@ export default {
               return val;
             },
           },
+          x: {
+            formatter: function(val) {
+              return "Students with ID: " + val;
+            },
+          },
         },
         fill: {
           opacity: 1,
@@ -68,7 +78,7 @@ export default {
         legend: {
           position: "top",
           horizontalAlign: "left",
-          offsetX: 5,
+          offsetX: 10,
         },
       },
     };
