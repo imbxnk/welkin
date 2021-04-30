@@ -47,14 +47,16 @@
         students
       </div>
       <v-divider></v-divider>
+      <remainChart :batch="b" :total="tt" :passed="p"></remainChart>
     </div>
   </div>
 </template>
 <script>
+import remainChart from "./remainChart";
 export default {
   name: "Class_info",
   props: ["code"],
-  component: [],
+  components: { remainChart },
   created() {
     this.loadCourse(this.$props.code);
   },
@@ -64,6 +66,9 @@ export default {
       course: {},
       batches: {},
       queryBatches: ["59", "60", "61", "63"],
+      b: [],
+      tt: [],
+      p: [],
     };
   },
   watch: {
@@ -74,7 +79,10 @@ export default {
   methods: {
     loadCourse(code) {
       // ALGORITHM TO CREATE QUERY
-      this.loading = true
+      this.loading = true;
+      this.b = [];
+      this.tt = [];
+      this.p = [];
       var queryStr = `
                 course (searchInput: { code: "${code}" }) {
                         _id
@@ -116,6 +124,16 @@ export default {
                 ...this.batches[i.replace(/\D/g, "")],
                 total: result[i].total,
               };
+            console.log(this.passed);
+          }
+          var rm = 0;
+          for (var i in this.batches) {
+            this.b.push(i);
+            rm = this.batches[i].total - this.batches[i].passed;
+
+            this.tt.push(rm);
+            // this.tt.push(rm);
+            this.p.push(this.batches[i].passed);
           }
           this.loading = false;
         })
