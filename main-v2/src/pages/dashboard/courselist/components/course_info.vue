@@ -32,21 +32,23 @@
         <v-col cols="6">
           <h6>Instructor list:</h6>
           <table style="width:100%;">
-            <tr>
-              <th>Name :</th>
-            </tr>
-            <tr>
-              <td>Mingmanas</td>
+            <tr v-for="(instuctor, i) in instuctors" :key="i">
+              {{
+                instuctor.title
+              }}
+              {{
+                instuctor.name
+              }}
             </tr>
           </table>
         </v-col>
       </v-row>
-      <div v-for="batch in Object.keys(batches)" :key="batch">
+      <!-- <div v-for="batch in Object.keys(batches)" :key="batch">
         Remain [{{ batch }}]: {{ batches[batch].total - batches[batch].passed }}/{{
           batches[batch].total
         }}
         students
-      </div>
+      </div> -->
       <v-divider></v-divider>
     </div>
   </div>
@@ -69,11 +71,13 @@ export default {
       b: [],
       tt: [],
       p: [],
+      instuctors: [],
     };
   },
   watch: {
     code: function(current) {
       this.loadCourse(current);
+      this.getInstructors(current);
     },
   },
   methods: {
@@ -83,6 +87,7 @@ export default {
       this.b = [];
       this.tt = [];
       this.p = [];
+
       var queryStr = `
                 course (searchInput: { code: "${code}" }) {
                         _id
@@ -129,7 +134,6 @@ export default {
           for (var i in this.batches) {
             this.b.push(i);
             rm = this.batches[i].total - this.batches[i].passed;
-
             this.tt.push(rm);
             // this.tt.push(rm);
             this.p.push(this.batches[i].passed);
@@ -137,6 +141,28 @@ export default {
           this.loading = false;
         })
         .catch((err) => {});
+    },
+    getInstructors(code) {
+      let query = `
+              query{
+                  courseInstructors(course_code:"${code}"){
+                  total
+                  instructors{
+                    title
+                    name
+                    }
+                  }
+                }
+          `;
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.instuctors = [...res.data.data.courseInstructors.instructors];
+          console.log(this.instuctors);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
