@@ -61,6 +61,7 @@ export default {
   components: { remainChart },
   created() {
     this.loadCourse(this.$props.code);
+    this.getInstructors(this.$props.code);
   },
   data() {
     return {
@@ -158,7 +159,6 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.instuctors = [...res.data.data.courseInstructors.instructors];
-          console.log(this.instuctors);
         })
         .catch((err) => {
           console.log(err);
