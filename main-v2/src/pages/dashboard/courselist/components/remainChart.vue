@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="chart">
-      <apexchart type="bar" height="350" :options="chartOptions" :series="series"></apexchart>
+      <apexchart type="bar" height="200" :options="chartOptions" :series="series"></apexchart>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
       chartOptions: {
         chart: {
           type: "bar",
-          height: 350,
+          height: 200,
           stacked: true,
         },
         plotOptions: {
@@ -57,7 +57,7 @@ export default {
         tooltip: {
           y: {
             formatter: function(val) {
-              return val;
+              return "hi" + val;
             },
           },
         },
@@ -67,7 +67,7 @@ export default {
         legend: {
           position: "top",
           horizontalAlign: "left",
-          offsetX: 5,
+          offsetX: 10,
         },
       },
     };
