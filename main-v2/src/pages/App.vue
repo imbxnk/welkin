@@ -42,7 +42,7 @@
                   <p class="caption" style="font-weight: 300">
                     {{ user.email }}
                   </p>
-                  <v-btn @click="$router.push({ path: '/profile' })" depressed outlined rounded text
+                  <v-btn class="btn-manage-account" @click="$router.push({ path: '/profile' })" depressed outlined rounded text
                     >Manage Your Account</v-btn
                   >
                   <v-divider class=""></v-divider>
@@ -404,5 +404,9 @@ a:hover {
 h6 {
   font-size: 0.95rem;
   margin-bottom: 0;
+}
+
+.btn-manage-account {
+  text-transform: capitalize;
 }
 </style>

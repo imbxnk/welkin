@@ -1,35 +1,87 @@
 <template>
   <v-row v-if="$route.name === 'profile'">
-    <v-col cols="12" sm="6" md="4" lg="4" align="center">
-      <v-card class="pa-3 ">
-        <v-img v-if="user.avatar_url" max-width="200" :src="user.avatar_url"></v-img>
-        <v-img v-else max-width="200" src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png"></v-img>
-        <div class="overline text-center">{{ user.group }}</div>
-      </v-card>
-    </v-col>
-    <v-col cols="12" sm="10" md="8" lg="8">
-      <v-card class="pa-3">
-        <div class="overline mb-4">
-          Profile
-        </div>
-        <v-list-item-title class="h3 mb-1">
-          {{ user.given_name + ' ' + user.family_name }}
-        </v-list-item-title>
-        <v-divider class="pb-3"></v-divider>
-        <!-- <v-list-item-title class="mb-1"> Email: {{ user.email }} </v-list-item-title> -->
-        <v-row>
-          <v-col cols="3" sm="4" md="2" lg="2" class="overline"><p>Email</p></v-col>
-          <v-col class="my-1"
-            ><p>{{ user.email }}</p></v-col
-          >
-        </v-row>
-        <v-divider class="pb-3"></v-divider>
-        <v-row>
-          <v-col cols="3" sm="4" md="2" lg="2" class="overline"><p>Line Id</p></v-col>
-          <v-col class="my-1"><p>{{}}</p></v-col>
-        </v-row>
-      </v-card>
-    </v-col>
+    <v-tabs :vertical="$vuetify.breakpoint.mdAndUp" class="wk-profile-tabs">
+      <v-tab>
+        Profile
+      </v-tab>
+      <v-tab>
+        Account
+      </v-tab>
+      <v-tab>
+        Security
+      </v-tab>
+
+      <v-tab-item transition="none">
+        <v-card flat elevation="2">
+          <v-card-title>
+            Profile
+          </v-card-title>
+          <v-card-text>
+            <v-img v-if="user.avatar_url" max-width="200" :src="user.avatar_url"></v-img>
+            <v-img v-else max-width="200" src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png"></v-img>
+            {{ user.given_name + " " + user.family_name }}<br>
+            {{ user.display_name }}<br>
+            {{ user.email }}<br>
+            {{ user.group }}<br>
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item transition="none">
+        <v-card flat elevation="2">
+          <v-card-title>
+            Account
+          </v-card-title>
+          <v-card-text>
+
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item transition="none">
+        <v-card flat elevation="2">
+          <v-card-title>
+            Security
+          </v-card-title>
+          <v-card-text>
+            <div class="d-flex flex-column">
+              <div>
+                <h6 class="mt-2">Change Password</h6>
+              </div>
+              <div class="flex-grow-1">
+                <v-text-field
+                  label="Current Password"
+                  type="password"
+                  outlined
+                  v-model="userInput.currentPassword"
+                ></v-text-field>
+
+                <v-text-field
+                  label="New Password"
+                  type="password"
+                  outlined
+                  v-model="userInput.newPassword"
+                ></v-text-field>
+
+                <v-text-field
+                  label="Confirm Password"
+                  type="password"
+                  outlined
+                  v-model="userInput.confirmPassword"
+                ></v-text-field>
+
+                <v-btn
+                  depressed
+                  color="primary"
+                  @click="updatePassword"
+                  :disabled="userInput.currentPassword === '' || userInput.newPassword === '' || userInput.confirmPassword === ''"
+                >
+                  Submit
+                </v-btn>
+              </div>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
   </v-row>
   <router-view v-else></router-view>
 </template>
@@ -46,7 +98,12 @@ export default {
     //   email: "Mingmanas.siv@mahidol.com",
     //   role: "Advisor",
     // },
-    user: {}
+    user: {},
+    userInput: {
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: ''
+    }
   }),
   mounted() {
     this.getCurrentUser()
@@ -54,7 +111,26 @@ export default {
   methods: {
     getCurrentUser: async function() {
       this.user = (await welkin.auth()).currentUser
-    }
+    },
+    updatePassword() {
+      if(this.userInput.newPassword === this.userInput.newPassword){
+        let query = `
+                      mutation {
+                        updatePassword (userInput: { currentPassword: "${this.userInput.currentPassword}", newPassword: "${this.userInput.newPassword}" }) {
+                          token,
+                          userId,
+                          message
+                        }
+                      }
+                  `;
+        this.axios
+          .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => { });
+      }
+    },
   },
 };
 </script>

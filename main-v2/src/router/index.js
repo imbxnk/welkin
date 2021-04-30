@@ -7,7 +7,6 @@ Vue.use(VueRouter);
 // Import All Routes
 import Home from "../pages/dashboard/home/home";
 import Profile from "../pages/dashboard/profile/profile";
-import Settings from "../pages/dashboard/profile/settings";
 import ManageStudents from "../pages/dashboard/manage/manage_students";
 import StudentList from "../pages/dashboard/students/students";
 import CourseList from "../pages/dashboard/courselist/courselist";
@@ -57,15 +56,6 @@ const routes = [
       requiresAuth: true,
       title: "Profile",
     },
-    children: [
-      {
-        path: "settings",
-        component: Settings,
-        meta: {
-          title: "Settings",
-        },
-      },
-    ],
   },
   {
     name: "add_student",
