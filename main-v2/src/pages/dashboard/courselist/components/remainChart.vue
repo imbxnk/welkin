@@ -28,6 +28,7 @@ export default {
           type: "bar",
           height: 350,
           stacked: true,
+          fontFamily: 'Quicksand, sans-serif',
         },
         plotOptions: {
           bar: {
@@ -74,3 +75,5 @@ export default {
   },
 };
 </script>
+<style scoped>
+</style>
