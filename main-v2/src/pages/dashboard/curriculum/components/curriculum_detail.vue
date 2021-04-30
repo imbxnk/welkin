@@ -120,7 +120,7 @@ export default {
                 this.detail.required_courses.push(course);
                 break;
               case "elective_courses":
-                this.detail.required_courses.push(course);
+                this.detail.elective_courses.push(course);
                 break;
             }
           });
