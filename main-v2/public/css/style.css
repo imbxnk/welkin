@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;600;700&display=swap');
 
 html, body {
   min-height: -webkit-fill-available;
@@ -38,8 +38,7 @@ main {
 
 .wk-container {
   height: calc(100vh - 50px);
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: auto;
 }
 
 .wk-container.home {
@@ -114,4 +113,76 @@ main {
 .v-list-item__icon {
   margin-top: auto !important;
   margin-bottom: auto !important;
+}
+
+/* PROFILE */
+.wk-profile-tabs {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.wk-profile-tabs .v-item-group {
+  background: transparent !important;
+  margin: 10px 16px 0 0;
+}
+
+.wk-profile-tabs .v-item-group .v-slide-group__wrapper {
+  width: 170px;
+}
+
+.wk-profile-tabs .v-item-group .v-slide-group__wrapper .v-tabs-bar__content .v-tab {
+  height: 40px;
+  margin-bottom: 5px;
+  text-transform: capitalize;
+}
+
+
+.wk-profile-tabs .v-item-group .v-slide-group__wrapper .v-tabs-bar__content .v-tab--active {
+  font-weight: 700;
+  color: #1976d2;
+}
+
+.wk-profile-tabs .v-item-group .v-slide-group__wrapper .v-tabs-bar__content .v-tabs-slider-wrapper {
+  width: 100% !important;
+  opacity: 0.2;
+}
+
+.wk-profile-tabs .v-item-group .v-slide-group__wrapper .v-tabs-bar__content .v-tab::before,
+.wk-profile-tabs .v-item-group .v-slide-group__wrapper .v-tabs-bar__content .v-tabs-slider-wrapper .v-tabs-slider,
+.wk-profile-tabs .v-item-group .v-slide-group__wrapper .v-tabs-bar__content .v-tab .v-ripple__container {
+  border-radius: 20px !important;
+}
+
+@media (max-width: 960px) {
+  .wk-profile-tabs .v-window {
+    padding: 5px;
+    margin: 0;
+  }
+
+  .wk-profile-tabs .v-item-group {
+    background: transparent !important;
+    margin: 0;
+  }
+
+  .wk-profile-tabs .v-item-group .v-slide-group__wrapper .v-tabs-bar__content .v-tabs-slider-wrapper {
+    display: none;
+  }
+
+  .wk-profile-tabs .v-item-group .v-slide-group__wrapper .v-tabs-bar__content {
+    margin: 0 10px;
+  }
+
+  .wk-profile-tabs .v-item-group .v-slide-group__wrapper .v-tabs-bar__content .v-tab {
+    margin-right: 5px;
+  }
+
+  .wk-profile-tabs .v-item-group .v-slide-group__wrapper .v-tabs-bar__content .v-tab--active {
+    background: rgba(25, 118, 210, 0.2);
+    border-radius: 20px;
+  }
+}
+
+.wk-profile-tabs .v-window {
+  padding: 10px;
+  margin: 0;
 }
