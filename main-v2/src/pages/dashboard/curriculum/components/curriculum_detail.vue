@@ -1,19 +1,95 @@
 <template>
   <div class="wk-detail">
-    <div class="overline my-n1">{{ name }}</div>
-    <div class="caption">
-      This curriculum is for students with ID {{ batches.toString() }} only.
+    <div v-if="loading" class="loading-center  ">
+      <v-progress-circular :size="50" color="primary" indeterminate></v-progress-circular>
+      <br />
+
+      <p class="ml-n4 primary--text">Please wait..</p>
     </div>
-    <v-divider style="margin-top: 0.5rem !important"></v-divider>
+    <div v-else>
+      <div class="overline my-n1">{{ curriculum.name }}</div>
+      <div class="caption">
+        This curriculum is for students with ID {{ curriculum.batches.toString() }} only.
+      </div>
+      <v-divider style="margin-top: 0.5rem !important"></v-divider>
+      <h6>Core Courses</h6> {{ detail.core_courses }}
+      <h6>Required Courses</h6> {{ detail.required_courses }}
+      <h6>Elective Courses</h6> {{ detail.elective_courses }}
+    </div>
   </div>
 </template>
 <script>
 export default {
   name: "Curriculum_Detail",
-  props: ["name", "batches"],
+  props: ["curriculum"],
   component: [],
+  created() {
+    this.loadCurriculum(this.$props.curriculum._id);
+  },
   data() {
-    return {};
+    return {
+      loading: true,
+      detail: {
+        core_courses: [],
+        required_courses: [],
+        elective_courses: [],
+        passing_conditions: {
+          core_courses: 0,
+          required_courses: 0,
+          elective_courses: 0,
+        },
+      },
+    };
+  },
+  watch: {
+    curriculum: function(current) {
+      this.loadCurriculum(current._id);
+    },
+  },
+  methods: {
+    loadCurriculum(id) {
+      this.loading = true
+      let query = `
+                query {
+                  curriculum(searchInput: { curriculumId : "${id}"})
+                  {
+                    courses {
+                      code
+                      name
+                      description
+                      category
+                    }
+                    passing_conditions {
+                      core_courses
+                      required_courses
+                      elective_courses
+                    }
+                  }
+                }
+            `;
+      console.log(id)
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.detail.passing_conditions = res.data.data.curriculum.passing_conditions;
+          // Separate Category
+          res.data.data.curriculum.courses.forEach(course => {
+            switch(course.category) {
+              case 'core_courses':
+                this.detail.core_courses.push(course);
+                break;
+              case 'required_courses':
+                this.detail.required_courses.push(course);
+                break;
+              case 'elective_courses':
+                this.detail.required_courses.push(course);
+                break;
+            }
+          });
+          this.loading = false;
+        })
+        .catch((err) => {});
+    }
   },
 };
 </script>
@@ -32,5 +108,14 @@ td {
 
 .caption {
   color: #666;
+}
+
+.loading-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 </style>

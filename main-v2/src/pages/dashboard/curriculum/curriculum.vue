@@ -1,7 +1,7 @@
 <template>
-  <v-row>
+  <v-row v-resize="onResize">
     <!-- 1st column -->
-    <v-col style="padding: 0 8px 0 0">
+    <v-col class="wk-left-col" cols="12" md="6" :class="{ hide: !isHidden }">
       <v-card>
         <v-card-title class="pt-7">EGCI Curriculum</v-card-title>
         <v-list class="pa-3">
@@ -57,8 +57,7 @@
             BACK</a
           >
           <CurriculumDetail
-            :name="this.detail.name"
-            :batches="this.detail.batches"
+            :curriculum="this.detail"
           ></CurriculumDetail>
         </simplebar>
       </v-card>
@@ -126,7 +125,6 @@ export default {
         });
     },
     onResize() {
-      console.log("text");
       this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     },
     back() {
@@ -145,11 +143,11 @@ export default {
   transform: translate(-50%, -50%);
 }
 .wk-content-full-height {
-  height: calc(100vh - 110px);
+  height: calc(100vh - 107px);
   overflow: auto;
 }
 .wk-content-full-height-list {
-  height: calc(100vh - 186px);
+  height: calc(100vh - 183px);
   overflow: auto;
 }
 .logo-watermark {
@@ -168,22 +166,26 @@ export default {
   padding: 0 0 0 8px;
 }
 
+@media (max-width: 576px) {
+  .wk-content-full-height-list {
+    height: calc(100vh - 183px);
+  }
+}
+
 @media (max-width: 768px) {
   .wk-left-col {
-    padding: 0px;
+    padding: 0px 32px 0 0;
     position: absolute;
     top: 16px;
-    max-width: calc(100vw - 56px - 32px);
     width: 100%;
     opacity: 1;
     transition: visibility 0s, opacity 0.2s linear;
   }
 
   .wk-right-col {
-    padding: 0px;
+    padding: 0px 32px 0 0;
     position: absolute;
     top: 16px;
-    max-width: calc(100vw - 56px - 32px);
     width: 100%;
     opacity: 1;
     transition: visibility 0s, opacity 0.2s linear;

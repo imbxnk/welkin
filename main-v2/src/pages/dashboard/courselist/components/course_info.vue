@@ -53,7 +53,7 @@
 <script>
 export default {
   name: "Class_info",
-  props: ["name", "code"],
+  props: ["code"],
   component: [],
   created() {
     this.loadCourse(this.$props.code);

@@ -79,7 +79,7 @@
             </svg>
             BACK</a
           >
-          <CourseInfo :name="this.course.name" :code="this.course.code"></CourseInfo>
+          <CourseInfo :code="this.course.code"></CourseInfo>
         </simplebar>
       </v-card>
     </v-col>
@@ -188,11 +188,11 @@ export default {
   transform: translate(-50%, -50%);
 }
 .wk-content-full-height {
-  height: calc(100vh - 110px);
+  height: calc(100vh - 107px);
   overflow: auto;
 }
 .wk-content-full-height-list {
-  height: calc(100vh - 186px);
+  height: calc(100vh - 189px);
   overflow: auto;
 }
 .logo-watermark {
@@ -211,22 +211,27 @@ export default {
   padding: 0 0 0 8px;
 }
 
+
+@media (max-width: 576px) {
+  .wk-content-full-height-list {
+    height: calc(100vh - 237px);
+  }
+}
+
 @media (max-width: 768px) {
   .wk-left-col {
-    padding: 0px;
+    padding: 0px 32px 0 0;
     position: absolute;
     top: 16px;
-    max-width: calc(100vw - 56px - 32px);
     width: 100%;
     opacity: 1;
     transition: visibility 0s, opacity 0.2s linear;
   }
 
   .wk-right-col {
-    padding: 0px;
+    padding: 0px 32px 0 0;
     position: absolute;
     top: 16px;
-    max-width: calc(100vw - 56px - 32px);
     width: 100%;
     opacity: 1;
     transition: visibility 0s, opacity 0.2s linear;
