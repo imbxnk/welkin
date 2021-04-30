@@ -12,9 +12,38 @@
         This curriculum is for students with ID {{ curriculum.batches.toString() }} only.
       </div>
       <v-divider style="margin-top: 0.5rem !important"></v-divider>
-      <h6>Core Courses</h6> {{ detail.core_courses }}
-      <h6>Required Courses</h6> {{ detail.required_courses }}
-      <h6>Elective Courses</h6> {{ detail.elective_courses }}
+      <!-- core -->
+      <v-subheader class="primary--text mx-n4">Core Courses</v-subheader>
+      <v-list-item v-for="course in detail.core_courses" :key="course.code">
+        <v-list-item-content class="mx-n4">
+          <v-list-item-title>{{ course.code }} : {{ course.name }}</v-list-item-title>
+          <v-list-item-subtitle>{{
+            course.description == "No description" ? "" : course.description
+          }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <!-- required -->
+      <v-subheader class="primary--text mx-n4">Required Courses</v-subheader>
+      <v-list-item v-for="course in detail.required_courses" :key="course.code">
+        <v-list-item-content class="mx-n4">
+          <v-list-item-title>{{ course.code }} : {{ course.name }}</v-list-item-title>
+          <v-list-item-subtitle>{{
+            course.description == "No description" ? "" : course.description
+          }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <!-- elective -->
+      <v-subheader class="primary--text mx-n4">Elective Courses</v-subheader>
+      <v-list-item v-for="course in detail.elective_courses" :key="course.code">
+        <v-list-item-content class="mx-n4">
+          <v-list-item-title>{{ course.code }} : {{ course.name }}</v-list-item-title>
+          <v-list-item-subtitle>{{
+            course.description == "No description" ? "" : course.description
+          }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
     </div>
   </div>
 </template>
@@ -48,7 +77,7 @@ export default {
   },
   methods: {
     loadCurriculum(id) {
-      this.loading = true
+      this.loading = true;
       let query = `
                 query {
                   curriculum(searchInput: { curriculumId : "${id}"})
@@ -67,21 +96,21 @@ export default {
                   }
                 }
             `;
-      console.log(id)
+      console.log(id);
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.detail.passing_conditions = res.data.data.curriculum.passing_conditions;
           // Separate Category
-          res.data.data.curriculum.courses.forEach(course => {
-            switch(course.category) {
-              case 'core_courses':
+          res.data.data.curriculum.courses.forEach((course) => {
+            switch (course.category) {
+              case "core_courses":
                 this.detail.core_courses.push(course);
                 break;
-              case 'required_courses':
+              case "required_courses":
                 this.detail.required_courses.push(course);
                 break;
-              case 'elective_courses':
+              case "elective_courses":
                 this.detail.required_courses.push(course);
                 break;
             }
@@ -89,7 +118,7 @@ export default {
           this.loading = false;
         })
         .catch((err) => {});
-    }
+    },
   },
 };
 </script>
