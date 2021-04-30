@@ -28,6 +28,9 @@ export default {
           type: "bar",
           height: 200,
           stacked: true,
+          toolbar: {
+            show: false,
+          },
         },
         plotOptions: {
           bar: {
@@ -38,6 +41,7 @@ export default {
           width: 1,
           colors: ["#fff"],
         },
+        colors: ["#3c84fb", "#97b8f0"],
         title: {
           text: "Remain students",
         },
@@ -49,6 +53,7 @@ export default {
             },
           },
         },
+
         yaxis: {
           title: {
             text: undefined,
@@ -57,7 +62,12 @@ export default {
         tooltip: {
           y: {
             formatter: function(val) {
-              return "hi" + val;
+              return val;
+            },
+          },
+          x: {
+            formatter: function(val) {
+              return "Students with ID: " + val;
             },
           },
         },
