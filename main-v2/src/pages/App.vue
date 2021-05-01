@@ -3,7 +3,7 @@
     <v-app v-if="$route.name === 'login'">
       <router-view></router-view>
     </v-app>
-    <v-app v-else-if="$route.name !== 'login' && isAuth">
+    <v-app v-else-if="$route.name !== 'login' && $currentUser">
       <v-app-bar app flat color="white" height="50">
         <div class="wk-header">
           <router-link to="/">
@@ -15,12 +15,12 @@
 
           <v-menu bottom max-width="300px" rounded offset-y>
             <template v-slot:activator="{ on, attrs }">
-              <v-avatar v-if="user.avatar_url" size="35" v-bind="attrs" v-on="on">
-                <img :src="user.avatar_url" />
+              <v-avatar v-if="$currentUser.avatar_url" size="35" v-bind="attrs" v-on="on">
+                <img :src="$currentUser.avatar_url" />
               </v-avatar>
               <v-avatar color="primary" size="35" v-bind="attrs" v-on="on" v-else>
                 <span class="white--text">
-                  {{ user.given_name.charAt(0) + user.family_name.charAt(0) }}
+                  {{ $currentUser.given_name.charAt(0) + $currentUser.family_name.charAt(0) }}
                 </span>
               </v-avatar>
             </template>
@@ -28,19 +28,19 @@
             <v-list>
               <v-list-item-content class="justify-center">
                 <div class="text-center">
-                  <v-avatar v-if="user.avatar_url">
-                    <img :src="user.avatar_url" />
+                  <v-avatar v-if="$currentUser.avatar_url">
+                    <img :src="$currentUser.avatar_url" />
                   </v-avatar>
                   <v-avatar color="primary" v-else>
                     <span class="white--text">
-                      {{ user.given_name.charAt(0) + user.family_name.charAt(0) }}
+                      {{ $currentUser.given_name.charAt(0) + $currentUser.family_name.charAt(0) }}
                     </span>
                   </v-avatar>
                   <br /><br />
-                  <h6 v-if="user.display_name">{{ user.display_name }}</h6>
-                  <h6 v-else>{{ user.given_name + " " + user.family_name }}</h6>
+                  <h6 v-if="$currentUser.display_name">{{ $currentUser.display_name }}</h6>
+                  <h6 v-else>{{ $currentUser.given_name + " " + $currentUser.family_name }}</h6>
                   <p class="caption" style="font-weight: 300">
-                    {{ user.email }}
+                    {{ $currentUser.email }}
                   </p>
                   <v-btn class="btn-manage-account" @click="$router.push({ path: '/profile' })" depressed outlined rounded text
                     >Manage Your Account</v-btn
@@ -188,19 +188,20 @@
 </template>
 
 <script>
-import welkin from "../utils/auth";
 import simplebar from "simplebar-vue";
 import "simplebar/dist/simplebar.min.css";
 
 export default {
   name: "App",
-  created: async function() {
-    this.user = (await welkin.auth()).currentUser;
-    if (this.user) this.isAuth = true;
-    else this.isAuth = false;
-  },
   components: {
     simplebar,
+  },
+  watch: {
+    watch: {
+      $currentUser(user) {
+        this.$currentUser = user;
+      }
+    }
   },
   computed: {
     mini: {
@@ -222,6 +223,7 @@ export default {
     isAuth: false,
     sidebarMenu: true,
     toggleMini: false,
+    display_name: 'TEST',
     items: [
       {
         title: "Home",
@@ -345,7 +347,6 @@ export default {
     //   username: "demo",
     //   email: "demo@welkin.app",
     // },
-    user: {},
   }),
   methods: {
     navOnOutsideClick() {
@@ -355,7 +356,7 @@ export default {
     },
     checkAuthGroup(i) {
       try {
-        if (!this.items[i].authorizedGroup.includes(this.user.group)) return false;
+        if (!this.items[i].authorizedGroup.includes(this.$currentUser.group)) return false;
       } catch (err) {}
       return true;
     },

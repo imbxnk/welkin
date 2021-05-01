@@ -17,12 +17,12 @@
             Profile
           </v-card-title>
           <v-card-text>
-            <v-img v-if="user.avatar_url" max-width="200" :src="user.avatar_url"></v-img>
+            <v-img v-if="$currentUser.avatar_url" max-width="200" :src="$currentUser.avatar_url"></v-img>
             <v-img v-else max-width="200" src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png"></v-img>
-            {{ user.given_name + " " + user.family_name }}<br>
-            {{ user.display_name }}<br>
-            {{ user.email }}<br>
-            {{ user.group }}<br>
+            {{ $currentUser.given_name + " " + $currentUser.family_name }}<br>
+            {{ $currentUser.display_name }}<br>
+            {{ $currentUser.email }}<br>
+            {{ $currentUser.group }}<br>
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -32,7 +32,7 @@
             Account
           </v-card-title>
           <v-card-text>
-
+            {{ $currentUser.display_name }}
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -46,7 +46,6 @@
   <router-view v-else></router-view>
 </template>
 <script>
-import welkin from "../../../utils/auth"
 import ChangePassword from "./components/changePassword.vue"
 export default {
   name: "profile",
@@ -61,15 +60,10 @@ export default {
     //   email: "Mingmanas.siv@mahidol.com",
     //   role: "Advisor",
     // },
-    user: {},
   }),
   mounted() {
-    this.getCurrentUser()
   },
   methods: {
-    getCurrentUser: async function() {
-      this.user = (await welkin.auth()).currentUser
-    },
   },
 };
 </script>

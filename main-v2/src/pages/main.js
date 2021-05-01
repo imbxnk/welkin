@@ -37,6 +37,17 @@ Vue.component("apexchart", VueApexCharts);
 // Use Axios
 Vue.use(VueAxios, axios);
 
+// GLOBAL VARIABLE
+var currentUser = Vue.observable({ user: {} })
+Object.defineProperty(Vue.prototype, '$currentUser', {
+  get () {
+    return currentUser.user
+  },
+  set (value) {
+    currentUser.user = value
+  }
+})
+
 Vue.config.productionTip = false;
 
 new Vue({

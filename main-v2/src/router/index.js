@@ -148,6 +148,8 @@ router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const authorizedGroup = to.meta.authorizedGroup;
 
+  Vue.prototype.$currentUser = currentUser
+
   try {
     if (requiresAuth && currentUser.group === "admin") return next();
   } catch (err) {}
