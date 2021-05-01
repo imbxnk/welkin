@@ -20,7 +20,7 @@
               </v-avatar>
               <v-avatar color="primary" size="35" v-bind="attrs" v-on="on" v-else>
                 <span class="white--text">
-                  {{ $currentUser.given_name.charAt(0) + $currentUser.family_name.charAt(0) }}
+                  {{ $currentUser.initials }}
                 </span>
               </v-avatar>
             </template>
@@ -33,7 +33,7 @@
                   </v-avatar>
                   <v-avatar color="primary" v-else>
                     <span class="white--text">
-                      {{ $currentUser.given_name.charAt(0) + $currentUser.family_name.charAt(0) }}
+                      {{ $currentUser.initials }}
                     </span>
                   </v-avatar>
                   <br /><br />

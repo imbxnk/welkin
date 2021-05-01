@@ -149,6 +149,7 @@ router.beforeEach(async (to, from, next) => {
   const authorizedGroup = to.meta.authorizedGroup;
 
   Vue.prototype.$currentUser = currentUser
+  Vue.prototype.$currentUser.initials = currentUser.given_name.charAt(0) + currentUser.family_name.charAt(0)
 
   try {
     if (requiresAuth && currentUser.group === "admin") return next();
