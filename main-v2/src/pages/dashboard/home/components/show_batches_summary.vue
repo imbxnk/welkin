@@ -63,7 +63,6 @@ export default {
             this.total += result[i].total;
           }
           this.loading = false;
-          console.log(this.batches);
         })
         .catch((err) => {
           console.log(err);
