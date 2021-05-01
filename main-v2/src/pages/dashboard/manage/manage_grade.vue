@@ -35,7 +35,8 @@
                             ref="myVueDropzone"
                             id="dropzone"
                             :options="dropzoneOptions"
-                            @vdropzone-success="selectFile"></vue-dropzone>
+                            @vdropzone-success="selectFile">
+                        </vue-dropzone>
                         </div>
                         <div class="col-6 mt-4" v-show="uploadSuccess">
                         <select class="form-control" name="sheetName" id="sheetName" @change="getSelectedValue($event)">
@@ -130,28 +131,23 @@
 </template>
 
 <script>
-import XLSX from 'xlsx'
-import axios from 'axios'
+import firebase from 'firebase'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 
 export default {
-    name: "manage_curriculum",
+    name: "manage_grade",
     data() {
         return {
             addManually: false,
             cpsStatus: null,
             tableData: [],
             selectedFile: "",
+            lines: '',
             data: [{}],
             sheetNames: [],
             sheetName: "",
             selectedValue: "",
-            studentsData: [],
-            allStudentData: [],
-            entryTrimester: "",
-            entryYear: "",
-            workbook: {},
             duplicateGrade: [],
             url: "https://api.welkin.app/v2/graphql",
             showContent: false,
@@ -160,7 +156,7 @@ export default {
                 thumbnailWidth: 150,
                 maxFilesize: 2,
                 parallelUploads: 1,
-                acceptedFiles: ".xls, .xlsx",
+                acceptedFiles: ".pdf",
                 maxFiles: 1,
                 addRemoveLinks: true
             },
@@ -174,98 +170,52 @@ export default {
             SnackBarStatus: false,
             timeout: 5000,
             notDuplicateGrade: true,
+            pdffile: null,
+            pdfData: null,
+            uploadValue: 0
         }
     },
     components:{
-        vueDropzone: vue2Dropzone
+        vueDropzone: vue2Dropzone,
     },
     methods: {
-        upload:async function () {
-            //clear the duplicatedStudents
-            this.duplicateStudents = [];
-            //get entry_year and entry_trimester
-            [this.entryYear,this.entryTrimester] = this.sheetName.split("T");
-            let students = {...this.studentsData}
-            for(var i in students) {
-                let std = {...students[i]};
-                //post graphql by using axios
-                let gql = `
-                        mutation{
-                            addStudent ( studentInput: {
-                                    sid: "${std.ID}",
-                                    prefix: "${std.Prefix}",
-                                    given_name: "${std.Name}",
-                                    family_name: "${std.LastName}",
-                                    program: "${std.Program}",
-                                    entry_trimester: "${this.entryTrimester}",
-                                    entry_year: "${this.entryYear}"
-                                }
-                            ){
-                                sid given_name
-                            }
-                        }
-                    `
-                await axios.post(this.url, {
-                    query : gql
-                }).then(res => {
-                    console.log(res);
-                }).catch (err => {
-                    console.log(err);
-                    this.duplicateStudents.push(std);
-                    this.showContent = true
-                    this.notDuplicateGrade = false
-                    this.SnackBarDuplicateStatus = true
-                })
-            }
-        },
-        readMyFile: function (workbook,currentSheetName){
-            return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[currentSheetName]);
-        },
-        selectFile(file){
-            //get the selected file' info
-            this.selectedFile = file;
-            XLSX.utils.json_to_sheet(this.data,'out.xlsx');
-            //if file is selected
-            if(this.selectedFile){
-                this.uploadSuccess = true
-                //read data and store it in our variable
-                let fileReader = new FileReader();
-                fileReader.readAsBinaryString(this.selectedFile);
-                fileReader.onload = (event) => {
-                    //the data is unreadable
-                    let data = event.target.result;
-                    //we have to convert it and store in our variable
-                    this.workbook = XLSX.read(data, {type: "binary"});
-                    //save the data, so we can use later in other functions
-                    this.sheetNames = this.workbook.SheetNames;
-                    this.sheetName = this.sheetNames[0];
-                    this.studentsData = this.readMyFile(this.workbook,this.sheetName);
-                    // get entry_year and entry_trimester
-                    [this.entryYear,this.entryTrimester] = this.sheetName.split("T");
-                }
-            }
-
-        },
-        getSelectedValue(event){
-            //clear the duplicatedStudents
-            this.duplicateStudents = [];
-            //hide the Duplicate div
-            this.showContent = false;
-            //get sheet name
-            this.sheetName = event.target.value;
-            //get entry_year and entry_trimester
-            this.studentsData = this.readMyFile(this.workbook,this.sheetName);
-            // get entry_year and entry_trimester
-            [this.entryYear,this.entryTrimester] = this.sheetName.split("T");
-
-            this.notDuplicateGrade = true
-            this.SnackBarStatus = false
-        },
         changeToAddManually(){
             this.importStatus = !this.importStatus
         },
         dataStatus(){
             this.SnackBarStatus = true
+        },
+        selectFile(file){
+            this.selectedFile = file
+            this.pdfData = file
+        },
+        upload(){
+            this.pdffile = null
+            const storageRef = firebase.storage().ref(`${this.pdfData.name}`).put(this.pdfData)
+            storageRef.on(`state_changed`,snapshot=>{
+                this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100
+            },error=>{
+                console.log(error.message)
+            },
+            ()=>{
+                this.uploadValue=100
+                storageRef.snapshot.ref.getDownloadURL().then(async (url)=>{
+                    let gql = `
+                        mutation{
+                            uploadUrl(url: "${url}"){
+                                message
+                            }
+                        }
+                    `
+                    console.log(url);
+                    this.pdffile = url
+                    await this.axios.post(this.url, { query : gql }, { withCredentials: true }).then(res => {
+                        console.log(res);
+                    }).catch (err => {
+                        console.log(err);
+                    })
+                })
+            })
         }
     },
     props:[
