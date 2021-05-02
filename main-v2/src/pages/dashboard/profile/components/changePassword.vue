@@ -1,6 +1,6 @@
 <template>
-  <div>
-  <v-card-title>
+  <div class="wk-security">
+  <v-card-title style="font-weight: 700 !important">
     Security
   </v-card-title>
   <v-card-text>
