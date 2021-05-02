@@ -15,11 +15,12 @@
               active-class="primary--text"
             >
               <template v-for="(item, index) in classes">
-                <v-list-item :key="item.title" @click="sentData(item)" class="my-n4">
+                <v-list-item :key="item.title" @click="sentData(item._id)" class="my-n4">
                   <v-list-item-content>
                     <v-list-item-title
                       v-text="item.year + 'T' + item.trimester + ' SEC' + item.section"
                     ></v-list-item-title>
+                    <v-list-item-subtitle>{{ item._id }}</v-list-item-subtitle>
                   </v-list-item-content>
                   <v-list-item-action>
                     <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
@@ -33,12 +34,22 @@
         </v-list>
       </v-card>
     </v-col>
+
     <!-- 2nd column -->
     <v-col style="padding: 0 0 0 8px">
       <v-card class="box">
-        <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height">
-          <div v-if="!selected"></div>
-          <studentTable v-else class="ma-3"></studentTable>
+        <simplebar v-if="!status" data-simplebar-auto-hide="true" class="wk-content-full-height">
+          <div class="center grey--text small--text">
+            <div class="logo-watermark"></div>
+            select the course to see more detail
+          </div>
+        </simplebar>
+        <simplebar v-else data-simplebar-auto-hide="true" class="wk-content-full-height">
+          <studentTable
+            class="ma-3"
+            :classID="this.classID"
+            :stdList="this.class_detail"
+          ></studentTable>
         </simplebar>
       </v-card>
     </v-col>
@@ -60,19 +71,19 @@ export default {
   },
   data() {
     return {
+      status: false,
       selected: false,
       classes: [],
-      details: {
-        insName: "",
-      },
+      classID: "",
+      class_detail: [],
     };
   },
   methods: {
     sentData(item) {
+      this.status = true;
       this.selected = true;
-      this.details.insName = item.instructor.name;
-      console.log(this.details.insName);
-      console.log(item._id);
+      this.classID = item;
+      this.loadStudent(this.classID);
     },
     loadClasses() {
       let query = `
@@ -93,6 +104,7 @@ export default {
                           }
                           trimester
                           year
+                      
                         }
                       }
                     }
@@ -101,7 +113,49 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.classes = res.data.data.classes.classes;
-          console.log(this.classes);
+          this.loading = false;
+        })
+        .catch((err) => {});
+    },
+    loadStudent(class_id) {
+      let query = `
+                    query {
+                      class(classId: "${class_id}") {
+                         _id
+                        course {
+                          code
+                          name
+                          description
+                        }
+                        instructor {
+                          title
+                          name
+                        }
+                        section
+                        trimester
+                        year
+                        enrollments {
+                          student {
+                            sid
+                            given_name
+                            family_name
+                            email
+                          }
+                          grade
+                        }
+                      }
+                    }
+                `;
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.class_detail = res.data.data.class;
+          this.class_detail.enrollments.forEach((enrollment) => {
+            enrollment.student.name =
+              enrollment.student.given_name + " " + enrollment.student.family_name;
+          });
+
+          this.loading = false;
         })
         .catch((err) => {});
     },

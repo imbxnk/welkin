@@ -28,21 +28,12 @@
       </table> -->
 
       <v-divider></v-divider>
-      <v-row>
-        <v-col cols="6">
-          <h6>Instructor list:</h6>
-          <table style="width:100%;">
-            <tr v-for="(instuctor, i) in instuctors" :key="i">
-              {{
-                instuctor.title
-              }}
-              {{
-                instuctor.name
-              }}
-            </tr>
-          </table>
-        </v-col>
-      </v-row>
+      <h6 class="primary--text ">Instructor list:</h6>
+      <ul>
+        <li v-for="(instuctor, i) in instuctors" :key="i">
+          {{ instuctor.title }} {{ instuctor.name }}
+        </li>
+      </ul>
       <!-- <div v-for="batch in Object.keys(batches)" :key="batch">
         Remain [{{ batch }}]: {{ batches[batch].total - batches[batch].passed }}/{{
           batches[batch].total
