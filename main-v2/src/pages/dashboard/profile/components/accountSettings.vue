@@ -24,16 +24,16 @@
       <div class="d-flex wk-account-form d-flex flex-column">
         <div class="mb-3">
           <label class="form-label">Display name</label>
-          <input class="form-control" type="text" :disabled="isLoading" v-model="user.display_name" placeholder="">
+          <input @keydown="isSuccess = false" class="form-control" type="text" :disabled="isLoading" v-model="user.display_name" placeholder="">
         </div>
         <div class="mb-3 row">
           <div class="col col-12 col-md-6">
             <label class="form-label">Given name</label>
-            <input class="form-control" style="text-transform:capitalize" :disabled="isLoading" type="text" v-model="user.given_name" required placeholder="">
+            <input @keydown="isSuccess = false" class="form-control" style="text-transform:capitalize" :disabled="isLoading" type="text" v-model="user.given_name" required placeholder="">
           </div>
           <div class="col col-12 col-md-6">
             <label class="form-label">Family name</label>
-            <input class="form-control" style="text-transform:uppercase" :disabled="isLoading" required type="text" v-model="user.family_name" placeholder="">
+            <input @keydown="isSuccess = false" class="form-control" style="text-transform:uppercase" :disabled="isLoading" required type="text" v-model="user.family_name" placeholder="">
           </div>
         </div>
         <div class="mb-3">
@@ -67,11 +67,6 @@ export default {
       },
       isLoading: false,
       isSuccess: false,
-    }
-  },
-  watch: {
-    user() {
-      this.isSuccess = false
     }
   },
   methods: {
