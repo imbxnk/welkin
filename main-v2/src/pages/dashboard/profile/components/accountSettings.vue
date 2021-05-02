@@ -69,6 +69,11 @@ export default {
       isSuccess: false,
     }
   },
+  watch: {
+    user() {
+      this.isSuccess = false
+    }
+  },
   methods: {
     updateAccount() {
       this.isLoading = true
