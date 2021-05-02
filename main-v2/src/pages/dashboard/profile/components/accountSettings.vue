@@ -24,16 +24,16 @@
       <div class="d-flex wk-account-form d-flex flex-column">
         <div class="mb-3">
           <label class="form-label">Display name</label>
-          <input class="form-control" type="text" v-model="user.display_name" placeholder="">
+          <input class="form-control" type="text" :disabled="isLoading" v-model="user.display_name" placeholder="">
         </div>
         <div class="mb-3 row">
           <div class="col col-12 col-md-6">
             <label class="form-label">Given name</label>
-            <input class="form-control" style="text-transform:capitalize" type="text" v-model="user.given_name" required placeholder="">
+            <input class="form-control" style="text-transform:capitalize" :disabled="isLoading" type="text" v-model="user.given_name" required placeholder="">
           </div>
           <div class="col col-12 col-md-6">
             <label class="form-label">Family name</label>
-            <input class="form-control" style="text-transform:uppercase" required type="text" v-model="user.family_name" placeholder="">
+            <input class="form-control" style="text-transform:uppercase" :disabled="isLoading" required type="text" v-model="user.family_name" placeholder="">
           </div>
         </div>
         <div class="mb-3">
@@ -41,7 +41,9 @@
           <div class="ms-3">{{ $currentUser.email }}</div>
         </div>
         <div class="d-flex align-items-end flex-column">
-          <button type="submit" @click="updateAccount" class="btn btn-primary wk-group-badge">Save Changes</button>
+          <button type="submit" @click="updateAccount" class="btn btn-primary wk-group-badge"
+            :disabled="(user.display_name === $currentUser.display_name) && (user.given_name === $currentUser.given_name) && (user.family_name === $currentUser.family_name) || isLoading"
+          >Save Changes</button>
         </div>
       </div>
     </v-card-text>
@@ -56,11 +58,13 @@ export default {
         display_name: this.$currentUser.display_name,
         given_name: this.$currentUser.given_name,
         family_name: this.$currentUser.family_name,
-      }
+      },
+      isLoading: false
     }
   },
   methods: {
     updateAccount() {
+      this.isLoading = true
       let query = `mutation {
                     updateMyAccount(userInput: {
                       display_name: "${this.user.display_name}",
@@ -80,8 +84,9 @@ export default {
               this.$currentUser.given_name = this.user.given_name
               this.$currentUser.family_name = this.user.family_name
             }
+            this.isLoading = false
           })
-          .catch((err) => { });
+          .catch((err) => { this.isLoading = false });
     }
   },
 }
@@ -123,5 +128,9 @@ export default {
 
 input, button {
   box-shadow: none !important;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 </style>
