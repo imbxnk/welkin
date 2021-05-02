@@ -72,7 +72,7 @@ export default {
       this.selected = true;
       this.details.insName = item.instructor.name;
       console.log(this.details.insName);
-      console.log(this.item._id);
+      console.log(item._id);
     },
     loadClasses() {
       let query = `
