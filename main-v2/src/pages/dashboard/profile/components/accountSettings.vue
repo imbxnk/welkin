@@ -75,7 +75,7 @@ export default {
           .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
           .then((res) => {
             console.log(res);
-            if(res.data.status === 200) {
+            if(res.data.data.updateMyAccount.success) {
               this.$currentUser.display_name = this.user.display_name
               this.$currentUser.given_name = this.user.given_name
               this.$currentUser.family_name = this.user.family_name
