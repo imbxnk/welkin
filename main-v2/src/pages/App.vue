@@ -229,7 +229,6 @@ export default {
     isAuth: false,
     sidebarMenu: true,
     toggleMini: false,
-    display_name: "TEST",
     items: [
       {
         title: "Home",
