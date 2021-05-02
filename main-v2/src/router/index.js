@@ -14,8 +14,8 @@ import CourseHistory from "../pages/dashboard/courselist/course_history";
 import CourseDetail from "../pages/dashboard/courselist/course_detail";
 import Curriculum from "../pages/dashboard/curriculum/curriculum";
 import Manage_grade from "../pages/dashboard/manage/manage_grade";
-import AddInstructor from "../pages/dashboard/manage/add_instructor"
-import AddUser from "../pages/dashboard/manage/add_user"
+import AddInstructor from "../pages/dashboard/manage/add_instructor";
+import AddUser from "../pages/dashboard/manage/add_user";
 // Login Route
 import Login from "../pages/login/login";
 
@@ -79,7 +79,7 @@ const routes = [
   },
   {
     name: "add_instructor",
-    path: "/manage/addinstructor",
+    path: "/manage/instructor/addinstructor",
     component: AddInstructor,
     meta: {
       requiresAuth: true,
@@ -89,7 +89,7 @@ const routes = [
   },
   {
     name: "add_user",
-    path: "/manage/adduser",
+    path: "/manage/user/adduser",
     component: AddUser,
     meta: {
       requiresAuth: true,
@@ -148,8 +148,9 @@ router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const authorizedGroup = to.meta.authorizedGroup;
 
-  Vue.prototype.$currentUser = currentUser
-  Vue.prototype.$currentUser.initials = currentUser.given_name.charAt(0) + currentUser.family_name.charAt(0)
+  Vue.prototype.$currentUser = currentUser;
+  Vue.prototype.$currentUser.initials =
+    currentUser.given_name.charAt(0) + currentUser.family_name.charAt(0);
 
   try {
     if (requiresAuth && currentUser.group === "admin") return next();

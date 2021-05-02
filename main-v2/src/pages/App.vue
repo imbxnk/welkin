@@ -42,7 +42,13 @@
                   <p class="caption" style="font-weight: 300">
                     {{ $currentUser.email }}
                   </p>
-                  <v-btn class="btn-manage-account" @click="$router.push({ path: '/profile' })" depressed outlined rounded text
+                  <v-btn
+                    class="btn-manage-account"
+                    @click="$router.push({ path: '/profile' })"
+                    depressed
+                    outlined
+                    rounded
+                    text
                     >Manage Your Account</v-btn
                   >
                   <v-divider class=""></v-divider>
@@ -200,8 +206,8 @@ export default {
     watch: {
       $currentUser(user) {
         this.$currentUser = user;
-      }
-    }
+      },
+    },
   },
   computed: {
     mini: {
@@ -223,7 +229,7 @@ export default {
     isAuth: false,
     sidebarMenu: true,
     toggleMini: false,
-    display_name: 'TEST',
+    display_name: "TEST",
     items: [
       {
         title: "Home",
@@ -309,17 +315,40 @@ export default {
             ],
           },
           {
-            title: "Add Instructor",
-            href: "/addinstructor",
-            icon: "mdi-account-multiple-plus",
-            authorizedGroup: ["coordinator", "admin"],
+            title: "Curriculum",
+            href: "/curriculum",
+            children: [
+              {
+                title: "Add Curriculum",
+                href: "/addcurriculum",
+                icon: "mdi-plus",
+              },
+            ],
           },
           {
-            title: "Add User",
-            href: "/adduser",
-            icon: "mdi-account-multiple-plus",
-            authorizedGroup: ["coordinator", "admin"],
-          }
+            title: "Instructor",
+            href: "/instructor",
+            children: [
+              {
+                title: "Add Instructor",
+                href: "/addinstructor",
+                icon: "mdi-account-multiple-plus",
+                authorizedGroup: ["coordinator", "admin"],
+              },
+            ],
+          },
+          {
+            title: "User",
+            href: "/user",
+            children: [
+              {
+                title: "Add User",
+                href: "/adduser",
+                icon: "mdi-account-multiple-plus",
+                authorizedGroup: ["coordinator", "admin"],
+              },
+            ],
+          },
         ],
       },
       // {
