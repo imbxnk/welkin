@@ -10,6 +10,8 @@
             <v-avatar v-if="$currentUser.avatar_url" size="75">
               <img :src="$currentUser.avatar_url" />
             </v-avatar>
+            <v-img v-else max-width="75" src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png">
+            </v-img>
           </div>
           <div class="d-flex flex-column">
             <div class="wk-name" v-if="$currentUser.display_name"><h5>{{ $currentUser.display_name }}</h5></div>
