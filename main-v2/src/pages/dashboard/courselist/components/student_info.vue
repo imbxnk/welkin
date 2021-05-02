@@ -13,6 +13,8 @@
         :items="class_detail.enrollments"
         mobile-breakpoint="680"
         class="home"
+        hide-default-footer
+        disable-pagination
       ></v-data-table>
     </v-card>
   </div>
