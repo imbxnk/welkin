@@ -69,7 +69,6 @@ export default {
   watch: {
     code: function(current) {
       this.loadCourse(current);
-      this.getInstructors(current);
     },
   },
   methods: {
@@ -81,6 +80,13 @@ export default {
       this.p = [];
 
       var queryStr = `
+                courseInstructors(course_code:"${code}"){
+                            total
+                            instructors{
+                              title
+                              name
+                              }
+                            }
                 course (searchInput: { code: "${code}" }) {
                         _id
                         name
@@ -107,6 +113,7 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
+          this.instuctors = res.data.data.courseInstructors.instructors;
           this.course = res.data.data.course;
           delete res.data.data.course;
           var result = { ...res.data.data };
@@ -132,28 +139,7 @@ export default {
           }
           this.loading = false;
         })
-        .catch((err) => {});
-    },
-    getInstructors(code) {
-      let query = `
-              query{
-                  courseInstructors(course_code:"${code}"){
-                  total
-                  instructors{
-                    title
-                    name
-                    }
-                  }
-                }
-          `;
-      this.axios
-        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
-        .then((res) => {
-          this.instuctors = [...res.data.data.courseInstructors.instructors];
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => { this.loading = false; });
     },
   },
 };
