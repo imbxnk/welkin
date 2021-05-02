@@ -289,12 +289,12 @@ export default {
             children: [
               {
                 title: "Add Students",
-                href: "/addstudents",
+                href: "/add",
                 icon: "mdi-plus",
               },
               {
                 title: "Upload Grade",
-                href: "/addgrade",
+                href: "/grade/upload",
                 icon: "mdi-plus",
               },
             ],
@@ -305,7 +305,7 @@ export default {
             children: [
               {
                 title: "Add Course",
-                href: "/addcourse",
+                href: "/add",
                 icon: "mdi-plus",
               },
             ],
@@ -316,7 +316,7 @@ export default {
             children: [
               {
                 title: "Add Curriculum",
-                href: "/addcurriculum",
+                href: "/add",
                 icon: "mdi-plus",
               },
             ],
@@ -327,7 +327,7 @@ export default {
             children: [
               {
                 title: "Add Instructor",
-                href: "/addinstructor",
+                href: "/add",
                 icon: "mdi-account-multiple-plus",
                 authorizedGroup: ["coordinator", "admin"],
               },
@@ -339,7 +339,7 @@ export default {
             children: [
               {
                 title: "Add User",
-                href: "/adduser",
+                href: "/add",
                 icon: "mdi-account-multiple-plus",
                 authorizedGroup: ["coordinator", "admin"],
               },

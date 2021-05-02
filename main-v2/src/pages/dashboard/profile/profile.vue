@@ -1,61 +1,74 @@
 <template>
-  <v-row v-if="$route.name === 'profile'">
-    <v-tabs :vertical="$vuetify.breakpoint.mdAndUp" class="wk-profile-tabs">
-      <v-tab>
-        Profile
-      </v-tab>
-      <v-tab>
-        Account
-      </v-tab>
-      <v-tab>
-        Security
-      </v-tab>
+  <v-row>
+    <v-tabs :vertical="$vuetify.breakpoint.mdAndUp" class="wk-profile-tabs" v-model="selected">
+      <router-link :to="{path: '/profile'}">
+        <v-tab key="1">
+          Profile
+        </v-tab>
+      </router-link>
+      <router-link :to="{path: '/profile/settings'}">
+        <v-tab key="2">
+          Account
+        </v-tab>
+      </router-link>
+      <router-link :to="{path: '/profile/security'}">
+        <v-tab key="3">
+          Security
+        </v-tab>
+      </router-link>
 
       <v-tab-item transition="none">
         <v-card flat elevation="2">
-          <v-card-title>
-            Profile
-          </v-card-title>
-          <v-card-text>
-            <v-img v-if="$currentUser.avatar_url" max-width="200" :src="$currentUser.avatar_url"></v-img>
-            <v-img v-else max-width="200" src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png"></v-img>
-            {{ $currentUser.given_name + " " + $currentUser.family_name }}<br>
-            {{ $currentUser.display_name }}<br>
-            {{ $currentUser.email }}<br>
-            {{ $currentUser.group }}<br>
-          </v-card-text>
+          <router-view></router-view>
         </v-card>
       </v-tab-item>
       <v-tab-item transition="none">
         <v-card flat elevation="2">
-          <AccountSettings></AccountSettings>
+          <router-view></router-view>
         </v-card>
       </v-tab-item>
       <v-tab-item transition="none">
         <v-card flat elevation="2">
-          <ChangePassword></ChangePassword>
+          <router-view></router-view>
         </v-card>
       </v-tab-item>
     </v-tabs>
   </v-row>
-  <router-view v-else></router-view>
 </template>
 <script>
-import AccountSettings from "./components/accountSettings.vue";
-import ChangePassword from "./components/changePassword.vue";
+// import AccountSettings from "./components/accountSettings.vue";
+// import ChangePassword from "./components/changePassword.vue";
 export default {
   name: "profile",
   components: {
-    ChangePassword,
-    AccountSettings
+    // ChangePassword,
+    // AccountSettings
   },
   computed: {},
   data: () => ({
-
+    selected: 0
   }),
   mounted() {
+    switch (this.$route.name) {
+      case 'MyProfile':
+        this.selected = 3
+        break
+      case 'AccountSettings':
+        this.selected = 1
+        break
+      case 'ChangePassword':
+        this.selected = 2
+        break
+    }
+    console.log(this.selected)
   },
   methods: {
   },
 };
 </script>
+
+<style scoped>
+.v-slide-group__content a {
+  text-decoration: none;
+}
+</style>

@@ -78,7 +78,7 @@
                     }"
                     small> -->
                   <v-btn
-                    @click="$router.push({ path: 'students', params: { sid: stdDetail.sid } })"
+                    @click="$router.push({ name: 'student_record', params: { sid: stdDetail.sid } })"
                   >
                     See student record</v-btn
                   >
