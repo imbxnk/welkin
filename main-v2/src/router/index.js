@@ -151,6 +151,9 @@ router.beforeEach(async (to, from, next) => {
   if (currentUser) {
     Vue.prototype.$currentUser = currentUser;
     Vue.prototype.$currentUser.initials = currentUser.given_name.charAt(0) + currentUser.family_name.charAt(0);
+    Vue.prototype.$currentUser.isAuth = true;
+  } else {
+    Vue.prototype.$currentUser.isAuth = false;
   }
 
   try {

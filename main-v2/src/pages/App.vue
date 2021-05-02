@@ -1,196 +1,194 @@
 <template>
-  <div>
-    <v-app v-if="$route.name === 'login'">
-      <router-view></router-view>
-    </v-app>
-    <v-app v-else-if="$route.name !== 'login' && $currentUser">
-      <v-app-bar app flat color="white" height="50">
-        <div class="wk-header">
-          <router-link to="/">
-            <v-toolbar-title class="primary--text">
-              <img :src="require(`../assets/logo.svg`)" class="logo" />
-            </v-toolbar-title>
-          </router-link>
-          <v-spacer></v-spacer>
+  <v-app v-if="!$currentUser.isAuth">
+    <router-view></router-view>
+  </v-app>
+  <v-app v-else>
+    <v-app-bar app flat color="white" height="50">
+      <div class="wk-header">
+        <router-link to="/">
+          <v-toolbar-title class="primary--text">
+            <img :src="require(`../assets/logo.svg`)" class="logo" />
+          </v-toolbar-title>
+        </router-link>
+        <v-spacer></v-spacer>
 
-          <v-menu bottom max-width="300px" rounded offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-avatar v-if="$currentUser.avatar_url" size="35" v-bind="attrs" v-on="on">
-                <img :src="$currentUser.avatar_url" />
-              </v-avatar>
-              <v-avatar color="primary" size="35" v-bind="attrs" v-on="on" v-else>
-                <span class="white--text">
-                  {{ $currentUser.initials }}
-                </span>
-              </v-avatar>
-            </template>
+        <v-menu bottom max-width="300px" rounded offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-avatar v-if="$currentUser.avatar_url" size="35" v-bind="attrs" v-on="on">
+              <img :src="$currentUser.avatar_url" />
+            </v-avatar>
+            <v-avatar color="primary" size="35" v-bind="attrs" v-on="on" v-else>
+              <span class="white--text">
+                {{ $currentUser.initials }}
+              </span>
+            </v-avatar>
+          </template>
 
-            <v-list>
-              <v-list-item-content class="justify-center">
-                <div class="text-center">
-                  <v-avatar v-if="$currentUser.avatar_url">
-                    <img :src="$currentUser.avatar_url" />
-                  </v-avatar>
-                  <v-avatar color="primary" v-else>
-                    <span class="white--text">
-                      {{ $currentUser.initials }}
-                    </span>
-                  </v-avatar>
-                  <br /><br />
-                  <h6 v-if="$currentUser.display_name">{{ $currentUser.display_name }}</h6>
-                  <h6 v-else>{{ $currentUser.given_name + " " + $currentUser.family_name }}</h6>
-                  <p class="caption" style="font-weight: 300">
-                    {{ $currentUser.email }}
-                  </p>
-                  <v-btn
-                    class="btn-manage-account"
-                    @click="$router.push({ path: '/profile' })"
-                    depressed
-                    outlined
-                    rounded
-                    text
-                    >Manage Your Account</v-btn
-                  >
-                  <v-divider class=""></v-divider>
-                </div>
-                <!-- <v-list-item v-for="(account, i) in accounts" :key="i" :to="account.href">
-                <v-list-item-title>{{ account.title }}</v-list-item-title>
-              </v-list-item> -->
-                <v-list-item class="my-n4 px-16">
-                  <v-btn class="my-3" @click="logout()" block outlined depressed text>Logout</v-btn>
-                </v-list-item>
-                <v-divider class="mb-n5 py-2"></v-divider>
-              </v-list-item-content>
-            </v-list>
-          </v-menu>
-        </div>
-      </v-app-bar>
+          <v-list>
+            <v-list-item-content class="justify-center">
+              <div class="text-center">
+                <v-avatar v-if="$currentUser.avatar_url">
+                  <img :src="$currentUser.avatar_url" />
+                </v-avatar>
+                <v-avatar color="primary" v-else>
+                  <span class="white--text">
+                    {{ $currentUser.initials }}
+                  </span>
+                </v-avatar>
+                <br /><br />
+                <h6 v-if="$currentUser.display_name">{{ $currentUser.display_name }}</h6>
+                <h6 v-else>{{ $currentUser.given_name + " " + $currentUser.family_name }}</h6>
+                <p class="caption" style="font-weight: 300">
+                  {{ $currentUser.email }}
+                </p>
+                <v-btn
+                  class="btn-manage-account"
+                  @click="$router.push({ path: '/profile' })"
+                  depressed
+                  outlined
+                  rounded
+                  text
+                  >Manage Your Account</v-btn
+                >
+                <v-divider class=""></v-divider>
+              </div>
+              <!-- <v-list-item v-for="(account, i) in accounts" :key="i" :to="account.href">
+              <v-list-item-title>{{ account.title }}</v-list-item-title>
+            </v-list-item> -->
+              <v-list-item class="my-n4 px-16">
+                <v-btn class="my-3" @click="logout()" block outlined depressed text>Logout</v-btn>
+              </v-list-item>
+              <v-divider class="mb-n5 py-2"></v-divider>
+            </v-list-item-content>
+          </v-list>
+        </v-menu>
+      </div>
+    </v-app-bar>
 
-      <!-- nav menu: -->
-      <v-navigation-drawer
-        v-model="sidebarMenu"
-        app
-        floating
-        :permanent="sidebarMenu"
-        :temporary="toggleMini == true ? $vuetify.breakpoint.smAndDown : false"
-        :mini-variant.sync="mini"
-        v-click-outside="navOnOutsideClick"
-        color="white"
-      >
-        <!-- list menu -->
-        <v-list>
-          <v-list-item class="toggleMenu">
-            <!-- <v-app-bar-nav-icon @click.stop="toggleMini = !toggleMini"></v-app-bar-nav-icon> -->
-            <v-list-item-action>
-              <v-icon @click.stop="toggleMini = !toggleMini" color="primary">mdi-menu</v-icon>
-            </v-list-item-action>
+    <!-- nav menu: -->
+    <v-navigation-drawer
+      v-model="sidebarMenu"
+      app
+      floating
+      :permanent="sidebarMenu"
+      :temporary="toggleMini == true ? $vuetify.breakpoint.smAndDown : false"
+      :mini-variant.sync="mini"
+      v-click-outside="navOnOutsideClick"
+      color="white"
+    >
+      <!-- list menu -->
+      <v-list>
+        <v-list-item class="toggleMenu">
+          <!-- <v-app-bar-nav-icon @click.stop="toggleMini = !toggleMini"></v-app-bar-nav-icon> -->
+          <v-list-item-action>
+            <v-icon @click.stop="toggleMini = !toggleMini" color="primary">mdi-menu</v-icon>
+          </v-list-item-action>
+        </v-list-item>
+      </v-list>
+
+      <v-list expand nav>
+        <template v-for="(item, i) in items">
+          <!-- lists that have no children -->
+          <v-list-item
+            v-if="!item.children && checkAuthGroup(i)"
+            :key="item.title"
+            link
+            :to="item.href"
+            color="primary"
+          >
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
           </v-list-item>
-        </v-list>
-
-        <v-list expand nav>
-          <template v-for="(item, i) in items">
-            <!-- lists that have no children -->
-            <v-list-item
-              v-if="!item.children && checkAuthGroup(i)"
-              :key="item.title"
-              link
-              :to="item.href"
-              color="primary"
-            >
+          <!-- lists with children -->
+          <v-list-group
+            v-else-if="item.children && checkAuthGroup(i)"
+            :group="item.href"
+            :key="i"
+            color="primary"
+            link
+            @click.stop="toggleMini = true"
+          >
+            <template #activator>
               <v-list-item-icon>
                 <v-icon>{{ item.icon }}</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item-content>
-            </v-list-item>
-            <!-- lists with children -->
-            <v-list-group
-              v-else-if="item.children && checkAuthGroup(i)"
-              :group="item.href"
-              :key="i"
-              color="primary"
-              link
-              @click.stop="toggleMini = true"
-            >
-              <template #activator>
+            </template>
+
+            <template v-for="(subitem, j) in item.children">
+              <v-list-item
+                v-if="!subitem.children && checkAuthGroup(i)"
+                :key="j"
+                :to="item.href + subitem.href"
+                class="mb-2"
+              >
                 <v-list-item-icon>
-                  <v-icon>{{ item.icon }}</v-icon>
+                  <v-icon>{{ subitem.icon }}</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                  <v-list-item-title class="ml-0">{{ subitem.title }}</v-list-item-title>
                 </v-list-item-content>
-              </template>
-
-              <template v-for="(subitem, j) in item.children">
-                <v-list-item
-                  v-if="!subitem.children && checkAuthGroup(i)"
-                  :key="j"
-                  :to="item.href + subitem.href"
-                  class="mb-2"
-                >
-                  <v-list-item-icon>
-                    <v-icon>{{ subitem.icon }}</v-icon>
-                  </v-list-item-icon>
+              </v-list-item>
+              <!-- if there are children in subchildren -->
+              <v-list-group
+                v-else-if="subitem.children && checkAuthGroup(i)"
+                :key="j"
+                :group="subitem.href"
+                sub-group
+                class="mb-2"
+              >
+                <template #activator>
                   <v-list-item-content>
-                    <v-list-item-title class="ml-0">{{ subitem.title }}</v-list-item-title>
+                    <v-list-item-title>{{ subitem.title }}</v-list-item-title>
                   </v-list-item-content>
-                </v-list-item>
-                <!-- if there are children in subchildren -->
-                <v-list-group
-                  v-else-if="subitem.children && checkAuthGroup(i)"
-                  :key="j"
-                  :group="subitem.href"
-                  sub-group
-                  class="mb-2"
-                >
-                  <template #activator>
+                </template>
+                <!-- show children in subchildren -->
+                <template v-for="(subSubItem, k) in subitem.children">
+                  <v-list-item
+                    :key="k"
+                    link
+                    :value="true"
+                    :to="item.href + subitem.href + subSubItem.href"
+                  >
+                    <v-list-item-icon>
+                      <v-icon>{{ subSubItem.icon }}</v-icon>
+                    </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-title>{{ subitem.title }}</v-list-item-title>
+                      <v-list-item-title>{{ subSubItem.title }}</v-list-item-title>
                     </v-list-item-content>
-                  </template>
-                  <!-- show children in subchildren -->
-                  <template v-for="(subSubItem, k) in subitem.children">
-                    <v-list-item
-                      :key="k"
-                      link
-                      :value="true"
-                      :to="item.href + subitem.href + subSubItem.href"
-                    >
-                      <v-list-item-icon>
-                        <v-icon>{{ subSubItem.icon }}</v-icon>
-                      </v-list-item-icon>
-                      <v-list-item-content>
-                        <v-list-item-title>{{ subSubItem.title }}</v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </template>
-                </v-list-group>
-              </template>
-            </v-list-group>
-          </template>
-        </v-list>
-      </v-navigation-drawer>
+                  </v-list-item>
+                </template>
+              </v-list-group>
+            </template>
+          </v-list-group>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
 
-      <!-- content -->
-      <!-- <template v-if="loading">
-        <div class="text-center">
-          <v-progress-circular :size="70" :width="7" color="#FDE2A6" indeterminate>
-          </v-progress-circular>
-        </div>
-      </template> -->
-      <!-- <template v-else> -->
-      <v-main style="margin:0 !important;">
-        <simplebar
-          data-simplebar-auto-hide="true"
-          class="wk-container"
-          :class="{ home: $route.name === 'home' }"
-        >
-          <router-view class="ma-4"></router-view>
-        </simplebar>
-      </v-main>
-    </v-app>
-  </div>
+    <!-- content -->
+    <!-- <template v-if="loading">
+      <div class="text-center">
+        <v-progress-circular :size="70" :width="7" color="#FDE2A6" indeterminate>
+        </v-progress-circular>
+      </div>
+    </template> -->
+    <!-- <template v-else> -->
+    <v-main style="margin:0 !important;">
+      <simplebar
+        data-simplebar-auto-hide="true"
+        class="wk-container"
+        :class="{ home: $route.name === 'home' }"
+      >
+        <router-view class="ma-4"></router-view>
+      </simplebar>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -223,7 +221,6 @@ export default {
       },
     },
   },
-
   data: () => ({
     SITE_NAME: process.env.VUE_APP_SITE_NAME,
     isAuth: false,
