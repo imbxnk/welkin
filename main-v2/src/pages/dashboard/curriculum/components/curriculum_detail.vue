@@ -19,7 +19,9 @@
       >
       <v-list-item v-for="course in detail.core_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
-          <v-list-item-title>{{ course.code }} : {{ course.name }}</v-list-item-title>
+          <v-list-item-title
+            >{{ course.code }} : {{ course.name }} [ {{ course.credit }} ]</v-list-item-title
+          >
           <v-list-item-subtitle>{{
             course.description == "No description" ? "" : course.description
           }}</v-list-item-subtitle>
@@ -33,7 +35,9 @@
       >
       <v-list-item v-for="course in detail.required_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
-          <v-list-item-title>{{ course.code }} : {{ course.name }}</v-list-item-title>
+          <v-list-item-title
+            >{{ course.code }} : {{ course.name }} [ {{ course.credit }} ]</v-list-item-title
+          >
           <v-list-item-subtitle>{{
             course.description == "No description" ? "" : course.description
           }}</v-list-item-subtitle>
@@ -47,7 +51,9 @@
       >
       <v-list-item v-for="course in detail.elective_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
-          <v-list-item-title>{{ course.code }} : {{ course.name }}</v-list-item-title>
+          <v-list-item-title
+            >{{ course.code }} : {{ course.name }} [ {{ course.credit }} ]</v-list-item-title
+          >
           <v-list-item-subtitle>{{
             course.description == "No description" ? "" : course.description
           }}</v-list-item-subtitle>
@@ -96,6 +102,7 @@ export default {
                       name
                       description
                       category
+                      credit
                     }
                     passing_conditions {
                       core_courses
