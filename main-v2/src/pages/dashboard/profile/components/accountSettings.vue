@@ -15,8 +15,8 @@
             <div class="wk-name" v-if="$currentUser.display_name"><h5>{{ $currentUser.display_name }}</h5></div>
             <div class="wk-name" v-else><h5>{{ $currentUser.given_name + " " + $currentUser.family_name }}</h5></div>
             <div class="d-inline-block">
-              <span class="wk-badge wk-group-badge">{{ $currentUser.group }}</span>
-              <span class="wk-badge wk-advisor-badge" v-if="$currentUser.isAdvisor">Advisor</span>
+              <span class="wk-badge wk-primary-color">{{ $currentUser.group }}</span>
+              <span class="wk-badge wk-grey-color" v-if="$currentUser.isAdvisor">Advisor</span>
             </div>
           </div>
         </div>
@@ -41,7 +41,13 @@
           <div class="ms-3">{{ $currentUser.email }}</div>
         </div>
         <div class="d-flex align-items-end flex-column">
-          <button type="submit" @click="updateAccount" class="btn btn-primary wk-group-badge"
+          <button class="btn wk-btn wk-success-color"
+            v-if="isSuccess && (user.display_name === $currentUser.display_name) && (user.given_name === $currentUser.given_name) && (user.family_name === $currentUser.family_name)"
+          ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+  <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+</svg>
+          </button>
+          <button type="submit" @click="updateAccount" v-else class="btn wk-btn btn-primary wk-primary-color"
             :disabled="(user.display_name === $currentUser.display_name) && (user.given_name === $currentUser.given_name) && (user.family_name === $currentUser.family_name) || isLoading"
           >Save Changes</button>
         </div>
@@ -59,7 +65,8 @@ export default {
         given_name: this.$currentUser.given_name,
         family_name: this.$currentUser.family_name,
       },
-      isLoading: false
+      isLoading: false,
+      isSuccess: false,
     }
   },
   methods: {
@@ -83,10 +90,16 @@ export default {
               this.$currentUser.display_name = this.user.display_name
               this.$currentUser.given_name = this.user.given_name
               this.$currentUser.family_name = this.user.family_name
+              this.isSuccess = true
+            } else {
+              this.isSuccess = false
             }
             this.isLoading = false
           })
-          .catch((err) => { this.isLoading = false });
+          .catch((err) => {
+            this.isLoading = false
+            this.isSuccess = false
+          });
     }
   },
 }
@@ -110,12 +123,25 @@ export default {
   cursor: default;
 }
 
-.wk-group-badge {
+.wk-primary-color {
   background: #1976d2;
   color: #fff;
 }
 
-.wk-advisor-badge {
+.wk-success-color {
+  border-color: #289672;
+  background: #289672;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.wk-success-color:hover, .wk-success-color:focus, .wk-success-color:active {
+  border-color: #29bb89;
+  background: #29bb89;
+  color: #fff;
+}
+
+.wk-grey-color {
   background: #f8f9fa;
   color: #212529;
 }
@@ -132,5 +158,9 @@ input, button {
 
 button:disabled {
   cursor: not-allowed;
+}
+
+.wk-btn {
+  width: 150px;
 }
 </style>
