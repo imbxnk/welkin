@@ -16,6 +16,7 @@ import Curriculum from "../pages/dashboard/curriculum/curriculum";
 import Manage_grade from "../pages/dashboard/manage/manage_grade";
 import AddInstructor from "../pages/dashboard/manage/add_instructor";
 import AddUser from "../pages/dashboard/manage/add_user";
+import StudentRecord from "../pages/dashboard/students/std_record";
 // Login Route
 import Login from "../pages/login/login";
 
@@ -37,6 +38,15 @@ const routes = [
     meta: {
       requiresAuth: true,
       title: "Student",
+    },
+  },
+  {
+    name: "student_record",
+    path: "/students/:sid",
+    component: StudentRecord,
+    meta: {
+      requiresAuth: true,
+      title: "Student Record",
     },
   },
   {

@@ -70,7 +70,18 @@
                 <b>Remark:</b> <span v-if="false">{{}} </span><span v-else>-</span
                 ><v-icon class="ml-2" small @click="dialog2 = true">mdi-pencil</v-icon><br />
                 <div class="w-100 d-flex justify-content-center mt-3">
-                  <v-btn small>See student record</v-btn>
+                  <!-- <v-btn
+                    :to="{
+                      path: 'students',
+                      name: 'student_record',
+                      params: { sid: stdDetail.sid },
+                    }"
+                    small> -->
+                  <v-btn
+                    @click="$router.push({ path: 'students', params: { sid: stdDetail.sid } })"
+                  >
+                    See student record</v-btn
+                  >
                 </div>
               </v-col>
             </v-row>
