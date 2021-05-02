@@ -79,7 +79,7 @@ export default {
         { text: "Name", align: "start", sortable: false, value: "name" },
         { text: "Advisor", sortable: false, value: "avs", align: "center" },
         { text: "Taken Credits", sortable: false, value: "completion", align: "center" },
-        { text: "Status", sortable: false, value: "status", align: "center" },
+        { text: "Performance", sortable: false, value: "status", align: "center" },
       ],
       student: [
         {
