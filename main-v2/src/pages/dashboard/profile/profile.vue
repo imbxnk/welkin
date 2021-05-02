@@ -28,12 +28,7 @@
       </v-tab-item>
       <v-tab-item transition="none">
         <v-card flat elevation="2">
-          <v-card-title>
-            Account
-          </v-card-title>
-          <v-card-text>
-            {{ $currentUser.display_name }}
-          </v-card-text>
+          <AccountSettings></AccountSettings>
         </v-card>
       </v-tab-item>
       <v-tab-item transition="none">
@@ -46,20 +41,17 @@
   <router-view v-else></router-view>
 </template>
 <script>
-import ChangePassword from "./components/changePassword.vue"
+import AccountSettings from "./components/accountSettings.vue";
+import ChangePassword from "./components/changePassword.vue";
 export default {
   name: "profile",
   components: {
-    ChangePassword
+    ChangePassword,
+    AccountSettings
   },
   computed: {},
   data: () => ({
-    // user: {
-    //   initials: "MS",
-    //   fullName: "Mingmanas Sivaraksa",
-    //   email: "Mingmanas.siv@mahidol.com",
-    //   role: "Advisor",
-    // },
+
   }),
   mounted() {
   },
