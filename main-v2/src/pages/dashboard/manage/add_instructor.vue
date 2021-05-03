@@ -58,7 +58,7 @@
         </v-btn>
       </template>
     </v-snackbar>
-    
+
     <v-snackbar
       v-model="addingFailingStatus"
       :timeout="timeout"
@@ -95,7 +95,7 @@ export default {
                 familyName: "",
                 email: "",
                 phone: ""
-            }, 
+            },
             rules:{
                 required: (value) => !!value || "Required.",
                 min: (v) => v.length >= 4 || "Min 4 characters",
@@ -110,7 +110,7 @@ export default {
     methods:{
         async submitForm(){
             console.log(this.instructorData)
-            let query = 
+            let query =
             `mutation {
                 addInstructor(instructorInput:{
                     title: "${this.instructorData.title}",
@@ -118,7 +118,7 @@ export default {
                     family_name: "${this.instructorData.familyName}",
                     email: "${this.instructorData.email}",
                     phone: "${this.instructorData.phone}",
-                } 
+                }
                 ) {
                     _id
                     title

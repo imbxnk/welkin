@@ -43,7 +43,7 @@
                 </p>
                 <v-btn
                   class="btn-manage-account"
-                  @click="$router.push({ path: '/profile' })"
+                  @click="$router.push({ name: 'MyProfile' })"
                   depressed
                   outlined
                   rounded

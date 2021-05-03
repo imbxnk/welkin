@@ -1,17 +1,17 @@
 <template>
   <v-row>
     <v-tabs :vertical="$vuetify.breakpoint.mdAndUp" class="wk-profile-tabs" v-model="selected">
-      <router-link :to="{path: '/profile'}">
+      <router-link :to="{ name: 'MyProfile' }">
         <v-tab key="1">
           Profile
         </v-tab>
       </router-link>
-      <router-link :to="{path: '/profile/settings'}">
+      <router-link :to="{ name: 'AccountSettings' }">
         <v-tab key="2">
           Account
         </v-tab>
       </router-link>
-      <router-link :to="{path: '/profile/security'}">
+      <router-link :to="{ name: 'ChangePassword' }">
         <v-tab key="3">
           Security
         </v-tab>
@@ -36,13 +36,9 @@
   </v-row>
 </template>
 <script>
-// import AccountSettings from "./components/accountSettings.vue";
-// import ChangePassword from "./components/changePassword.vue";
 export default {
   name: "profile",
   components: {
-    // ChangePassword,
-    // AccountSettings
   },
   computed: {},
   data: () => ({
@@ -60,7 +56,6 @@ export default {
         this.selected = 2
         break
     }
-    console.log(this.selected)
   },
   methods: {
   },
