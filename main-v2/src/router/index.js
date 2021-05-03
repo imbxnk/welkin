@@ -43,6 +43,16 @@ const routes = [
     },
   },
   {
+    name: "student_advisee",
+    path: "/students/advisee",
+    // component: StudentAdvisee,
+    meta: {
+      requiresAuth: true,
+      title: "My Advisees",
+      isAdvisor: true,
+    },
+  },
+  {
     name: "student_record",
     path: "/student/:sid",
     component: StudentRecord,
@@ -167,6 +177,7 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   const currentUser = (await welkin.auth()).currentUser;
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const isAdvisor = to.matched.some((record) => record.meta.isAdvisor);
   const authorizedGroup = to.meta.authorizedGroup;
 
   if (currentUser) {
@@ -177,18 +188,23 @@ router.beforeEach(async (to, from, next) => {
     Vue.prototype.$currentUser.isAuth = false;
   }
 
+  // ADMIN CAN ACCESS EVERY PAGE
   try {
     if (requiresAuth && currentUser.group === "admin") return next();
   } catch (err) {}
 
-  if (requiresAuth && !currentUser) router.push("/login");
+  if (requiresAuth && !currentUser) return next("/login");
 
-  if (!requiresAuth && currentUser) router.push("/");
+  if (!requiresAuth && currentUser) return next("/");
+
+  if (requiresAuth && isAdvisor) {
+    if (!currentUser.isAdvisor) return next("/");
+  }
 
   if (requiresAuth && authorizedGroup) {
     if (!authorizedGroup.includes(currentUser.group)) return next("/");
-    return next();
   }
+
   next();
 });
 

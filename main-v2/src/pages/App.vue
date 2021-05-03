@@ -123,7 +123,7 @@
 
             <template v-for="(subitem, j) in item.children">
               <v-list-item
-                v-if="!subitem.children && checkAuthGroup(i)"
+                v-if="!subitem.children && checkAuthGroup(i) && isAdvisor(i,j)"
                 :key="j"
                 :to="item.href + subitem.href"
                 class="mb-2"
@@ -241,11 +241,13 @@ export default {
             title: "All Students",
             href: "/all",
             icon: "mdi-account-multiple-outline",
+            isAdvisor: false,
           },
           {
-            title: "Advised Students",
-            href: "/advised",
+            title: "My Advisees",
+            href: "/advisee",
             icon: "mdi-account-multiple-outline",
+            isAdvisor: true,
           },
         ],
       },
@@ -329,7 +331,6 @@ export default {
                 title: "Add Instructor",
                 href: "/add",
                 icon: "mdi-account-multiple-plus",
-                authorizedGroup: ["coordinator", "admin"],
               },
             ],
           },
@@ -341,7 +342,6 @@ export default {
                 title: "Add User",
                 href: "/add",
                 icon: "mdi-account-multiple-plus",
-                authorizedGroup: ["coordinator", "admin"],
               },
             ],
           },
@@ -381,12 +381,14 @@ export default {
     },
     checkAuthGroup(i) {
       try {
-        if (!this.items[i].authorizedGroup.includes(this.$currentUser.group)) return false;
+        return this.items[i].authorizedGroup ? this.items[i].authorizedGroup.includes(this.$currentUser.group) : true;
       } catch (err) {}
-      return true;
     },
-    async logout() {
-      //axios post to check token, userId compare with the username and password
+    isAdvisor(i,j) {
+      return this.items[i].children[j].isAdvisor ? this.$currentUser.isAdvisor : true;
+    },
+    logout() {
+      //Logout and clear token
       let query = `
           query {
               logout {
@@ -396,7 +398,7 @@ export default {
               }
           }
       `;
-      await this.axios
+      this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           window.location.replace("/login");
