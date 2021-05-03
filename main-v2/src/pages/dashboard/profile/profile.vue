@@ -70,5 +70,7 @@ export default {
 <style scoped>
 .v-slide-group__content a {
   text-decoration: none;
+  margin-bottom: 5px;
+  border-radius: 30px;
 }
 </style>
