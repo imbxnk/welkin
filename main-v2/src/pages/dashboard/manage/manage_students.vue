@@ -2,26 +2,26 @@
     <v-row>
         <!-- Left card component -->
         <v-col cols="12" xl="6" lg="6" md="12" sm="12" xs="12">
-            <v-card style="width: 800px; padding: 10px 10px;">
+            <v-card style="padding: 10px 10px;">
                 <!-- card title part -->
                 <!-- Impord Title -->
                 <v-card-title id="cardTitle" v-if="importStatus">
                     <v-row>
-                        <v-col cols="12" xl="8" lg="8" md="12" sm="12" xs="12">
+                        <v-col cols="12" sm="6" xs="6">
                             Import Student
                         </v-col>
-                        <v-col cols="4"  xl="4" lg="4" md="4" sm="4" xs="4">
-                            <v-btn v-if="importStatus" plain text class="float-right overline primary--text" style="font-size:0.8rem; font-weight: normal" :value="importStatus" @click="changeToAddManually">Add Manually</v-btn>
+                        <v-col cols="12" sm="6" xs="6">
+                            <v-btn v-if="importStatus" plain text class="float-right overline primary--text" style="font-size:0.8rem; font-weight: normal;" :value="importStatus" @click="changeToAddManually">Add Manually</v-btn>
                         </v-col>
                     </v-row>
                 </v-card-title>
                 <!-- Add Manually Title -->
                 <v-card-title id="cardTitle" v-else-if="!importStatus">
                     <v-row>
-                        <v-col cols="12" xl="8" lg="8" md="12" sm="12" xs="12">
+                        <v-col cols="12" sm="6" xs="6">
                             Add Manually
                         </v-col>
-                        <v-col cols="4"  xl="4" lg="4" md="4" sm="4" xs="4">
+                        <v-col cols="12" sm="6" xs="6">
                             <v-btn v-if="!importStatus" plain text class="float-right overline primary--text" style="font-size:0.8rem; font-weight: normal" :value="importStatus" @click="changeToAddManually">Import File</v-btn>
                         </v-col>
                     </v-row>
@@ -48,29 +48,29 @@
                 </v-card-text>
                 <!-- Add Manually content -->
                 <v-card-text v-else-if="!importStatus">
-                    <v-form>
+                    <v-form ref="form" lazy-validation>
                         <v-row>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto;">
-                                <v-text-field label="ID"  id="id" dense outlined v-model="manualData.ID"></v-text-field>
+                                <v-text-field label="ID"  id="id" dense outlined v-model="manualData.ID" :rules="[rules.required]" required></v-text-field>
                             </v-col>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto">
-                                <v-text-field label="Program" dense outlined v-model="manualData.Program"></v-text-field>
+                                <v-text-field label="Program" dense outlined v-model="manualData.Program" :rules="[rules.required]" required></v-text-field>
                             </v-col>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto">
-                                <v-select :items="prefix" label="Prefix" dense outlined v-model="manualData.Prefix"></v-select>
+                                <v-select :items="prefix" label="Prefix" dense outlined v-model="manualData.Prefix" :rules="[rules.required]" required></v-select>
                             </v-col>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto">
-                                <v-text-field label="First Name" dense outlined v-model="manualData.Name"></v-text-field>
+                                <v-text-field label="First Name" dense outlined v-model="manualData.Name" :rules="[rules.required, rules.min]" required></v-text-field>
                             </v-col>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto">
-                                <v-text-field label="Last Name" dense outlined v-model="manualData.LastName"></v-text-field>
+                                <v-text-field label="Last Name" dense outlined v-model="manualData.LastName" :rules="[rules.required, rules.min]" required></v-text-field>
                             </v-col>
                             <v-col cols="12" xl="6" lg="6" md="6" sm="6" xs="12" auto style="padding: auto; margin: auto">
-                                <v-text-field label="Advisor" dense outlined v-model="manualData.Advisor"></v-text-field>
+                                <v-text-field label="Advisor" dense outlined v-model="manualData.Advisor" :rules="[rules.required, rules.min]" required></v-text-field>
                             </v-col>
-                        </v-row>
-                        <v-row>
-                            <button class="btn btn-primary" @click.prevent="submitForm();">Submit</button>
+                            <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto">
+                                <button class="btn btn-primary float-right" @click.prevent="submitForm();" >Submit</button>
+                            </v-col>
                         </v-row>
                     </v-form>
                 </v-card-text>
@@ -86,88 +86,150 @@
                     Duplicated Students
                 </v-card-title>
                 <v-card-text  v-if="notDuplicateStudents">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Program</th>
-                            <th>Prefix</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Advisor</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(item,index) in studentsData" :key="index" :value="item">
-                            <td scope="row">{{item.ID}}</td>
-                            <td scope="row">{{item.Program}}</td>
-                            <td scope="row">{{item.Prefix}}</td>
-                            <td scope="row">{{item.Name}}</td>
-                            <td scope="row">{{item.LastName}}</td>
-                            <td scope="row">{{item.Advisor}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button class="btn btn-primary" @click="upload(); dataStatus();">Upload</button>
-                <v-snackbar
-                color="success"
-                outlined
-                    v-model="SnackBarStatus"
-                    :timeout="timeout">
-                    {{ SnackBarText }}
-                    <template v-slot:action="{ attrs }">
-                        <v-btn
-                        color="blue"
-                        text
-                        v-bind="attrs"
-                        @click="SnackBarStatus = false"
-                        >
-                        Close
-                        </v-btn>
+                <template>
+                    <v-simple-table height="300px">
+                        <template v-slot:default>
+                        <thead>
+                            <tr>
+                            <th class="text-left">
+                                ID
+                            </th>
+                            <th class="text-left">
+                                Program
+                            </th>
+                            <th class="text-left">
+                                Prefix
+                            </th>
+                            <th class="text-left">
+                                First Name
+                            </th>
+                            <th class="text-left">
+                                Family Name
+                            </th>
+                            <th class="text-left">
+                                Advisor
+                            </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                            v-for="(item, index) in studentsData"
+                            :key="index"
+                            :value="item"
+                            >
+                            <td>{{ item.ID }}</td>
+                            <td>{{ item.Program }}</td>
+                            <td>{{ item.Prefix }}</td>
+                            <td>{{ item.Name }}</td>
+                            <td>{{ item.LastName }}</td>
+                            <td>{{ item.Advisor }}</td>
+                            </tr>
+                        </tbody>
+                        </template>
+                    </v-simple-table>
                     </template>
-                    </v-snackbar>
+                    <v-row>
+                        <v-col>
+                            <v-btn color="primary float-right" @click="upload(); dataStatus();" style="right:100;">Upload</v-btn>
+                        </v-col>
+                    </v-row>
                 </v-card-text>
+                
+
                 <v-card-text v-else-if="!notDuplicateStudents">
-                    <table class="table table-stripped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Program</th>
-                            <th>Prefix</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Advisor</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(item,index) in duplicateStudents" :key="index" :value="item">
-                            <td scope="row">{{item.ID}}</td>
-                            <td scope="row">{{item.Program}}</td>
-                            <td scope="row">{{item.Prefix}}</td>
-                            <td scope="row">{{item.Name}}</td>
-                            <td scope="row">{{item.LastName}}</td>
-                            <td scope="row">{{item.Advisor}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <v-row >
+                        <v-col justify="end" align="right">
+                        <a class="mt-3 mb-3 mx-3" @click="Back()">Back</a>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <template>
+                        <v-simple-table class="px-3 mx-auto" height="300px">
+                            <template v-slot:default>
+                            <thead>
+                                <tr>
+                                <th class="text-left">
+                                    ID
+                                </th>
+                                <th class="text-left">
+                                    Program
+                                </th>
+                                <th class="text-left">
+                                    Prefix
+                                </th>
+                                <th class="text-left">
+                                    First Name
+                                </th>
+                                <th class="text-left">
+                                    Family Name
+                                </th>
+                                <th class="text-left">
+                                    Advisor
+                                </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                v-for="(item, index) in duplicateStudents"
+                                :key="index"
+                                :value="item"
+                                >
+                                <td>{{ item.ID }}</td>
+                                <td>{{ item.Program }}</td>
+                                <td>{{ item.Prefix }}</td>
+                                <td>{{ item.Name }}</td>
+                                <td>{{ item.LastName }}</td>
+                                <td>{{ item.Advisor }}</td>
+                                </tr>
+                            </tbody>
+                            </template>
+                        </v-simple-table>
+                        </template>
+                    </v-row>
+                </v-card-text>
                 <v-snackbar
-                    color="error"
+                    v-model="addingSuccessStatus"
+                    :timeout="timeout"
+                    top
+                    centered
                     outlined
-                    v-model="SnackBarDuplicateStatus"
-                    :timeout="timeout">
-                    {{ SnackBarDuplicateText }}
+                    color="success"
+                    >
+                    {{ successText }}
+
                     <template v-slot:action="{ attrs }">
                         <v-btn
                         color="blue"
                         text
                         v-bind="attrs"
-                        @click="SnackBarDuplicateStatus = false"
+                        @click="addingSuccessStatus = false"
                         >
                         Close
                         </v-btn>
                     </template>
                     </v-snackbar>
-                </v-card-text>
+                    
+                    <v-snackbar
+                    v-model="addingFailingStatus"
+                    :timeout="timeout"
+                    top
+                    centered
+                    outlined
+                    color="error"
+                    >
+                    {{ failingText }}
+
+                    <template v-slot:action="{ attrs }">
+                        <v-btn
+                        color="blue"
+                        text
+                        v-bind="attrs"
+                        @click="addingFailingStatus = false"
+                        >
+                        Close
+                        </v-btn>
+                    </template>
+                    </v-snackbar>
             </v-card>
         </v-col>
     </v-row>
@@ -182,7 +244,6 @@ export default {
     name: "manage",
     data() {
         return {
-            addManually: false,
             cpsStatus: null,
             tableData: [],
             selectedFile: "",
@@ -201,10 +262,9 @@ export default {
             dropzoneOptions: {
                 url: 'https://httpbin.org/post',
                 thumbnailWidth: 150,
-                maxFilesize: 2,
                 parallelUploads: 1,
                 acceptedFiles: ".xls, .xlsx",
-                maxFiles: 1,
+                uploadMultiple: true,
                 addRemoveLinks: true
             },
             uploadSuccess: false,
@@ -213,12 +273,11 @@ export default {
             addStudentFormStatus: true,
             manuallyStatus: false,
             uploadPopUp: false,
-            SnackBarText: 'Upload Success!',
-            SnackBarDuplicateText: 'Students data duplicated!',
-            SnackBarDuplicateStatus: false,
-            SnackBarStatus: false,
             timeout: 5000,
             notDuplicateStudents: true,
+
+            
+            //manual
             manualData: {
                 ID: "",
                 Program: "",
@@ -226,7 +285,28 @@ export default {
                 Name: "",
                 LastName: "",
                 Advisor: ""
-            }
+            },
+            addManually: false,
+            tempData: {
+                ID: "",
+                Program: "",
+                Prefix: "",
+                Name: "",
+                LastName: "",
+                Advisor: ""
+            },
+
+            //snackbar
+            addingSuccessStatus: false,
+            addingFailingStatus: false,
+            successText: 'Adding Success!',
+            failingText: 'Adding Error!',
+
+            //rules
+            rules:{
+                required: (value) => !!value || "Required.",
+                min: (v) => v.length >= 4 || "Min 4 characters",
+            },
         }
     },
     components:{
@@ -261,12 +341,13 @@ export default {
                     `
                 await this.axios.post(this.url, { query : gql }, { withCredentials: true }).then(res => {
                     console.log(res);
+                    this.addingSuccessStatus = true
                 }).catch (err => {
                     console.log(err);
                     this.duplicateStudents.push(std);
                     this.showContent = true
                     this.notDuplicateStudents = false
-                    this.SnackBarDuplicateStatus = true
+                    this.addingFailingStatus = true
                 })
             }
         },
@@ -320,9 +401,18 @@ export default {
             this.SnackBarStatus = true
         },
         submitForm(){
-            console.log(this.manualData)
-            this.studentsData.push(this.manualData)
-            console.log(this.studentsData)
+            if(this.$refs.form.validate()){
+                console.log(this.manualData)
+                let new_data = {...this.manualData}
+                this.studentsData.push(new_data)
+                console.log(this.studentsData)
+            }
+        },
+        Back(){
+            this.notDuplicateStudents = true
+        },
+        deleteEachStudent(){
+
         }
     },
     props:[
