@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     readableDate(date) {
-      return this.moment(parseInt(date)).format("DD MMM YYYY")
+      return this.moment(parseInt(date)).format("DD MMMM YYYY")
     }
   },
 }
