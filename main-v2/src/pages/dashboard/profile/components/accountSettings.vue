@@ -89,7 +89,6 @@ export default {
       this.axios
           .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
           .then((res) => {
-            console.log(res);
             if(res.data.data.updateMyAccount.success) {
               this.$currentUser.display_name = this.user.display_name
               this.$currentUser.given_name = this.user.given_name

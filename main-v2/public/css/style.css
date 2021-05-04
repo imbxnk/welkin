@@ -318,6 +318,8 @@ main {
   font-size: 0.7rem;
 }
 
-.wk-profile-detail span {
-
+@media (max-width: 768px ) {
+  .wk-profile-detail span {
+    font-size: 0.9rem;
+  }
 }

@@ -5,40 +5,29 @@
         Security
       </v-card-title>
       <v-card-text>
-        <div class="d-flex flex-column">
-          <div>
-            <h6 class="mt-2">Change Password</h6>
+        <div class="d-flex wk-account-form d-flex flex-column">
+          <div class="mb-3">
+            <label class="form-label">Current Password</label>
+            <input @keydown="isSuccess = false" class="form-control" type="password" :disabled="isLoading" v-model="userInput.currentPassword" placeholder="">
           </div>
-          <div class="flex-grow-1">
-            <v-text-field
-              label="Current Password"
-              type="password"
-              outlined
-              v-model="userInput.currentPassword"
-            ></v-text-field>
-
-            <v-text-field
-              label="New Password"
-              type="password"
-              outlined
-              v-model="userInput.newPassword"
-            ></v-text-field>
-
-            <v-text-field
-              label="Confirm Password"
-              type="password"
-              outlined
-              v-model="userInput.confirmPassword"
-            ></v-text-field>
-
-            <v-btn
-              depressed
-              color="primary"
-              @click="updatePassword"
+          <div class="mb-3">
+            <label class="form-label">New Password</label>
+            <input @keydown="isSuccess = false" class="form-control" type="password" :disabled="isLoading" v-model="userInput.newPassword" placeholder="">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Current Password</label>
+            <input @keydown="isSuccess = false" class="form-control" type="password" :disabled="isLoading" v-model="userInput.confirmPassword" placeholder="">
+          </div>
+          <div class="d-flex align-items-end flex-column mt-4">
+            <button class="btn wk-btn wk-success-color"
+              v-if="isSuccess"
+            ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#fff" class="bi bi-check" viewBox="0 0 16 16">
+              <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+              </svg>
+            </button>
+            <button type="submit" @click="updatePassword" v-else class="btn wk-btn btn-primary wk-primary-color"
               :disabled="userInput.currentPassword === '' || userInput.newPassword === '' || userInput.confirmPassword === ''"
-            >
-              Submit
-            </v-btn>
+            >Submit</button>
           </div>
         </div>
       </v-card-text>
@@ -55,17 +44,18 @@ export default {
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
-      }
+      },
+      isLoading: false,
+      isSuccess: false,
     }
   },
   methods: {
     updatePassword() {
+      this.isLoading = true
       if(this.userInput.newPassword === this.userInput.newPassword){
         let query = `
                       mutation {
                         updatePassword (userInput: { currentPassword: "${this.userInput.currentPassword}", newPassword: "${this.userInput.newPassword}" }) {
-                          token,
-                          userId,
                           message
                         }
                       }
@@ -73,11 +63,42 @@ export default {
         this.axios
           .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
           .then((res) => {
-            console.log(res);
+            if(res.data.data) this.isSuccess = true
+            this.isLoading = false
           })
-          .catch((err) => { });
+          .catch((err) => {
+            this.isLoading = false
+            this.isSuccess = false
+          });
       }
     },
   },
 }
 </script>
+
+<style scoped>
+.wk-name h5{
+  font-weight: 600;
+  margin-bottom: 5px;
+  cursor: default;
+  color: #000;
+}
+
+.wk-account-form {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px 10px;
+}
+
+input, button {
+  box-shadow: none !important;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.wk-btn {
+  width: 150px;
+}
+</style>
