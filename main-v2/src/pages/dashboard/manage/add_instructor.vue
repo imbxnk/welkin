@@ -1,7 +1,6 @@
 <template>
-    <v-container>
-    <v-row>
-        <v-col cols="12" justify="center" align="center">
+    <div class="row">
+        <v-col cols="12">
             <v-card class="mt-3 mx-auto pt-3 px-auto" style=" max-width: 500px; padding: 20px 20px; margin: 20px 20px;">
                 <v-card-title>
                     <h2>Add Instructor</h2>
@@ -40,51 +39,50 @@
                 </v-card-text>
             </v-card>
         </v-col>
-    </v-row>
-    <v-snackbar
-      v-model="addingSuccessStatus"
-      :timeout="timeout"
-      top
-      centered
-      outlined
-      color="success"
-    >
-      {{ successText }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          color="blue"
-          text
-          v-bind="attrs"
-          @click="addingSuccessStatus = false"
+        <v-snackbar
+            v-model="addingSuccessStatus"
+            :timeout="timeout"
+            top
+            centered
+            outlined
+            color="success"
         >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
+            {{ successText }}
 
-    <v-snackbar
-      v-model="addingFailingStatus"
-      :timeout="timeout"
-      top
-      centered
-      outlined
-      color="error"
-    >
-      {{ failingText }}
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                color="blue"
+                text
+                v-bind="attrs"
+                @click="addingSuccessStatus = false"
+                >
+                Close
+                </v-btn>
+            </template>
+        </v-snackbar>
 
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          color="blue"
-          text
-          v-bind="attrs"
-          @click="addingFailingStatus = false"
+        <v-snackbar
+            v-model="addingFailingStatus"
+            :timeout="timeout"
+            top
+            centered
+            outlined
+            color="error"
         >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
-    </v-container>
+            {{ failingText }}
+
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                color="blue"
+                text
+                v-bind="attrs"
+                @click="addingFailingStatus = false"
+                >
+                Close
+                </v-btn>
+            </template>
+        </v-snackbar>
+    </div>
 </template>
 
 <script>
@@ -115,7 +113,7 @@ export default {
         async submitForm(){
             console.log(this.instructorData)
                 if(this.$refs.form.validate()){
-                let query = 
+                let query =
                 `mutation {
                     addInstructor(instructorInput:{
                         title: "${this.instructorData.title}",
@@ -123,7 +121,7 @@ export default {
                         family_name: "${this.instructorData.familyName}",
                         email: "${this.instructorData.email}",
                         phone: "${this.instructorData.phone}",
-                    } 
+                    }
                     ) {
                         _id
                         title
