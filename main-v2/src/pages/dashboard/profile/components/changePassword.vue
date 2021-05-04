@@ -15,7 +15,7 @@
             <input @keydown="isSuccess = false" class="form-control" type="password" :disabled="isLoading" v-model="userInput.newPassword" placeholder="">
           </div>
           <div class="mb-3">
-            <label class="form-label">Current Password</label>
+            <label class="form-label">Confirm Password</label>
             <input @keydown="isSuccess = false" class="form-control" type="password" :disabled="isLoading" v-model="userInput.confirmPassword" placeholder="">
           </div>
           <div class="wk-error" v-if="error">
@@ -55,6 +55,7 @@ export default {
   },
   methods: {
     updatePassword() {
+      this.error = ''
       this.isLoading = true
       if(this.userInput.newPassword === this.userInput.confirmPassword){
         let query = `
@@ -79,7 +80,7 @@ export default {
             this.error = err.response.data.errors[0].message
           });
       } else {
-        this.error = 'Password not matched.'
+        this.error = 'Passwords do not match. Please try again'
         this.isLoading = false
       }
     },
