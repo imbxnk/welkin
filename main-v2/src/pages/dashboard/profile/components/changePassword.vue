@@ -69,7 +69,7 @@ export default {
           .then((res) => {
             console.log(res)
             if(res.data.data) this.isSuccess = true
-            else this.error = res.data.data.updatePassword.message
+            else this.error = res.data.errors[0].message
             this.isLoading = false
           })
           .catch((err) => {
