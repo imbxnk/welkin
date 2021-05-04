@@ -1,46 +1,48 @@
 <template>
   <div class="wk-security">
-  <v-card-title style="font-weight: 700">
-    Security
-  </v-card-title>
-  <v-card-text>
-    <div class="d-flex flex-column">
-      <div>
-        <h6 class="mt-2">Change Password</h6>
-      </div>
-      <div class="flex-grow-1">
-        <v-text-field
-          label="Current Password"
-          type="password"
-          outlined
-          v-model="userInput.currentPassword"
-        ></v-text-field>
+    <v-card flat elevation="2">
+      <v-card-title style="font-weight: 700">
+        Security
+      </v-card-title>
+      <v-card-text>
+        <div class="d-flex flex-column">
+          <div>
+            <h6 class="mt-2">Change Password</h6>
+          </div>
+          <div class="flex-grow-1">
+            <v-text-field
+              label="Current Password"
+              type="password"
+              outlined
+              v-model="userInput.currentPassword"
+            ></v-text-field>
 
-        <v-text-field
-          label="New Password"
-          type="password"
-          outlined
-          v-model="userInput.newPassword"
-        ></v-text-field>
+            <v-text-field
+              label="New Password"
+              type="password"
+              outlined
+              v-model="userInput.newPassword"
+            ></v-text-field>
 
-        <v-text-field
-          label="Confirm Password"
-          type="password"
-          outlined
-          v-model="userInput.confirmPassword"
-        ></v-text-field>
+            <v-text-field
+              label="Confirm Password"
+              type="password"
+              outlined
+              v-model="userInput.confirmPassword"
+            ></v-text-field>
 
-        <v-btn
-          depressed
-          color="primary"
-          @click="updatePassword"
-          :disabled="userInput.currentPassword === '' || userInput.newPassword === '' || userInput.confirmPassword === ''"
-        >
-          Submit
-        </v-btn>
-      </div>
-    </div>
-  </v-card-text>
+            <v-btn
+              depressed
+              color="primary"
+              @click="updatePassword"
+              :disabled="userInput.currentPassword === '' || userInput.newPassword === '' || userInput.confirmPassword === ''"
+            >
+              Submit
+            </v-btn>
+          </div>
+        </div>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 

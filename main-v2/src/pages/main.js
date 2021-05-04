@@ -2,7 +2,11 @@ import Vue from "vue";
 import App from "./App.vue";
 import vuetify from "../plugins/vuetify";
 import router from "../router";
+
+// Import Bootstrap
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+
+// Import Axios
 import axios from "axios";
 import VueAxios from "vue-axios";
 
@@ -26,8 +30,12 @@ firebase.initializeApp(firebaseConfig);
 // Import Bootstrap an BootstrapVue CSS files
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
-//Import Apexchart
+
+// Import Apexchart
 import VueApexCharts from "vue-apexcharts";
+
+// Import Moment.js
+import moment from "moment";
 
 // Use BootstrapVue
 Vue.use(BootstrapVue);
@@ -36,8 +44,12 @@ Vue.use(IconsPlugin);
 //Use Apexchart
 Vue.use(VueApexCharts);
 Vue.component("apexchart", VueApexCharts);
+
 // Use Axios
 Vue.use(VueAxios, axios);
+
+// Use Moment
+Vue.prototype.moment = moment
 
 // GLOBAL VARIABLE
 var currentUser = Vue.observable({ user: {} })

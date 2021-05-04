@@ -18,19 +18,13 @@
       </router-link>
 
       <v-tab-item transition="none">
-        <v-card flat elevation="2">
-          <router-view></router-view>
-        </v-card>
+        <router-view></router-view>
       </v-tab-item>
       <v-tab-item transition="none">
-        <v-card flat elevation="2">
-          <router-view></router-view>
-        </v-card>
+        <router-view></router-view>
       </v-tab-item>
       <v-tab-item transition="none">
-        <v-card flat elevation="2">
-          <router-view></router-view>
-        </v-card>
+        <router-view></router-view>
       </v-tab-item>
     </v-tabs>
   </v-row>

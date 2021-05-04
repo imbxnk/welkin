@@ -185,3 +185,139 @@ main {
   padding: 10px;
   margin: 0;
 }
+
+.wk-profile {
+  display: flex;
+  flex-direction: column;
+}
+
+.wk-profile .wk-profile-wrapper {
+  justify-content: center;
+  background: #fff;
+  border-radius: 0.4rem;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)
+}
+
+.wk-profile-wrapper .wk-profile-name {
+  flex-wrap: nowrap;
+  display: flex;
+  position: relative;
+  align-items: stretch;
+  flex-direction: column;
+}
+
+.wk-profile-cover {
+  width: 100%;
+  background: rgba(123, 123, 123, 0.2);
+  height: 230px;
+  border-top-left-radius: 0.4rem;
+  border-top-right-radius: 0.4rem;
+  position: relative;
+}
+
+.wk-profile-img {
+  align-self: center;
+  align-items: flex-end;
+  display: flex;
+  flex-shrink: 0;
+  position: relative;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  margin-top: -160px;
+}
+
+.wk-profile-img .v-image {
+  border: 4px solid #fff !important;
+}
+
+.wk-full-name {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.wk-profile-name .wk-display-name {
+  margin-left: 10px;
+  color: #666;
+}
+
+.wk-profile .v-card {
+  margin-top: 20px;
+}
+
+.wk-information {
+  padding: 10px;
+  max-width: 720px;
+}
+
+.wk-badge {
+  padding: 2px 10px;
+  border-radius: 30px;
+  display: inline-block;
+  text-align: center;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-transform: capitalize;
+  margin-right: 5px;
+  font-size: 0.8rem;
+  cursor: default;
+}
+
+.wk-primary-color {
+  background: #1976d2;
+  color: #fff;
+}
+
+.wk-success-color {
+  border-color: #289672;
+  background: #289672;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.wk-success-color:hover, .wk-success-color:focus, .wk-success-color:active {
+  border-color: #29bb89;
+  background: #29bb89;
+  color: #fff;
+}
+
+.wk-grey-color {
+  background: #f8f9fa;
+  color: #212529;
+}
+
+.wk-information {
+  flex-wrap: nowrap;
+}
+
+.wk-profile-content {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-start;
+  position: relative;
+  align-items: stretch;
+  flex-direction: row;
+  box-sizing: border-box;
+  padding: 0 !important;
+}
+
+.wk-profile-content .icon {
+  padding: 6px;
+  flex-wrap: nowrap;
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.wk-profile-detail {
+  padding: 0 10px;
+}
+
+.wk-profile-detail label {
+  color: #65676b;
+  font-size: 0.7rem;
+}
+
+.wk-profile-detail span {
+
+}
