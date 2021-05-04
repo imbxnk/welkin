@@ -69,7 +69,14 @@ export default {
           .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
           .then((res) => {
             console.log(res)
-            if(res.data.data) this.isSuccess = true
+            if(res.data.data) {
+              this.isSuccess = true
+              this.userInput = {
+                currentPassword: '',
+                newPassword: '',
+                confirmPassword: ''
+              }
+            }
             else this.error = res.data.errors[0].message
             console.log(res)
             this.isLoading = false
