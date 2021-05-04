@@ -70,7 +70,7 @@
           </div>
           <div class="d-flex flex-column wk-profile-detail">
             <span>{{ readableDate($currentUser.createdAt) }}</span>
-            <label>Created At</label>
+            <label>Date of Creation</label>
           </div>
         </div>
       </div>
