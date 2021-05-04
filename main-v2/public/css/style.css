@@ -181,6 +181,12 @@ main {
   }
 }
 
+@media (max-width: 608px) {
+  .v-slide-group__content {
+    justify-content: center !important;
+  }
+}
+
 .wk-profile-tabs .v-window {
   padding: 10px;
   margin: 0;
