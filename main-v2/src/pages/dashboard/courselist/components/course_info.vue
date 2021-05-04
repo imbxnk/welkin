@@ -52,7 +52,6 @@ export default {
   components: { remainChart },
   created() {
     this.loadCourse(this.$props.code);
-    this.getInstructors(this.$props.code);
   },
   data() {
     return {
