@@ -1,42 +1,46 @@
 <template>
-  <v-container>
-    <v-card style="width: 500px; padding: 20px 20px; margin: 20px 20px;">
-        <v-card-title>
-            <h2>Add Instructor</h2>
-        </v-card-title>
-        <v-card-text>
-            <v-form>
-                <v-row>
-                    <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
-                        <v-text-field label="Title"  id="title" :value="instructorData.title" v-model="instructorData.title" outlined dense></v-text-field>
-                    </v-col>
-                    <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
-                        <v-text-field label="First Name"  id="firstName" v-model="instructorData.firstName" :rules="[rules.required, rules.min]" outlined dense></v-text-field>
-                    </v-col>
-                    <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
-                        <v-text-field label="Family Name"  id="familyName" v-model="instructorData.familyName" :rules="[rules.required, rules.min]" outlined dense></v-text-field>
-                    </v-col>
-                    <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
-                        <v-text-field label="Email"  id="email" v-model="instructorData.email" outlined dense></v-text-field>
-                    </v-col>
-                    <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
-                        <v-text-field label="Phone no."  id="phone" v-model="instructorData.phone"  outlined dense></v-text-field>
-                    </v-col>
-                </v-row>
-                <v-spacer></v-spacer>
-                <v-btn color="error" class="ma-2 white--text" @click.prevent="clearForm()" plain>Clear</v-btn>
-                <v-btn
-                    :loading="loading5"
-                    :disabled="loading5"
-                    color="primary"
-                    class="ma-2 white--text"
-                    plain
-                    @click.prevent="submitForm()"
-                    >Submit
-                </v-btn>
-            </v-form>
-        </v-card-text>
-    </v-card>
+    <v-container>
+    <v-row>
+        <v-col cols="12" justify="center" align="center">
+            <v-card class="mt-3 mx-auto pt-3 px-auto" style=" max-width: 500px; padding: 20px 20px; margin: 20px 20px;">
+                <v-card-title>
+                    <h2>Add Instructor</h2>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" lazy-validation>
+                        <v-row>
+                            <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
+                                <v-text-field label="Title"  id="title" :value="instructorData.title" v-model="instructorData.title" outlined dense></v-text-field>
+                            </v-col>
+                            <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
+                                <v-text-field label="First Name"  id="firstName" v-model="instructorData.firstName" :rules="[rules.required, rules.min]" outlined dense></v-text-field>
+                            </v-col>
+                            <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
+                                <v-text-field label="Family Name"  id="familyName" v-model="instructorData.familyName" :rules="[rules.required, rules.min]" outlined dense></v-text-field>
+                            </v-col>
+                            <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
+                                <v-text-field label="Email"  id="email" v-model="instructorData.email" outlined dense></v-text-field>
+                            </v-col>
+                            <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
+                                <v-text-field label="Phone no."  id="phone" v-model="instructorData.phone"  outlined dense></v-text-field>
+                            </v-col>
+                            <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
+                                <v-btn
+                                    :loading="loading5"
+                                    :disabled="loading5"
+                                    color="primary"
+                                    class="ma-2 white--text float-right"
+                                    @click.prevent="submitForm()"
+                                    >Submit
+                                </v-btn>
+                                <v-btn color="error" class="ma-2 white--text float-right" @click.prevent="clearForm()">Clear</v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-col>
+    </v-row>
     <v-snackbar
       v-model="addingSuccessStatus"
       :timeout="timeout"
@@ -80,7 +84,7 @@
         </v-btn>
       </template>
     </v-snackbar>
-  </v-container>
+    </v-container>
 </template>
 
 <script>
@@ -110,35 +114,37 @@ export default {
     methods:{
         async submitForm(){
             console.log(this.instructorData)
-            let query = 
-            `mutation {
-                addInstructor(instructorInput:{
-                    title: "${this.instructorData.title}",
-                    given_name: "${this.instructorData.firstName}",
-                    family_name: "${this.instructorData.familyName}",
-                    email: "${this.instructorData.email}",
-                    phone: "${this.instructorData.phone}",
-                } 
-                ) {
-                    _id
-                    title
-                    given_name
-                    family_name
-                    email
-                }
-                }`;
-            await this.axios
-            .post("https://api.welkin.app/v2/graphql", { query }, {withcredentials : true})
-            .then((res)=>{
-                console.log(res)
-                this.addingSuccessStatus = true
-                this.instructorData = {}
+                if(this.$refs.form.validate()){
+                let query = 
+                `mutation {
+                    addInstructor(instructorInput:{
+                        title: "${this.instructorData.title}",
+                        given_name: "${this.instructorData.firstName}",
+                        family_name: "${this.instructorData.familyName}",
+                        email: "${this.instructorData.email}",
+                        phone: "${this.instructorData.phone}",
+                    } 
+                    ) {
+                        _id
+                        title
+                        given_name
+                        family_name
+                        email
+                    }
+                    }`;
+                await this.axios
+                .post("https://api.welkin.app/v2/graphql", { query }, {withcredentials : true})
+                .then((res)=>{
+                    console.log(res)
+                    this.addingSuccessStatus = true
+                    this.instructorData = {}
 
-            })
-            .catch((err)=>{
-                console.log(err)
-                this.addingFailingStatus = true
-            })
+                })
+                .catch((err)=>{
+                    console.log(err)
+                    this.addingFailingStatus = true
+                })
+            }
         },
         clearForm(){
             this.instructorData = {}
@@ -148,5 +154,4 @@ export default {
 </script>
 
 <style>
-
 </style>
