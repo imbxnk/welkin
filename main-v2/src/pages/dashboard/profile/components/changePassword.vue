@@ -18,6 +18,9 @@
             <label class="form-label">Current Password</label>
             <input @keydown="isSuccess = false" class="form-control" type="password" :disabled="isLoading" v-model="userInput.confirmPassword" placeholder="">
           </div>
+          <div class="wk-error" v-if="error">
+            {{ error }}
+          </div>
           <div class="d-flex align-items-end flex-column mt-4">
             <button class="btn wk-btn wk-success-color"
               v-if="isSuccess"
@@ -47,12 +50,13 @@ export default {
       },
       isLoading: false,
       isSuccess: false,
+      error: '',
     }
   },
   methods: {
     updatePassword() {
       this.isLoading = true
-      if(this.userInput.newPassword === this.userInput.newPassword){
+      if(this.userInput.newPassword === this.userInput.confirmPassword){
         let query = `
                       mutation {
                         updatePassword (userInput: { currentPassword: "${this.userInput.currentPassword}", newPassword: "${this.userInput.newPassword}" }) {
@@ -63,13 +67,19 @@ export default {
         this.axios
           .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
           .then((res) => {
+            console.log(res)
             if(res.data.data) this.isSuccess = true
+            else this.error = res.data.data.updatePassword.message
             this.isLoading = false
           })
           .catch((err) => {
             this.isLoading = false
             this.isSuccess = false
+            this.error = err
           });
+      } else {
+        this.error = 'Password not matched.'
+        this.isLoading = false
       }
     },
   },
@@ -100,5 +110,10 @@ button:disabled {
 
 .wk-btn {
   width: 150px;
+}
+
+.wk-error {
+  color: #e24056;
+  margin-left: 10px;
 }
 </style>

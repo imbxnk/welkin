@@ -193,6 +193,8 @@ main {
 
 .wk-profile .wk-profile-wrapper {
   justify-content: center;
+  overflow: hidden;
+  position: relative;
   background: #fff;
   border-radius: 0.4rem;
   box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)
@@ -204,6 +206,7 @@ main {
   position: relative;
   align-items: stretch;
   flex-direction: column;
+  background: #fff;
 }
 
 .wk-profile-cover {
@@ -213,6 +216,11 @@ main {
   border-top-left-radius: 0.4rem;
   border-top-right-radius: 0.4rem;
   position: relative;
+  filter: blur(3px);
+  -webkit-filter: blur(3px);
+  background: url("/static/images/cover.jpg") no-repeat;
+  background-size: cover;
+  background-position: top center;
 }
 
 .wk-profile-img {
