@@ -62,7 +62,7 @@
         </v-btn>
       </template>
     </v-snackbar>
-    
+
     <v-snackbar
       v-model="addingFailingStatus"
       :timeout="timeout"
@@ -99,7 +99,7 @@ export default {
                 familyName: "",
                 email: "",
                 phone: ""
-            }, 
+            },
             rules:{
                 required: (value) => !!value || "Required.",
                 min: (v) => v.length >= 4 || "Min 4 characters",

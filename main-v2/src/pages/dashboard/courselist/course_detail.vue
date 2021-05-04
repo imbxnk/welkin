@@ -20,7 +20,9 @@
                     <v-list-item-title
                       v-text="item.year + 'T' + item.trimester + ' SEC' + item.section"
                     ></v-list-item-title>
-                    <v-list-item-subtitle>{{ item._id }}</v-list-item-subtitle>
+                    <v-list-item-subtitle
+                      >{{ item.instructor.title }} {{ item.instructor.name }}</v-list-item-subtitle
+                    >
                   </v-list-item-content>
                   <v-list-item-action>
                     <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
@@ -45,11 +47,7 @@
           </div>
         </simplebar>
         <simplebar v-else data-simplebar-auto-hide="true" class="wk-content-full-height">
-          <studentTable
-            class="ma-3"
-            :classID="this.classID"
-            :stdList="this.class_detail"
-          ></studentTable>
+          <studentTable class="ma-3" :classID="this.classID"></studentTable>
         </simplebar>
       </v-card>
     </v-col>
@@ -83,7 +81,6 @@ export default {
       this.status = true;
       this.selected = true;
       this.classID = item;
-      this.loadStudent(this.classID);
     },
     loadClasses() {
       let query = `
@@ -113,48 +110,6 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.classes = res.data.data.classes.classes;
-          this.loading = false;
-        })
-        .catch((err) => {});
-    },
-    loadStudent(class_id) {
-      let query = `
-                    query {
-                      class(classId: "${class_id}") {
-                         _id
-                        course {
-                          code
-                          name
-                          description
-                        }
-                        instructor {
-                          title
-                          name
-                        }
-                        section
-                        trimester
-                        year
-                        enrollments {
-                          student {
-                            sid
-                            given_name
-                            family_name
-                            email
-                          }
-                          grade
-                        }
-                      }
-                    }
-                `;
-      this.axios
-        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
-        .then((res) => {
-          this.class_detail = res.data.data.class;
-          this.class_detail.enrollments.forEach((enrollment) => {
-            enrollment.student.name =
-              enrollment.student.given_name + " " + enrollment.student.family_name;
-          });
-
           this.loading = false;
         })
         .catch((err) => {});

@@ -7,7 +7,9 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 
 // Import firebase
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/auth'
+
 var firebaseConfig = {
   apiKey: "AIzaSyAu5EqqCHUxNeS_-oXsp3ISgdBk-5z8YDo",
   authDomain: "welkin-d9b90.firebaseapp.com",
@@ -19,7 +21,7 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+// firebase.analytics();
 
 // Import Bootstrap an BootstrapVue CSS files
 import "bootstrap/dist/css/bootstrap.css";

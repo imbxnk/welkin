@@ -4,7 +4,7 @@ export default{
   getUser: async function() {
     let query = `
       query {
-        me { username given_name family_name group email avatar_url }
+        me { display_name username given_name family_name group isAdvisor email avatar_url }
       }
     `
     return await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
@@ -16,14 +16,14 @@ export default{
   auth: async function() {
     let query = `
       query {
-        me { username given_name family_name group email avatar_url }
+        me { display_name username given_name family_name group isAdvisor email avatar_url }
       }
     `
 
     const currentUser = await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, {
       // for developing
       headers: {
-        Cookies: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDBlY2VkOTE5Zjc4MTUxZGM3MjI5OCIsImlhdCI6MTYxNjkxODU5OCwiZXhwIjoxNjE2OTIyMTk4fQ.Iazk_1VGQnL5pwNYiuVSId57mGIOibOn6_PtZ5pbtp8"
+        Cookies: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M"
       },
       // for production
       // withCredentials: true
