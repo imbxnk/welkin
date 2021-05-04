@@ -75,7 +75,7 @@ export default {
           .catch((err) => {
             this.isLoading = false
             this.isSuccess = false
-            this.error = err
+            // this.error = err
           });
       } else {
         this.error = 'Password not matched.'
