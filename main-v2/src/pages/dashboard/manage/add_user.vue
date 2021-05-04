@@ -1,17 +1,19 @@
 <template>
   <v-container>
-    <v-card style="width: 500px; padding: 20px 20px; margin: 20px 20px;">
+  <v-row>
+    <v-col justify="center" align="center">
+    <v-card class="mt-3 mx-auto pt-3 px-auto float-center" style="max-width: 500px; padding: 20px 20px; margin: 20px 20px;">
         <v-card-title>
             <h2>Add User</h2>
         </v-card-title>
         <v-card-text>
-            <v-form>
+            <v-form ref="form" lazy-validation>
                 <v-row>
                     <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
-                        <v-text-field label="First Name" id="firstName" v-model="userData.firstName" :rules="[rules.required, rules.min]" outlined></v-text-field>
+                        <v-text-field label="First Name" id="firstName" v-model="userData.firstName" :rules="[rules.required, rules.min]" outlined required></v-text-field>
                     </v-col>
                     <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
-                        <v-text-field label="Family Name"  id="familyName" v-model="userData.familyName" :rules="[rules.required, rules.min]" outlined></v-text-field>
+                        <v-text-field label="Family Name"  id="familyName" v-model="userData.familyName" :rules="[rules.required, rules.min]" outlined required></v-text-field>
                     </v-col>
                     <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
                         <v-text-field label="Email"  id="email" v-model="userData.email" outlined></v-text-field>
@@ -27,20 +29,23 @@
                             @click:append="show1 = !show1">
                         </v-text-field>
                     </v-col>
+                    <v-col cols="12" xl="12" lg="12" md="12" sm="12" xs="12" auto style="padding: auto; margin: auto;">
+                        <v-btn
+                            :loading="loading5"
+                            :disabled="loading5"
+                            color="primary"
+                            class="ma-2 white--text float-right"
+                            @click.prevent="submitForm()"
+                            >Submit
+                        </v-btn>
+                        <v-btn color="error" class="ma-2 white--text float-right" @click.prevent="clearForm()">Clear</v-btn>
+                    </v-col>
                 </v-row>
-                <v-btn color="error" class="ma-2 white--text" plain @click.prevent="clearForm()">Clear</v-btn>
-                <v-btn
-                    :loading="loading5"
-                    :disabled="loading5"
-                    color="primary"
-                    class="ma-2 white--text"
-                    plain
-                    @click.prevent="submitForm()"
-                    >Submit
-                </v-btn>
             </v-form>
         </v-card-text>
     </v-card>
+    </v-col>
+  </v-row>
     <v-snackbar
       v-model="addingSuccessStatus"
       :timeout="timeout"
@@ -111,29 +116,31 @@ export default {
     },
     methods:{
         async submitForm(){
-            console.log(this.userData)
-            let query = 
-            `mutation {
-                createUser (userInput : { 
-                    given_name : "${this.userData.firstName}", 
-                    family_name : "${this.userData.familyName}", 
-                    password : "${this.userData.password}", 
-                    email : "${this.userData.email}",}) {
-                token
-                userId
-                }
-            }`;
-            await this.axios
-            .post("https://api.welkin.app/v2/graphql", { query }, {withcredentials : true})
-            .then((res)=>{
-                console.log(res)
-                this.addingSuccessStatus = true
-                this.userData = {}
-            })
-            .catch((err)=>{
-                console.log(err)
-                this.addingFailingStatus = true
-            })
+            if(this.$refs.form.validate()){
+                console.log(this.userData)
+                let query = 
+                `mutation {
+                    createUser (userInput : { 
+                        given_name : "${this.userData.firstName}", 
+                        family_name : "${this.userData.familyName}", 
+                        password : "${this.userData.password}", 
+                        email : "${this.userData.email}",}) {
+                    token
+                    userId
+                    }
+                }`;
+                await this.axios
+                .post("https://api.welkin.app/v2/graphql", { query }, {withcredentials : true})
+                .then((res)=>{
+                    console.log(res)
+                    this.addingSuccessStatus = true
+                    this.userData = {}
+                })
+                .catch((err)=>{
+                    console.log(err)
+                    this.addingFailingStatus = true
+                })
+            }
         },
         clearForm(){
             this.userData = {}
