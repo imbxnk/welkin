@@ -70,12 +70,13 @@ export default {
             console.log(res)
             if(res.data.data) this.isSuccess = true
             else this.error = res.data.errors[0].message
+            console.log(res)
             this.isLoading = false
           })
           .catch((err) => {
             this.isLoading = false
             this.isSuccess = false
-            // this.error = err
+            this.error = err.response.data.errors[0].message
           });
       } else {
         this.error = 'Password not matched.'
