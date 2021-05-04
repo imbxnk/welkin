@@ -4,7 +4,7 @@ export default{
   getUser: async function() {
     let query = `
       query {
-        me { display_name username given_name family_name group isAdvisor email avatar_url createdAt }
+        me { display_name username given_name family_name group isAdvisor email avatar_url createdAt linked_instructor { title name given_name family_name } }
       }
     `
     return await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
@@ -16,7 +16,7 @@ export default{
   auth: async function() {
     let query = `
       query {
-        me { display_name username given_name family_name group isAdvisor email avatar_url createdAt }
+        me { display_name username given_name family_name group isAdvisor email avatar_url createdAt linked_instructor { title name given_name family_name } }
       }
     `
 
