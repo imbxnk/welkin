@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="loading">
+  <v-card v-if="loading" class="rounded-card pa-5" style="height:80px;">
     <v-progress-circular
       :size="50"
       class="loading totaltxt mt-10"
@@ -7,7 +7,7 @@
       indeterminate
     ></v-progress-circular>
   </v-card>
-  <v-card v-else class="pa-4">
+  <v-card v-else class="pa-4 rounded-card pa-5">
     <div class="overline my-n1">current students</div>
     <div class="h3 text-right totaltxt mr-3">
       {{ total }}
@@ -77,9 +77,12 @@ export default {
 }
 .loading {
   position: absolute;
-  top: 50%;
+  top: 0%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+.rounded-card {
+  border-radius: 20px;
 }
 </style>

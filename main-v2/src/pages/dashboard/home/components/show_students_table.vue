@@ -1,13 +1,6 @@
 <template>
-  <v-card>
-    <!-- <v-data-table
-      :headers="headers"
-      :items="student"
-      :sort-by="['', '']"
-      :sort-desc="[false, true]"
-      multi-sort
-      class="elevation-1"
-    > -->
+  <v-card class="rounded-card pa-3">
+    <!-- <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table> -->
     <v-data-table
       :headers="headers"
       :items="student"
@@ -73,6 +66,7 @@ export default {
   components: {},
   data() {
     return {
+      loading: true,
       dialog: false,
       headers: [
         { text: "Student ID", sortable: false, value: "stdID" },
@@ -82,6 +76,70 @@ export default {
         { text: "Performance", sortable: false, value: "status", align: "center" },
       ],
       student: [
+        {
+          name: "Kanin Sirisuksakulchai",
+          stdID: 6080718,
+          avs: "Mingmanas",
+          completion: 150,
+          averageCredit: 150,
+          status: "On track",
+        },
+        {
+          name: "Phattharaporn Roekduangchan",
+          stdID: 6080727,
+          avs: "Mingmanas",
+          completion: 146,
+          averageCredit: 150,
+          status: "On track",
+        },
+        {
+          name: "Phongchai Pongchaloem",
+          stdID: 6080728,
+          avs: "Mingmanas",
+          completion: 153,
+          averageCredit: 150,
+          status: "Ahead",
+        },
+        {
+          name: "Santhisa Chen",
+          stdID: 6080779,
+          avs: "Mingmanas",
+          completion: 102,
+          averageCredit: 150,
+          status: "Behind",
+        },
+        {
+          name: "Kanin Sirisuksakulchai",
+          stdID: 6080718,
+          avs: "Mingmanas",
+          completion: 150,
+          averageCredit: 150,
+          status: "On track",
+        },
+        {
+          name: "Phattharaporn Roekduangchan",
+          stdID: 6080727,
+          avs: "Mingmanas",
+          completion: 146,
+          averageCredit: 150,
+          status: "On track",
+        },
+        {
+          name: "Phongchai Pongchaloem",
+          stdID: 6080728,
+          avs: "Mingmanas",
+          completion: 153,
+          averageCredit: 150,
+          status: "Ahead",
+        },
+        {
+          name: "Santhisa Chen",
+          stdID: 6080779,
+          avs: "Mingmanas",
+          completion: 102,
+          averageCredit: 150,
+          status: "Behind",
+        },
         {
           name: "Kanin Sirisuksakulchai",
           stdID: 6080718,
@@ -143,5 +201,8 @@ export default {
   margin-left: auto;
   margin-right: auto;
   width: 100%;
+}
+.rounded-card {
+  border-radius: 20px;
 }
 </style>
