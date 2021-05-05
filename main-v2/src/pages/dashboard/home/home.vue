@@ -13,12 +13,12 @@
     <div class="py-5 wk-home-container">
       <div class="row d-md-block">
         <div class="col-md-4 order-1 float-left my-n4 py-10 ">
-          <h2>
+          <h3>
             Hello,
             <span class="primary--text"
               >{{ this.$currentUser.given_name }} {{ this.$currentUser.family_name }}</span
             >
-          </h2>
+          </h3>
           <h6 class="grey--text">have a nice day :)</h6>
           <v-divider class="mb-n4"></v-divider>
         </div>
