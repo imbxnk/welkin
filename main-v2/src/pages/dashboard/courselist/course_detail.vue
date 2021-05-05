@@ -101,7 +101,6 @@ export default {
                           }
                           trimester
                           year
-                      
                         }
                       }
                     }

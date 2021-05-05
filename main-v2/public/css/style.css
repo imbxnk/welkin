@@ -338,6 +338,13 @@ main {
   }
 }
 
-.v-sheet.v-card {
-  border-radius: 1rem !important;
+.v-sheet.v-card, .v-btn, .wk-btn {
+  border-radius: 1.1rem !important;
+}
+
+.wk-detail {
+  width: 100%;
+  overflow-x: hidden;
+  margin: 10px 0;
+  padding: 10px 0;
 }

@@ -151,10 +151,6 @@ td {
   border: 1px solid rgba(139, 139, 139, 0.2);
   padding: 5px;
 }
-.wk-detail {
-  width: 100%;
-  overflow-x: hidden;
-}
 .loading-center {
   margin: 0;
   position: absolute;
