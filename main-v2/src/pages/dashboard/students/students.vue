@@ -1,133 +1,136 @@
 <template>
   <div>
-    <v-row>
-      <v-col>
-        <v-card-title>
-          Students
-        </v-card-title>
-      </v-col>
-      <v-col cols="6" md="5" lg="4" xl="3">
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          type="text"
-          class="mr-3"
-        ></v-text-field>
-      </v-col>
-    </v-row>
-    <v-card>
-      <!-- if loading -->
-      <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table>
-      <!-- else -->
-      <v-data-table
-        v-else
-        :headers="headers"
-        :items="students"
-        :search="search"
-        mobile-breakpoint="0"
-        @click:row="showDialog"
-        class="student"
-      >
-        <template v-slot:[`item.email`]="{ item }">
-          {{ item.email == null ? "-" : item.email }}
-        </template>
-        <template v-slot:[`item.phone`]="{ item }">
-          {{ item.phone == null ? "-" : item.phone }}
-        </template>
-      </v-data-table>
-      <!-- dialog -->
-      <v-dialog v-model="dialog" max-width="500px">
-        <v-card>
-          <v-card-title class="overline lighten-2">
-            {{ stdDetail.name }}
+    <v-card class="rounded-card pa-3">
+      <v-row>
+        <v-col>
+          <v-card-title>
+            Students
           </v-card-title>
+        </v-col>
+        <v-col cols="6" md="5" lg="4" xl="3">
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            type="text"
+            class="mr-3"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-card :elevation="0">
+        <!-- if loading -->
+        <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table>
+        <!-- else -->
+        <v-data-table
+          v-else
+          :headers="headers"
+          :items="students"
+          :search="search"
+          mobile-breakpoint="0"
+          @click:row="showDialog"
+          class="student"
+        >
+          <template v-slot:[`item.email`]="{ item }">
+            {{ item.email == null ? "-" : item.email }}
+          </template>
+          <template v-slot:[`item.phone`]="{ item }">
+            {{ item.phone == null ? "-" : item.phone }}
+          </template>
+        </v-data-table>
+        <!-- dialog -->
+        <v-dialog v-model="dialog" max-width="500px">
+          <v-card class="rounded-card">
+            <v-card-title class="overline lighten-2">
+              {{ stdDetail.name }}
+            </v-card-title>
 
-          <v-card-text>
-            <v-row>
-              <v-col cols="12" sm="5">
-                <!-- <v-progress-circular
+            <v-card-text>
+              <v-row>
+                <v-col cols="12" sm="5">
+                  <!-- <v-progress-circular
                   :width="3"
                   class="loading-center  "
                   color="primary"
                   indeterminate
                 ></v-progress-circular> -->
-                <v-img
-                  src="https://semantic-ui.com/images/avatar2/large/matthew.png"
-                  contain
-                  max-width="180"
-                  class="center"
-                />
-                <div class="overline text-center">{{ stdDetail.sid }}</div>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <b>Email:</b> <span v-if="stdDetail.email">{{ stdDetail.email }}</span
-                ><span v-else>-</span><br />
-                <b>GPA:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
-                <b>Core Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
-                <b>Required Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
-                <b>Elective Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
-                <b>Remark:</b><span v-if="stdDetail.remarks == ''"> -</span>
-                <span v-else
-                  ><ul class="mb-n1">
-                    <li v-for="(msg, i) in stdDetail.remarks" :key="i">
-                      {{ msg.message }}, [ {{ msg.user.username }} ]
-                    </li>
-                  </ul> </span
-                ><v-icon class="px-1" small @click="dialog2 = true">mdi-pencil</v-icon>
-                <!-- {{ stdDetail.remarks[0] == null ? "-" : stdDeta1il.remarks
+                  <v-img
+                    src="https://semantic-ui.com/images/avatar2/large/matthew.png"
+                    contain
+                    max-width="180"
+                    class="center"
+                  />
+                  <div class="overline text-center">{{ stdDetail.sid }}</div>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <b>Email:</b> <span v-if="stdDetail.email">{{ stdDetail.email }}</span
+                  ><span v-else>-</span><br />
+                  <b>GPA:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
+                  <b>Core Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
+                  <b>Required Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
+                  <b>Elective Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
+                  <b>Remark:</b><span v-if="stdDetail.remarks == ''"> -</span>
+                  <span v-else
+                    ><ul class="mb-n1">
+                      <li v-for="(msg, i) in stdDetail.remarks" :key="i">
+                        {{ msg.message }}, [ {{ msg.user.username }} ]
+                      </li>
+                    </ul> </span
+                  ><v-icon class="px-1" small @click="dialog2 = true">mdi-pencil</v-icon>
+                  <!-- {{ stdDetail.remarks[0] == null ? "-" : stdDeta1il.remarks
                 }}<v-icon class="ml-2" small @click="dialog2 = true">mdi-pencil</v-icon><br /> -->
-                <div class="w-100 d-flex justify-content-center mt-3">
-                  <!-- <v-btn
+                  <div class="w-100 d-flex justify-content-center mt-3">
+                    <!-- <v-btn
                     :to="{
                       path: 'students',
                       name: 'student_record',
                       params: { sid: stdDetail.sid },
                     }"
                     small> -->
-                  <v-btn
-                    @click="
-                      $router.push({ name: 'student_record', params: { sid: stdDetail.sid } })
-                    "
-                  >
-                    See student record</v-btn
-                  >
-                </div>
-              </v-col>
-            </v-row>
-          </v-card-text>
+                    <v-btn
+                      @click="
+                        $router.push({ name: 'student_record', params: { sid: stdDetail.sid } })
+                      "
+                      rounded
+                    >
+                      See student record</v-btn
+                    >
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card-text>
 
-          <v-card-actions class="mt-n4">
-            <v-spacer></v-spacer>
-            <v-btn color="red" text @click="dialog = false">
-              Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+            <v-card-actions class="mt-n4">
+              <v-spacer></v-spacer>
+              <v-btn color="red" text @click="dialog = false" rounded>
+                Close
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 
-      <!-- dialog2 *add remark* -->
-      <v-dialog v-model="dialog2" max-width="300px">
-        <v-card class="pa-3">
-          <br />
+        <!-- dialog2 *add remark* -->
+        <v-dialog v-model="dialog2" max-width="300px">
+          <v-card class="rounded-card pa-3">
+            <br />
 
-          <div class="text-center">
-            <p class="overline primary--text my-n2">Add Remark For</p>
-            <p class="font-weight-bold ">{{ stdDetail.name }}</p>
-          </div>
+            <div class="text-center">
+              <p class="overline primary--text my-n2">Add Remark For</p>
+              <p class="font-weight-bold ">{{ stdDetail.name }}</p>
+            </div>
 
-          <v-divider class=""></v-divider>
-          <v-textarea outlined name="input-7-4" label="Remark" v-model="value"></v-textarea>
-          <v-btn block class="mt-n3" color="primary" :disabled="!value"> save </v-btn>
-          <v-card-actions class="mr-n5">
-            <v-spacer></v-spacer>
-            <v-btn color="red" text @click="closedialog2()">
-              Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-card>
+            <v-divider class=""></v-divider>
+            <v-textarea outlined name="input-7-4" label="Remark" v-model="value"></v-textarea>
+            <v-btn block class="mt-n3" color="primary" :disabled="!value" rounded> save </v-btn>
+            <v-card-actions class="mr-n5">
+              <v-spacer></v-spacer>
+              <v-btn color="red" text @click="closedialog2()" rounded>
+                Close
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-card></v-card
+    >
   </div>
 </template>
 <script>
@@ -268,5 +271,8 @@ export default {
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+.rounded-card {
+  border-radius: 20px;
 }
 </style>
