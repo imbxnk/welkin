@@ -27,7 +27,7 @@
         <div class="d-flex wk-account-form d-flex flex-column">
           <div class="mb-3">
             <label class="form-label">Display name</label>
-            <input @keydown="isSuccess = false" class="form-control" type="text" :disabled="isLoading" v-model="user.display_name" placeholder="">
+            <input @keydown="isSuccess = false" maxlength="16" class="form-control" type="text" :disabled="isLoading" v-model="user.display_name" placeholder="">
           </div>
           <div class="mb-3 row">
             <div class="col col-12 col-md-6">
