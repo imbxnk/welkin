@@ -338,8 +338,12 @@ main {
   }
 }
 
-.v-sheet.v-card, .v-btn, .wk-btn {
+.v-sheet.v-card, .v-btn {
   border-radius: 1.1rem !important;
+}
+
+.wk-btn, .wk-login-btn {
+  border-radius: 1.6rem !important;
 }
 
 .wk-detail {
