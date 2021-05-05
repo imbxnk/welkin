@@ -67,8 +67,16 @@
                 <b>Core Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
                 <b>Required Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
                 <b>Elective Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
-                <b>Remark:</b> <span v-if="false">{{}} </span><span v-else>-</span
-                ><v-icon class="ml-2" small @click="dialog2 = true">mdi-pencil</v-icon><br />
+                <b>Remark:</b><span v-if="stdDetail.remarks == ''"> -</span>
+                <span v-else
+                  ><ul class="mb-n1">
+                    <li v-for="(msg, i) in stdDetail.remarks" :key="i">
+                      {{ msg.message }}, [ {{ msg.user.username }} ]
+                    </li>
+                  </ul> </span
+                ><v-icon class="px-1" small @click="dialog2 = true">mdi-pencil</v-icon>
+                <!-- {{ stdDetail.remarks[0] == null ? "-" : stdDeta1il.remarks
+                }}<v-icon class="ml-2" small @click="dialog2 = true">mdi-pencil</v-icon><br /> -->
                 <div class="w-100 d-flex justify-content-center mt-3">
                   <!-- <v-btn
                     :to="{
@@ -78,7 +86,9 @@
                     }"
                     small> -->
                   <v-btn
-                    @click="$router.push({ name: 'student_record', params: { sid: stdDetail.sid } })"
+                    @click="
+                      $router.push({ name: 'student_record', params: { sid: stdDetail.sid } })
+                    "
                   >
                     See student record</v-btn
                   >
@@ -126,6 +136,7 @@ export default {
   components: {},
   mounted() {
     this.getStudents();
+    console.log(this.stdDetail);
   },
   computed: {
     isDisable() {
@@ -205,6 +216,12 @@ export default {
                     status {
                       current
                     }
+                    remarks{
+                      message
+                      user {
+                        username
+                      }
+                    }
                   }
                 }
               }
@@ -216,13 +233,13 @@ export default {
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
           });
-
           this.loading = false;
         })
         .catch((err) => {
           console.log(err);
         });
     },
+
     showDialog(row) {
       this.dialog = true;
       // console.log(this.student.stdID);
