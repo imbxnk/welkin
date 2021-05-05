@@ -194,7 +194,7 @@ export default {
     async getStudents() {
       let query = `
               query {
-                students {
+                students (sortBy: "status") {
                   students {
                     sid
                     given_name
