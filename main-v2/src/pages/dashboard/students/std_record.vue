@@ -86,11 +86,18 @@ export default {
                             lineID
                             lineUID
                             advisor
-                            remarks
+                            remarks {
+                              user {
+                                display_name
+                                given_name
+                                family_name
+                              }
+                              message
+                            }
                             status{
                                 current
                             }
-                            taken_courses{ 
+                            taken_courses{
                                 _id
                                 class{
                                   course{

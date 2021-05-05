@@ -1,5 +1,5 @@
 <template>
-  <v-card class="rounded-card pa-3">
+  <v-card class="pa-3">
     <!-- <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table> -->
     <v-data-table
       :headers="headers"
@@ -202,8 +202,5 @@ export default {
   margin-left: auto;
   margin-right: auto;
   width: 100%;
-}
-.rounded-card {
-  border-radius: 20px;
 }
 </style>

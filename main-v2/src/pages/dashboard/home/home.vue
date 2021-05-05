@@ -12,7 +12,7 @@
     </v-row> -->
     <div class="py-5 wk-home-container">
       <div class="row d-md-block">
-        <div class="col-md-4 order-1 float-left my-n4 py-10 ">
+        <div class="col-md-4 order-1 float-left my-n4 py-10 wk-welcome">
           <h3>
             Hello,
             <span class="primary--text"
@@ -62,7 +62,10 @@ export default {
   width: 100% !important; */
   margin: 0px !important;
 }
-.rounded-card {
-  border-radius: 20px;
+
+@media (max-width: 1200px) {
+  .wk-welcome h3, .wk-welcome span {
+    font-size: 1.5rem
+  }
 }
 </style>
