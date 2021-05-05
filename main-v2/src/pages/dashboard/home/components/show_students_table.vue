@@ -5,7 +5,7 @@
       :headers="headers"
       :items="student"
       mobile-breakpoint="680"
-      height="525"
+      height="528"
       class="home"
       @click:row="showDialog"
     >
