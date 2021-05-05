@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="chart">
-      <apexchart type="bar" height="200" :options="chartOptions" :series="series"></apexchart>
+      <apexchart type="bar" height="240" :options="chartOptions" :series="series"></apexchart>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
       chartOptions: {
         chart: {
           type: "bar",
-          height: 200,
+          height: 240,
           stacked: true,
           fontFamily: 'Quicksand, sans-serif',
           toolbar: {
@@ -42,9 +42,20 @@ export default {
           width: 1,
           colors: ["#fff"],
         },
-        colors: ["#3c84fb", "#97b8f0"],
+        dataLabels: {
+          style: {
+            colors: ['#fff', '#000000de']
+          }
+        },
+        // colors: ["#3c84fb", "#97b8f0"],
+        // colors: ["#3c84fb", "#000000de"],
+        colors: ["#3c84fb", "#0000000e"],
         title: {
-          text: "Remain students",
+          text: "Remain Students",
+          style: {
+            fontSize: '18px',
+            fontWeight: '600',
+          },
         },
         xaxis: {
           categories: this.batch,

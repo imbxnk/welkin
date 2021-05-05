@@ -1,7 +1,7 @@
 <template>
-    <v-row>
+    <v-row style="max-width: 960px;" class="mx-auto">
         <!-- Left card component -->
-        <v-col cols="12" xl="6" lg="6" md="12" sm="12" xs="12">
+        <v-col cols="12">
             <v-card style="padding: 10px 10px;">
                 <!-- card title part -->
                 <!-- Impord Title -->
@@ -11,7 +11,7 @@
                             Import Student
                         </v-col>
                         <v-col cols="12" sm="6" xs="6">
-                            <v-btn v-if="importStatus" plain text class="float-right overline primary--text" style="font-size:0.8rem; font-weight: normal;" :value="importStatus" @click="changeToAddManually">Add Manually</v-btn>
+                            <v-btn v-if="importStatus && !selectedFile" plain text class="float-right overline primary--text" style="font-size:0.8rem; font-weight: normal;" :value="importStatus" @click="changeToAddManually">Add Manually</v-btn>
                         </v-col>
                     </v-row>
                 </v-card-title>
@@ -77,7 +77,7 @@
             </v-card>
         </v-col>
         <!-- Right card component -->
-        <v-col cols="12" xl="6" lg="6" md="12" sm="12" xs="12">
+        <v-col cols="12">
             <v-card>
                 <v-card-title v-if="notDuplicateStudents">
                     Students
@@ -134,7 +134,7 @@
                         </v-col>
                     </v-row>
                 </v-card-text>
-                
+
 
                 <v-card-text v-else-if="!notDuplicateStudents">
                     <v-row >
@@ -208,7 +208,7 @@
                         </v-btn>
                     </template>
                     </v-snackbar>
-                    
+
                     <v-snackbar
                     v-model="addingFailingStatus"
                     :timeout="timeout"
@@ -276,7 +276,7 @@ export default {
             timeout: 5000,
             notDuplicateStudents: true,
 
-            
+
             //manual
             manualData: {
                 ID: "",

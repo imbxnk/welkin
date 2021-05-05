@@ -9,7 +9,7 @@ html, body {
   position: relative;
 }
 
-.v-application {
+.v-application, .dz-message {
   font-family: 'Quicksand', sans-serif !important;
 }
 
@@ -338,11 +338,11 @@ main {
   }
 }
 
-.v-sheet.v-card, .v-btn {
+.v-sheet.v-card, .v-btn, .v-dialog {
   border-radius: 1.1rem !important;
 }
 
-.wk-btn, .wk-login-btn {
+.wk-btn, .wk-login-btn, .btn-primary {
   border-radius: 1.6rem !important;
 }
 
@@ -351,4 +351,12 @@ main {
   overflow-x: hidden;
   margin: 10px 0;
   padding: 10px 0;
+}
+
+#dropzone {
+  border-radius: 1rem !important;
+}
+
+.vue-dropzone {
+  border: 3px dashed #e5e5e5 !important;
 }
