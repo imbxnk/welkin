@@ -34,7 +34,8 @@
               </div>
             </div>
             <v-card-title class="justify-content-center">Check Your Email</v-card-title>
-            <v-card-subtitle class="text-center">We have sent a password recovery link to your email</v-card-subtitle>
+            <v-card-subtitle class="text-center">The password recovery link will be sent to your email<br>if the username is existed in our database.</v-card-subtitle>
+            <router-link class="wk-link d-flex justify-content-center mt-3 mb-2" :to="{ name: 'login'}">Back to Login</router-link>
           </div>
         </v-card>
       </v-col>
@@ -47,7 +48,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      isSent: false,
+      isSent: true,
       username: '',
     }
   },

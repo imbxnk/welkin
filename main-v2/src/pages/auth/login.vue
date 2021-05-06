@@ -33,8 +33,8 @@
               <div v-else class="wk-spinner mx-auto my-4"></div>
             </v-form>
           </v-card-text>
-          <v-divider></v-divider>
-          <div class="px-4 text-center"><router-link class="wk-link" :to="{ name: 'reset_password' }">Forgot your password?</router-link></div>
+          <v-divider v-if="!isLoading"></v-divider>
+          <div class="px-4 text-center" v-if="!isLoading"><router-link class="wk-link" :to="{ name: 'reset_password' }">Forgot your password?</router-link></div>
           <v-card-actions></v-card-actions>
         </v-card>
       </v-col>
