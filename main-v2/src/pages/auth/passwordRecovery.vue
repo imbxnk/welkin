@@ -62,7 +62,7 @@
             </div>
             <v-card-title class="justify-content-center">Password Reset Succesful</v-card-title>
             <v-card-subtitle class="text-center">You have successfully changed your password.</v-card-subtitle>
-            <div class="d-flex justify-content-center px-4" style="color: #999; font-size: 0.88rem">
+            <div class="d-flex justify-content-center px-4 text-center" style="color: #999; font-size: 0.88rem">
               <p>If this page doesn't redirect in 5 seconds then please click <a href="/">here</a></p>
             </div>
           </div>
