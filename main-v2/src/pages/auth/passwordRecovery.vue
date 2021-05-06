@@ -116,7 +116,7 @@ export default {
         });
     },
     resetPassword() {
-      if (this.user.password < 6) return this.error = "Password should be more than 6 characters"
+      if (this.user.password.length < 5) return this.error = "Password should be more than 6 characters"
       if (this.user.password != this.user.confirmPassword) return this.error = "Passwords do not match"
       this.isLoading = true;
       let query = `
