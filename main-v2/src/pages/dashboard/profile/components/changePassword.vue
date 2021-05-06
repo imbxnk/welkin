@@ -68,7 +68,6 @@ export default {
         this.axios
           .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
           .then((res) => {
-            console.log(res)
             if(res.data.data) {
               this.isSuccess = true
               this.userInput = {
@@ -78,7 +77,6 @@ export default {
               }
             }
             else this.error = res.data.errors[0].message
-            console.log(res)
             this.isLoading = false
           })
           .catch((err) => {

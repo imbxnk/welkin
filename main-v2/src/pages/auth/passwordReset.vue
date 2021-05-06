@@ -15,6 +15,9 @@
                   outlined
                   class="mt-3"
                 ></v-text-field>
+                <div class="wk-error" v-if="error">
+                  {{ error }}
+                </div>
                 <div class="d-flex flex-row-reverse justify-content-between align-items-center">
                   <button class="btn btn-primary btn-block wk-send-btn">Send</button>
                   <router-link class="wk-link" :to="{ name: 'login'}">Back to Login</router-link>
@@ -34,7 +37,7 @@
               </div>
             </div>
             <v-card-title class="justify-content-center">Check Your Email</v-card-title>
-            <v-card-subtitle class="text-center">The password recovery link will be sent to your email<br>if the username is existed in our database.</v-card-subtitle>
+            <v-card-subtitle class="text-center">We have sent a password recovery link to your email.</v-card-subtitle>
             <router-link class="wk-link d-flex justify-content-center mt-3 mb-2" :to="{ name: 'login'}">Back to Login</router-link>
           </div>
         </v-card>
@@ -48,13 +51,14 @@ export default {
   data() {
     return {
       isLoading: false,
-      isSent: true,
+      isSent: false,
       username: '',
+      error: '',
     }
   },
   methods: {
     sendPasswordRecovery() {
-      if (!this.username) return
+      if (!this.username) return this.error = "Please enter the username"
       this.isLoading = true;
       let query = `
           mutation {
@@ -67,11 +71,13 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
+          console.log(res)
           this.isLoading = false
           if(res.data.data.requestPasswordRecovery.success) this.isSent = true
         })
         .catch((err) => {
           this.isLoading = false
+          this.error = err.response.data.errors[0].message
         });
     }
   },
@@ -104,6 +110,11 @@ export default {
 	100% {
 		transform: rotate(360deg)
 	}
+}
+
+.wk-error {
+  color: #e24056;
+  margin: -20px 0 20px 0;
 }
 
 </style>

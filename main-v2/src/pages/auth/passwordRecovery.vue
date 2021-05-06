@@ -25,6 +25,9 @@
                   outlined
                   style="margin-top:-15px"
                 ></v-text-field>
+                <div class="wk-error" v-if="error">
+                  {{ error }}
+                </div>
                 <button class="btn btn-primary btn-block wk-send-btn">Change Password</button>
               </div>
               <div v-else class="wk-spinner mx-auto my-4"></div>
@@ -58,7 +61,10 @@
               </div>
             </div>
             <v-card-title class="justify-content-center">Password Reset Succesful</v-card-title>
-            <v-card-subtitle class="text-center">You have successfully changed your password. You will be redirect to dashboard in 5 seconds...</v-card-subtitle>
+            <v-card-subtitle class="text-center">You have successfully changed your password.</v-card-subtitle>
+            <div class="d-flex justify-content-center" style="color: #999; font-size: 0.88rem">
+              <p>If this page doesn't redirect in 5 seconds then please click <a href="/">here</a></p>
+            </div>
           </div>
         </v-card>
       </v-col>
@@ -84,6 +90,7 @@ export default {
       },
       token: '',
       email: '',
+      error: '',
     }
   },
   methods: {
@@ -109,7 +116,8 @@ export default {
         });
     },
     resetPassword() {
-      if (this.user.password != this.user.confirmPassword) return
+      if (this.user.password < 6) return this.error = "Password should be more than 6 characters"
+      if (this.user.password != this.user.confirmPassword) return this.error = "Passwords do not match"
       this.isLoading = true;
       let query = `
           mutation {
@@ -130,6 +138,7 @@ export default {
         })
         .catch((err) => {
           this.isLoading = false
+          this.error = err.response.data.errors[0]
         });
     }
   },
@@ -161,5 +170,10 @@ export default {
 	100% {
 		transform: rotate(360deg)
 	}
+}
+
+.wk-error {
+  margin: -20px 0 20px 0;
+  color: #e24056;
 }
 </style>
