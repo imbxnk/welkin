@@ -1,8 +1,8 @@
 <template>
   <v-main>
     <v-row style="height: 100%" justify="center" align="center">
-      <v-col>
-        <v-card class="mx-auto my-4" style="width: 400px;" elevation="2">
+      <v-col class="mx-4">
+        <v-card class="mx-auto my-4" style="max-width: 400px;" elevation="2">
           <v-card-title v-if="!isLoading">Log in</v-card-title>
           <v-card-title v-else>Logging in...</v-card-title>
           <v-card-subtitle v-if="!isLoading">Welcome to Welkin</v-card-subtitle>
@@ -25,6 +25,7 @@
                   label="Password"
                   placeholder=" "
                   outlined
+                  style="margin-top:-10px;"
                   @click:append="show1 = !show1"
                 ></v-text-field>
                 <button class="btn btn-primary btn-block wk-login-btn">Login</button>
@@ -32,6 +33,8 @@
               <div v-else class="wk-spinner mx-auto my-4"></div>
             </v-form>
           </v-card-text>
+          <v-divider></v-divider>
+          <div class="px-4 text-center"><router-link class="wk-link" :to="{ name: 'reset_password' }">Forgot your password?</router-link></div>
           <v-card-actions></v-card-actions>
         </v-card>
       </v-col>
@@ -59,8 +62,6 @@ export default {
       let query = `
           mutation {
             login ( username : "${this.username}" , password : "${this.password}") {
-              token
-              userId
               message
             }
           }
@@ -69,7 +70,6 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res.data)
           if(res.data) {
             window.location.replace("/")
           } else {
@@ -89,6 +89,7 @@ export default {
 </script>
 
 <style scoped>
+
 .wk-login-btn {
   height: 48px;
 }

@@ -20,7 +20,9 @@ import AddInstructor from "../pages/dashboard/manage/add_instructor";
 import AddUser from "../pages/dashboard/manage/add_user";
 import StudentRecord from "../pages/dashboard/students/std_record";
 // Login Route
-import Login from "../pages/login/login";
+import Login from "../pages/auth/login";
+import PasswordRecovery from "../pages/auth/passwordRecovery"
+import PasswordReset from "../pages/auth/passwordReset"
 
 // Define All Routes
 const routes = [
@@ -161,6 +163,24 @@ const routes = [
       requiresAuth: false,
       title: "Login",
     },
+  },
+  {
+    name: "reset_password",
+    path: "/accounts/reset/password",
+    component: PasswordReset,
+    meta: {
+      requiresAuth: false,
+      title: "Request Password Recovery"
+    }
+  },
+  {
+    name: "recovery_password",
+    path: "/accounts/recovery",
+    component: PasswordRecovery,
+    meta: {
+      requiresAuth: false,
+      title: "Password Recovery"
+    }
   },
   {
     path: "/:catchAll(.*)",
