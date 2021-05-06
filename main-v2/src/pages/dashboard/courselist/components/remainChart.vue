@@ -15,12 +15,12 @@ export default {
     return {
       series: [
         {
-          name: "Remain",
-          data: this.total,
+          name: "Registered",
+          data: this.passed,
         },
         {
-          name: "Registed",
-          data: this.passed,
+          name: "Remain",
+          data: this.total,
         },
       ],
       chartOptions: {
@@ -51,7 +51,7 @@ export default {
         // colors: ["#3c84fb", "#000000de"],
         colors: ["#3c84fb", "#0000000e"],
         title: {
-          text: "Remain Students",
+          text: "Registered Students",
           style: {
             fontSize: '18px',
             fontWeight: '600',
