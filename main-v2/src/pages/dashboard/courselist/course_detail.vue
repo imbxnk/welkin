@@ -125,12 +125,12 @@ export default {
   transform: translate(-50%, -50%);
 }
 .wk-content-full-height {
-  height: calc(100vh - 83px);
+  height: calc(var(--app-height) - 83px);
   overflow-y: auto;
   overflow-x: hidden;
 }
 .wk-content-full-height-list {
-  height: calc(100vh - 222px);
+  height: calc(var(--app-height) - 222px);
   overflow: auto;
 }
 .logo-watermark {

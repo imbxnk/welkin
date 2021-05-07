@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-row style="height: 100%" justify="center" align="center">
+    <v-row class="wk-login-fh" justify="center" align="center">
       <v-col class="mx-4">
         <v-card class="mx-auto my-4" style="max-width: 400px;" elevation="2">
           <v-card-title v-if="!isLoading">Log in</v-card-title>

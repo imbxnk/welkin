@@ -143,11 +143,11 @@ export default {
   transform: translate(-50%, -50%);
 }
 .wk-content-full-height {
-  height: calc(100vh - 107px);
+  height: calc(var(--app-height) - 107px);
   overflow: auto;
 }
 .wk-content-full-height-list {
-  height: calc(100vh - 183px);
+  height: calc(var(--app-height) - 183px);
   overflow: auto;
 }
 .logo-watermark {
@@ -168,7 +168,7 @@ export default {
 
 @media (max-width: 576px) {
   .wk-content-full-height-list {
-    height: calc(100vh - 183px);
+    height: calc(var(--app-height) - 183px);
   }
 }
 

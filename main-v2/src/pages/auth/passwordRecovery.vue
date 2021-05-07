@@ -1,6 +1,6 @@
 <template>
   <v-main v-if="checked">
-    <v-row style="height: 100%" justify="center" align="center">
+    <v-row class="wk-login-fh" justify="center" align="center">
       <v-col class="mx-4">
         <v-card class="mx-auto my-4" style="max-width: 500px;" elevation="2">
           <div class="py-4" v-if="email && !isSuccess">
