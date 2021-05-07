@@ -123,7 +123,7 @@
 
             <template v-for="(subitem, j) in item.children">
               <v-list-item
-                v-if="!subitem.children && checkAuthGroup(i) && isAdvisor(i,j)"
+                v-if="!subitem.children && checkAuthGroup(i) && isAdvisor(i,j) && checkChildAuthGroup(i,j)"
                 :key="j"
                 :to="item.href + subitem.href"
                 class="mb-2"
@@ -246,10 +246,16 @@ export default {
         icon: "mdi-account-group-outline",
         children: [
           {
+            title: "Search Student",
+            href: "/search",
+            icon: "mdi-account-search",
+          },
+          {
             title: "All Students",
             href: "/all",
             icon: "mdi-account-multiple-outline",
             isAdvisor: false,
+            authorizedGroup: ["program director", "coordinator"]
           },
           {
             title: "My Advisees",
@@ -394,6 +400,11 @@ export default {
     },
     isAdvisor(i,j) {
       return this.items[i].children[j].isAdvisor ? this.$currentUser.isAdvisor : true;
+    },
+    checkChildAuthGroup(i,j) {
+      try {
+        return this.items[i].children[j].authorizedGroup ? this.items[i].children[j].authorizedGroup.includes(this.$currentUser.group) : true;
+      } catch (err) {}
     },
     logout() {
       //Logout and clear token

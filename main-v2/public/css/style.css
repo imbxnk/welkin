@@ -378,7 +378,7 @@ main {
 }
 
 .vue-dropzone {
-  border: 3px dashed #e5e5e5 !important;
+  border: 2px dashed #e5e5e5 !important;
 }
 
 /* Request Password Recovery */

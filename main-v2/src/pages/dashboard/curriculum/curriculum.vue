@@ -166,6 +166,12 @@ export default {
   padding: 0 0 0 8px;
 }
 
+@media (max-width: 1200px) {
+  .v-list-item__title {
+    font-size: 0.9rem !important;
+  }
+}
+
 @media (max-width: 576px) {
   .wk-content-full-height-list {
     height: calc(var(--app-height) - 183px);

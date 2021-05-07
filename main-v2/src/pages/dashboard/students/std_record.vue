@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <v-btn @click="$router.push('/students/all')" class="ma-3">back to student list</v-btn>
     <!-- hello this is std rec {{ this.$route.params.sid }}<br />
     {{ this.students.given_name }} {{ this.students.family_name }}<br />

@@ -12,14 +12,16 @@ import AccountSettings from "../pages/dashboard/profile/components/accountSettin
 import ChangePassword from "../pages/dashboard/profile/components/changePassword"
 import ManageStudents from "../pages/dashboard/manage/manage_students";
 import StudentList from "../pages/dashboard/students/students";
+import MyAdvisees from "../pages/dashboard/students/my_advisees";
+import StudentRecord from "../pages/dashboard/students/std_record";
+import SearchStudent from "../pages/dashboard/students/search_student";
 import CourseList from "../pages/dashboard/courselist/courselist";
 import CourseDetail from "../pages/dashboard/courselist/course_detail";
 import Curriculum from "../pages/dashboard/curriculum/curriculum";
 import Manage_grade from "../pages/dashboard/manage/manage_grade";
 import AddInstructor from "../pages/dashboard/manage/add_instructor";
 import AddUser from "../pages/dashboard/manage/add_user";
-import StudentRecord from "../pages/dashboard/students/std_record";
-// Login Route
+// Auth Route
 import Login from "../pages/auth/login";
 import PasswordRecovery from "../pages/auth/passwordRecovery"
 import PasswordReset from "../pages/auth/passwordReset"
@@ -36,18 +38,28 @@ const routes = [
     },
   },
   {
+    name: "search_student",
+    path: "/students/search",
+    component: SearchStudent,
+    meta: {
+      requiresAuth: true,
+      title: "Search Student",
+    }
+  },
+  {
     name: "student_list",
     path: "/students/all",
     component: StudentList,
     meta: {
       requiresAuth: true,
       title: "Student List",
+      authorizedGroup: ["program director", "coordinator"]
     },
   },
   {
     name: "student_advisee",
     path: "/students/advisee",
-    // component: StudentAdvisee,
+    component: MyAdvisees,
     meta: {
       requiresAuth: true,
       title: "My Advisees",

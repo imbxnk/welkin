@@ -223,6 +223,12 @@ export default {
   }
 }
 
+@media (max-width: 1200px) {
+  .v-list-item__title {
+    font-size: 0.9rem !important;
+  }
+}
+
 @media (max-width: 768px) {
   .wk-left-col {
     padding: 0px 32px 0 0;
