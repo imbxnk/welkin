@@ -64,10 +64,12 @@
                 <v-col cols="12" sm="6">
                   <b>Email:</b> <span v-if="stdDetail.email">{{ stdDetail.email }}</span
                   ><span v-else>-</span><br />
-                  <b>GPA:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
-                  <b>Core Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
-                  <b>Required Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
-                  <b>Elective Courses:</b> <span v-if="false">{{}}</span><span v-else>-</span><br />
+                  <template v-if="stdDetail.records">
+                    <b>GPA:</b> <span>{{ stdDetail.records.egci_cumulative_gpa }}</span><br />
+                    <b>Core Courses:</b> <span>{{ stdDetail.records.core_credits }}</span><br />
+                    <b>Required Courses:</b> <span>{{ stdDetail.records.major_credits }}</span><br />
+                    <b>Elective Courses:</b> <span>{{ stdDetail.records.elective_credits }}</span><br />
+                  </template>
                   <b>Remark:</b><span v-if="stdDetail.remarks == ''"> -</span>
                   <span v-else
                     ><ul class="mb-n1">
@@ -139,7 +141,6 @@ export default {
   components: {},
   mounted() {
     this.getStudents();
-    console.log(this.stdDetail);
   },
   computed: {
     isDisable() {
@@ -219,11 +220,17 @@ export default {
                     status {
                       current
                     }
-                    remarks{
+                    remarks {
                       message
                       user {
                         username
                       }
+                    }
+                    records {
+                      egci_cumulative_gpa
+                      core_credits
+                      major_credits
+                      elective_credits
                     }
                   }
                 }
@@ -232,6 +239,7 @@ export default {
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
+          console.log(res.data.data.students)
           this.students = [...res.data.data.students.students];
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
