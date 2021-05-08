@@ -255,7 +255,7 @@ export default {
             href: "/all",
             icon: "mdi-account-multiple-outline",
             isAdvisor: false,
-            authorizedGroup: ["program director", "coordinator"]
+            authorizedGroup: ["program director", "coordinator", "admin"]
           },
           {
             title: "My Advisees",

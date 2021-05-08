@@ -133,6 +133,7 @@
 <script>
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/storage'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 
