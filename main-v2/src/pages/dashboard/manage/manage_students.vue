@@ -322,6 +322,7 @@ export default {
             for(var i in students) {
                 let std = {...students[i]};
                 //post graphql by using axios
+                std.Advisor = std.Advisor.trim().split(". ").slice(-1).pop().trim()
                 let gql = `
                         mutation{
                             addStudent ( studentInput: {
@@ -331,7 +332,8 @@ export default {
                                     family_name: "${std.LastName}",
                                     program: "${std.Program}",
                                     entry_trimester: "${this.entryTrimester}",
-                                    entry_year: "${this.entryYear}"
+                                    entry_year: "${this.entryYear}",
+                                    advisor_name: "${std.Advisor}"
                                 }
                             ){
                                 sid
