@@ -53,7 +53,7 @@ export default {
         title: {
           text: "Registered Students",
           style: {
-            fontSize: '18px',
+            fontSize: '16px',
             fontWeight: '600',
           },
         },

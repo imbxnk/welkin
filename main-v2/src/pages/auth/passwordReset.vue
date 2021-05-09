@@ -71,7 +71,6 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res)
           this.isLoading = false
           if(res.data.data.requestPasswordRecovery.success) this.isSent = true
         })
