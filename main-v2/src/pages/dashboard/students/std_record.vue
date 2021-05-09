@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <v-btn @click="$router.push('/students/all')" class="ma-3">back to student list</v-btn>
     <!-- hello this is std rec {{ this.$route.params.sid }}<br />
     {{ this.students.given_name }} {{ this.students.family_name }}<br />
     {{ this.students.entry_year }}T{{ this.students.entry_trimester }}<br />
@@ -33,21 +32,64 @@
       </div>
     </div>
     <br /> -->
-    <v-row>
-      <v-col cols="4">
-        <v-card outlined>pic</v-card>
-      </v-col>
-      <v-col>
-        <v-card outlined class="pa-5">
-          <h6>{{ this.students.given_name }} {{ this.students.family_name }}</h6>
 
+    <v-btn @click="$router.push('/students/all')" class="ma-3">back to student list</v-btn>
+    <div class="row d-md-block">
+      <div class="col-md-4 order-1 float-left">
+        <v-card elevation="0" class="text-center pa-3">
+          <v-img
+            src="https://semantic-ui.com/images/avatar2/large/matthew.png"
+            contain
+            max-width="230"
+            class="center"
+          />
+          <div class="overline">{{ this.students.sid }}</div>
+        </v-card>
+      </div>
+      <div class="col-md-8 order-2 float-right">
+        <v-card elevation="0" class="profile-card">
+          <span class="overline">About this student</span>
+          <h3>{{ this.students.given_name }} {{ this.students.family_name }}</h3>
+          <v-divider></v-divider>
           {{ this.students.entry_year }}T{{ this.students.entry_trimester }}<br />
           Email: {{ this.students.email == null ? " - " : this.students.email }}<br />
           Line id: {{ this.students.lineID == null ? " - " : this.students.lineID }}<br />
-          Status: {{ this.students.status.current }}<br />
         </v-card>
-      </v-col>
-    </v-row>
+      </div>
+      <div class="col-md-4 order-3 float-left">
+        <v-card elevation="0" class="pa-3"
+          ><span class="overline">Taken courses</span>
+
+          <div class="d-flex justify-content-around flex-wrap flex-row">
+            <div class="order-1 text-center">
+              <p class="mt-n1">Core</p>
+              <h4 class="primary--text mt-n4">{{ this.students.records.core_credits }}</h4>
+              <p class="small mt-n2 ">credits</p>
+            </div>
+            <div class="order-2 text-center">
+              <p class="mt-n1">Required</p>
+              <h4 class="primary--text mt-n4">{{ this.students.records.major_credits }}</h4>
+              <p class="small mt-n2 ">credits</p>
+            </div>
+            <div class="order-3 text-center">
+              <p class="mt-n1">Elective</p>
+              <h4 class="primary--text mt-n4">{{ this.students.records.elective_credits }}</h4>
+              <p class="small mt-n2 ">credits</p>
+            </div>
+          </div>
+        </v-card>
+      </div>
+      <!-- <div class="col-md-8 order-5 float-right">
+        <v-card elevation="0" class="card-height1">
+          5
+        </v-card>
+      </div>
+      <div class="col-md-4 order-4 float-left">
+        <v-card elevation="0" class="card-height2">
+          4
+        </v-card>
+      </div> -->
+    </div>
   </div>
 </template>
 <script>
@@ -94,9 +136,6 @@ export default {
                               }
                               message
                             }
-                            status{
-                                current
-                            }
                             taken_courses{
                                 _id
                                 class{
@@ -115,6 +154,13 @@ export default {
                               grade
                               isGrading
                             }
+                            records{
+                              egci_cumulative_gpa
+                              total_credits
+                              core_credits
+                              major_credits
+                              elective_credits
+                             }
                         }
                     }
           `;
@@ -136,5 +182,27 @@ export default {
 <style lang="scss" scoped>
 .cardbg {
   background: #f8f9fa;
+}
+.pic-card {
+  height: 300px;
+  padding: 1em;
+}
+.profile-card {
+  height: 400px;
+  padding: 1em;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+.card-height1 {
+  height: 188px;
+  padding: 1em;
+}
+.card-height2 {
+  height: 144px;
+  padding: 1em;
 }
 </style>
