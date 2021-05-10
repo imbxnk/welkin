@@ -227,7 +227,7 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           if(res.data.data.deleteAvatar.success) {
-            delete this.$currentUser.avatar
+            this.$currentUser.avatar = {}
             this.dialog = false
           }
         })
