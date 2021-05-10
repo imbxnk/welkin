@@ -8,11 +8,13 @@
         <div class="my-4">
           <div class="d-flex align-items-center">
             <div class="me-4">
-              <v-avatar v-if="$currentUser.avatar.medium" size="75" @click="show = true">
-                <img :src="$currentUser.avatar.medium" />
+              <v-avatar class="wk-avatar-upload" size="75" :style="`background: url(${$currentUser.avatar.medium ? $currentUser.avatar.medium : 'https://cdn.welkin.app/uploads/avatar/default.png'}) center center / cover;`" >
+                  <div class="wk-avatar-upload-btn" @click="show = true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-plus" viewBox="0 0 16 16">
+  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+</svg>
+                  </div>
               </v-avatar>
-              <v-img v-else max-width="75" @click="show = true" src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png">
-              </v-img>
             </div>
             <div class="d-flex flex-column">
               <div class="wk-name" v-if="$currentUser.display_name"><h5>{{ $currentUser.display_name }}</h5></div>
@@ -67,7 +69,6 @@
         :noSquare=true
         img-format="png">
     </avatar-upload>
-    <img :src="imgDataUrl">
     <!-- <vue_avatar_upload v-if="show_upload"></vue_avatar_upload> -->
   </div>
 </template>
