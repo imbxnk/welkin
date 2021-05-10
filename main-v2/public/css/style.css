@@ -391,7 +391,8 @@ main {
 }
 
 .wk-avatar-upload .wk-avatar-delete-btn {
-  background: #e24056;
+  background: #fff;
+  border: 1px solid rgba(226,64,86, 0.5);
   width: 24px;
   height: 24px;
   position: absolute;
@@ -404,15 +405,23 @@ main {
   display: inline-flex;
   justify-content: center;
   letter-spacing: normal;
+  transition: background 0.2s ease;
 }
 
 .wk-avatar-upload .wk-avatar-delete-btn svg {
+  fill: rgba(226,64,86, 1);;
   width: 12px;
   height: 12px;
 }
 
 .wk-avatar-upload .wk-avatar-delete-btn:hover {
-  background: #e48a96;
+  border: 1px solid rgba(226,64,86, 1);
+  background: rgba(226,64,86, 1);
+}
+
+.wk-avatar-upload .wk-avatar-delete-btn:hover svg {
+  fill: #fff;
+}
 }
 
 /*  */
