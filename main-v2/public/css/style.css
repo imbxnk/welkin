@@ -258,6 +258,10 @@ main {
   flex-wrap: nowrap;
   justify-content: space-between;
   margin-top: -160px;
+  background: #f6f7f8;
+  border-radius: 50%;
+  width: 186px;
+  height: 186px;
 }
 
 .wk-profile-img .v-image {

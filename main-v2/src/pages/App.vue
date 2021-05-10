@@ -14,8 +14,8 @@
 
         <v-menu bottom max-width="300px" rounded offset-y>
           <template v-slot:activator="{ on, attrs }">
-            <v-avatar v-if="$currentUser.avatar_url" size="35" v-bind="attrs" v-on="on">
-              <img :src="$currentUser.avatar_url" />
+            <v-avatar v-if="$currentUser.avatar.small" size="35" v-bind="attrs" v-on="on">
+              <img :src="$currentUser.avatar.small" />
             </v-avatar>
             <v-avatar color="primary" size="35" v-bind="attrs" v-on="on" v-else>
               <span class="white--text">
@@ -27,8 +27,8 @@
           <v-list>
             <v-list-item-content class="justify-center">
               <div class="text-center">
-                <v-avatar v-if="$currentUser.avatar_url">
-                  <img :src="$currentUser.avatar_url" />
+                <v-avatar v-if="$currentUser.avatar.small">
+                  <img :src="$currentUser.avatar.small" />
                 </v-avatar>
                 <v-avatar color="primary" v-else>
                   <span class="white--text">

@@ -5,7 +5,7 @@
       <div class="wk-profile-cover"></div>
       <div class="wk-profile-name">
         <div class="wk-profile-img">
-          <v-img class="rounded-circle" v-if="$currentUser.avatar_url" max-width="186" :src="$currentUser.avatar_url"></v-img>
+          <v-img class="rounded-circle" v-if="$currentUser.avatar.medium" max-width="186" :src="$currentUser.avatar.medium"></v-img>
           <v-img class="rounded-circle" v-else max-width="186" src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png"></v-img>
         </div>
         <div class="d-flex px-4 justify-content-center flex-column flex-sm-row" style="margin-top: 10px">
