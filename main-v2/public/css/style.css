@@ -367,19 +367,52 @@ main {
 }
 
 .wk-avatar-upload .wk-avatar-upload-btn {
-  background: #3c84fb;
-  width: 20px;
-  height: 20px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.32);
+  opacity: 0;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  letter-spacing: normal;
+  align-items: center;
+}
+
+.wk-avatar-upload .wk-avatar-upload-btn svg {
+  height: 36px;
+  width: 36px;
+  border-radius: none;
+}
+
+.wk-avatar-upload .wk-avatar-upload-btn:hover {
+  opacity: 1;
+}
+
+.wk-avatar-upload .wk-avatar-delete-btn {
+  background: #e24056;
+  width: 24px;
+  height: 24px;
   position: absolute;
   bottom: 5px;
   right: -5px;
   border-radius: 50%;
   color: #fff;
   cursor: pointer;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  letter-spacing: normal;
 }
 
-.wk-avatar-upload .wk-avatar-upload-btn:hover {
-  background: #74a9ff;
+.wk-avatar-upload .wk-avatar-delete-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.wk-avatar-upload .wk-avatar-delete-btn:hover {
+  background: #e48a96;
 }
 
 /*  */

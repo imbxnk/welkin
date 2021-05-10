@@ -10,9 +10,16 @@
             <div class="me-4">
               <v-avatar class="wk-avatar-upload" size="75" :style="`background: url(${$currentUser.avatar.medium ? $currentUser.avatar.medium : 'https://cdn.welkin.app/uploads/avatar/default.png'}) center center / cover;`" >
                   <div class="wk-avatar-upload-btn" @click="show = true">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-plus" viewBox="0 0 16 16">
-  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-</svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-camera-fill" viewBox="-2 -2 20 20">
+                      <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                      <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
+                    </svg>
+                  </div>
+                  <div class="wk-avatar-delete-btn" @click="dialog = true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                  </svg>
                   </div>
               </v-avatar>
             </div>
@@ -69,7 +76,38 @@
         :noSquare=true
         img-format="png">
     </avatar-upload>
-    <!-- <vue_avatar_upload v-if="show_upload"></vue_avatar_upload> -->
+    <!-- Dialog -->
+    <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="390"
+    >
+      <v-card>
+        <v-card-title>
+          Remove Profile Picture?
+        </v-card-title>
+        <v-card-text>
+          You will lose your current avatar if you delete it.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="grey darken-1"
+            text
+            @click="dialog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="red darken-1"
+            style="color: #fff"
+            @click="deleteAvatar()"
+          >
+            Delete
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -94,6 +132,7 @@ export default {
       isSuccess: false,
       show: false,
       imgDataUrl: '',
+      dialog: false,
     }
   },
   methods: {
@@ -176,6 +215,23 @@ export default {
             this.isLoading = false
             this.isSuccess = false
           });
+    },
+    deleteAvatar() {
+      let query = `mutation {
+        deleteAvatar {
+          success
+          message
+        }
+      }`
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          if(res.data.data.deleteAvatar.success) {
+            delete this.$currentUser.avatar
+            this.dialog = false
+          }
+        })
+        .catch((err) => { });
     }
   },
 }
