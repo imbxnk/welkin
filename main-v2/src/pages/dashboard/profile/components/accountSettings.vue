@@ -261,8 +261,4 @@ button:disabled {
 .wk-btn {
   width: 150px;
 }
-
-.v-btn {
-  border-radius: 1.44rem;
-}
 </style>
