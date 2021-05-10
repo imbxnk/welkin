@@ -8,14 +8,14 @@
         <div class="my-4">
           <div class="d-flex align-items-center">
             <div class="me-4">
-              <v-avatar class="wk-avatar-upload" size="75" :style="`background: url(${$currentUser.avatar ? $currentUser.avatar.medium : 'https://cdn.welkin.app/uploads/avatar/default.png'}) center center / cover;`" >
+              <v-avatar class="wk-avatar-upload" size="75" :style="`background: url(${$currentUser.avatar.medium ? $currentUser.avatar.medium : 'https://cdn.welkin.app/uploads/avatar/default.png'}) center center / cover;`" >
                   <div class="wk-avatar-upload-btn" @click="show = true">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-camera-fill" viewBox="-2 -2 20 20">
                       <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
                       <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
                     </svg>
                   </div>
-                  <div class="wk-avatar-delete-btn" @click="dialog = true" v-if="$currentUser.avatar">
+                  <div class="wk-avatar-delete-btn" @click="dialog = true" v-if="$currentUser.avatar.medium">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-trash" viewBox="0 0 16 16">
                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                     <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
@@ -173,7 +173,9 @@ export default {
       formData.append("map", JSON.stringify(map))
       formData.append("0", file)
       this.axios
-        .post(process.env.VUE_APP_GRAPHQL_URL, formData, { withCredentials: true })
+        .post(process.env.VUE_APP_GRAPHQL_URL, formData, { withCredentials: true, headers: {
+        Cookies: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M"
+      }, })
         .then((res) => {
           console.log(res.data)
           if(res.data.data.updateAvatar.success) {
@@ -224,10 +226,16 @@ export default {
         }
       }`
       this.axios
-        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true, headers: {
+        Cookies: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M"
+      }, })
         .then((res) => {
           if(res.data.data.deleteAvatar.success) {
-            this.$currentUser.avatar = {}
+            this.$currentUser.avatar = {
+              small: '',
+              medium: '',
+              large: ''
+            }
             this.dialog = false
           }
         })
