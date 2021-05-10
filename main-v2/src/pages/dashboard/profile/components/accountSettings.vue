@@ -8,10 +8,10 @@
         <div class="my-4">
           <div class="d-flex align-items-center">
             <div class="me-4">
-              <v-avatar v-if="$currentUser.avatar.medium" size="75">
+              <v-avatar v-if="$currentUser.avatar.medium" size="75" @click="show = true">
                 <img :src="$currentUser.avatar.medium" />
               </v-avatar>
-              <v-img v-else max-width="75" src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png">
+              <v-img v-else max-width="75" @click="show = true" src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png">
               </v-img>
             </div>
             <div class="d-flex flex-column">
@@ -57,11 +57,31 @@
         </div>
       </v-card-text>
     </v-card>
+    <avatar-upload field="img"
+        @crop-success="cropSuccess"
+        v-model="show"
+        :width="300"
+        :height="300"
+        langType="en"
+        :noCircle=true
+        :noSquare=true
+        img-format="png">
+    </avatar-upload>
+    <img :src="imgDataUrl">
+    <!-- <vue_avatar_upload v-if="show_upload"></vue_avatar_upload> -->
   </div>
 </template>
 
 <script>
+
+// import vue_avatar_upload from "../profile-upload/upload-2"
+import myUpload from 'vue-image-crop-upload/upload-2.vue';
+
 export default {
+  components: {
+    // vue_avatar_upload,
+    'avatar-upload': myUpload,
+  },
   data() {
     return {
       user: {
@@ -71,9 +91,61 @@ export default {
       },
       isLoading: false,
       isSuccess: false,
+      show: false,
+      imgDataUrl: '',
     }
   },
   methods: {
+    toggleShow() {
+      this.show = !this.show;
+    },
+    dataURLtoFile(dataurl, filename) {
+      var arr = dataurl.split(','),
+          mime = arr[0].match(/:(.*?);/)[1],
+          bstr = atob(arr[1]),
+          n = bstr.length,
+          u8arr = new Uint8Array(n);
+      while(n--){
+          u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, {type:mime});
+    },
+    cropSuccess(imgDataUrl, field){
+      // this.$currentUser.avatar.small = imgDataUrl
+      // this.$currentUser.avatar.medium = imgDataUrl
+      var formData = new FormData()
+      let query = `
+          mutation($file: Upload!) {
+            updateAvatar(file: $file) {
+              success
+              message
+              avatar { small medium large }
+            }
+          }
+      `;
+      let file = this.dataURLtoFile(imgDataUrl, `${this.$currentUser.username}.png`)
+      console.log(file)
+      let operations = JSON.stringify({ query, variables: { file: null }})
+      formData.append("operations", operations)
+      const map = {
+        "0": ["variables.file"]
+      }
+      formData.append("map", JSON.stringify(map))
+      formData.append("0", file)
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, formData, { withCredentials: true })
+        .then((res) => {
+          console.log(res.data)
+          if(res.data.data.updateAvatar.success) {
+            this.$currentUser.avatar.small = res.data.data.updateAvatar.avatar.small
+            this.$currentUser.avatar.medium = res.data.data.updateAvatar.avatar.medium
+            this.$currentUser.avatar.large = res.data.data.updateAvatar.avatar.large
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    },
     updateAccount() {
       this.isLoading = true
       let query = `mutation {

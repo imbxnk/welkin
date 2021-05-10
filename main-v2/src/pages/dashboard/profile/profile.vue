@@ -32,8 +32,7 @@
 <script>
 export default {
   name: "profile",
-  components: {
-  },
+  components: { },
   computed: {},
   data: () => ({
     selected: 0

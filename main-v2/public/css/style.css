@@ -618,3 +618,104 @@ main {
 .wk-link:hover {
   color: #3c84fb !important;
 }
+
+.simplebar-mask {
+  position: inherit !important;
+}
+
+/* IMAGE UPLOAD */
+.vue-image-crop-upload {
+  background-color: rgba(0, 0, 0, 0.35);
+}
+.vicp-wrap, .vicp-drop-area {
+  border-radius: 1rem !important;
+}
+
+.vicp-drop-area {
+  border: 2px dashed rgba(0, 0, 0, 0.08) !important;
+}
+
+.vue-image-crop-upload .vicp-wrap {
+  width: auto !important;
+  max-width: 400px;
+}
+
+@media (max-width: 410px) {
+  .vue-image-crop-upload .vicp-wrap {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+  }
+}
+
+.vue-image-crop-upload .vicp-wrap .vicp-operate a {
+  color: #3c84fb !important;
+}
+
+.vicp-operate a {
+  border-radius: 30px !important;
+}
+
+.vicp-crop {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center !important;
+}
+
+.vicp-crop .vicp-crop-right {
+  display: none !important;
+}
+
+.vicp-crop .vicp-crop-left {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.vicp-step2 .vicp-operate {
+  margin-top: 20px;
+  position: inherit !important;
+  display: flex;
+  justify-content: center;
+  width: 100% !important;
+  text-align: center !important;
+
+}
+
+.vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]::-webkit-slider-thumb {
+  background-color: #4b90ff !important;
+}
+
+.vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]::-moz-range-thumb {
+  background-color: #4b90ff !important;
+}
+
+.vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]::-ms-thumb {
+  background-color: #4b90ff !important;
+}
+
+.vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]::-webkit-slider-runnable-track {
+  background-color: rgba(122, 169, 250, 0.5) !important;
+}
+
+.vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]::-moz-range-track {
+  background-color: rgba(122, 169, 250, 0.5) !important;
+}
+
+.vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]::-ms-fill-lower {
+  background-color: rgba(122, 169, 250, 0.5) !important;
+}
+.vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]::-ms-fill-upper {
+  background-color: rgba(122, 169, 250, 0.5) !important;
+}
+.vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]:focus::-webkit-slider-runnable-track {
+  background-color: rgba(122, 169, 250, 0.5) !important;
+}
+.vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]:focus::-moz-range-track {
+  background-color: rgba(122, 169, 250, 0.5) !important;
+}
+.vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]:focus::-ms-fill-lower {
+  background-color: rgba(122, 169, 250, 0.5) !important;
+}
+.vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]:focus::-ms-fill-upper {
+  background-color: rgba(122, 169, 250, 0.5) !important;
+}
