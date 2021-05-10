@@ -16,7 +16,7 @@ export default{
   auth: async function() {
     let query = `
       query {
-        me { display_name username given_name family_name group isAdvisor email aavatar { small medium large } createdAt linked_instructor { _id title name given_name family_name } }
+        me { display_name username given_name family_name group isAdvisor email avatar { small medium large } createdAt linked_instructor { _id title name given_name family_name } }
       }
     `
 
