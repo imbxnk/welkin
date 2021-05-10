@@ -173,9 +173,7 @@ export default {
       formData.append("map", JSON.stringify(map))
       formData.append("0", file)
       this.axios
-        .post(process.env.VUE_APP_GRAPHQL_URL, formData, { withCredentials: true, headers: {
-        Cookies: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M"
-      }, })
+        .post(process.env.VUE_APP_GRAPHQL_URL, formData, { withCredentials: true })
         .then((res) => {
           console.log(res.data)
           if(res.data.data.updateAvatar.success) {
@@ -226,9 +224,7 @@ export default {
         }
       }`
       this.axios
-        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true, headers: {
-        Cookies: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M"
-      }, })
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           if(res.data.data.deleteAvatar.success) {
             this.$currentUser.avatar = {
