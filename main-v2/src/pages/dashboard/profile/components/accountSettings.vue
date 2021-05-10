@@ -164,7 +164,6 @@ export default {
           }
       `;
       let file = this.dataURLtoFile(imgDataUrl, `${this.$currentUser.username}.png`)
-      console.log(file)
       let operations = JSON.stringify({ query, variables: { file: null }})
       formData.append("operations", operations)
       const map = {
@@ -175,16 +174,13 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, formData, { withCredentials: true })
         .then((res) => {
-          console.log(res.data)
           if(res.data.data.updateAvatar.success) {
             this.$currentUser.avatar.small = res.data.data.updateAvatar.avatar.small
             this.$currentUser.avatar.medium = res.data.data.updateAvatar.avatar.medium
             this.$currentUser.avatar.large = res.data.data.updateAvatar.avatar.large
           }
         })
-        .catch((err) => {
-          console.log(err)
-        });
+        .catch((err) => { });
     },
     updateAccount() {
       this.isLoading = true
