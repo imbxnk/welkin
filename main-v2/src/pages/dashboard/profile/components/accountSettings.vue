@@ -224,9 +224,7 @@ export default {
         }
       }`
       this.axios
-        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true, headers: {
-        Cookies: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M"
-      }, })
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           if(res.data.data.deleteAvatar.success) {
             delete this.$currentUser.avatar
