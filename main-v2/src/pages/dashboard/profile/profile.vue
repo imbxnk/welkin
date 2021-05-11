@@ -1,6 +1,12 @@
 <template>
   <v-row>
-    <v-tabs :vertical="$vuetify.breakpoint.mdAndUp" class="wk-profile-tabs" v-model="selected">
+    <v-tabs
+      :hide-slider=true
+      :show-arrows=false
+      :vertical="$vuetify.breakpoint.mdAndUp"
+      class="wk-profile-tabs"
+      v-model="selected"
+    >
       <router-link :to="{ name: 'MyProfile' }">
         <v-tab key="1">
           Profile
@@ -16,14 +22,7 @@
           Security
         </v-tab>
       </router-link>
-
-      <v-tab-item transition="none">
-        <router-view></router-view>
-      </v-tab-item>
-      <v-tab-item transition="none">
-        <router-view></router-view>
-      </v-tab-item>
-      <v-tab-item transition="none">
+      <v-tab-item v-for="i in 3" :key="i" transition="none">
         <router-view></router-view>
       </v-tab-item>
     </v-tabs>

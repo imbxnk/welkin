@@ -67,6 +67,7 @@
     <v-navigation-drawer
       v-model="sidebarMenu"
       app
+      :touchless=true
       floating
       :permanent="sidebarMenu"
       :temporary="toggleMini == true ? $vuetify.breakpoint.smAndDown : false"
