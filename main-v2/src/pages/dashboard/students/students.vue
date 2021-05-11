@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="rounded-card pa-3">
+    <v-card class=" pa-3">
       <v-row>
         <v-col>
           <v-card-title>
@@ -39,9 +39,11 @@
         </v-data-table>
         <!-- dialog -->
         <v-dialog v-model="dialog" max-width="500px">
-          <v-card class="rounded-card">
+          <v-card>
             <v-card-title class="overline lighten-2">
               {{ stdDetail.name }}
+              <v-spacer></v-spacer>
+              <v-icon @click="dialog = false">mdi-close</v-icon>
             </v-card-title>
 
             <v-card-text>
@@ -65,29 +67,16 @@
                   <b>Email:</b> <span v-if="stdDetail.email">{{ stdDetail.email }}</span
                   ><span v-else>-</span><br />
                   <template v-if="stdDetail.records">
-                    <b>GPA:</b> <span>{{ stdDetail.records.egci_cumulative_gpa }}</span><br />
-                    <b>Core Courses:</b> <span>{{ stdDetail.records.core_credits }}</span><br />
-                    <b>Required Courses:</b> <span>{{ stdDetail.records.major_credits }}</span><br />
-                    <b>Elective Courses:</b> <span>{{ stdDetail.records.elective_credits }}</span><br />
+                    <b>GPA:</b> <span>{{ stdDetail.records.egci_cumulative_gpa }}</span
+                    ><br />
+                    <b>Core Courses:</b> <span>{{ stdDetail.records.core_credits }}</span
+                    ><br />
+                    <b>Required Courses:</b> <span>{{ stdDetail.records.major_credits }}</span
+                    ><br />
+                    <b>Elective Courses:</b> <span>{{ stdDetail.records.elective_credits }}</span
+                    ><br />
                   </template>
-                  <b>Remark:</b><span v-if="stdDetail.remarks == ''"> -</span>
-                  <span v-else
-                    ><ul class="mb-n1">
-                      <li v-for="(msg, i) in stdDetail.remarks" :key="i">
-                        {{ msg.message }}, [ {{ msg.user.username }} ]
-                      </li>
-                    </ul> </span
-                  ><v-icon class="px-1" small @click="dialog2 = true">mdi-pencil</v-icon>
-                  <!-- {{ stdDetail.remarks[0] == null ? "-" : stdDeta1il.remarks
-                }}<v-icon class="ml-2" small @click="dialog2 = true">mdi-pencil</v-icon><br /> -->
                   <div class="w-100 d-flex justify-content-center mt-3">
-                    <!-- <v-btn
-                    :to="{
-                      path: 'students',
-                      name: 'student_record',
-                      params: { sid: stdDetail.sid },
-                    }"
-                    small> -->
                     <v-btn
                       @click="
                         $router.push({ name: 'student_record', params: { sid: stdDetail.sid } })
@@ -99,40 +88,84 @@
                   </div>
                 </v-col>
               </v-row>
+              <v-row class="pb-3">
+                <v-card elevation="0" class="remark-card pa-3">
+                  <b>Remark(s):</b><span v-if="stdDetail.remarks == ''"> -</span>
+                  <span v-else
+                    ><ul class="mb-n1">
+                      <li v-for="(msg, i) in stdDetail.remarks" :key="i">
+                        {{ msg.message }}, [ {{ msg.user.username }} ]
+                        <v-icon small @click="showDialog3(msg._id, msg.message, msg.user.username)"
+                          >mdi-delete</v-icon
+                        >
+                      </li>
+                    </ul>
+                  </span>
+                  <v-card-actions class="mb-n2">
+                    <v-spacer></v-spacer>
+                    <v-btn outlined x-small @click="dialog2 = true"
+                      >Add <v-icon small>mdi-pencil</v-icon></v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </v-row>
             </v-card-text>
-
-            <v-card-actions class="mt-n4">
-              <v-spacer></v-spacer>
-              <v-btn color="red" text @click="dialog = false" rounded>
-                Close
-              </v-btn>
-            </v-card-actions>
           </v-card>
         </v-dialog>
 
         <!-- dialog2 *add remark* -->
         <v-dialog v-model="dialog2" max-width="300px">
-          <v-card class="rounded-card pa-3">
-            <br />
-
-            <div class="text-center">
+          <v-card class=" pa-3">
+            <v-card-title>
+              <v-spacer></v-spacer>
+              <v-icon @click="closedialog2()">mdi-close</v-icon>
+            </v-card-title>
+            <div class="text-center mt-n8">
               <p class="overline primary--text my-n2">Add Remark For</p>
               <p class="font-weight-bold ">{{ stdDetail.name }}</p>
             </div>
 
             <v-divider class=""></v-divider>
-            <v-textarea outlined name="input-7-4" label="Remark" v-model="value"></v-textarea>
-            <v-btn block class="mt-n3" color="primary" :disabled="!value" rounded> save </v-btn>
-            <v-card-actions class="mr-n5">
-              <v-spacer></v-spacer>
-              <v-btn color="red" text @click="closedialog2()" rounded>
-                Close
-              </v-btn>
-            </v-card-actions>
+            <v-textarea
+              outlined
+              :rules="rules"
+              counter="50"
+              label="Remark"
+              v-model="remark"
+            ></v-textarea>
+
+            <v-btn
+              block
+              class="mb-3"
+              color="primary"
+              :disabled="!remark"
+              rounded
+              @click="saveremark(remark)"
+            >
+              save
+            </v-btn>
           </v-card>
         </v-dialog>
-      </v-card></v-card
-    >
+        <v-dialog v-model="dialog3" max-width="450px">
+          <v-card>
+            <v-card-title class="headline grey lighten-2"> Confirm delete </v-card-title><br />
+            <v-card-text
+              >Are you sure you want to delete "{{ delremarkMsg }}" from
+              {{ delremarkUser }}?</v-card-text
+            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text color="error" @click="dialog3 = false">No</v-btn>
+              <v-btn text color="success" @click="delRemark(remarkID)">Yes</v-btn>
+            </v-card-actions></v-card
+          >
+        </v-dialog>
+        <!-- confirmation -->
+      </v-card>
+      <v-snackbar centered v-model="snackbar" :timeout="1000">
+        {{ snackbartext }}
+      </v-snackbar>
+    </v-card>
   </div>
 </template>
 <script>
@@ -144,15 +177,25 @@ export default {
   },
   computed: {
     isDisable() {
-      return this.value.length > 0;
+      return this.remark.length > 0;
     },
   },
   data() {
     return {
       dialog: false,
       dialog2: false,
+      dialog3: false,
+      snackbar: false,
       loading: true,
-      value: "",
+      rules: [(v) => v.length <= 50 || "Max 50 characters"],
+      remark: "",
+      remarktext: {
+        msg: "",
+      },
+      snackbartext: "",
+      delremarkID: "",
+      delremarkMsg: "",
+      delremarkUser: "",
 
       search: "",
       headers: [
@@ -168,36 +211,6 @@ export default {
       ],
       students: [],
       stdDetail: [],
-      // student: [
-      //   {
-      //     name: "Kanin Sirisuksakulchai",
-      //     stdID: 6080718,
-      //     avs: "Mingmanas",
-      //     completion: 87,
-      //     status: "On track",
-      //   },
-      //   {
-      //     name: "Phattharaporn Roekduangchan",
-      //     stdID: 6080727,
-      //     avs: "Mingmanas",
-      //     completion: 70,
-      //     status: "On track",
-      //   },
-      //   {
-      //     name: "Phongchai Pongchaloem",
-      //     stdID: 6080728,
-      //     avs: "Mingmanas",
-      //     completion: 91,
-      //     status: "Ahead",
-      //   },
-      //   {
-      //     name: "Santhisa Chen",
-      //     stdID: 6080779,
-      //     avs: "Mingmanas",
-      //     completion: 60,
-      //     status: "Behind",
-      //   },
-      // ],
     };
   },
   methods: {
@@ -225,6 +238,7 @@ export default {
                       user {
                         username
                       }
+                      _id
                     }
                     records {
                       egci_cumulative_gpa
@@ -239,7 +253,7 @@ export default {
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res.data.data.students)
+          console.log(res.data.data.students);
           this.students = [...res.data.data.students.students];
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
@@ -250,17 +264,96 @@ export default {
           console.log(err);
         });
     },
-
     showDialog(row) {
       this.dialog = true;
-      // console.log(this.student.stdID);
       console.log(row);
       this.stdDetail = row;
       console.log(this.stdDetail);
     },
     closedialog2() {
       this.dialog2 = false;
-      this.value = "";
+      this.remark = "";
+    },
+    showDialog3(id, msg, usr) {
+      this.dialog3 = true;
+      this.delremarkID = id;
+      this.delremarkMsg = msg;
+      this.delremarkUser = usr;
+    },
+    saveremark() {
+      this.remarktext.msg = this.remark;
+      this.addRemark(this.remarktext);
+    },
+    async addRemark(val) {
+      this.snackbar = false;
+      this.snackbartext = "";
+      let query = `
+                mutation {
+                  addRemark(remarkInput: {
+                    studentId: "${this.stdDetail.sid}",
+                    message: "${val.msg}"
+                  }) {
+                    _id
+                    message
+                  }
+                }
+              `;
+      console.log(this.stdDetail.sid);
+      console.log(val.msg);
+      await this.axios
+        .post(
+          "https://api.welkin.app/v2/graphql",
+          { query },
+          {
+            withCredentials: true,
+            headers: {
+              Cookies:
+                "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M",
+            },
+          }
+        )
+        .then((res) => {
+          this.snackbartext = "The remark has been saved";
+          this.snackbar = true;
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      window.location.reload();
+    },
+    delRemark(id) {
+      this.snackbar = false;
+      this.snackbartext = "";
+      let query = `
+                mutation {
+                  delRemark(remarkId: "${id}") {
+                    success
+                    message
+                  }
+                }
+              `;
+      this.axios
+        .post(
+          "https://api.welkin.app/v2/graphql",
+          { query },
+          {
+            withCredentials: true,
+            headers: {
+              Cookies:
+                "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M",
+            },
+          }
+        )
+        .then((res) => {
+          this.snackbartext = "The remark has been deleted";
+          this.snackbar = true;
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      window.location.reload();
     },
   },
 };
@@ -280,7 +373,9 @@ export default {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-.rounded-card {
-  border-radius: 20px;
+.remark-card {
+  width: 100%;
+  background: #f7f7f8;
+  color: #000;
 }
 </style>
