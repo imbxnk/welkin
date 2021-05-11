@@ -94,7 +94,7 @@
                   <span v-else
                     ><ul class="mb-n1">
                       <li v-for="(msg, i) in stdDetail.remarks" :key="i">
-                        {{ msg.message }}, [ {{ msg.user.username }} ]
+                        "{{ msg.message }}", {{ msg.user.username }}
                         <v-icon
                           small
                           @click="showDialog3(msg._id, msg.message, msg.user.username, i)"
@@ -131,7 +131,7 @@
             <v-textarea
               outlined
               :rules="rules"
-              counter="50"
+              counter="140"
               label="Remark"
               v-model="remark"
             ></v-textarea>
@@ -140,7 +140,7 @@
               block
               class="mb-3"
               color="primary"
-              :disabled="!remark"
+              :disabled="isDisable"
               rounded
               @click="saveremark(remark)"
             >
@@ -179,7 +179,11 @@ export default {
   },
   computed: {
     isDisable() {
-      return this.remark.length > 0;
+      if (this.remark.length > 0 && this.remark.length <= 140) {
+        return false;
+      } else {
+        return true;
+      }
     },
   },
   data() {
@@ -189,7 +193,7 @@ export default {
       dialog3: false,
       snackbar: false,
       loading: true,
-      rules: [(v) => v.length <= 50 || "Max 50 characters"],
+      rules: [(v) => v.length <= 140 || "Max 140 characters"],
       remark: "",
       remarktext: {
         msg: "",
