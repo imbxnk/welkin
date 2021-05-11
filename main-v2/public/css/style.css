@@ -306,16 +306,20 @@ main {
 }
 
 .wk-success-color {
-  border-color: #289672;
-  background: #289672;
-  color: #fff;
+  border-color: #289672 !important;
+  background: #289672 !important;
+  color: #fff !important;
   cursor: not-allowed;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .wk-success-color:hover, .wk-success-color:focus, .wk-success-color:active {
-  border-color: #29bb89;
-  background: #29bb89;
-  color: #fff;
+  border-color: #29bb89 !important;
+  background: #29bb89 !important;
+  color: #fff !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .wk-grey-color {
@@ -812,4 +816,8 @@ main {
 }
 .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]:focus::-ms-fill-upper {
   background-color: rgba(122, 169, 250, 0.5) !important;
+}
+
+.v-slide-group__prev--disabled {
+  display: none !important;
 }
