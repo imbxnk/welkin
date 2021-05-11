@@ -95,7 +95,9 @@
                     ><ul class="mb-n1">
                       <li v-for="(msg, i) in stdDetail.remarks" :key="i">
                         {{ msg.message }}, [ {{ msg.user.username }} ]
-                        <v-icon small @click="showDialog3(msg._id, msg.message, msg.user.username)"
+                        <v-icon
+                          small
+                          @click="showDialog3(msg._id, msg.message, msg.user.username, i)"
                           >mdi-delete</v-icon
                         >
                       </li>
@@ -156,7 +158,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn text color="error" @click="dialog3 = false">No</v-btn>
-              <v-btn text color="success" @click="delRemark(remarkID)">Yes</v-btn>
+              <v-btn text color="success" @click="delRemark(delremarkID, delindex)">Yes</v-btn>
             </v-card-actions></v-card
           >
         </v-dialog>
@@ -196,6 +198,7 @@ export default {
       delremarkID: "",
       delremarkMsg: "",
       delremarkUser: "",
+      delindex: 0,
 
       search: "",
       headers: [
@@ -274,11 +277,12 @@ export default {
       this.dialog2 = false;
       this.remark = "";
     },
-    showDialog3(id, msg, usr) {
+    showDialog3(id, msg, usr, index) {
       this.dialog3 = true;
       this.delremarkID = id;
       this.delremarkMsg = msg;
       this.delremarkUser = usr;
+      this.delindex = index;
     },
     saveremark() {
       this.remarktext.msg = this.remark;
@@ -313,14 +317,22 @@ export default {
           }
         )
         .then((res) => {
-          this.snackbartext = "The remark has been saved";
-          this.snackbar = true;
+          if (res.data.data.addRemark) {
+            this.snackbartext = "The remark has been saved";
+            this.snackbar = true;
+            this.stdDetail.remarks.push({
+              message: res.data.data.addRemark.message,
+              user: { username: this.$currentUser.username },
+              _id: res.data.data.addRemark._id,
+            });
+            this.dialog2 = false;
+            this.remark = "";
+          }
           console.log(res);
         })
         .catch((err) => {
           console.log(err);
         });
-      window.location.reload();
     },
     delRemark(id) {
       this.snackbar = false;
@@ -346,14 +358,17 @@ export default {
           }
         )
         .then((res) => {
-          this.snackbartext = "The remark has been deleted";
-          this.snackbar = true;
+          if (res.data.data.delRemark) {
+            this.snackbartext = "The remark has been deleted";
+            this.snackbar = true;
+            this.stdDetail.remarks.splice(this.delindex);
+          }
+          this.dialog3 = false;
           console.log(res);
         })
         .catch((err) => {
           console.log(err);
         });
-      window.location.reload();
     },
   },
 };
