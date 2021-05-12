@@ -8,11 +8,20 @@
         <div class="my-4">
           <div class="d-flex align-items-center">
             <div class="me-4">
-              <v-avatar v-if="$currentUser.avatar.medium" size="75">
-                <img :src="$currentUser.avatar.medium" />
+              <v-avatar class="wk-avatar-upload" size="75" :style="`background: url(${$currentUser.avatar.medium ? $currentUser.avatar.medium : 'https://cdn.welkin.app/uploads/avatar/default.png'}) center center / cover;`" >
+                  <div class="wk-avatar-upload-btn" @click="show = true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-camera-fill" viewBox="-2 -2 20 20">
+                      <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                      <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
+                    </svg>
+                  </div>
+                  <div class="wk-avatar-delete-btn" @click="dialog = true" v-if="$currentUser.avatar.medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                  </svg>
+                  </div>
               </v-avatar>
-              <v-img v-else max-width="75" src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png">
-              </v-img>
             </div>
             <div class="d-flex flex-column">
               <div class="wk-name" v-if="$currentUser.display_name"><h5>{{ $currentUser.display_name }}</h5></div>
@@ -57,11 +66,61 @@
         </div>
       </v-card-text>
     </v-card>
+    <avatar-upload field="img"
+        @crop-success="cropSuccess"
+        v-model="show"
+        :width="300"
+        :height="300"
+        langType="en"
+        :noCircle=true
+        :noSquare=true
+        img-format="png">
+    </avatar-upload>
+    <!-- Dialog -->
+    <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="390"
+    >
+      <v-card>
+        <v-card-title>
+          Remove Profile Picture?
+        </v-card-title>
+        <v-card-text style="margin-top: -10px">
+          You will lose your current avatar if you delete it.
+        </v-card-text>
+        <v-card-actions class="pb-4">
+          <v-spacer></v-spacer>
+          <v-btn
+            color="grey darken-1"
+            text
+            @click="dialog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="red darken-1"
+            style="color: #fff"
+            @click="deleteAvatar()"
+          >
+            Delete
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
+
+// import vue_avatar_upload from "../profile-upload/upload-2"
+import myUpload from 'vue-image-crop-upload/upload-2.vue';
+
 export default {
+  components: {
+    // vue_avatar_upload,
+    'avatar-upload': myUpload,
+  },
   data() {
     return {
       user: {
@@ -71,9 +130,58 @@ export default {
       },
       isLoading: false,
       isSuccess: false,
+      show: false,
+      imgDataUrl: '',
+      dialog: false,
     }
   },
   methods: {
+    toggleShow() {
+      this.show = !this.show;
+    },
+    dataURLtoFile(dataurl, filename) {
+      var arr = dataurl.split(','),
+          mime = arr[0].match(/:(.*?);/)[1],
+          bstr = atob(arr[1]),
+          n = bstr.length,
+          u8arr = new Uint8Array(n);
+      while(n--){
+          u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, {type:mime});
+    },
+    cropSuccess(imgDataUrl, field){
+      // this.$currentUser.avatar.small = imgDataUrl
+      // this.$currentUser.avatar.medium = imgDataUrl
+      var formData = new FormData()
+      let query = `
+          mutation($file: Upload!) {
+            updateAvatar(file: $file) {
+              success
+              message
+              avatar { small medium large }
+            }
+          }
+      `;
+      let file = this.dataURLtoFile(imgDataUrl, `${this.$currentUser.username}.png`)
+      let operations = JSON.stringify({ query, variables: { file: null }})
+      formData.append("operations", operations)
+      const map = {
+        "0": ["variables.file"]
+      }
+      formData.append("map", JSON.stringify(map))
+      formData.append("0", file)
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, formData, { withCredentials: true })
+        .then((res) => {
+          if(res.data.data.updateAvatar.success) {
+            this.$currentUser.avatar.small = res.data.data.updateAvatar.avatar.small
+            this.$currentUser.avatar.medium = res.data.data.updateAvatar.avatar.medium
+            this.$currentUser.avatar.large = res.data.data.updateAvatar.avatar.large
+          }
+        })
+        .catch((err) => { });
+    },
     updateAccount() {
       this.isLoading = true
       let query = `mutation {
@@ -103,6 +211,27 @@ export default {
             this.isLoading = false
             this.isSuccess = false
           });
+    },
+    deleteAvatar() {
+      let query = `mutation {
+        deleteAvatar {
+          success
+          message
+        }
+      }`
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          if(res.data.data.deleteAvatar.success) {
+            this.$currentUser.avatar = {
+              small: '',
+              medium: '',
+              large: ''
+            }
+            this.dialog = false
+          }
+        })
+        .catch((err) => { });
     }
   },
 }

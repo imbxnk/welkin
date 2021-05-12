@@ -19,6 +19,7 @@
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.6.1",
     "vue-axios": "^3.2.4",
+    "vue-image-crop-upload": "^3.0.3",
     "vue-router": "^3.5.1",
     "vue2-dropzone": "^3.6.0",
     "vuetify": "^2.4.0",
@@ -27,7 +28,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-service": "^4.5.13",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
