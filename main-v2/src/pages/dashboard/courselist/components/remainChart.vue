@@ -3,6 +3,24 @@
     <div id="chart">
       <apexchart type="bar" height="240" :options="chartOptions" :series="series"></apexchart>
     </div>
+    <v-dialog v-model="dialog" width="300">
+      <v-card>
+        <v-card-title class="mb-n2">
+          Student with ID {{ this.batch[this.index] }}<v-spacer></v-spacer>
+          <v-icon @click="dialog = false">mdi-close</v-icon>
+        </v-card-title>
+
+        <v-divider class="mx-5"></v-divider>
+        <v-card-text>
+          Registered : {{ this.passed[this.index] }}<br />
+          Remain : {{ this.total[this.index] }}
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -13,6 +31,8 @@ export default {
   created() {},
   data() {
     return {
+      index: 0,
+      dialog: false,
       series: [
         {
           name: "Registered",
@@ -28,9 +48,14 @@ export default {
           type: "bar",
           height: 240,
           stacked: true,
-          fontFamily: 'Quicksand, sans-serif',
+          fontFamily: "Quicksand, sans-serif",
           toolbar: {
             show: false,
+          },
+          events: {
+            dataPointSelection: (event, chartContext, config) => {
+              this.getBatch(config.dataPointIndex);
+            },
           },
         },
         plotOptions: {
@@ -44,8 +69,8 @@ export default {
         },
         dataLabels: {
           style: {
-            colors: ['#fff', '#000000de']
-          }
+            colors: ["#fff", "#000000de"],
+          },
         },
         // colors: ["#3c84fb", "#97b8f0"],
         // colors: ["#3c84fb", "#000000de"],
@@ -53,8 +78,8 @@ export default {
         title: {
           text: "Registered Students",
           style: {
-            fontSize: '16px',
-            fontWeight: '600',
+            fontSize: "16px",
+            fontWeight: "600",
           },
         },
         xaxis: {
@@ -94,7 +119,13 @@ export default {
       },
     };
   },
+  methods: {
+    getBatch(i) {
+      this.index = i;
+      this.dialog = true;
+      console.log(this.batch[this.index]);
+    },
+  },
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

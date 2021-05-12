@@ -9,14 +9,19 @@
         placeholder="You can only search using Student ID. Example: 6080001"
       />
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" @click="getID()">Search</button>
+        <button class="btn btn-outline-primary" type="button" @click="getID()">Search</button>
       </div>
     </div>
     <!-- <v-card class="pa-5" style="height:485px;"> </v-card> -->
     <v-card class="pa-5" style="height:485px;">
-      <div v-if="!check">
-        <h6>Something went wrong..</h6>
-        <p class="caption">Please try again</p>
+      <div v-if="!check" class="d-flex justify-content-center mt-5" style="color:red;">
+        <v-icon x-large class="mr-5 mt-n5" color="red">mdi-alert</v-icon>
+        <div class="d-flex justify-content-center">
+          <div>
+            <h6>Something went wrong..</h6>
+            <p class="caption mt-n2">Please try again</p>
+          </div>
+        </div>
       </div>
       <div v-else>
         <div v-if="loading" class="loading">
@@ -44,6 +49,7 @@ export default {
       check: true,
       student_ID: "",
       search_ID: "",
+      deley: 2000,
       std_details: [],
     };
   },
