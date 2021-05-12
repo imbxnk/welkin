@@ -30,11 +30,10 @@
           @click:row="showDialog"
           class="student"
         >
-          <template v-slot:[`item.email`]="{ item }">
-            {{ item.email == null ? "-" : item.email }}
-          </template>
-          <template v-slot:[`item.phone`]="{ item }">
-            {{ item.phone == null ? "-" : item.phone }}
+          <template v-slot:[`item.status.current`]="{ item }">
+            <v-chip small :color="getColor(item.status.current)" dark class="d-flex justify-center">
+              {{ item.status.current }}
+            </v-chip>
           </template>
         </v-data-table>
         <!-- dialog -->
@@ -192,6 +191,9 @@ export default {
       dialog2: false,
       dialog3: false,
       snackbar: false,
+      click: 0,
+      deley: 700,
+      timer: null,
       loading: true,
       rules: [(v) => v.length <= 140 || "Max 140 characters"],
       remark: "",
@@ -207,14 +209,25 @@ export default {
       search: "",
       headers: [
         { text: "Student ID", sortable: false, value: "sid", width: 80 },
-        //{ text: "First Name", align: "start", sortable: false, value: "given_name", width: 200 },
-        //{ text: "Last Name", align: "start", sortable: false, value: "family_name", width: 200 },
-        { text: "Name", align: "start", sortable: false, value: "name", width: 200 },
-        { text: "Email", align: "start", sortable: false, value: "email", width: 200 },
-        { text: "Phone", align: "start", sortable: false, value: "phone", width: 200 },
+        { text: "Name", align: "start", sortable: false, value: "name", width: 350 },
+        // { text: "Email", align: "start", sortable: false, value: "email", width: 200 },
+        // { text: "Phone", align: "start", sortable: false, value: "phone", width: 200 },
+        {
+          text: "Earned Credits ",
+          align: "center",
+          sortable: true,
+          value: "records.total_credits",
+          width: 100,
+        },
+        {
+          text: "EGCI CUM-GPA",
+          align: "center",
+          sortable: true,
+          value: "records.egci_cumulative_gpa",
+          width: 100,
+        },
         // { text: "Advisor", sortable: false, value: "avs", align: "center" },
-        // { text: "% Lesson Completion", sortable: false, value: "completion", align: "center" },
-        { text: "Status", sortable: false, value: "status.current", width: 200 },
+        { text: "Status", sortable: false, align: "center", value: "status.current", width: 100 },
       ],
       students: [],
       stdDetail: [],
@@ -222,9 +235,9 @@ export default {
   },
   methods: {
     getColor(status) {
-      if (status == "Behind") return "red";
-      else if (status == "On track") return "orange";
-      else return "green";
+      if (status == "Studying") return "green";
+      else if (status == "Unknown") return "grey";
+      else return "red";
     },
     async getStudents() {
       let query = `
@@ -249,6 +262,7 @@ export default {
                     }
                     records {
                       egci_cumulative_gpa
+                      total_credits
                       core_credits
                       major_credits
                       elective_credits
@@ -260,7 +274,7 @@ export default {
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res.data.data.students);
+          // console.log(res.data.data.students);
           this.students = [...res.data.data.students.students];
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
@@ -271,11 +285,17 @@ export default {
           console.log(err);
         });
     },
+    // @click:row="showDialog"
     showDialog(row) {
-      this.dialog = true;
-      console.log(row);
-      this.stdDetail = row;
-      console.log(this.stdDetail);
+      this.click++;
+      if (this.click == 1) {
+        setTimeout(() => (this.click = 0), this.deley);
+      } else {
+        clearTimeout(this.timer);
+        this.dialog = true;
+        this.stdDetail = row;
+        this.click = 0;
+      }
     },
     closedialog2() {
       this.dialog2 = false;
@@ -306,8 +326,7 @@ export default {
                   }
                 }
               `;
-      console.log(this.stdDetail.sid);
-      console.log(val.msg);
+
       await this.axios
         .post(
           "https://api.welkin.app/v2/graphql",
@@ -332,7 +351,6 @@ export default {
             this.dialog2 = false;
             this.remark = "";
           }
-          console.log(res);
         })
         .catch((err) => {
           console.log(err);
@@ -368,7 +386,6 @@ export default {
             this.stdDetail.remarks.splice(this.delindex, 1);
           }
           this.dialog3 = false;
-          console.log(res);
         })
         .catch((err) => {
           console.log(err);
