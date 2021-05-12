@@ -365,7 +365,7 @@ export default {
           if (res.data.data.delRemark) {
             this.snackbartext = "The remark has been deleted";
             this.snackbar = true;
-            this.stdDetail.remarks.splice(this.delindex);
+            this.stdDetail.remarks.splice(this.delindex, 1);
           }
           this.dialog3 = false;
           console.log(res);
