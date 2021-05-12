@@ -75,15 +75,23 @@
                     <b>Elective Courses:</b> <span>{{ stdDetail.records.elective_credits }}</span
                     ><br />
                   </template>
-                  <div class="w-100 d-flex justify-content-center mt-3">
-                    <v-btn
+                  <div
+                    class="w-100 d-flex justify-content-end align-self-end mt-sm-16 mt-md-16 ml-md-6"
+                  >
+                    <a
+                      @click="
+                        $router.push({ name: 'student_record', params: { sid: stdDetail.sid } })
+                      "
+                      ><b>... See More >></b></a
+                    >
+                    <!-- <v-btn
                       @click="
                         $router.push({ name: 'student_record', params: { sid: stdDetail.sid } })
                       "
                       rounded
                     >
                       See student record</v-btn
-                    >
+                    > -->
                   </div>
                 </v-col>
               </v-row>
