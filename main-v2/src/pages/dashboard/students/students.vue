@@ -101,10 +101,10 @@
                   <span v-else
                     ><ul class="mb-n1">
                       <li v-for="(msg, i) in stdDetail.remarks" :key="i">
-                        "{{ msg.message }}", {{ msg.user.username }}
+                        "{{ msg.message }}", {{ msg.user.display_name }}
                         <v-icon
                           small
-                          @click="showDialog3(msg._id, msg.message, msg.user.username, i)"
+                          @click="showDialog3(msg._id, msg.message, msg.user.display_name, i)"
                           >mdi-delete</v-icon
                         >
                       </li>
@@ -265,6 +265,7 @@ export default {
                       message
                       user {
                         username
+                        display_name
                       }
                       _id
                     }

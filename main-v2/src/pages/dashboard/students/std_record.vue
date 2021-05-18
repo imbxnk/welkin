@@ -79,16 +79,127 @@
           </div>
         </v-card>
       </div>
-      <!-- <div class="col-md-8 order-5 float-right">
-        <v-card elevation="0" class="card-height1">
-          5
+      <div class="col-md-8 order-5 float-right">
+        <v-card elevation="0" class="pa-3">
+          <span class="overline">Core Courses</span>
+          <v-divider></v-divider>
+          <div v-for="(course, i) in this.students.taken_courses" :key="i">
+            <div v-if="course.class.course.category == 'core_courses'">
+              <p>
+                {{ course.class.course.name }}
+                <span style="float:right;"
+                  >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
+                >
+              </p>
+            </div>
+          </div>
         </v-card>
       </div>
       <div class="col-md-4 order-4 float-left">
-        <v-card elevation="0" class="card-height2">
-          4
+        <v-card elevation="0" class="pa-3">
+          <span class="overline">Remark</span><br />
+          <span v-if="students.remarks == ''"> -</span>
+          <span v-else
+            ><ul class="mb-n1">
+              <li v-for="(msg, i) in students.remarks" :key="i">
+                "{{ msg.message }}", {{ msg.user.display_name }}
+                <v-icon small @click="showDialog3(msg._id, msg.message, msg.user.display_name, i)"
+                  >mdi-delete</v-icon
+                >
+              </li>
+            </ul>
+          </span>
+          <v-card-actions class="mb-n2">
+            <v-spacer></v-spacer>
+            <v-btn outlined x-small @click="dialog2 = true"
+              >Add <v-icon small>mdi-pencil</v-icon></v-btn
+            >
+          </v-card-actions>
         </v-card>
-      </div> -->
+      </div>
+      <v-dialog v-model="dialog2" max-width="300px">
+        <v-card class=" pa-3">
+          <v-card-title>
+            <v-spacer></v-spacer>
+            <v-icon @click="closedialog2()">mdi-close</v-icon>
+          </v-card-title>
+          <div class="text-center mt-n8">
+            <p class="overline primary--text my-n2">Add Remark For</p>
+            <p class="font-weight-bold ">{{ students.given_name }}</p>
+          </div>
+
+          <v-divider class=""></v-divider>
+          <v-textarea
+            outlined
+            :rules="rules"
+            counter="140"
+            label="Remark"
+            v-model="remark"
+          ></v-textarea>
+
+          <v-btn
+            block
+            class="mb-3"
+            color="primary"
+            :disabled="isDisable"
+            rounded
+            @click="saveremark(remark)"
+          >
+            save
+          </v-btn>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialog3" max-width="450px">
+        <v-card>
+          <v-card-title class="headline grey lighten-2"> Confirm delete </v-card-title><br />
+          <v-card-text
+            >Are you sure you want to delete "{{ delremarkMsg }}" from
+            {{ delremarkUser }}?</v-card-text
+          >
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text color="error" @click="dialog3 = false">No</v-btn>
+            <v-btn text color="success" @click="delRemark(delremarkID, delindex)">Yes</v-btn>
+          </v-card-actions></v-card
+        >
+      </v-dialog>
+      <!-- confirmation -->
+      <v-snackbar centered v-model="snackbar" :timeout="1000">
+        {{ snackbartext }}
+      </v-snackbar>
+      <div class="col-md-8 order-6 float-right">
+        <v-card elevation="0" class="pa-3">
+          <span class="overline">Required Major Courses</span>
+          <v-divider></v-divider>
+          <div v-for="(course, i) in this.students.taken_courses" :key="i">
+            <div v-if="course.class.course.category == 'required_courses'">
+              <p>
+                {{ course.class.course.name }}
+                <span style="float:right;"
+                  >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
+                >
+              </p>
+            </div>
+          </div>
+        </v-card>
+      </div>
+      <div class="col-md-8 order-7 float-right">
+        <v-card elevation="0" class="pa-3">
+          <span class="overline">Elective Major Courses</span>
+          <v-divider></v-divider>
+
+          <div v-for="(course, i) in this.students.taken_courses" :key="i">
+            <div v-if="course.class.course.category == 'elective_courses'">
+              <p>
+                {{ course.class.course.name }}
+                <span style="float:right;"
+                  >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
+                >
+              </p>
+            </div>
+          </div>
+        </v-card>
+      </div>
     </div>
   </div>
 </template>
@@ -102,6 +213,19 @@ export default {
   },
   data() {
     return {
+      dialog2: false,
+      dialog3: false,
+      snackbar: false,
+      rules: [(v) => v.length <= 140 || "Max 140 characters"],
+      remark: "",
+      remarktext: {
+        msg: "",
+      },
+      snackbartext: "",
+      delremarkID: "",
+      delremarkMsg: "",
+      delremarkUser: "",
+      delindex: 0,
       entry: {
         year: "",
         tri: "",
@@ -109,7 +233,15 @@ export default {
       students: [],
     };
   },
-
+  computed: {
+    isDisable() {
+      if (this.remark.length > 0 && this.remark.length <= 140) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+  },
   methods: {
     getStudentsDetail() {
       let query = `
@@ -134,6 +266,7 @@ export default {
                                 given_name
                                 family_name
                               }
+                              _id
                               message
                             }
                             taken_courses{
@@ -176,6 +309,100 @@ export default {
           console.log(err);
         });
     },
+    closedialog2() {
+      this.dialog2 = false;
+      this.remark = "";
+    },
+    showDialog3(id, msg, usr, index) {
+      this.dialog3 = true;
+      this.delremarkID = id;
+      this.delremarkMsg = msg;
+      this.delremarkUser = usr;
+      this.delindex = index;
+    },
+    saveremark() {
+      this.remarktext.msg = this.remark;
+      this.addRemark(this.remarktext);
+    },
+    async addRemark(val) {
+      this.snackbar = false;
+      this.snackbartext = "";
+      let query = `
+                mutation {
+                  addRemark(remarkInput: {
+                    studentId: "${this.students.sid}",
+                    message: "${val.msg}"
+                  }) {
+                    _id
+                    message
+                  }
+                }
+              `;
+
+      await this.axios
+        .post(
+          "https://api.welkin.app/v2/graphql",
+          { query },
+          {
+            withCredentials: true,
+            headers: {
+              Cookies:
+                "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M",
+            },
+          }
+        )
+        .then((res) => {
+          if (res.data.data.addRemark) {
+            this.snackbartext = "The remark has been saved";
+            this.snackbar = true;
+            this.students.remarks.push({
+              message: res.data.data.addRemark.message,
+              user: { username: this.$currentUser.username },
+              _id: res.data.data.addRemark._id,
+            });
+            this.dialog2 = false;
+            this.remark = "";
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    delRemark(id) {
+      this.snackbar = false;
+      this.snackbartext = "";
+      let query = `
+                mutation {
+                  delRemark(remarkId: "${id}") {
+                    success
+                    message
+                  }
+                }
+              `;
+      this.axios
+        .post(
+          "https://api.welkin.app/v2/graphql",
+          { query },
+          {
+            withCredentials: true,
+            headers: {
+              Cookies:
+                "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M",
+            },
+          }
+        )
+        .then((res) => {
+          if (res.data.data.delRemark) {
+            this.snackbartext = "The remark has been deleted";
+            this.snackbar = true;
+            this.students.remarks.splice(this.delindex, 1);
+          }
+          this.dialog3 = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>
@@ -188,7 +415,7 @@ export default {
   padding: 1em;
 }
 .profile-card {
-  height: 400px;
+  height: 300px;
   padding: 1em;
 }
 .center {
