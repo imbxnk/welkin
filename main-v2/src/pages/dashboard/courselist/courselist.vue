@@ -39,11 +39,8 @@
                   <v-list-item-content>
                     <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
                   </v-list-item-content>
-                  <v-list-item-action>
-                    <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
-                  </v-list-item-action>
+                  <v-list-item-action> </v-list-item-action>
                 </v-list-item>
-                <!-- <v-divider v-if="index < items.length - 1" :key="index"></v-divider> -->
                 <v-divider v-if="index !== items.length - 1" :key="index" class=""></v-divider>
               </template>
             </v-list-item-group>
@@ -215,7 +212,6 @@ export default {
 .wk-right-col {
   padding: 0 0 0 8px;
 }
-
 
 @media (max-width: 576px) {
   .wk-content-full-height-list {

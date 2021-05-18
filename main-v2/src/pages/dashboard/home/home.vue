@@ -20,14 +20,22 @@
             >
           </h3>
           <h6 class="grey--text">have a nice day :)</h6>
+
           <v-divider class="mb-n4"></v-divider>
         </div>
-        <div class="col-md-8 order-3 float-right py-2">
+        <div
+          v-if="this.$currentUser.group == 'coordinator'"
+          class="col-md-8 order-3 float-right py-2"
+        >
           <ShowStudentsTable></ShowStudentsTable>
+        </div>
+        <div v-else class="col-md-8 order-3 float-right py-2">
+          <ShowStudentGraph></ShowStudentGraph>
         </div>
         <div class="col-md-4 order-2 float-left py-2">
           <ShowBatchesSummary></ShowBatchesSummary>
         </div>
+
         <!-- <div class="row order-4 pt-2">
           <div class="col-md-6 order-1 float-left ">
             <v-card class="rounded-card pa-5"> x</v-card>
@@ -43,15 +51,17 @@
 <script>
 import ShowStudentsTable from "./components/show_students_table";
 import ShowBatchesSummary from "./components/show_batches_summary";
+import ShowStudentGraph from "./components/show_student_graph";
 
 export default {
   name: "home",
   components: {
     ShowStudentsTable,
     ShowBatchesSummary,
+    ShowStudentGraph,
   },
   mounted() {
-    console.log(this.$currentUser.given_name);
+    console.log(this.$currentUser);
   },
 };
 </script>
@@ -64,8 +74,9 @@ export default {
 }
 
 @media (max-width: 1200px) {
-  .wk-welcome h3, .wk-welcome span {
-    font-size: 1.5rem
+  .wk-welcome h3,
+  .wk-welcome span {
+    font-size: 1.5rem;
   }
 }
 </style>
