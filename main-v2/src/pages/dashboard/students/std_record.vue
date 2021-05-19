@@ -378,7 +378,7 @@ export default {
             this.snackbar = true;
             this.students.remarks.push({
               message: res.data.data.addRemark.message,
-              user: { username: this.$currentUser.username },
+              user: { username: this.$currentUser.username, display_name: this.$currentUser.display_name },
               _id: res.data.data.addRemark._id,
             });
             this.dialog2 = false;
