@@ -341,11 +341,7 @@ export default {
           "https://api.welkin.app/v2/graphql",
           { query },
           {
-            withCredentials: true,
-            headers: {
-              Cookies:
-                "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M",
-            },
+            withCredentials: true
           }
         )
         .then((res) => {
@@ -381,11 +377,7 @@ export default {
           "https://api.welkin.app/v2/graphql",
           { query },
           {
-            withCredentials: true,
-            headers: {
-              Cookies:
-                "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M",
-            },
+            withCredentials: true
           }
         )
         .then((res) => {

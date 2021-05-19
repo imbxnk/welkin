@@ -83,15 +83,18 @@
         <v-card elevation="0" class="pa-3">
           <span class="overline">Core Courses</span>
           <v-divider></v-divider>
-          <div v-for="(course, i) in this.students.taken_courses" :key="i">
-            <div v-if="course.class.course.category == 'core_courses'">
-              <p>
-                {{ course.class.course.name }}
-                <span style="float:right;"
-                  >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
-                >
-              </p>
+          <div v-if="this.students.core_courses.length > 0" >
+            <div v-for="(course, i) in this.students.core_courses" :key="i">
+                <p>
+                  {{ course.class.course.name }}
+                  <span style="float:right;"
+                    >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
+                  >
+                </p>
             </div>
+          </div>
+          <div v-else>
+            <span style="color: #666">No Course to Show</span>
           </div>
         </v-card>
       </div>
@@ -171,15 +174,18 @@
         <v-card elevation="0" class="pa-3">
           <span class="overline">Required Major Courses</span>
           <v-divider></v-divider>
-          <div v-for="(course, i) in this.students.taken_courses" :key="i">
-            <div v-if="course.class.course.category == 'required_courses'">
-              <p>
-                {{ course.class.course.name }}
-                <span style="float:right;"
-                  >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
-                >
-              </p>
+          <div v-if="this.students.required_courses.length > 0">
+            <div v-for="(course, i) in this.students.required_courses" :key="i">
+                <p>
+                  {{ course.class.course.name }}
+                  <span style="float:right;"
+                    >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
+                  >
+                </p>
             </div>
+          </div>
+          <div v-else>
+            <span style="color: #666">No Course to Show</span>
           </div>
         </v-card>
       </div>
@@ -187,16 +193,18 @@
         <v-card elevation="0" class="pa-3">
           <span class="overline">Elective Major Courses</span>
           <v-divider></v-divider>
-
-          <div v-for="(course, i) in this.students.taken_courses" :key="i">
-            <div v-if="course.class.course.category == 'elective_courses'">
+          <div v-if="this.students.elective_courses.length > 0" >
+          <div v-for="(course, i) in this.students.elective_courses" :key="i">
               <p>
                 {{ course.class.course.name }}
                 <span style="float:right;"
                   >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
                 >
               </p>
-            </div>
+          </div>
+          </div>
+          <div v-else>
+            <span style="color: #666">No Course to Show</span>
           </div>
         </v-card>
       </div>
@@ -303,6 +311,23 @@ export default {
           this.students = res.data.data.student;
           this.entry.year = this.students.entry_year;
           this.entry.tri = this.students.entry_trimester;
+          // Loop separate courses
+          this.students.core_courses = []
+          this.students.required_courses = []
+          this.students.elective_courses = []
+          this.students.taken_courses.forEach((course) => {
+            switch(course.class.course.category) {
+              case "core_courses":
+                this.students.core_courses.push(course)
+                break
+              case "required_courses":
+                this.students.required_courses.push(course)
+                break
+              case "elective_courses":
+                this.students.elective_courses.push(course)
+                break
+            }
+          })
           console.log(this.students);
         })
         .catch((err) => {
@@ -344,11 +369,7 @@ export default {
           "https://api.welkin.app/v2/graphql",
           { query },
           {
-            withCredentials: true,
-            headers: {
-              Cookies:
-                "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M",
-            },
+            withCredentials: true
           }
         )
         .then((res) => {
@@ -384,11 +405,7 @@ export default {
           "https://api.welkin.app/v2/graphql",
           { query },
           {
-            withCredentials: true,
-            headers: {
-              Cookies:
-                "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYxODg0OTA1NSwiZXhwIjoxNjIxNDQxMDU1fQ.OFdqzLZgp6X2OEfhuLt8IBBS9af495aXo1cB9MCsj_M",
-            },
+            withCredentials: true
           }
         )
         .then((res) => {
