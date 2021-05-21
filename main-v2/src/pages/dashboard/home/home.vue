@@ -15,9 +15,11 @@
         <div class="col-md-4 order-1 float-left my-n4 py-10 wk-welcome">
           <h3>
             Hello,
-            <span class="primary--text"
-              >{{ this.$currentUser.given_name }} {{ this.$currentUser.family_name }}</span
-            >
+            <span class="primary--text">{{
+              this.$currentUser.display_name == ""
+                ? this.$currentUser.given_name
+                : this.$currentUser.display_name
+            }}</span>
           </h3>
           <h6 class="grey--text">have a nice day :)</h6>
 

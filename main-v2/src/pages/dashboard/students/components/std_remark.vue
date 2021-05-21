@@ -9,7 +9,8 @@
       ><simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list mx-n2">
         <ul class="mb-n1">
           <li v-for="(msg, i) in this.stdRemark" :key="i">
-            "{{ msg.message }}", {{ msg.user.display_name }}
+            "{{ msg.message }}",
+            {{ msg.user.display_name == "" ? msg.user.username : msg.user.display_name }}
             <v-icon small @click="showDialog2(msg._id, msg.message, msg.user.display_name, i)"
               >mdi-delete</v-icon
             >
@@ -141,6 +142,7 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.stdRemark = res.data.data.remarks.remarks;
+          console.log(this.stdRemark);
         })
         .catch((err) => {});
     },
