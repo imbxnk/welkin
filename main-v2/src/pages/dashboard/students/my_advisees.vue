@@ -43,6 +43,12 @@
                 {{ item.status.current }}
               </v-chip>
             </template>
+            <template v-slot:[`item.nick_name`]="{ item }">
+              {{ item.nick_name == null ? " - " : item.nick_name }}
+            </template>
+            <template v-slot:[`item.email`]="{ item }">
+              {{ item.email == null ? " - " : item.email }}
+            </template>
           </v-data-table>
           <!-- dialog1 show info -->
           <v-dialog v-model="dialog" max-width="500px">
@@ -159,12 +165,12 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(this.$currentUser.linked_instructor._id);
           this.loading = false;
           this.advisees = res.data.data.students.advisees;
           this.advisees.forEach((advisee) => {
             advisee["name"] = [advisee.given_name, advisee.family_name].join(" ");
           });
+          console.log(this.advisees[0].email);
         })
         .catch((err) => {
           this.loading = false;

@@ -13,57 +13,62 @@
       </div>
     </div>
     <!-- <v-card class="pa-5" style="height:485px;"> </v-card> -->
-    <v-card class="pa-5" style="height:485px;">
-      <div v-if="!check" class="d-flex justify-content-center mt-5" style="color:red;">
-        <v-icon x-large class="mr-5 mt-n5" color="red">mdi-alert</v-icon>
-        <div class="d-flex justify-content-center">
-          <div>
-            <h6>Something went wrong..</h6>
-            <p class="caption mt-n2">
-              Please try again, make sure that you follow the format (Ex. 60800001)
-            </p>
+
+    <v-card class="" style=""
+      ><simplebar data-simplebar-auto-hide="true" class="wk-content-full-height ma-3">
+        <div v-if="!check" class="d-flex justify-content-center mt-5" style="color:red;">
+          <v-icon x-large class="mr-5 mt-n5" color="red">mdi-alert</v-icon>
+          <div class="d-flex justify-content-center pa-3">
+            <div>
+              <h6>Something went wrong..</h6>
+              <p class="caption mt-n2">
+                Please try again, make sure that you follow the format (Ex. 60800001)
+              </p>
+            </div>
           </div>
-        </div>
-      </div>
-      <div v-else>
-        <div v-if="loading" class="loading">
-          <v-progress-circular
-            :size="50"
-            class="ml-16"
-            color="primary"
-            indeterminate
-          ></v-progress-circular>
-          <p class="mt-3 primary--text">Searching for {{ search_ID }} ...</p>
         </div>
         <div v-else>
-          <div v-if="showing == 0" class="grey--text">
-            Please enter the student ID to search fot the student
+          <div v-if="loading" class="loading pa-3">
+            <v-progress-circular
+              :size="50"
+              class="ml-16"
+              color="primary"
+              indeterminate
+            ></v-progress-circular>
+            <p class="mt-3 primary--text">Searching for {{ search_ID }} ...</p>
           </div>
-          <div v-if="showing == 1">Sorry, there is no {{ search_ID }} in our database.</div>
-          <div v-if="showing == 2">
-            <div class="row d-md-block">
-              <div class="col-md-4 order-1 float-left">
-                <v-card elevation="0" class="text-center pa-3">
-                  <v-img
-                    :src="std_details.avatar_url || 'https://semantic-ui.com/images/avatar2/large/matthew.png'"
-                    contain
-                    max-width="230"
-                    class="center"
-                  />
-                  <div class="overline">{{ std_details.sid }}</div>
-                </v-card>
-              </div>
-              <div class="col-md-8 order-2 float-right">
-                <v-card elevation="0" class="profile-card">
-                  <span class="overline">About this student</span>
-                  <h3>{{ std_details.given_name }} {{ std_details.family_name }}</h3>
-                  <v-divider></v-divider>
-                  {{ std_details.entry_year }}T{{ std_details.entry_trimester }}<br />
-                  Email: {{ std_details.email == null ? " - " : std_details.email }}<br />
-                  Line id: {{ std_details.lineID == null ? " - " : std_details.lineID }}<br />
-                </v-card>
-              </div>
-              <!-- <div class="col-md-4 order-3 float-left">
+          <div v-else>
+            <div v-if="showing == 0" class="grey--text pa-3">
+              Please enter the student ID to search fot the student
+            </div>
+            <div v-if="showing == 1">Sorry, there is no {{ search_ID }} in our database.</div>
+            <div v-if="showing == 2">
+              <div class="row d-md-block">
+                <div class="col-md-4 order-1 float-left">
+                  <v-card elevation="0" class="text-center pa-3">
+                    <v-img
+                      :src="
+                        std_details.avatar_url ||
+                          'https://semantic-ui.com/images/avatar2/large/matthew.png'
+                      "
+                      contain
+                      max-width="230"
+                      class="center"
+                    />
+                    <div class="overline">{{ std_details.sid }}</div>
+                  </v-card>
+                </div>
+                <div class="col-md-8 order-2 float-right">
+                  <v-card elevation="0" class="profile-card">
+                    <span class="overline">About this student</span>
+                    <h3>{{ std_details.given_name }} {{ std_details.family_name }}</h3>
+                    <v-divider></v-divider>
+                    {{ std_details.entry_year }}T{{ std_details.entry_trimester }}<br />
+                    Email: {{ std_details.email == null ? " - " : std_details.email }}<br />
+                    Line id: {{ std_details.lineID == null ? " - " : std_details.lineID }}<br />
+                  </v-card>
+                </div>
+                <!-- <div class="col-md-4 order-3 float-left">
                 <v-card elevation="0" class="pa-3"
                   ><span class="overline">Taken courses</span>
 
@@ -92,15 +97,21 @@
                   </div>
                 </v-card>
               </div> -->
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div></simplebar
+      >
     </v-card>
   </div>
 </template>
 <script>
+import simplebar from "simplebar-vue";
+import "simplebar/dist/simplebar.min.css";
 export default {
+  components: {
+    simplebar,
+  },
   data() {
     return {
       loading: false,
@@ -195,4 +206,16 @@ export default {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+.wk-content-full-height {
+  height: calc(var(--app-height) - 156px);
+  /* height: var(--app-height); */
+  /* height: auto; */
+  overflow: auto;
+}
+
+// @media (max-width: 576px) {
+//   .wk-content-full-height-list {
+//     height: calc(var(--app-height) - 237px);
+//   }
+// }
 </style>

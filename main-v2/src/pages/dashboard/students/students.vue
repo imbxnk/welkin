@@ -40,6 +40,9 @@
               {{ item.status.current }}
             </v-chip>
           </template>
+          <template v-slot:[`item.advisor.name`]="{ item }">
+            {{ item.advisor == null ? " - " : item.advisor.name }}
+          </template>
         </v-data-table>
         <!-- dialog1 show info -->
         <v-dialog v-model="dialog" max-width="500px">
@@ -164,6 +167,7 @@ export default {
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
           });
+          console.log(this.students);
           this.loading = false;
         })
         .catch((err) => {
