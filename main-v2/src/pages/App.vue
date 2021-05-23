@@ -14,7 +14,13 @@
 
         <v-menu bottom max-width="300px" rounded offset-y>
           <template v-slot:activator="{ on, attrs }">
-            <v-avatar v-if="$currentUser.avatar.small" size="35" :style="`background: url(${$currentUser.avatar.small}) center center / cover;`" v-bind="attrs" v-on="on">
+            <v-avatar
+              v-if="$currentUser.avatar.small"
+              size="35"
+              :style="`background: url(${$currentUser.avatar.small}) center center / cover;`"
+              v-bind="attrs"
+              v-on="on"
+            >
             </v-avatar>
             <v-avatar color="primary" size="35" v-bind="attrs" v-on="on" v-else>
               <span class="white--text">
@@ -26,7 +32,10 @@
           <v-list>
             <v-list-item-content class="justify-center">
               <div class="text-center">
-                <v-avatar v-if="$currentUser.avatar.small" :style="`background: url(${$currentUser.avatar.small}) center center / cover;`">
+                <v-avatar
+                  v-if="$currentUser.avatar.small"
+                  :style="`background: url(${$currentUser.avatar.small}) center center / cover;`"
+                >
                 </v-avatar>
                 <v-avatar color="primary" v-else>
                   <span class="white--text">
@@ -67,7 +76,7 @@
     <v-navigation-drawer
       v-model="sidebarMenu"
       app
-      :touchless=true
+      :touchless="true"
       floating
       :permanent="sidebarMenu"
       :temporary="toggleMini == true ? $vuetify.breakpoint.smAndDown : false"
@@ -122,7 +131,12 @@
 
             <template v-for="(subitem, j) in item.children">
               <v-list-item
-                v-if="!subitem.children && checkAuthGroup(i) && isAdvisor(i,j) && checkChildAuthGroup(i,j)"
+                v-if="
+                  !subitem.children &&
+                    checkAuthGroup(i) &&
+                    isAdvisor(i, j) &&
+                    checkChildAuthGroup(i, j)
+                "
                 :key="j"
                 :to="item.href + subitem.href"
                 class="mb-2"
@@ -208,11 +222,11 @@ export default {
   },
   mounted() {
     const appHeight = () => {
-      const doc = document.documentElement
-      doc.style.setProperty('--app-height', `${window.innerHeight}px`)
-    }
-    window.addEventListener('resize', appHeight)
-    appHeight()
+      const doc = document.documentElement;
+      doc.style.setProperty("--app-height", `${window.innerHeight}px`);
+    };
+    window.addEventListener("resize", appHeight);
+    appHeight();
   },
   computed: {
     mini: {
@@ -254,7 +268,7 @@ export default {
             href: "/all",
             icon: "mdi-account-multiple-outline",
             isAdvisor: false,
-            authorizedGroup: ["program director", "coordinator", "admin"]
+            authorizedGroup: ["program director", "coordinator", "admin"],
           },
           {
             title: "My Advisees",
@@ -394,15 +408,19 @@ export default {
     },
     checkAuthGroup(i) {
       try {
-        return this.items[i].authorizedGroup ? this.items[i].authorizedGroup.includes(this.$currentUser.group) : true;
+        return this.items[i].authorizedGroup
+          ? this.items[i].authorizedGroup.includes(this.$currentUser.group)
+          : true;
       } catch (err) {}
     },
-    isAdvisor(i,j) {
+    isAdvisor(i, j) {
       return this.items[i].children[j].isAdvisor ? this.$currentUser.isAdvisor : true;
     },
-    checkChildAuthGroup(i,j) {
+    checkChildAuthGroup(i, j) {
       try {
-        return this.items[i].children[j].authorizedGroup ? this.items[i].children[j].authorizedGroup.includes(this.$currentUser.group) : true;
+        return this.items[i].children[j].authorizedGroup
+          ? this.items[i].children[j].authorizedGroup.includes(this.$currentUser.group)
+          : true;
       } catch (err) {}
     },
     logout() {

@@ -28,6 +28,8 @@
           ><br />
           <b>Elective Courses:</b> <span>{{ stdDetail.records.elective_credits }}</span
           ><br />
+          <b>Credits Earned :</b> <span>{{ stdDetail.records.total_credits }}</span
+          ><br />
         </template>
         <div class="w-100 d-flex justify-content-end align-self-end mt-sm-16 mt-md-16 ml-md-6">
           <a @click="$router.push({ name: 'student_record', params: { sid: stdDetail.sid } })"

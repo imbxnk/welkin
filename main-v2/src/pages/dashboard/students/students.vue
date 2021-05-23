@@ -31,7 +31,12 @@
           class="student"
         >
           <template v-slot:[`item.status.current`]="{ item }">
-            <v-chip small :color="getColor(item.status.current)" dark class="d-flex justify-center">
+            <v-chip
+              small
+              :color="getColor(item.status.current)"
+              :dark="isDark(item.status.current)"
+              class="d-flex justify-center"
+            >
               {{ item.status.current }}
             </v-chip>
           </template>
@@ -73,7 +78,7 @@ export default {
       search: "",
       headers: [
         { text: "Student ID", sortable: false, value: "sid", width: 80 },
-        { text: "Name", align: "start", sortable: false, value: "name", width: 350 },
+        { text: "Name", align: "start", sortable: false, value: "name", width: 380 },
         // { text: "Email", align: "start", sortable: false, value: "email", width: 200 },
         // { text: "Phone", align: "start", sortable: false, value: "phone", width: 200 },
         {
@@ -90,8 +95,15 @@ export default {
           value: "records.egci_cumulative_gpa",
           width: 100,
         },
+        {
+          text: "Advisor",
+          align: "center",
+          sortable: true,
+          value: "advisor.name",
+          width: 350,
+        },
         // { text: "Advisor", sortable: false, value: "avs", align: "center" },
-        { text: "Status", sortable: false, align: "center", value: "status.current", width: 100 },
+        { text: "Status", sortable: false, align: "center", value: "status.current", width: 180 },
       ],
       students: [],
       stdDetail: [],
@@ -100,8 +112,20 @@ export default {
   methods: {
     getColor(status) {
       if (status == "Studying") return "green";
+      else if (status == "Leave of absence") return "amber";
+      else if (status == "On Exchange") return "blue";
+      // else if (status == "Retired") return "grey";
+      else if (status == "Resigned") return "grey";
+      else if (status == "Alumni") return "grey lighten-2";
       else if (status == "Unknown") return "grey";
       else return "red";
+    },
+    isDark(status) {
+      if (status == "Alumni") {
+        return false;
+      } else {
+        return true;
+      }
     },
     async getStudents() {
       let query = `
@@ -115,6 +139,9 @@ export default {
                     phone
                     lineID
                     avatar_url
+                    advisor {
+                              name
+                            }
                     status {
                       current
                     }
