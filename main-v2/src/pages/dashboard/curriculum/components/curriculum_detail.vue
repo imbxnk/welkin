@@ -12,51 +12,64 @@
         This curriculum is for students with ID {{ curriculum.batches.toString() }} only.
       </div>
       <v-divider style="margin-top: 0.5rem !important"></v-divider>
-      <h6 style="text-align: right;">Total : XX credits</h6>
+      <!-- <h6 style="text-align: right;">Total : XX credits</h6> -->
       <!-- core -->
-      <v-subheader class="primary--text mx-n4"
-        >Core Courses ( {{ this.detail.passing_conditions.core_courses }} credits )</v-subheader
-      >
+      <h6 class="primary--text mt-2">
+        Core Courses
+        <span style="float:right;">{{ this.detail.passing_conditions.core_courses }} credits</span>
+      </h6>
+
       <v-list-item v-for="course in detail.core_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
           <v-list-item-title
-            >{{ course.code }} : {{ course.name }} [ {{ course.credit }} ]</v-list-item-title
-          >
-          <v-list-item-subtitle>{{
+            >{{ course.code }} : {{ course.name }}
+            <span style="float:right; padding-right: 25px;">{{ course.credit }}</span>
+          </v-list-item-title>
+          <!-- <v-list-item-subtitle>{{
             course.description == "No description" ? "" : course.description
-          }}</v-list-item-subtitle>
+          }}</v-list-item-subtitle> -->
         </v-list-item-content>
       </v-list-item>
 
       <!-- required -->
-      <v-subheader class="primary--text mx-n4"
-        >Required Major Courses ( {{ this.detail.passing_conditions.required_courses }} credits
-        )</v-subheader
-      >
+      <h6 class="primary--text mt-4">
+        Required Major Courses
+        <span style="float:right;"
+          >{{ this.detail.passing_conditions.required_courses }} credits</span
+        >
+      </h6>
       <v-list-item v-for="course in detail.required_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
           <v-list-item-title
-            >{{ course.code }} : {{ course.name }} [ {{ course.credit }} ]</v-list-item-title
+            >{{ course.code }} : {{ course.name }}
+            <span style="float:right; padding-right: 25px;">
+              {{ course.credit }}
+            </span></v-list-item-title
           >
-          <v-list-item-subtitle>{{
+          <!-- <v-list-item-subtitle>{{
             course.description == "No description" ? "" : course.description
-          }}</v-list-item-subtitle>
+          }}</v-list-item-subtitle> -->
         </v-list-item-content>
       </v-list-item>
 
       <!-- elective -->
-      <v-subheader class="primary--text mx-n4"
-        >Elective Major Courses ( {{ this.detail.passing_conditions.elective_courses }} credits
-        )</v-subheader
-      >
+      <h6 class="primary--text mt-4">
+        Elective Major Courses
+        <span style="float:right;"
+          >{{ this.detail.passing_conditions.elective_courses }} credits
+        </span>
+      </h6>
       <v-list-item v-for="course in detail.elective_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
           <v-list-item-title
-            >{{ course.code }} : {{ course.name }} [ {{ course.credit }} ]</v-list-item-title
+            >{{ course.code }} : {{ course.name }}
+            <span style="float:right; padding-right: 25px;">
+              {{ course.credit }}
+            </span></v-list-item-title
           >
-          <v-list-item-subtitle>{{
+          <!-- <v-list-item-subtitle>{{
             course.description == "No description" ? "" : course.description
-          }}</v-list-item-subtitle>
+          }}</v-list-item-subtitle> -->
         </v-list-item-content>
       </v-list-item>
     </div>
