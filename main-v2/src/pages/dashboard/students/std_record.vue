@@ -38,7 +38,7 @@
       <div class="col-md-4 order-1 float-left">
         <v-card elevation="0" class="text-center pa-3">
           <v-img
-            :src='students.avatar_url || "https://semantic-ui.com/images/avatar2/large/matthew.png"'
+            :src="students.avatar_url || 'https://semantic-ui.com/images/avatar2/large/matthew.png'"
             contain
             max-width="230"
             class="center"
@@ -276,7 +276,9 @@ export default {
                             email
                             lineID
                             lineUID
-                            advisor
+                            advisor{
+                              name
+                            }
                             remarks {
                               user {
                                 display_name
@@ -380,7 +382,7 @@ export default {
           "https://api.welkin.app/v2/graphql",
           { query },
           {
-            withCredentials: true
+            withCredentials: true,
           }
         )
         .then((res) => {
