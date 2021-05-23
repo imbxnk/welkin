@@ -114,6 +114,7 @@ export default {
                     email
                     phone
                     lineID
+                    avatar_url
                     status {
                       current
                     }

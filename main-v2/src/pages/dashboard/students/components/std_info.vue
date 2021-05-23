@@ -9,9 +9,9 @@
                   indeterminate
                 ></v-progress-circular> -->
         <v-img
-          src="https://semantic-ui.com/images/avatar2/large/matthew.png"
+          :src="stdDetail.avatar_url || 'https://semantic-ui.com/images/avatar2/large/matthew.png'"
           contain
-          max-width="180"
+          max-width="230"
           class="center"
         />
         <div class="overline text-center">{{ stdDetail.sid }}</div>

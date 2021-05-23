@@ -38,7 +38,7 @@
       <div class="col-md-4 order-1 float-left">
         <v-card elevation="0" class="text-center pa-3">
           <v-img
-            src="https://semantic-ui.com/images/avatar2/large/matthew.png"
+            :src='students.avatar_url || "https://semantic-ui.com/images/avatar2/large/matthew.png"'
             contain
             max-width="230"
             class="center"
@@ -380,11 +380,7 @@ export default {
           "https://api.welkin.app/v2/graphql",
           { query },
           {
-            withCredentials: true,
-            headers: {
-              Cookies:
-                "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkxZjJkNzlkOGM3Mjk4NjkzZjk5OCIsImlhdCI6MTYyMTU4OTM2NSwiZXhwIjoxNjI0MTgxMzY1fQ.j8o0NtBB6lkXixesqNX69N6MQ-SscuvL_NSiHFzpcSY",
-            },
+            withCredentials: true
           }
         )
         .then((res) => {
