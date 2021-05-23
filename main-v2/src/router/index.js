@@ -7,9 +7,9 @@ Vue.use(VueRouter);
 // Import All Routes
 import Home from "../pages/dashboard/home/home";
 import Profile from "../pages/dashboard/profile/profile";
-import MyProfile from "../pages/dashboard/profile/components/myProfile"
+import MyProfile from "../pages/dashboard/profile/components/myProfile";
 import AccountSettings from "../pages/dashboard/profile/components/accountSettings"
-import ChangePassword from "../pages/dashboard/profile/components/changePassword"
+import ChangePassword from "../pages/dashboard/profile/components/changePassword";
 import ManageStudents from "../pages/dashboard/manage/manage_students";
 import StudentList from "../pages/dashboard/students/students";
 import MyAdvisees from "../pages/dashboard/students/my_advisees";
@@ -18,10 +18,11 @@ import SearchStudent from "../pages/dashboard/students/search_student";
 import CourseList from "../pages/dashboard/courselist/courselist";
 import CourseDetail from "../pages/dashboard/courselist/course_detail";
 import Curriculum from "../pages/dashboard/curriculum/curriculum";
-import Manage_grade from "../pages/dashboard/manage/manage_grade";
+import ManageGrade from "../pages/dashboard/manage/manage_grade";
 import AddInstructor from "../pages/dashboard/manage/add_instructor";
 import AddUser from "../pages/dashboard/manage/add_user";
-import AddStudent from "../pages/dashboard/manage/add_students"
+import AddStudent from "../pages/dashboard/manage/add_students";
+import ManageWebsite from "../pages/dashboard/manage/manage_website";
 // Auth Route
 import Login from "../pages/auth/login";
 import PasswordRecovery from "../pages/auth/passwordRecovery"
@@ -123,7 +124,7 @@ const routes = [
   {
     name: "manage_grade",
     path: "/manage/student/grade/upload",
-    component: Manage_grade,
+    component: ManageGrade,
     meta: {
       requiresAuth: true,
       authorizedGroup: ["coordinator"],
@@ -147,6 +148,16 @@ const routes = [
     meta: {
       requiresAuth: true,
       title: "Add User",
+      authorizedGroup: ["coordinator"],
+    },
+  },
+  {
+    name: "manage_website",
+    path: "/manage/website",
+    component: ManageWebsite,
+    meta: {
+      requiresAuth: true,
+      title: "Manage Website",
       authorizedGroup: ["coordinator"],
     },
   },
@@ -211,6 +222,8 @@ router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const isAdvisor = to.matched.some((record) => record.meta.isAdvisor);
   const authorizedGroup = to.meta.authorizedGroup;
+
+  Vue.prototype.$config = (await welkin.config()).current;
 
   if (currentUser) {
     Vue.prototype.$currentUser = currentUser;

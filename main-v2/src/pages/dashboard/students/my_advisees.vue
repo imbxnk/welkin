@@ -2,7 +2,6 @@
   <div id="app">
     <!-- <div v-if="advisees.length == 0 && !isLoading">You have no advisees</div>
     <div v-else-if="!isLoading">{{ advisees }}</div> -->
-    <div>
       <v-card class=" pa-3">
         <v-row>
           <v-col>
@@ -63,7 +62,6 @@
           </v-dialog>
         </v-card>
       </v-card>
-    </div>
   </div>
 </template>
 <script>
@@ -135,7 +133,7 @@ export default {
     getMyAdvisees() {
       let query = `
           query {
-            students (searchInput: { advisor: "${this.$currentUser.linked_instructor._id}"}) {
+            students (searchInput: { advisor: "${this.$currentUser.linked_instructor._id}"}, sortBy: "status") {
               advisees:students {
                 sid
                 prefix
@@ -155,8 +153,8 @@ export default {
                   total_credits
                 }
                 status{
-                current
-              }
+                  current
+                }
               }
               total
             }

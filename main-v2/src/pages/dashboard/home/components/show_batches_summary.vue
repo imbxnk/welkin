@@ -36,7 +36,7 @@ export default {
       loading: true,
       total: 0,
       batches: {},
-      queryBatches: [60, 61, 63],
+      queryBatches: this.$config.selectedBatches,
     };
   },
   mounted() {

@@ -62,6 +62,17 @@ Object.defineProperty(Vue.prototype, '$currentUser', {
   }
 })
 
+// GLOBAL VARIABLE
+var config = Vue.observable({ current: {} })
+Object.defineProperty(Vue.prototype, '$config', {
+  get () {
+    return config.current
+  },
+  set (value) {
+    config.current = value
+  }
+})
+
 Vue.config.productionTip = false;
 
 new Vue({

@@ -58,7 +58,7 @@ export default {
       loading: true,
       course: {},
       batches: {},
-      queryBatches: ["59", "60", "61", "63"],
+      queryBatches: this.$config.selectedBatches,
       b: [],
       tt: [],
       p: [],

@@ -31,5 +31,27 @@ export default{
       });
 
     return { currentUser }
+  },
+
+  config: async function() {
+    let query = `
+      query {
+        config {
+          selectedBatches
+        }
+      }
+    `
+
+    const current = await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, {
+      withCredentials: true
+    })
+      .then((res) => {
+        return res.data.data.config
+      })
+      .catch(()=> {
+        return undefined
+      });
+
+    return { current }
   }
 }
