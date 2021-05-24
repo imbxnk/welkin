@@ -150,7 +150,9 @@ export default {
                     email
                     lineID
                     lineUID
-                    advisor
+                    advisor{
+                      name
+                    }
                     status {
                       current
                     }
