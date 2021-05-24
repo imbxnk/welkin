@@ -224,6 +224,7 @@ export default {
   components: {},
   mounted() {
     // console.log(this.$currentUser);
+    // this.getStudentsDetail();
   },
   created() {
     this.getStudentsDetail();
@@ -248,7 +249,12 @@ export default {
         year: "",
         tri: "",
       },
-      students: {},
+      students: {
+        core_courses: [],
+        required_courses: [],
+        elective_courses: [],
+        records: {}
+      },
     };
   },
   computed: {
