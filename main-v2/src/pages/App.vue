@@ -315,6 +315,31 @@ export default {
           {
             title: "Students",
             href: "/student",
+            icon: "mdi-plus",
+          },
+          {
+            title: "Course",
+            href: "/course",
+            icon: "mdi-plus",
+          },
+          {
+            title: "Curriculum",
+            href: "/curriculum",
+            icon: "mdi-plus",
+          },
+          {
+            title: "Instructor",
+            href: "/instructor",
+            icon: "mdi-plus",
+          },
+          {
+            title: "User",
+            href: "/user",
+            icon: "mdi-plus",
+          },
+          {
+            title: "Students",
+            href: "/student",
             children: [
               {
                 title: "Add Students",
@@ -347,28 +372,6 @@ export default {
                 title: "Add Curriculum",
                 href: "/add",
                 icon: "mdi-plus",
-              },
-            ],
-          },
-          {
-            title: "Instructor",
-            href: "/instructor",
-            children: [
-              {
-                title: "Add Instructor",
-                href: "/add",
-                icon: "mdi-account-multiple-plus",
-              },
-            ],
-          },
-          {
-            title: "User",
-            href: "/user",
-            children: [
-              {
-                title: "Add User",
-                href: "/add",
-                icon: "mdi-account-multiple-plus",
               },
             ],
           },
