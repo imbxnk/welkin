@@ -74,7 +74,7 @@
               </v-icon>
             </v-btn>
           </template>
-          <v-btn class="speed-dial" fab  dark  small @click="changeToManually()" color="#3c84fb">
+          <v-btn class="speed-dial" fab  dark  small @click="changeToManually()"  color="#3c84fb">
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
           <v-btn class="speed-dial" fab dark small @click="changeToImport()" color="#3c84fb">
@@ -89,9 +89,9 @@
       Select the trimester, Check the student detail and Upload to the data base
     </v-stepper-step>
 
-    <v-stepper-content step="2">
+    <v-stepper-content step="2" class="my-3">
       <div class="d-flex flex-column bd-highlight justify-content-center align-items-center">
-        <div class="p-2 bd-highlight">
+        <div class="p-2 flex-sm-grow-1 bd-highlight md-12">
           <select class="form-control" name="sheetName" id="sheetName" label="Seleted a term" v-show="fileStatus" @change="getSelectedValue($event)" style="max-width:300px; min-width:50px">
             <option selected>Please select a term</option>
             <option v-for="(item, index) in this.sheetNames" :key="index" :value="item">{{ item }}</option>
@@ -151,7 +151,7 @@
     <v-stepper-step :complete="e6 > 3" class="my-auto py-auto" step="3">
       Upload Result
     </v-stepper-step>
-    <v-stepper-content step="3">
+    <v-stepper-content step="3" class="my-3">
       <v-simple-table height="300px" class="mx-auto my-auto py-2 px-2">
                   <template v-slot:default>
                   <thead>
@@ -232,6 +232,7 @@ import XLSX from 'xlsx'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
   export default {
+    name: "add_student",
     data () {
       return {
         e6: 1,
