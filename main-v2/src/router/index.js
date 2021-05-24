@@ -8,7 +8,7 @@ Vue.use(VueRouter);
 import Home from "../pages/dashboard/home/home";
 import Profile from "../pages/dashboard/profile/profile";
 import MyProfile from "../pages/dashboard/profile/components/myProfile";
-import AccountSettings from "../pages/dashboard/profile/components/accountSettings"
+import AccountSettings from "../pages/dashboard/profile/components/accountSettings";
 import ChangePassword from "../pages/dashboard/profile/components/changePassword";
 import ManageStudents from "../pages/dashboard/manage/manage_students";
 import StudentList from "../pages/dashboard/students/students";
@@ -25,8 +25,8 @@ import AddStudent from "../pages/dashboard/manage/add_students";
 import ManageWebsite from "../pages/dashboard/manage/manage_website";
 // Auth Route
 import Login from "../pages/auth/login";
-import PasswordRecovery from "../pages/auth/passwordRecovery"
-import PasswordReset from "../pages/auth/passwordReset"
+import PasswordRecovery from "../pages/auth/passwordRecovery";
+import PasswordReset from "../pages/auth/passwordReset";
 
 // Define All Routes
 const routes = [
@@ -46,7 +46,7 @@ const routes = [
     meta: {
       requiresAuth: true,
       title: "Search Student",
-    }
+    },
   },
   {
     name: "student_list",
@@ -55,7 +55,7 @@ const routes = [
     meta: {
       requiresAuth: true,
       title: "Student List",
-      authorizedGroup: ["program director", "coordinator"]
+      authorizedGroup: ["program director", "coordinator"],
     },
   },
   {
@@ -97,23 +97,23 @@ const routes = [
       {
         name: "MyProfile",
         path: "",
-        component: MyProfile
+        component: MyProfile,
       },
       {
         name: "AccountSettings",
         path: "settings",
-        component: AccountSettings
+        component: AccountSettings,
       },
       {
         name: "ChangePassword",
         path: "security",
-        component: ChangePassword
-      }
-    ]
+        component: ChangePassword,
+      },
+    ],
   },
   {
     name: "add_student",
-    path: "/manage/student/add",
+    path: "/manage/student",
     component: AddStudent,
     meta: {
       requiresAuth: true,
@@ -133,7 +133,7 @@ const routes = [
   },
   {
     name: "add_instructor",
-    path: "/manage/instructor/add",
+    path: "/manage/instructor",
     component: AddInstructor,
     meta: {
       requiresAuth: true,
@@ -143,7 +143,7 @@ const routes = [
   },
   {
     name: "add_user",
-    path: "/manage/user/add",
+    path: "/manage/user",
     component: AddUser,
     meta: {
       requiresAuth: true,
@@ -194,8 +194,8 @@ const routes = [
     component: PasswordReset,
     meta: {
       requiresAuth: false,
-      title: "Request Password Recovery"
-    }
+      title: "Request Password Recovery",
+    },
   },
   {
     name: "recovery_password",
@@ -203,8 +203,8 @@ const routes = [
     component: PasswordRecovery,
     meta: {
       requiresAuth: false,
-      title: "Password Recovery"
-    }
+      title: "Password Recovery",
+    },
   },
   {
     path: "/:catchAll(.*)",
@@ -227,7 +227,8 @@ router.beforeEach(async (to, from, next) => {
 
   if (currentUser) {
     Vue.prototype.$currentUser = currentUser;
-    Vue.prototype.$currentUser.initials = currentUser.given_name.charAt(0) + currentUser.family_name.charAt(0);
+    Vue.prototype.$currentUser.initials =
+      currentUser.given_name.charAt(0) + currentUser.family_name.charAt(0);
     Vue.prototype.$currentUser.isAuth = true;
   } else {
     Vue.prototype.$currentUser.isAuth = false;
