@@ -51,7 +51,7 @@ export default {
                 { text: "Email", sortable: false, value: "email", width: 80 },
                 { text: "Phone", sortable: false, value: "phone", width: 80 },
                 { text: "advisor", sortable: false, value: "advisor.name", width: 120 },
-                { text: "Edit", sortable: false, value:"actions", width: 30 },
+                { text: "Edit", sortable: false, value:"actions", width: "1%" },
             ],
             students:[],
             editedIndex: -1,
