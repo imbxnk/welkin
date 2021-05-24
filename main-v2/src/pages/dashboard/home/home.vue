@@ -26,7 +26,10 @@
           <v-divider class="mb-n4"></v-divider>
         </div>
         <div
-          v-if="this.$currentUser.group == 'coordinator'"
+          v-if="
+            this.$currentUser.group == 'coordinator' ||
+              this.$currentUser.group == 'program director'
+          "
           class="col-md-8 order-3 float-right py-2"
         >
           <ShowStudentsTable></ShowStudentsTable>

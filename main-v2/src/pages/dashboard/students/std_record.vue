@@ -53,7 +53,7 @@
           <v-divider></v-divider>
           {{ this.students.entry_year }}T{{ this.students.entry_trimester }}<br />
           Email: {{ this.students.email == null ? " - " : this.students.email }}<br />
-          Line id: {{ this.students.lineID == null ? " - " : this.students.lineID }}<br />
+          Phone: {{ this.students.phone == null ? " - " : this.students.phone }}<br />
         </v-card>
       </div>
       <div class="col-md-4 order-3 float-left">
@@ -227,6 +227,7 @@ export default {
   },
   created() {
     this.getStudentsDetail();
+    // this.getCurriculum();
   },
   data() {
     return {
@@ -247,7 +248,7 @@ export default {
         year: "",
         tri: "",
       },
-      students: [],
+      students: {},
     };
   },
   computed: {
@@ -274,8 +275,10 @@ export default {
                             nick_name
                             avatar_url
                             email
+                            phone
                             lineID
                             lineUID
+                            batch
                             advisor{
                               name
                             }
@@ -347,6 +350,28 @@ export default {
           console.log(err);
         });
     },
+    // async getCurriculum() {
+    //   let query = `
+    //          query{
+    //             curriculum(searchInput:{batches:"${this.students.batch}"}){
+    //               name
+    //               passing_conditions{
+    //                 core_courses
+    //                 required_courses
+    //                 elective_courses
+    //               }
+    //             }
+    //           }
+    //       `;
+    //   await this.axios
+    //     .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+    //     .then((res) => {
+    //       console.log(res);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
     closedialog2() {
       this.dialog2 = false;
       this.remark = "";
