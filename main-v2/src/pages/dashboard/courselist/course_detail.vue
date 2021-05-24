@@ -157,12 +157,12 @@ export default {
   transform: translate(-50%, -50%);
 }
 .wk-content-full-height {
-  height: calc(var(--app-height) - 83px);
+  height: calc(var(--app-height) - 106px);
   overflow-y: auto;
   overflow-x: hidden;
 }
 .wk-content-full-height-list {
-  height: calc(var(--app-height) - 222px);
+  height: calc(var(--app-height) - 226px);
   overflow: auto;
 }
 

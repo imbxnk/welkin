@@ -12,7 +12,7 @@
         :headers="headers"
         :items="class_detail.enrollments"
         mobile-breakpoint="680"
-        class="home"
+        class="class-record"
         hide-default-footer
         disable-pagination
       ></v-data-table>
