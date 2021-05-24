@@ -21,8 +21,8 @@
 
       <v-list-item v-for="course in detail.core_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
-          <v-list-item-title
-            >{{ course.code }} : {{ course.name }}
+          <v-list-item-title>
+            {{ course.code }} : {{ course.name }}
             <span style="float:right; padding-right: 25px;">{{ course.credit }}</span>
           </v-list-item-title>
           <!-- <v-list-item-subtitle>{{

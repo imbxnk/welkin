@@ -1,7 +1,7 @@
 <template>
   <!-- *not responsive* -->
   <div>
-    <v-card-title>
+    <v-card-title class="mx-n4">
       <!-- {{ class_detail.year }}T{{ class_detail.trimester }} Section{{ class_detail.section }} -->
       {{ class_detail.year }}T{{ class_detail.trimester }} SEC{{ class_detail.section }}
     </v-card-title>

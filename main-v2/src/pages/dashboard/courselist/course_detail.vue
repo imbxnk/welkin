@@ -3,10 +3,8 @@
     <!-- 1st column -->
     <v-col style="padding: 0 8px 0 0">
       <v-card>
+        <v-btn class="mx-4 mt-5" @click="$router.push('/course')">back to course list</v-btn>
         <v-card-title class="text-uppercase">{{ $route.params.code }}</v-card-title>
-        <v-card-text>
-          <v-btn @click="$router.push('/course')">back to course list</v-btn>
-        </v-card-text>
         <v-list class="pa-3">
           <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list">
             <v-list-item-group
@@ -38,16 +36,34 @@
     </v-col>
 
     <!-- 2nd column -->
-    <v-col style="padding: 0 0 0 8px">
-      <v-card class="box">
-        <simplebar v-if="!status" data-simplebar-auto-hide="true" class="wk-content-full-height">
+    <v-col class="wk-right-col" cols="12" md="6" :class="{ hide: isHidden }">
+      <v-card v-if="!status" class="pa-3 box">
+        <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height">
           <div class="center grey--text small--text">
             <div class="logo-watermark"></div>
             select the course to see more detail
           </div>
         </simplebar>
-        <simplebar v-else data-simplebar-auto-hide="true" class="wk-content-full-height">
-          <studentTable class="ma-3" :classID="this.classID"></studentTable>
+      </v-card>
+      <v-card v-else class="pa-3">
+        <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height">
+          <a v-if="windowSize.x < 768" @click="back" class="overline my-n1 back primary--text"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-arrow-left"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+              />
+            </svg>
+            BACK</a
+          >
+          <studentTable class="ma-1" :classID="this.classID"></studentTable>
         </simplebar>
       </v-card>
     </v-col>
@@ -67,20 +83,29 @@ export default {
   created() {
     this.loadClasses();
   },
+  mounted() {
+    this.onResize();
+  },
   data() {
     return {
       status: false,
       selected: false,
       classes: [],
       classID: "",
+      isHidden: true,
+      windowSize: {
+        x: 0,
+        y: 0,
+      },
       class_detail: [],
     };
   },
   methods: {
     sentData(item) {
       this.status = true;
+      this.isHidden = false;
       this.selected = true;
-      this.classID = item;
+      return (this.classID = item);
     },
     loadClasses() {
       let query = `
@@ -113,6 +138,13 @@ export default {
         })
         .catch((err) => {});
     },
+    onResize() {
+      this.windowSize = { x: window.innerWidth, y: window.innerHeight };
+    },
+    back() {
+      this.isHidden = true;
+      this.status = false;
+    },
   },
 };
 </script>
@@ -133,6 +165,7 @@ export default {
   height: calc(var(--app-height) - 222px);
   overflow: auto;
 }
+
 .logo-watermark {
   filter: grayscale(100%);
   opacity: 0.25;
@@ -145,11 +178,60 @@ export default {
   flex-flow: column;
   height: 100%;
 }
+
+.wk-left-col {
+  padding: 0 8px 0 0;
+}
+
+.wk-right-col {
+  padding: 0 0 0 8px;
+}
+
+@media (max-width: 576px) {
+  .wk-content-full-height-list {
+    height: calc(var(--app-height) - 237px);
+  }
+}
+
+@media (max-width: 1200px) {
+  .v-list-item__title {
+    font-size: 0.9rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .wk-left-col {
+    padding: 0px 32px 0 0;
+    position: absolute;
+    top: 16px;
+    width: 100%;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.2s linear;
+  }
+
+  .wk-right-col {
+    padding: 0px 32px 0 0;
+    position: absolute;
+    top: 16px;
+    width: 100%;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.2s linear;
+  }
+
+  .hide {
+    z-index: -1;
+    visibility: hidden;
+    opacity: 0 !important;
+  }
+}
 .small--text {
   font-size: 1rem;
   font-weight: lighter;
   width: 100%;
   text-align: center;
   flex-grow: 1;
+}
+.back svg {
+  margin-top: -3px;
 }
 </style>
