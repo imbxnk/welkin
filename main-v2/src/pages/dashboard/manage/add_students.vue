@@ -84,7 +84,7 @@
         </div>
     </div>
     </v-stepper-content>
-    
+
     <v-stepper-step :complete="e6 > 2" class="my-auto py-auto" step="2">
       Select the trimester, Check the student detail and Upload to the data base
     </v-stepper-step>
@@ -405,9 +405,6 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 }
 .form-font{
   color: white;
-}
-.step-num{
-
 }
 .input{
   min-width: 50px;
