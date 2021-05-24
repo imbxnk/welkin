@@ -113,8 +113,18 @@ const routes = [
   },
   {
     name: "add_student",
-    path: "/manage/student",
+    path: "/manage/student/add",
     component: AddStudent,
+    meta: {
+      requiresAuth: true,
+      authorizedGroup: ["coordinator"],
+      title: "Add Student",
+    },
+  },
+  {
+    name: "manage_student",
+    path: "/manage/student",
+    component: ManageStudents,
     meta: {
       requiresAuth: true,
       authorizedGroup: ["coordinator"],
