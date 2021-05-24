@@ -87,12 +87,16 @@
           <v-divider></v-divider>
           <div v-if="this.students.core_courses.length > 0">
             <div v-for="(course, i) in this.students.core_courses" :key="i">
-              <p>
+              <div class="d-flex pb-3 justify-content-between  flex-column flex-sm-row">
+                <div>{{ course.class.course.name }}</div>
+                <div>{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</div>
+              </div>
+              <!-- <p>
                 {{ course.class.course.name }}
                 <span style="float:right;"
                   >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
                 >
-              </p>
+              </p> -->
             </div>
           </div>
           <div v-else>
@@ -179,12 +183,16 @@
           <v-divider></v-divider>
           <div v-if="this.students.required_courses.length > 0">
             <div v-for="(course, i) in this.students.required_courses" :key="i">
-              <p>
+              <div class="d-flex pb-3 justify-content-between  flex-column flex-sm-row">
+                <div>{{ course.class.course.name }}</div>
+                <div>{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</div>
+              </div>
+              <!-- <p>
                 {{ course.class.course.name }}
                 <span style="float:right;"
                   >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
                 >
-              </p>
+              </p> -->
             </div>
           </div>
           <div v-else>
@@ -200,12 +208,16 @@
           <v-divider></v-divider>
           <div v-if="this.students.elective_courses.length > 0">
             <div v-for="(course, i) in this.students.elective_courses" :key="i">
-              <p>
+              <div class="d-flex pb-3 justify-content-between  flex-column flex-sm-row">
+                <div>{{ course.class.course.name }}</div>
+                <div>{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</div>
+              </div>
+              <!-- <p>
                 {{ course.class.course.name }}
                 <span style="float:right;"
                   >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
                 >
-              </p>
+              </p> -->
             </div>
           </div>
           <div v-else>
