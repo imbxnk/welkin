@@ -14,7 +14,7 @@
               <template v-slot:item.avatar_url="{ item }">
                 <v-avatar
                   size="35"
-                  :style="`background: url(${item.avatar_url || 'http://cdn.welkin.app/static/img/no-avatar.jpg'}) center center / cover;`"
+                  :style="`background: url(${item.avatar_url || $config.defaultAvatar}) center center / cover;`"
                 >
                 </v-avatar>
               </template>

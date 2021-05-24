@@ -38,7 +38,7 @@
       <div class="col-md-4 order-1 float-left">
         <v-card elevation="0" class="text-center pa-3">
           <v-img
-            :src="students.avatar_url || 'https://semantic-ui.com/images/avatar2/large/matthew.png'"
+            :src="students.avatar_url || $config.defaultAvatar"
             contain
             max-width="230"
             class="center"
