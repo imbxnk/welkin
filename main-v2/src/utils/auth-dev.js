@@ -47,6 +47,7 @@ export default{
         config {
           selectedBatches
           defaultAvatar
+          announcements { content user { display_name username } createdAt startDate endDate }
         }
       }
     `
