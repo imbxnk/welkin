@@ -151,7 +151,7 @@ export default {
             sheetName: "",
             selectedValue: "",
             duplicateGrade: [],
-            url: "https://api.welkin.app/v2/graphql",
+            url: process.env.VUE_APP_GRAPHQL_URL,
             showContent: false,
             dropzoneOptions: {
                 url: 'https://httpbin.org/post',

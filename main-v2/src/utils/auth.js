@@ -38,6 +38,7 @@ export default{
       query {
         config {
           selectedBatches
+          defaultAvatar
         }
       }
     `

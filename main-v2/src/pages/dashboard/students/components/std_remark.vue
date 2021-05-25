@@ -10,10 +10,8 @@
         <ul class="mb-n1">
           <li v-for="(msg, i) in this.stdRemark" :key="i">
             "{{ msg.message }}",
-            {{ msg.user.display_name == "" ? msg.user.username : msg.user.display_name }}
-            <v-icon small @click="showDialog2(msg._id, msg.message, msg.user.display_name, i)"
-              >mdi-delete</v-icon
-            >
+            {{ !msg.user.display_name ? msg.user.username : msg.user.display_name }}
+            <v-icon v-if="msg.user.username === $currentUser.username" small @click="showDialog2(msg._id, msg.message, msg.user.display_name, i)">mdi-delete</v-icon>
           </li>
         </ul>
       </simplebar>
@@ -161,7 +159,7 @@ export default {
                 mutation {
                   addRemark(remarkInput: {
                     studentId: "${this.$props.sid}",
-                    message: "${val.msg}"
+                    message: "${val.msg.trim()}"
                   }) {
                     _id
                     message
@@ -171,7 +169,7 @@ export default {
 
       await this.axios
         .post(
-          "https://api.welkin.app/v2/graphql",
+          process.env.VUE_APP_GRAPHQL_URL,
           { query },
           {
             withCredentials: true,
@@ -217,7 +215,7 @@ export default {
               `;
       this.axios
         .post(
-          "https://api.welkin.app/v2/graphql",
+          process.env.VUE_APP_GRAPHQL_URL,
           { query },
           {
             withCredentials: true,

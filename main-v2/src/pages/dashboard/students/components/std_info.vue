@@ -9,7 +9,7 @@
                   indeterminate
                 ></v-progress-circular> -->
         <v-img
-          :src="stdDetail.avatar_url || 'https://semantic-ui.com/images/avatar2/large/matthew.png'"
+          :src="stdDetail.avatar_url || $config.defaultAvatar"
           contain
           max-width="230"
           class="center"

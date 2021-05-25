@@ -218,6 +218,9 @@ export default {
       $currentUser(user) {
         this.$currentUser = user;
       },
+      $config(config) {
+        this.$config = config
+      }
     },
   },
   mounted() {
