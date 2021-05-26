@@ -35,7 +35,12 @@
               active-class="primary--text"
             >
               <template v-for="(item, index) in filterItems">
-                <v-list-item :key="item.title" @click="showdata(item)" class="my-n4">
+                <v-list-item
+                  :key="item.title"
+                  @click="showdata(item)"
+                  :class="{ even: index % 2, odd: !(index % 2) }"
+                  class="my-n4"
+                >
                   <v-list-item-content>
                     <v-list-item-title v-text="item.code + ': ' + item.name"></v-list-item-title>
                   </v-list-item-content>
@@ -274,5 +279,11 @@ export default {
 
 .back svg {
   margin-top: -3px;
+}
+.even {
+  background: #faf9f9;
+}
+.odd {
+  background: #fff;
 }
 </style>
