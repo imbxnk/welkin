@@ -1,12 +1,29 @@
 <template>
-  <v-container class="mx-auto">
+  <div>
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
-        <v-btn @click="dialog = true">Add User</v-btn>
+        <v-btn color="primary" @click="dialog = true">Add User<v-icon>mdi-plus</v-icon></v-btn>
       </div>
       <div class="p-2 bd-highlight">
-        <v-card style="max-width: auto">
-          <v-data-table :headers="headers" :items="users" class="student">
+        <v-card style="max-width: auto"
+          ><v-card-title
+            >Users<v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              type="text"
+              class="mx-3"
+            ></v-text-field
+          ></v-card-title>
+          <v-data-table
+            :headers="headers"
+            :items="users"
+            :search="search"
+            class="student px-3 pb-3"
+            hide-default-footer
+            disable-pagination
+          >
             <template v-slot:[`item.avatar.small`]="{ item }">
               <v-avatar
                 size="35"
@@ -39,7 +56,7 @@
         <AddUser></AddUser>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -48,6 +65,7 @@ export default {
   components: { AddUser },
   data() {
     return {
+      search: "",
       headers: [
         { sortable: false, value: "avatar.small", width: "1%" },
         { text: "Display Name", sortable: false, value: "display_name", width: "9%" },
@@ -100,6 +118,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    editItem(item) {
+      console.log(item);
     },
   },
 };
