@@ -158,6 +158,7 @@ export default {
                     avatar_url
                     entry_year
                     prefix
+                    program
                     advisor {
                       name
                     }
@@ -207,40 +208,43 @@ export default {
         }
         // eslint-disable-next-line no-console
         console.log(this.Info[this.editedIndex]);
-        let query = `mutation{
-                            updateStudent(searchInput: {sid:"${this.Info[this.editedIndex].sid}"},studentInput:{
-                                sid:"${this.Info[this.editedIndex].sid}",
-                                given_name:"${this.Info[this.editedIndex].given_name}",
-                                family_name:"${this.Info[this.editedIndex].family_name}",
-                                nick_name: "${this.Info[this.editedIndex].nick_name}"
-                                prefix:"${this.Info[this.editedIndex].prefix}",
-                                entry_trimester: "${this.Info[this.editedIndex].entry_trimester}",
-                                entry_year: "${this.Info[this.editedIndex].entry_year}",
-                                phone: "${this.Info[this.editedIndex].phone}",
-                                email: "${this.Info[this.editedIndex].email}",
-                                }){
-                                    sid
-                                    given_name
-                                    family_name
-                                    nick_name
-                                    prefix
-                                    entry_trimester
-                                    entry_year
-                                    phone
-                                    email
-                                    advisor {
-                                    _id
-                                    title
-                                    name
-                                    given_name
-                                    family_name
-                                }
-                            }
-                            }
-                        `
-            this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials : true }).then(res => {
-            this.close()
-            console.log(res.data.data.editItem)
+        let query = `
+          mutation{
+            updateStudent(searchInput: {sid:"${this.Info[this.editedIndex].sid}"},studentInput:{
+              sid:"${this.Info[this.editedIndex].sid}",
+              given_name:"${this.Info[this.editedIndex].given_name}",
+              family_name:"${this.Info[this.editedIndex].family_name}",
+              nick_name: "${this.Info[this.editedIndex].nick_name}"
+              prefix:"${this.Info[this.editedIndex].prefix}",
+              program:"${this.Info[this.editedIndex].program}",
+              entry_trimester: "${this.Info[this.editedIndex].entry_trimester}",
+              entry_year: "${this.Info[this.editedIndex].entry_year}",
+              phone: "${this.Info[this.editedIndex].phone}",
+              email: "${this.Info[this.editedIndex].email}",
+              }){
+                sid
+                given_name
+                family_name
+                nick_name
+                prefix
+                entry_trimester
+                entry_year
+                phone
+                email
+                program
+                advisor {
+                _id
+                title
+                name
+                given_name
+                family_name
+              }
+            }
+          }
+        `
+        this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials : true }).then(res => {
+          this.close()
+          console.log(res.data.data)
         }).catch (err =>{
             console.log(err)
         })
