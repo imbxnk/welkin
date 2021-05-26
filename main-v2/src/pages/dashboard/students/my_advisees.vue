@@ -2,66 +2,64 @@
   <div id="app">
     <!-- <div v-if="advisees.length == 0 && !isLoading">You have no advisees</div>
     <div v-else-if="!isLoading">{{ advisees }}</div> -->
-      <v-card class=" pa-3">
-        <v-row>
-          <v-col>
-            <v-card-title>
-              My Advisees
+    <v-card class=" pa-3">
+      <v-row>
+        <v-col>
+          <v-card-title> My Advisees </v-card-title>
+        </v-col>
+        <v-col cols="6" md="5" lg="4" xl="3">
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            type="text"
+            class="mr-3"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-card :elevation="0">
+        <!-- if loading -->
+        <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table>
+        <!-- else -->
+        <v-data-table
+          v-else
+          :headers="headers"
+          :items="advisees"
+          :search="search"
+          mobile-breakpoint="0"
+          @click:row="ShowDetail"
+          class="advisee"
+        >
+          <template v-slot:[`item.status.current`]="{ item }">
+            <v-chip
+              small
+              :color="getColor(item.status.current)"
+              :dark="isDark(item.status.current)"
+              class="d-flex justify-center"
+            >
+              {{ item.status.current }}
+            </v-chip>
+          </template>
+          <template v-slot:[`item.nick_name`]="{ item }">
+            {{ item.nick_name == null ? " - " : item.nick_name }}
+          </template>
+          <template v-slot:[`item.email`]="{ item }">
+            {{ item.email == null ? " - " : item.email }}
+          </template>
+        </v-data-table>
+        <!-- dialog1 show info -->
+        <v-dialog v-model="dialog" max-width="500px">
+          <v-card>
+            <v-card-title class="overline lighten-2">
+              {{ avsDetail.name }}
+              <v-spacer></v-spacer>
+              <v-icon @click="dialog = false">mdi-close</v-icon>
             </v-card-title>
-          </v-col>
-          <v-col cols="6" md="5" lg="4" xl="3">
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              type="text"
-              class="mr-3"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-card :elevation="0">
-          <!-- if loading -->
-          <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table>
-          <!-- else -->
-          <v-data-table
-            v-else
-            :headers="headers"
-            :items="advisees"
-            :search="search"
-            mobile-breakpoint="0"
-            @click:row="ShowDetail"
-            class="advisee"
-          >
-            <template v-slot:[`item.status.current`]="{ item }">
-              <v-chip
-                small
-                :color="getColor(item.status.current)"
-                :dark="isDark(item.status.current)"
-                class="d-flex justify-center"
-              >
-                {{ item.status.current }}
-              </v-chip>
-            </template>
-            <template v-slot:[`item.nick_name`]="{ item }">
-              {{ item.nick_name == null ? " - " : item.nick_name }}
-            </template>
-            <template v-slot:[`item.email`]="{ item }">
-              {{ item.email == null ? " - " : item.email }}
-            </template>
-          </v-data-table>
-          <!-- dialog1 show info -->
-          <v-dialog v-model="dialog" max-width="500px">
-            <v-card>
-              <v-card-title class="overline lighten-2">
-                {{ avsDetail.name }}
-                <v-spacer></v-spacer>
-                <v-icon @click="dialog = false">mdi-close</v-icon>
-              </v-card-title>
-              <StudentInfo :stdDetail="avsDetail"></StudentInfo>
-            </v-card>
-          </v-dialog>
-        </v-card>
+            <StudentInfo :stdDetail="avsDetail"></StudentInfo>
+          </v-card>
+        </v-dialog>
       </v-card>
+    </v-card>
   </div>
 </template>
 <script>
@@ -168,7 +166,6 @@ export default {
           this.advisees.forEach((advisee) => {
             advisee["name"] = [advisee.given_name, advisee.family_name].join(" ");
           });
-          console.log(this.advisees[0].email);
         })
         .catch((err) => {
           this.loading = false;

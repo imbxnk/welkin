@@ -350,39 +350,34 @@ export default {
             href: "/student",
             children: [
               {
-                title: "Add Students",
-                href: "/add",
-                icon: "mdi-plus",
-              },
-              {
                 title: "Upload Grade",
                 href: "/grade/upload",
                 icon: "mdi-plus",
               },
             ],
           },
-          {
-            title: "Course",
-            href: "/course",
-            children: [
-              {
-                title: "Add Course",
-                href: "/add",
-                icon: "mdi-plus",
-              },
-            ],
-          },
-          {
-            title: "Curriculum",
-            href: "/curriculum",
-            children: [
-              {
-                title: "Add Curriculum",
-                href: "/add",
-                icon: "mdi-plus",
-              },
-            ],
-          },
+          // {
+          //   title: "Course",
+          //   href: "/course",
+          //   children: [
+          //     {
+          //       title: "Add Course",
+          //       href: "/add",
+          //       icon: "mdi-plus",
+          //     },
+          //   ],
+          // },
+          // {
+          //   title: "Curriculum",
+          //   href: "/curriculum",
+          //   children: [
+          //     {
+          //       title: "Add Curriculum",
+          //       href: "/add",
+          //       icon: "mdi-plus",
+          //     },
+          //   ],
+          // },
         ],
       },
       // {

@@ -41,11 +41,13 @@
             <div v-if="showing == 0" class="grey--text pa-3">
               Please enter the student ID to search fot the student
             </div>
-            <div v-if="showing == 1">Sorry, there is no {{ search_ID }} in our database.</div>
-            <div v-if="showing == 2">
+            <div v-if="showing == 1" class="pa-3">
+              Sorry, there is no {{ search_ID }} in our database.
+            </div>
+            <div v-if="showing == 2" class="pa-3">
               <div class="row d-md-block">
                 <div class="col-md-4 order-1 float-left">
-                  <v-card elevation="0" class="text-center pa-3">
+                  <v-card outlined elevation="0" class="text-center pa-3">
                     <v-img
                       :src="std_details.avatar_url || $config.defaultAvatar"
                       contain
@@ -56,44 +58,55 @@
                   </v-card>
                 </div>
                 <div class="col-md-8 order-2 float-right">
-                  <v-card elevation="0" class="profile-card">
+                  <v-card outlined elevation="0" class="profile-card">
                     <span class="overline">About this student</span>
                     <h3>{{ std_details.given_name }} {{ std_details.family_name }}</h3>
                     <v-divider></v-divider>
                     {{ std_details.entry_year }}T{{ std_details.entry_trimester }}<br />
                     Email: {{ std_details.email == null ? " - " : std_details.email }}<br />
+                    Phone: {{ std_details.phone == "" ? " - " : std_details.phone }}<br />
                     Line id: {{ std_details.lineID == null ? " - " : std_details.lineID }}<br />
+                    <div
+                      class="w-100 d-flex justify-content-end align-self-end  mt-sm-16 mt-md-16 "
+                    >
+                      <a
+                        @click="
+                          $router.push({ name: 'student_record', params: { sid: std_details.sid } })
+                        "
+                        ><b>... See More >></b></a
+                      >
+                    </div>
                   </v-card>
                 </div>
-                <!-- <div class="col-md-4 order-3 float-left">
-                <v-card elevation="0" class="pa-3"
-                  ><span class="overline">Taken courses</span>
+                <div class="col-md-4 order-3 float-left">
+                  <v-card outlined elevation="0" class="pa-3"
+                    ><span class="overline">Taken courses</span>
 
-                  <div class="d-flex justify-content-around flex-wrap flex-row">
-                    <div class="order-1 text-center">
-                      <p class="mt-n1">Core</p>
-                      <h4 class="primary--text mt-n4">
-                        {{ std_details.records.core_credits }}
-                      </h4>
-                      <p class="small mt-n2 ">credits</p>
+                    <div class="d-flex justify-content-around flex-wrap flex-row">
+                      <div class="order-1 text-center">
+                        <p class="mt-n1">Core</p>
+                        <h4 class="primary--text mt-n4">
+                          {{ std_details.records.core_credits }}
+                        </h4>
+                        <p class="small mt-n2 ">credits</p>
+                      </div>
+                      <div class="order-2 text-center">
+                        <p class="mt-n1">Required</p>
+                        <h4 class="primary--text mt-n4">
+                          {{ std_details.records.major_credits }}
+                        </h4>
+                        <p class="small mt-n2 ">credits</p>
+                      </div>
+                      <div class="order-3 text-center">
+                        <p class="mt-n1">Elective</p>
+                        <h4 class="primary--text mt-n4">
+                          {{ std_details.records.elective_credits }}
+                        </h4>
+                        <p class="small mt-n2 ">credits</p>
+                      </div>
                     </div>
-                    <div class="order-2 text-center">
-                      <p class="mt-n1">Required</p>
-                      <h4 class="primary--text mt-n4">
-                        {{ std_details.records.major_credits }}
-                      </h4>
-                      <p class="small mt-n2 ">credits</p>
-                    </div>
-                    <div class="order-3 text-center">
-                      <p class="mt-n1">Elective</p>
-                      <h4 class="primary--text mt-n4">
-                        {{ std_details.records.elective_credits }}
-                      </h4>
-                      <p class="small mt-n2 ">credits</p>
-                    </div>
-                  </div>
-                </v-card>
-              </div> -->
+                  </v-card>
+                </div>
               </div>
             </div>
           </div>
@@ -145,6 +158,7 @@ export default {
                     nick_name
                     avatar_url
                     email
+                    phone
                     lineID
                     lineUID
                     advisor{
@@ -197,6 +211,10 @@ export default {
   margin-left: auto;
   margin-right: auto;
   width: 100%;
+}
+.profile-card {
+  // height: 200px;
+  padding: 1em;
 }
 .loading {
   position: absolute;
