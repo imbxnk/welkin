@@ -2,27 +2,32 @@
   <v-container class="mx-auto">
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
-        <v-btn @click.prevent="ToImportPage()">Import Student</v-btn>
+        <v-btn @click.prevent="ToImportPage()" color="#3c84fb" style="color: white;">Import Student</v-btn>
       </div>
       <div class="p-2 bd-highlight">
         <v-card style="max-width: auto">
-          <v-data-table :headers="headers" :items="students" class="student">
-            <template v-slot:[`item.avatar_url`]="{ item }">
-              <v-avatar
-                size="35"
-                :style="
-                  `background: url(${item.avatar_url ||
-                    $config.defaultAvatar}) center center / cover;`
-                "
-              >
-              </v-avatar>
-            </template>
-            <template v-slot:[`item.actions`]="{ item }">
-              <v-icon small @click="editItem(item)">
-                mdi-pencil
-              </v-icon>
-            </template>
-          </v-data-table>
+            <v-card-title class="ml-6">
+                Manage Students
+                <v-spacer></v-spacer>
+                <v-text-field class="mx-auto" append-icon="mdi-magnify" label="Search" type="text" v-model="search"></v-text-field>
+            </v-card-title>
+            <v-data-table :headers="headers" :items="students" :search="search" class="student px-3 pb-3" hide-default-footer disable-pagination>
+                <template v-slot:[`item.avatar_url`]="{ item }">
+                <v-avatar
+                    size="35"
+                    :style="
+                    `background: url(${item.avatar_url ||
+                        $config.defaultAvatar}) center center / cover;`
+                    "
+                >
+                </v-avatar>
+                </template>
+                <template v-slot:[`item.actions`]="{ item }">
+                <v-icon small @click="editItem(item)">
+                    mdi-pencil
+                </v-icon>
+                </template>
+            </v-data-table>
         </v-card>
       </div>
     </div>
@@ -94,8 +99,7 @@ export default {
         { text: "Nickname", sortable: false, value: "nick_name", width: 80 },
         { text: "Email", sortable: false, value: "email", width: 80 },
         { text: "Phone", sortable: false, value: "phone", width: 80 },
-        { text: "Entry Trimester", sortable: false, value: "entry_trimester", width: 80 },
-        { text: "Entry Year", sortable: false, value: "entry_year", width: 80 },
+        { text: "Entry Period", sortable: false, value: "entry_tri_year", width: 100 },
         { text: "advisor", sortable: false, value: "advisor.name", width: 120 },
         { text: "Edit", sortable: false, value: "actions", width: "1%" },
       ],
@@ -128,6 +132,7 @@ export default {
       Info: [],
       dialog: false,
       prefix:["Mr.", "Ms.", "Mrs",],
+      search:"",
     };
   },
   mounted() {
@@ -170,6 +175,7 @@ export default {
           this.students = [...res.data.data.students.students];
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
+            student["entry_tri_year"] = "T" + [student.entry_trimester, student.entry_year].join("/");
           });
         })
         .catch((err) => {
@@ -181,7 +187,7 @@ export default {
         this.editedIndex = this.Info.indexOf(item);
         this.editedItem = Object.assign({}, item);
         // eslint-disable-next-line no-console
-        console.log(item,);
+        console.log(this.editedItem, this.editedIndex);
         this.dialog = true;
     },
     
@@ -193,24 +199,24 @@ export default {
         });
     },
     save() {
-        if (this.editedIndex > -1) {
-            Object.assign(this.Info[this.editedIndex], this.editedItem);
-        } else {
-            this.Info.push(this.editedItem);
-        }
+        // if (this.editedIndex > -1) {
+        //     Object.assign(this.Info[this.editedIndex], this.editedItem);
+        // } else {
+        //     this.Info.push(this.editedItem);
+        // }
         // eslint-disable-next-line no-console
-        console.log(this.Info[this.editedIndex], this.Info);
+        console.log(this.editedItem);
         let query = `mutation{
-                        updateStudent(searchInput: {sid:"${this.Info[this.editedIndex].sid}"},studentInput: {
-                            sid: "${this.Info[this.editedIndex].sid}"
-                            given_name: "${this.Info[this.editedIndex].given_name}",
-                            family_name: "${this.Info[this.editedIndex].family_name}",
-                            nick_name: "${this.Info[this.editedIndex].nick_name}"
-                            prefix: "${this.Info[this.editedIndex].prefix}",
-                            entry_trimester: "${this.Info[this.editedIndex].entry_trimester}",
-                            entry_year: "${this.Info[this.editedIndex].entry_year}",
-                            email: "${this.Info[this.editedIndex].email}",
-                            phone: "${this.Info[this.editedIndex].phone}",
+                        updateStudent(searchInput: {sid:"${this.editedItem.sid}"},studentInput: {
+                            sid: "${this.editedItem.sid}"
+                            given_name: "${this.editedItem.given_name}",
+                            family_name: "${this.editedItem.family_name}",
+                            nick_name: "${this.editedItem.nick_name}"
+                            prefix: "${this.editedItem.prefix}",
+                            entry_trimester: "${this.editedItem.entry_trimester}",
+                            entry_year: "${this.editedItem.entry_year}",
+                            email: "${this.editedItem.email}",
+                            phone: "${this.editedItem.phone}",
                             ){
                                 sid
                                 given_name
@@ -220,9 +226,11 @@ export default {
                                 email
                                 phone
                             }
-                        }`
-        this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials : true }).then(res => {
+                        }
+                        `
+            this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials : true }).then(res => {
             this.close()
+            console.log(res.data.data.editItem)
         }).catch (err =>{
             console.log(err)
         })
