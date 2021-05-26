@@ -6,8 +6,12 @@
       </div>
       <div class="p-2 bd-highlight">
         <v-card style="max-width: auto"
-          ><v-card-title
-            >Users<v-spacer></v-spacer>
+          ><v-card-title>
+              <div class="d-flex flex-column">
+                <span>Users</span>
+                <span style="font-size:0.8rem; color:#999; margin-top: -10px;">Total: {{ total }}</span>
+              </div>
+            <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
@@ -77,6 +81,7 @@ export default {
         { text: "Edit", sortable: false, value: "actions", width: "1%" },
       ],
       users: [],
+      total: 0,
       dialog: false,
     };
   },
@@ -96,7 +101,7 @@ export default {
                     family_name
                     email
                     group
-                    createdAt 
+                    createdAt
                     avatar {
                         small
                         medium
@@ -110,6 +115,7 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           console.log(res.data.data.users);
+          this.total = res.data.data.users.total;
           this.users = res.data.data.users.users;
           this.users.forEach((user) => {
             user["name"] = [user.given_name, user.family_name].join(" ");
