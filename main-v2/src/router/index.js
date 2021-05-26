@@ -20,9 +20,9 @@ import CourseDetail from "../pages/dashboard/courselist/course_detail";
 import Curriculum from "../pages/dashboard/curriculum/curriculum";
 import ManageGrade from "../pages/dashboard/manage/manage_grade";
 import AddInstructor from "../pages/dashboard/manage/add_instructor";
-import AddUser from "../pages/dashboard/manage/add_user";
 import AddStudent from "../pages/dashboard/manage/add_students";
 import ManageWebsite from "../pages/dashboard/manage/manage_website";
+import ManageUser from "../pages/dashboard/manage/manage_User";
 // Auth Route
 import Login from "../pages/auth/login";
 import PasswordRecovery from "../pages/auth/passwordRecovery";
@@ -154,7 +154,7 @@ const routes = [
   {
     name: "add_user",
     path: "/manage/user",
-    component: AddUser,
+    component: ManageUser,
     meta: {
       requiresAuth: true,
       title: "Add User",
