@@ -62,12 +62,15 @@
                                 <v-text-field class="input" label="Entry Year" v-model="editedItem.entry_year" outlined></v-text-field>
                             </div>
                             <div class="p-2 bd-highlight">
-                                <v-text-field class="input" label="Email" v-model="editedItem.email" outlined></v-text-field>
+                                <v-text-field class="input" label="Program" v-model="editedItem.program" outlined></v-text-field>
                             </div>
                         </div>
                     </div>
                     <div class="p-2 bd-highlight">
                         <div class="d-flex flex-row justify-content-evenly bd-highlight">
+                            <div class="p-2 bd-highlight">
+                                <v-text-field class="input" label="Email" v-model="editedItem.email" outlined></v-text-field>
+                            </div>
                             <div class="p-2 bd-highlight">
                                 <v-text-field class="input" label="Phone number" v-model="editedItem.phone" outlined></v-text-field>
                             </div>
@@ -97,8 +100,7 @@ export default {
         { text: "Prefix", sortable: false, value: "prefix", width: "1%" },
         { text: "Name", sortable: false, value: "name", width: 80 },
         { text: "Nickname", sortable: false, value: "nick_name", width: 80 },
-        { text: "Email", sortable: false, value: "email", width: 80 },
-        { text: "Phone", sortable: false, value: "phone", width: 80 },
+        { text: "Program", sortable: false, value: "program", width: 80 },
         { text: "Entry Period", sortable: false, value: "entry_tri_year", width: 100 },
         { text: "advisor", sortable: false, value: "advisor.name", width: 120 },
         { text: "Edit", sortable: false, value: "actions", width: "1%" },
@@ -111,6 +113,7 @@ export default {
         given_name: "",
         family_name: "",
         nick_name: "",
+        program: "",
         email: "",
         phone: "",
         lineID: "",
@@ -123,6 +126,7 @@ export default {
         given_name: "",
         family_name: "",
         nick_name: "",
+        program: "",
         email: "",
         phone: "",
         lineID: "",
@@ -154,6 +158,7 @@ export default {
                     email
                     phone
                     lineID
+                    program
                     entry_trimester
                     avatar_url
                     entry_year
