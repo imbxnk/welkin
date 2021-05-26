@@ -167,6 +167,7 @@ export default {
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
           });
+
           console.log(this.students);
           this.loading = false;
         })

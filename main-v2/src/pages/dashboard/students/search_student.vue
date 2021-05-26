@@ -73,6 +73,7 @@
                         @click="
                           $router.push({ name: 'student_record', params: { sid: std_details.sid } })
                         "
+                        class="primary--text"
                         ><b>... See More >></b></a
                       >
                     </div>

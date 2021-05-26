@@ -33,7 +33,23 @@
     </div>
     <br /> -->
 
-    <v-btn @click="$router.push('/students/all')" class="ma-3">back to student list</v-btn>
+    <!-- <v-btn @click="$router.back()" class="ma-3">back </v-btn> -->
+    <a @click="$router.back()" class="overline my-n1 back primary--text"
+      ><svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-arrow-left"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+        />
+      </svg>
+      BACK</a
+    >
     <div class="row d-md-block">
       <div class="col-md-4 order-1 float-left">
         <v-card elevation="0" class="text-center pa-3">
@@ -112,7 +128,10 @@
             ><ul class="mb-n1">
               <li v-for="(msg, i) in students.remarks" :key="i">
                 "{{ msg.message }}", {{ msg.user.display_name }}
-                <v-icon v-if="msg.user.username === $currentUser.username" small @click="showDialog3(msg._id, msg.message, msg.user.display_name, i)"
+                <v-icon
+                  v-if="msg.user.username === $currentUser.username"
+                  small
+                  @click="showDialog3(msg._id, msg.message, msg.user.display_name, i)"
                   >mdi-delete</v-icon
                 >
               </li>
@@ -265,7 +284,7 @@ export default {
         core_courses: [],
         required_courses: [],
         elective_courses: [],
-        records: {}
+        records: {},
       },
     };
   },

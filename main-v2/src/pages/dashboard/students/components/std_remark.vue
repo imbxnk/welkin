@@ -11,13 +11,20 @@
           <li v-for="(msg, i) in this.stdRemark" :key="i">
             "{{ msg.message }}",
             {{ !msg.user.display_name ? msg.user.username : msg.user.display_name }}
-            <v-icon v-if="msg.user.username === $currentUser.username" small @click="showDialog2(msg._id, msg.message, msg.user.display_name, i)">mdi-delete</v-icon>
+            <v-icon
+              v-if="msg.user.username === $currentUser.username"
+              small
+              @click="showDialog2(msg._id, msg.message, msg.user.display_name, i)"
+              >mdi-delete</v-icon
+            >
           </li>
         </ul>
       </simplebar>
     </span>
     <div class="w-100 d-flex justify-content-end align-self-end mt-1">
-      <v-btn @click="dialog = true" outlined x-small>Add <v-icon small>mdi-pencil</v-icon></v-btn>
+      <v-btn color="primary" @click="dialog = true" outlined x-small class=""
+        >Add <v-icon small>mdi-pencil</v-icon></v-btn
+      >
     </div>
 
     <!-- add remark -->
