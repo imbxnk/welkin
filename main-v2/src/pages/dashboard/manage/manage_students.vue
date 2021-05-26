@@ -173,6 +173,7 @@ export default {
         .then((res) => {
           // console.log(res.data.data.students);
           this.students = [...res.data.data.students.students];
+          this.Info = [...res.data.data.students.students];
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
             student["entry_tri_year"] = "T" + [student.entry_trimester, student.entry_year].join("/");
@@ -199,34 +200,43 @@ export default {
         });
     },
     save() {
-        // if (this.editedIndex > -1) {
-        //     Object.assign(this.Info[this.editedIndex], this.editedItem);
-        // } else {
-        //     this.Info.push(this.editedItem);
-        // }
+        if (this.editedIndex > -1) {
+            Object.assign(this.Info[this.editedIndex], this.editedItem);
+        } else {
+            this.Info.push(this.editedItem);
+        }
         // eslint-disable-next-line no-console
-        console.log(this.editedItem);
+        console.log(this.Info[this.editedIndex]);
         let query = `mutation{
-                        updateStudent(searchInput: {sid:"${this.editedItem.sid}"},studentInput: {
-                            sid: "${this.editedItem.sid}"
-                            given_name: "${this.editedItem.given_name}",
-                            family_name: "${this.editedItem.family_name}",
-                            nick_name: "${this.editedItem.nick_name}"
-                            prefix: "${this.editedItem.prefix}",
-                            entry_trimester: "${this.editedItem.entry_trimester}",
-                            entry_year: "${this.editedItem.entry_year}",
-                            email: "${this.editedItem.email}",
-                            phone: "${this.editedItem.phone}",
-                            ){
-                                sid
-                                given_name
-                                family_name
-                                nick_name
-                                prefix
-                                email
-                                phone
+                            updateStudent(searchInput: {sid:"${this.Info[this.editedIndex].sid}"},studentInput:{
+                                sid:"${this.Info[this.editedIndex].sid}",
+                                given_name:"${this.Info[this.editedIndex].given_name}",
+                                family_name:"${this.Info[this.editedIndex].family_name}",
+                                nick_name: "${this.Info[this.editedIndex].nick_name}"
+                                prefix:"${this.Info[this.editedIndex].prefix}",
+                                entry_trimester: "${this.Info[this.editedIndex].entry_trimester}",
+                                entry_year: "${this.Info[this.editedIndex].entry_year}",
+                                phone: "${this.Info[this.editedIndex].phone}",
+                                email: "${this.Info[this.editedIndex].email}",
+                                }){
+                                    sid
+                                    given_name
+                                    family_name
+                                    nick_name
+                                    prefix
+                                    entry_trimester
+                                    entry_year
+                                    phone
+                                    email
+                                    advisor {
+                                    _id
+                                    title
+                                    name
+                                    given_name
+                                    family_name
+                                }
                             }
-                        }
+                            }
                         `
             this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials : true }).then(res => {
             this.close()
