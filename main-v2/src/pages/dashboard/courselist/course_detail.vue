@@ -3,9 +3,24 @@
     <!-- 1st column -->
     <v-col style="padding: 0 8px 0 0">
       <v-card>
-        <v-btn class="mx-4 mt-5" @click="$router.push('/course')">back to course list</v-btn>
-        <v-card-title class="text-uppercase">{{ $route.params.code }}</v-card-title>
-        <v-list class="pa-3">
+        <a @click="$router.back()" class="overline back primary--text pt-16 px-3"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-arrow-left"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+            />
+          </svg>
+          BACK</a
+        >
+        <v-card-title class="text-uppercase mt-n3">{{ $route.params.code }}</v-card-title>
+        <v-list class="px-3 pb-3">
           <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list">
             <v-list-item-group
               v-model="selected"
@@ -13,7 +28,12 @@
               active-class="primary--text"
             >
               <template v-for="(item, index) in classes">
-                <v-list-item :key="item.title" @click="sentData(item._id)" class="my-n4">
+                <v-list-item
+                  :key="item.title"
+                  @click="sentData(item._id)"
+                  class="my-n4"
+                  :class="{ even: index % 2, odd: !(index % 2) }"
+                >
                   <v-list-item-content>
                     <v-list-item-title
                       v-text="item.year + 'T' + item.trimester + ' SEC' + item.section"
@@ -233,5 +253,12 @@ export default {
 }
 .back svg {
   margin-top: -3px;
+}
+
+.even {
+  background: #faf9f9;
+}
+.odd {
+  background: #fff;
 }
 </style>

@@ -12,7 +12,12 @@
               active-class="primary--text"
             >
               <template v-for="(item, index) in items">
-                <v-list-item :key="item.title" @click="showData(item)" class="my-n4">
+                <v-list-item
+                  :key="item.title"
+                  @click="showData(item)"
+                  class="my-n4"
+                  :class="{ even: index % 2, odd: !(index % 2) }"
+                >
                   <v-list-item-content>
                     <v-list-item-title v-text="item.name"></v-list-item-title>
                   </v-list-item-content>
@@ -56,9 +61,7 @@
             </svg>
             BACK</a
           >
-          <CurriculumDetail
-            :curriculum="this.detail"
-          ></CurriculumDetail>
+          <CurriculumDetail :curriculum="this.detail"></CurriculumDetail>
         </simplebar>
       </v-card>
     </v-col>
@@ -227,5 +230,11 @@ export default {
 
 .back svg {
   margin-top: -3px;
+}
+.even {
+  background: #faf9f9;
+}
+.odd {
+  background: #fff;
 }
 </style>
