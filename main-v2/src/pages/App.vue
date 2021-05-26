@@ -218,6 +218,9 @@ export default {
       $currentUser(user) {
         this.$currentUser = user;
       },
+      $config(config) {
+        this.$config = config;
+      },
     },
   },
   mounted() {
@@ -335,6 +338,11 @@ export default {
           {
             title: "User",
             href: "/user",
+            icon: "mdi-plus",
+          },
+          {
+            title: "Website",
+            href: "/website",
             icon: "mdi-plus",
           },
           {

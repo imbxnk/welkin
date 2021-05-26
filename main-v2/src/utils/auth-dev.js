@@ -46,6 +46,8 @@ export default{
       query {
         config {
           selectedBatches
+          defaultAvatar
+          announcements { content user { display_name username } createdAt startDate endDate }
         }
       }
     `

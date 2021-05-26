@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mx-auto">
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
         <v-btn @click.prevent="ToImportPage()">Import Student</v-btn>
@@ -7,6 +7,16 @@
       <div class="p-2 bd-highlight">
         <v-card style="max-width: auto">
           <v-data-table :headers="headers" :items="students" class="student">
+            <template v-slot:[`item.avatar_url`]="{ item }">
+              <v-avatar
+                size="35"
+                :style="
+                  `background: url(${item.avatar_url ||
+                    $config.defaultAvatar}) center center / cover;`
+                "
+              >
+              </v-avatar>
+            </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon small @click="editItem(item)">
                 mdi-pencil
@@ -77,8 +87,9 @@ export default {
   data() {
     return {
       headers: [
-        { text: "Student ID", sortable: false, value: "sid", width: 80 },
-        { text: "Prefix", sortable: false, value: "prefix", width: 80 },
+        { sortable: false, value: "avatar_url", width: "1%" },
+        { text: "Student ID", sortable: false, value: "sid", width: "9%" },
+        { text: "Prefix", sortable: false, value: "prefix", width: "1%" },
         { text: "Name", sortable: false, value: "name", width: 80 },
         { text: "Nickname", sortable: false, value: "nick_name", width: 80 },
         { text: "Email", sortable: false, value: "email", width: 80 },
@@ -86,7 +97,7 @@ export default {
         { text: "Entry Trimester", sortable: false, value: "entry_trimester", width: 80 },
         { text: "Entry Year", sortable: false, value: "entry_year", width: 80 },
         { text: "advisor", sortable: false, value: "advisor.name", width: 120 },
-        { text: "Edit", sortable: false, value: "actions", width: 30 },
+        { text: "Edit", sortable: false, value: "actions", width: "1%" },
       ],
       students: [],
       editedIndex: -1,
@@ -139,6 +150,7 @@ export default {
                     phone
                     lineID
                     entry_trimester
+                    avatar_url
                     entry_year
                     prefix
                     advisor {

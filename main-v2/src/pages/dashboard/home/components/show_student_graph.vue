@@ -1,17 +1,14 @@
 <template>
-  <div>
+  <div class="pt-4">
     <v-row>
       <v-col cols="12" md="8" lg="6">
-        <v-card>
-          <v-card-title>student</v-card-title>
-          <v-card-subtitle>hi</v-card-subtitle>
-          <div id="chart" class="mt-n8">
-            <apexchart
-              type="radialBar"
-              height="350"
-              :options="chartOptions"
-              :series="series"
-            ></apexchart></div></v-card
+        <div id="chart" class="mt-n8">
+          <apexchart
+            type="radialBar"
+            height="350"
+            :options="chartOptions"
+            :series="series"
+          ></apexchart></div
       ></v-col>
       <v-col cols="12" md="4" lg="6"> </v-col
     ></v-row>

@@ -25,6 +25,13 @@
 
           <v-divider class="mb-n4"></v-divider>
         </div>
+        <div class="col-md-8 order-2 float-right py-3">
+          <ShowAnnouncement></ShowAnnouncement>
+        </div>
+        <div class="col-md-4 order-3 float-left py-2">
+          <ShowBatchesSummary></ShowBatchesSummary>
+        </div>
+
         <div
           v-if="
             this.$currentUser.group == 'coordinator' ||
@@ -34,12 +41,11 @@
         >
           <ShowStudentsTable></ShowStudentsTable>
         </div>
+
         <div v-else class="col-md-8 order-3 float-right py-2">
           <ShowStudentGraph></ShowStudentGraph>
         </div>
-        <div class="col-md-4 order-2 float-left py-2">
-          <ShowBatchesSummary></ShowBatchesSummary>
-        </div>
+        <!-- <div class="col-md-8 order-4 float-right py-2"><ShowStudentsTable></ShowStudentsTable></div> -->
 
         <!-- <div class="row order-4 pt-2">
           <div class="col-md-6 order-1 float-left ">
@@ -57,12 +63,14 @@
 import ShowStudentsTable from "./components/show_students_table";
 import ShowBatchesSummary from "./components/show_batches_summary";
 import ShowStudentGraph from "./components/show_student_graph";
+import ShowAnnouncement from "./components/show_announce";
 
 export default {
   name: "home",
   components: {
     ShowStudentsTable,
     ShowBatchesSummary,
+    ShowAnnouncement,
     ShowStudentGraph,
   },
   mounted() {

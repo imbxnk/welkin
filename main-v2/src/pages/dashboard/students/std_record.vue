@@ -38,7 +38,7 @@
       <div class="col-md-4 order-1 float-left">
         <v-card elevation="0" class="text-center pa-3">
           <v-img
-            :src="students.avatar_url || 'https://semantic-ui.com/images/avatar2/large/matthew.png'"
+            :src="students.avatar_url || $config.defaultAvatar"
             contain
             max-width="230"
             class="center"
@@ -112,7 +112,7 @@
             ><ul class="mb-n1">
               <li v-for="(msg, i) in students.remarks" :key="i">
                 "{{ msg.message }}", {{ msg.user.display_name }}
-                <v-icon small @click="showDialog3(msg._id, msg.message, msg.user.display_name, i)"
+                <v-icon v-if="msg.user.username === $currentUser.username" small @click="showDialog3(msg._id, msg.message, msg.user.display_name, i)"
                   >mdi-delete</v-icon
                 >
               </li>

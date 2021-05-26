@@ -131,7 +131,7 @@ export default {
                     }
                     }`;
                 await this.axios
-                .post("https://api.welkin.app/v2/graphql", { query }, {withcredentials : true})
+                .post(process.env.VUE_APP_GRAPHQL_URL, { query }, {withcredentials : true})
                 .then((res)=>{
                     console.log(res)
                     this.addingSuccessStatus = true
