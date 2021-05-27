@@ -318,7 +318,7 @@ export default {
           {
             title: "Students",
             href: "/student",
-            icon: "mdi-plus",
+            icon: "mdi-account-edit",
           },
           {
             title: "Course",

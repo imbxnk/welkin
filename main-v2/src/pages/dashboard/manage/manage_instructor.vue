@@ -2,12 +2,16 @@
   <div>
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
-        <v-btn color="primary" @click="dialog = true">Add User<v-icon>mdi-plus</v-icon></v-btn>
+        <v-btn color="primary" @click="dialog = true">Add Instructor<v-icon>mdi-plus</v-icon></v-btn>
       </div>
       <div class="p-2 bd-highlight">
         <v-card style="max-width: auto"
-          ><v-card-title
-            >Users<v-spacer></v-spacer>
+          ><v-card-title>
+              <div class="d-flex flex-column">
+                <span>Manage Instructor</span>
+                <span style="font-size:0.8rem; color:#999; margin-top: -10px;">Total: {{ total }}</span>
+              </div>
+            <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
@@ -49,20 +53,22 @@
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title
-          >Add User
+          >Add Instructor
           <v-spacer></v-spacer>
           <v-icon @click="dialog = false">mdi-close</v-icon></v-card-title
         >
-        <AddUser></AddUser>
+        <AddInstructor></AddInstructor>
       </v-card>
     </v-dialog>
   </div>
 </template>
 
 <script>
-import AddUser from "./components/add_user";
+// import AddInstuctor from "./components/add_instructor.vue"
 export default {
-  components: { AddUser },
+  components: { 
+    // AddInstuctor 
+  },
   data() {
     return {
       search: "",
@@ -77,39 +83,22 @@ export default {
         { text: "Edit", sortable: false, value: "actions", width: "1%" },
       ],
       users: [],
+      total: 0,
       dialog: false,
     };
   },
   mounted() {
-    this.getUser();
+    this.getInstructors();
   },
   methods: {
-    async getUser() {
+    async getInstructors() {
       let query = `
-              query {
-                users {
-                    total
-                    users {
-                    display_name
-                    username
-                    given_name
-                    family_name
-                    email
-                    group
-                    createdAt 
-                    avatar {
-                        small
-                        medium
-                        large
-                    }
-                    }
-                }
-                }
           `;
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           console.log(res.data.data.users);
+          this.total = res.data.data.users.total;
           this.users = res.data.data.users.users;
           this.users.forEach((user) => {
             user["name"] = [user.given_name, user.family_name].join(" ");
