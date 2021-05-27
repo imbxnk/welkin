@@ -22,7 +22,7 @@ import ManageGrade from "../pages/dashboard/manage/manage_grade";
 import AddInstructor from "../pages/dashboard/manage/add_instructor";
 import AddStudent from "../pages/dashboard/manage/add_students";
 import ManageWebsite from "../pages/dashboard/manage/manage_website";
-import ManageUser from "../pages/dashboard/manage/manage_User";
+import ManageUser from "../pages/dashboard/manage/manage_user";
 // Auth Route
 import Login from "../pages/auth/login";
 import PasswordRecovery from "../pages/auth/passwordRecovery";

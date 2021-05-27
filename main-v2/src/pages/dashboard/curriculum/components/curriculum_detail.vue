@@ -21,13 +21,13 @@
 
       <v-list-item v-for="course in detail.core_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
-          <v-list-item-title>
-            {{ course.code }} : {{ course.name }}
+          <v-list-item-title class="d-flex justify-content-between">
+            <span style="overflow:hidden; text-overflow: ellipsis">{{ course.code }} : {{ course.name }}</span>
             <span style="float:right; padding-right: 25px;">{{ course.credit }}</span>
           </v-list-item-title>
-          <!-- <v-list-item-subtitle>{{
-            course.description == "No description" ? "" : course.description
-          }}</v-list-item-subtitle> -->
+          <!-- <v-list-item-subtitle>
+            {{ course.description == "No description" ? "" : unescapeHtml(course.description) }}
+          </v-list-item-subtitle> -->
         </v-list-item-content>
       </v-list-item>
 
@@ -40,12 +40,12 @@
       </h6>
       <v-list-item v-for="course in detail.required_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
-          <v-list-item-title
-            >{{ course.code }} : {{ course.name }}
+          <v-list-item-title class="d-flex justify-content-between">
+            <span style="overflow:hidden; text-overflow: ellipsis">{{ course.code }} : {{ course.name }}</span>
             <span style="float:right; padding-right: 25px;">
               {{ course.credit }}
-            </span></v-list-item-title
-          >
+            </span>
+          </v-list-item-title>
           <!-- <v-list-item-subtitle>{{
             course.description == "No description" ? "" : course.description
           }}</v-list-item-subtitle> -->
@@ -61,12 +61,11 @@
       </h6>
       <v-list-item v-for="course in detail.elective_courses" :key="course.code">
         <v-list-item-content class="mx-n4">
-          <v-list-item-title
-            >{{ course.code }} : {{ course.name }}
+          <v-list-item-title class="d-flex justify-content-between">
+            <span style="overflow:hidden; text-overflow: ellipsis">{{ course.code }} : {{ course.name }}</span>
             <span style="float:right; padding-right: 25px;">
               {{ course.credit }}
-            </span></v-list-item-title
-          >
+            </span></v-list-item-title>
           <!-- <v-list-item-subtitle>{{
             course.description == "No description" ? "" : course.description
           }}</v-list-item-subtitle> -->
@@ -149,6 +148,13 @@ export default {
         })
         .catch((err) => {});
     },
+    unescapeHtml(safe) {
+      return safe.replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'");
+    }
   },
 };
 </script>
