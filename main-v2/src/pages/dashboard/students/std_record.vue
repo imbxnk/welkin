@@ -68,8 +68,8 @@
           <h3>{{ this.students.given_name }} {{ this.students.family_name }}</h3>
           <v-divider></v-divider>
           {{ this.students.entry_year }}T{{ this.students.entry_trimester }}<br />
-          Email: {{ this.students.email == null ? " - " : this.students.email }}<br />
-          Phone: {{ this.students.phone == null ? " - " : this.students.phone }}<br />
+          Email: {{ this.students.email ? this.students.email : " - " }}<br />
+          Phone: {{ this.students.phone || " - " }}<br />
         </v-card>
       </div>
       <div class="col-md-4 order-3 float-left">
