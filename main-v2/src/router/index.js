@@ -19,7 +19,7 @@ import CourseList from "../pages/dashboard/courselist/courselist";
 import CourseDetail from "../pages/dashboard/courselist/course_detail";
 import Curriculum from "../pages/dashboard/curriculum/curriculum";
 import ManageGrade from "../pages/dashboard/manage/manage_grade";
-import AddInstructor from "../pages/dashboard/manage/add_instructor";
+import ManageInstructor from "../pages/dashboard/manage/manage_instructor";
 import AddStudent from "../pages/dashboard/manage/add_students";
 import ManageWebsite from "../pages/dashboard/manage/manage_website";
 import ManageUser from "../pages/dashboard/manage/manage_User";
@@ -142,13 +142,13 @@ const routes = [
     },
   },
   {
-    name: "add_instructor",
+    name: "manage_instructor",
     path: "/manage/instructor",
-    component: AddInstructor,
+    component: ManageInstructor,
     meta: {
       requiresAuth: true,
       authorizedGroup: ["coordinator"],
-      title: "Add Instructor",
+      title: "Manage Instructor",
     },
   },
   {
