@@ -1,229 +1,237 @@
 <template>
-  <div>
-  <v-stepper  class="mx-auto" v-model="e6"  vertical style="max-width: 800px;" min-width="150px">
-    <v-stepper-header class="stepper-header">
-      <div class="d-flex flex-row bd-highlight ml-4 my-auto">
-        <div class="p-2 bd-highlight">
-          <h3>Add Student</h3>
-        </div>
-      </div>
-    </v-stepper-header>
-    <v-stepper-step :complete="e6 > 1"  class="my-auto py-auto step-num" step="1">
-      <div class="d-flex bd-highlight">
-        <div class="p-2 bd-highlight my-auto">
-          Import File or Add Manually
-        </div>
-      </div>
-    </v-stepper-step>
-
-    <v-stepper-content step="1" class="my-3">
-      <div class="d-flex flex-row bd-highlight justify-content-center align-items-center">
-        <div class="p-2 flex-sm-grow-1 bd-highlight md-12">
-          <v-card v-if="importFile" color="#97b8f0" class="mb-12" style="min-width: 100px">
-        <v-card-text>
-          <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"  @vdropzone-success="selectFile" style="min-width:80px">
-          </vue-dropzone>
-        </v-card-text>
-      </v-card>
-          <v-form v-if="addManually" ref="form" lazy-validation style="min-width:300px">
-            <div class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center">
-              <div class="p-2 bd-highlight">
-                <v-text-field class="input" label="ID" id="id" v-model="manuallyData.ID" :rules="[rules.required]" dense outlined required></v-text-field>
-              </div>
-              <div class="p-2 bd-highlight">
-                <v-text-field class="input" label="Program" v-model="manuallyData.Program" :rules="[rules.required]" dense outlined required></v-text-field>
-              </div>
-            </div>
-            <div class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center">
-              <div class="p-2  bd-highlight">
-                <v-select class="input" :items="prefix" label="Prefix" v-model="manuallyData.Prefix" :rules="[rules.required]" dense outlined required></v-select>
-              </div>
-              <div class="p-2  bd-highlight">
-                <v-text-field class="input" label="Name" v-model="manuallyData.Name" :rules="[rules.required]" dense outlined required></v-text-field>
-              </div>
-            </div>
-            <div class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center">
-              <div class="p-2 bd-highlight">
-                <v-text-field class="input" label="Lastname" v-model="manuallyData.LastName" :rules="[rules.required]" dense outlined required></v-text-field>
-              </div>
-              <div class="p-2 bd-highlight">
-                <v-text-field class="input" label="Advisor" v-model="manuallyData.Advisor" :rules="[rules.required]" dense outlined></v-text-field>
-              </div>
-            </div>
-          </v-form>
-        </div>
-      </div>
-      <div class="d-flex flex-row bd-highlight">
-        <div class="p-2 bd-highlight">
-          <v-btn color="#3c84fb" @click="e6 = 2; submitForm()" style="color: white;">
-            Submit
-          </v-btn>
-          <v-btn color="#3c84fb" text @click="cancelStep1()">
-            Cancel
-          </v-btn>
-        </div>
-        <div class="ms-auto p-2 bd-highlight justify-content-sm-start">
-          <v-speed-dial v-model="fab" :transition="transition">
-          <template v-slot:activator>
-            <v-btn class="speed-dial" v-model="fab" dark color="#3c84fb">
-              <v-icon v-if="fab">
-                mdi-close
-              </v-icon>
-              <v-icon v-else>
-                mdi-account-circle
-              </v-icon>
-            </v-btn>
-          </template>
-          <v-btn class="speed-dial" fab  dark  small @click="changeToManually()"  color="#3c84fb">
-            <v-icon>mdi-pencil</v-icon>
-          </v-btn>
-          <v-btn class="speed-dial" fab dark small @click="changeToImport()" color="#3c84fb">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-         </v-speed-dial>
-        </div>
+  <v-container class="mx-auto">
+  <div class="d-flex flex-column bd-highlight">
+    <div class="ml-auto p-2 bd-highlight">
+      <v-btn @click.prevent="ToEditPage()" color="#3c84fb" style="color: white;">Manage Students</v-btn>
     </div>
-    </v-stepper-content>
-
-    <v-stepper-step :complete="e6 > 2" class="my-auto py-auto" step="2">
-      Select the trimester, Check the student detail and Upload to the data base
-    </v-stepper-step>
-
-    <v-stepper-content step="2" class="my-3">
-      <div class="d-flex flex-column bd-highlight justify-content-center align-items-center">
-        <div class="p-2 flex-sm-grow-1 bd-highlight md-12">
-          <select class="form-control" name="sheetName" id="sheetName" label="Seleted a term" v-show="fileStatus" @change="getSelectedValue($event)" style="max-width:300px; min-width:50px">
-            <option selected>Please select a term</option>
-            <option v-for="(item, index) in this.sheetNames" :key="index" :value="item">{{ item }}</option>
-        </select>
-        </div>
-        <div class="p-2 bd-highlight">
-            <v-simple-table height="300px" class="mx-auto my-auto py-2 px-2">
-                  <template v-slot:default>
-                  <thead>
-                      <tr>
-                      <th class="text-left">
-                          ID
-                      </th>
-                      <th class="text-left">
-                          Program
-                      </th>
-                      <th class="text-left">
-                          Prefix
-                      </th>
-                      <th class="text-left">
-                          First Name
-                      </th>
-                      <th class="text-left">
-                          Family Name
-                      </th>
-                      <th class="text-left">
-                          Advisor
-                      </th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr
-                      v-for="(item, index) in studentsData"
-                      :key="index"
-                      :value="item"
-                      >
-                      <td>{{ item.ID }}</td>
-                      <td>{{ item.Program }}</td>
-                      <td>{{ item.Prefix }}</td>
-                      <td>{{ item.Name }}</td>
-                      <td>{{ item.LastName }}</td>
-                      <td>{{ item.Advisor }}</td>
-                      </tr>
-                  </tbody>
-                  </template>
-            </v-simple-table>
-        </div>
-        <div class="p-2 bd-highlight">
-          <v-btn  color="#3c84fb" class="my-auto" @click="e6 = 3; upload()" style="color: white;">
-            Upload
-          </v-btn>
-          <v-btn color="#3c84fb" text @click="cancelStep2()">Cancel</v-btn>
-        </div>
-      </div>
-    </v-stepper-content>
-
-    <v-stepper-step :complete="e6 > 3" class="my-auto py-auto" step="3">
-      Upload Result
-    </v-stepper-step>
-    <v-stepper-content step="3" class="my-3">
-      <v-simple-table height="300px" class="mx-auto my-auto py-2 px-2">
-                  <template v-slot:default>
-                  <thead>
-                      <tr>
-                      <th class="text-left">
-                          ID
-                      </th>
-                      <th class="text-left">
-                          Program
-                      </th>
-                      <th class="text-left">
-                          Prefix
-                      </th>
-                      <th class="text-left">
-                          First Name
-                      </th>
-                      <th class="text-left">
-                          Family Name
-                      </th>
-                      <th class="text-left">
-                          Advisor
-                      </th>
-                      <th class="text-left">
-                          Status
-                      </th>
-                      </tr>
-                  </thead>
-                  <tbody v-if="!duplicateStatus">
-                      <tr
-                      class="success"
-                      v-for="(item, index) in studentsData"
-                      :key="index"
-                      :value="item"
-                      >
-                      <td>{{ item.ID }}</td>
-                      <td>{{ item.Program }}</td>
-                      <td>{{ item.Prefix }}</td>
-                      <td>{{ item.Name }}</td>
-                      <td>{{ item.LastName }}</td>
-                      <td>{{ item.Advisor }}</td>
-                      <td>Add Success!</td>
-                      </tr>
-                  </tbody>
-                  <tbody v-else-if="duplicateStatus">
-                      <tr
-                      class="duplicate"
-                      v-for="(item, index) in duplicateStudents"
-                      :key="index"
-                      :value="item"
-                      >
-                      <td>{{ item.ID }}</td>
-                      <td>{{ item.Program }}</td>
-                      <td>{{ item.Prefix }}</td>
-                      <td>{{ item.Name }}</td>
-                      <td>{{ item.LastName }}</td>
-                      <td>{{ item.Advisor }}</td>
-                      <td>Duplicate!</td>
-                      </tr>
-                  </tbody>
-                  </template>
-            </v-simple-table>
-            <div class="d-flex justify-content-end">
-              <div class="p-2 bd-highlight">
-                <v-btn color="#3c84fb" text @click="cancelStep3()">
-                  Cancel
-                </v-btn>
-              </div>
+    <div class="p-2 bd-highlight">
+      <v-stepper  class="mx-auto" v-model="e6"  vertical style="max-width: 800px;" min-width="150px">
+        <v-stepper-header class="stepper-header">
+          <div class="d-flex flex-row bd-highlight ml-4 my-auto">
+            <div class="p-2 bd-highlight">
+              <h3>Add Student</h3>
             </div>
-    </v-stepper-content>
+          </div>
+        </v-stepper-header>
+        <v-stepper-step :complete="e6 > 1"  class="my-auto py-auto step-num" step="1">
+          <div class="d-flex bd-highlight">
+            <div class="p-2 bd-highlight my-auto">
+              Import File or Add Manually
+            </div>
+          </div>
+        </v-stepper-step>
 
-  </v-stepper>
+        <v-stepper-content step="1" class="my-3">
+          <div class="d-flex flex-row bd-highlight justify-content-center align-items-center">
+            <div class="p-2 flex-sm-grow-1 bd-highlight md-12">
+              <v-card v-if="importFile" color="#97b8f0" class="mb-12" style="min-width: 100px">
+            <v-card-text>
+              <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"  @vdropzone-success="selectFile" style="min-width:80px">
+              </vue-dropzone>
+            </v-card-text>
+          </v-card>
+              <v-form v-if="addManually" ref="form" lazy-validation style="min-width:300px">
+                <div class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center">
+                  <div class="p-2 bd-highlight">
+                    <v-text-field class="input" label="ID" id="id" v-model="manuallyData.ID" :rules="[rules.required]" dense outlined required></v-text-field>
+                  </div>
+                  <div class="p-2 bd-highlight">
+                    <v-text-field class="input" label="Program" v-model="manuallyData.Program" :rules="[rules.required]" dense outlined required></v-text-field>
+                  </div>
+                </div>
+                <div class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center">
+                  <div class="p-2  bd-highlight">
+                    <v-select class="input" :items="prefix" label="Prefix" v-model="manuallyData.Prefix" :rules="[rules.required]" dense outlined required></v-select>
+                  </div>
+                  <div class="p-2  bd-highlight">
+                    <v-text-field class="input" label="Name" v-model="manuallyData.Name" :rules="[rules.required]" dense outlined required></v-text-field>
+                  </div>
+                </div>
+                <div class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center">
+                  <div class="p-2 bd-highlight">
+                    <v-text-field class="input" label="Lastname" v-model="manuallyData.LastName" :rules="[rules.required]" dense outlined required></v-text-field>
+                  </div>
+                  <div class="p-2 bd-highlight">
+                    <v-text-field class="input" label="Advisor" v-model="manuallyData.Advisor" :rules="[rules.required]" dense outlined></v-text-field>
+                  </div>
+                </div>
+              </v-form>
+            </div>
+          </div>
+          <div class="d-flex flex-row bd-highlight">
+            <div class="p-2 bd-highlight">
+              <v-btn color="#3c84fb" @click="e6 = 2; submitForm()" style="color: white;">
+                Submit
+              </v-btn>
+              <v-btn color="#3c84fb" text @click="cancelStep1()">
+                Cancel
+              </v-btn>
+            </div>
+            <div class="ms-auto p-2 bd-highlight justify-content-sm-start">
+              <v-speed-dial v-model="fab" :transition="transition">
+              <template v-slot:activator>
+                <v-btn class="speed-dial" v-model="fab" dark color="#3c84fb">
+                  <v-icon v-if="fab">
+                    mdi-close
+                  </v-icon>
+                  <v-icon v-else>
+                    mdi-account-circle
+                  </v-icon>
+                </v-btn>
+              </template>
+              <v-btn class="speed-dial" fab  dark  small @click="changeToManually()"  color="#3c84fb">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn class="speed-dial" fab dark small @click="changeToImport()" color="#3c84fb">
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+            </v-speed-dial>
+            </div>
+        </div>
+        </v-stepper-content>
+
+        <v-stepper-step :complete="e6 > 2" class="my-auto py-auto" step="2">
+          Select the trimester, Check the student detail and Upload to the data base
+        </v-stepper-step>
+
+        <v-stepper-content step="2" class="my-3">
+          <div class="d-flex flex-column bd-highlight justify-content-center align-items-center">
+            <div class="p-2 flex-sm-grow-1 bd-highlight md-12">
+              <select class="form-control" name="sheetName" id="sheetName" label="Seleted a term" v-show="fileStatus" @change="getSelectedValue($event)" style="max-width:300px; min-width:50px">
+                <option selected>Please select a term</option>
+                <option v-for="(item, index) in this.sheetNames" :key="index" :value="item">{{ item }}</option>
+            </select>
+            </div>
+            <div class="p-2 bd-highlight">
+                <v-simple-table height="300px" class="mx-auto my-auto py-2 px-2">
+                      <template v-slot:default>
+                      <thead>
+                          <tr>
+                          <th class="text-left">
+                              ID
+                          </th>
+                          <th class="text-left">
+                              Program
+                          </th>
+                          <th class="text-left">
+                              Prefix
+                          </th>
+                          <th class="text-left">
+                              First Name
+                          </th>
+                          <th class="text-left">
+                              Family Name
+                          </th>
+                          <th class="text-left">
+                              Advisor
+                          </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr
+                          v-for="(item, index) in studentsData"
+                          :key="index"
+                          :value="item"
+                          >
+                          <td>{{ item.ID }}</td>
+                          <td>{{ item.Program }}</td>
+                          <td>{{ item.Prefix }}</td>
+                          <td>{{ item.Name }}</td>
+                          <td>{{ item.LastName }}</td>
+                          <td>{{ item.Advisor }}</td>
+                          </tr>
+                      </tbody>
+                      </template>
+                </v-simple-table>
+            </div>
+            <div class="p-2 bd-highlight">
+              <v-btn  color="#3c84fb" class="my-auto" @click="e6 = 3; upload()" style="color: white;">
+                Upload
+              </v-btn>
+              <v-btn color="#3c84fb" text @click="cancelStep2()">Cancel</v-btn>
+            </div>
+          </div>
+        </v-stepper-content>
+
+        <v-stepper-step :complete="e6 > 3" class="my-auto py-auto" step="3">
+          Upload Result
+        </v-stepper-step>
+        <v-stepper-content step="3" class="my-3">
+          <v-simple-table height="300px" class="mx-auto my-auto py-2 px-2">
+                      <template v-slot:default>
+                      <thead>
+                          <tr>
+                          <th class="text-left">
+                              ID
+                          </th>
+                          <th class="text-left">
+                              Program
+                          </th>
+                          <th class="text-left">
+                              Prefix
+                          </th>
+                          <th class="text-left">
+                              First Name
+                          </th>
+                          <th class="text-left">
+                              Family Name
+                          </th>
+                          <th class="text-left">
+                              Advisor
+                          </th>
+                          <th class="text-left">
+                              Status
+                          </th>
+                          </tr>
+                      </thead>
+                      <tbody v-if="!duplicateStatus">
+                          <tr
+                          class="success"
+                          v-for="(item, index) in studentsData"
+                          :key="index"
+                          :value="item"
+                          >
+                          <td>{{ item.ID }}</td>
+                          <td>{{ item.Program }}</td>
+                          <td>{{ item.Prefix }}</td>
+                          <td>{{ item.Name }}</td>
+                          <td>{{ item.LastName }}</td>
+                          <td>{{ item.Advisor }}</td>
+                          <td>Add Success!</td>
+                          </tr>
+                      </tbody>
+                      <tbody v-else-if="duplicateStatus">
+                          <tr
+                          class="duplicate"
+                          v-for="(item, index) in duplicateStudents"
+                          :key="index"
+                          :value="item"
+                          >
+                          <td>{{ item.ID }}</td>
+                          <td>{{ item.Program }}</td>
+                          <td>{{ item.Prefix }}</td>
+                          <td>{{ item.Name }}</td>
+                          <td>{{ item.LastName }}</td>
+                          <td>{{ item.Advisor }}</td>
+                          <td>Duplicate!</td>
+                          </tr>
+                      </tbody>
+                      </template>
+                </v-simple-table>
+                <div class="d-flex justify-content-end">
+                  <div class="p-2 bd-highlight">
+                    <v-btn color="#3c84fb" text @click="cancelStep3()">
+                      Cancel
+                    </v-btn>
+                  </div>
+                </div>
+        </v-stepper-content>
+
+      </v-stepper>
+    </div>
+      
   </div>
+  </v-container>
 </template>
 
 
@@ -393,7 +401,10 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
         },
         cancelStep3(){
           this.e6 = 2
-        }
+        },
+        ToEditPage() {
+          this.$router.push({ name: "manage_student" });
+        },
     }
   }
 </script>
