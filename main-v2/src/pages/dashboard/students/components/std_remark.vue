@@ -36,7 +36,7 @@
         </v-card-title>
         <div class="text-center mt-n8">
           <p class="overline primary--text my-n2">Add Remark For</p>
-          <p class="font-weight-bold ">{{ sid }}</p>
+          <p class="font-weight-bold ">{{ name }}</p>
         </div>
         <v-divider class=""></v-divider>
         <v-textarea
@@ -86,7 +86,7 @@ import "simplebar/dist/simplebar.min.css";
 
 export default {
   name: "Student_Remark",
-  props: ["sid"],
+  props: ["sid", "name"],
   components: { simplebar },
   created() {
     this.getRemark(this.$props.sid);

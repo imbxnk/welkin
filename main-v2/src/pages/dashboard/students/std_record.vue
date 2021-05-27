@@ -154,7 +154,7 @@
           </v-card-title>
           <div class="text-center mt-n8">
             <p class="overline primary--text my-n2">Add Remark For</p>
-            <p class="font-weight-bold ">{{ students.given_name }}</p>
+            <p class="font-weight-bold ">{{ students.given_name }} {{ students.family_name }}</p>
           </div>
 
           <v-divider class=""></v-divider>

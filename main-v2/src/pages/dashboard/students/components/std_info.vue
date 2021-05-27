@@ -41,7 +41,7 @@
       </v-col>
     </v-row>
     <v-row class="pb-3">
-      <StudentRemark :sid="stdDetail.sid"></StudentRemark>
+      <StudentRemark :sid="stdDetail.sid" :name="stdDetail.name"></StudentRemark>
     </v-row>
   </v-card-text>
 </template>
