@@ -30,6 +30,9 @@
           @click:row="showDialog"
           class="student"
         >
+          <template v-slot:[`item.records.total_credits`]="{ item }">
+            {{ item.records.total_credits }}/{{ getTotalCredit(item.batch) }}
+          </template>
           <template v-slot:[`item.status.current`]="{ item }">
             <v-chip
               small
@@ -77,6 +80,7 @@ export default {
       deley: 700,
       timer: null,
       loading: true,
+      curriculums: [],
 
       search: "",
       headers: [
@@ -136,6 +140,7 @@ export default {
                 students (sortBy: "status") {
                   students {
                     sid
+                    batch
                     given_name
                     family_name
                     email
@@ -157,6 +162,17 @@ export default {
                     }
                   }
                 }
+                curriculums {
+                    total
+                    curriculums {
+                      batches
+                      passing_conditions {
+                        core_courses
+                        required_courses
+                        elective_courses
+                      }
+                    }
+                  }
               }
           `;
       await this.axios
@@ -164,6 +180,7 @@ export default {
         .then((res) => {
           // console.log(res.data.data.students);
           this.students = [...res.data.data.students.students];
+          this.curriculums = [...res.data.data.curriculums.curriculums];
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
           });
@@ -188,6 +205,14 @@ export default {
         this.click = 0;
       }
     },
+    getTotalCredit(batch) {
+      let total_credits = "?"
+      this.curriculums.forEach((curriculum) => {
+        if(curriculum.batches.includes(batch))
+          return total_credits = curriculum.passing_conditions.core_courses + curriculum.passing_conditions.required_courses + curriculum.passing_conditions.elective_courses
+      })
+      return total_credits
+    }
   },
 };
 </script>
