@@ -60,6 +60,138 @@
         <AddUser></AddUser>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="Editdialog" max-width="500px">
+      <v-card>
+        <v-card-title
+          >Edit User
+          <v-spacer></v-spacer>
+          <v-icon @click="Editdialog = false">mdi-close</v-icon></v-card-title
+        >
+        <div class="pa-3">
+          <v-form ref="form">
+            <div class="d-flex px-3 justify-content-between flex-column flex-sm-row">
+              <div class=" ">
+                <v-text-field
+                  label="display_name"
+                  v-model="editedItem.display_name"
+                  outlined
+                ></v-text-field>
+              </div>
+              <div class="">
+                <v-text-field
+                  label="username"
+                  v-model="editedItem.username"
+                  outlined
+                ></v-text-field>
+              </div>
+            </div>
+            <div class="d-flex px-3  justify-content-between flex-column flex-sm-row">
+              <div class="">
+                <v-text-field
+                  label="given_name"
+                  v-model="editedItem.given_name"
+                  outlined
+                ></v-text-field>
+              </div>
+              <div class="">
+                <v-text-field
+                  label="Family name"
+                  v-model="editedItem.family_name"
+                  outlined
+                ></v-text-field>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-center flex-column">
+              <div class="px-3">
+                <v-text-field label="email" v-model="editedItem.email" outlined></v-text-field>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center flex-column">
+              <div class="px-3">
+                <v-select
+                  :items="items"
+                  v-model="editedItem.group"
+                  label="Group"
+                  outlined
+                ></v-select>
+              </div>
+            </div>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary">submit</v-btn>
+            </v-card-actions>
+          </v-form>
+        </div>
+      </v-card>
+      <!-- <v-card>
+        <v-card-title>
+          Edit Student
+        </v-card-title>
+        <v-card-text>
+          <v-form>
+            <div class="d-flex flex-column bd-highlight">
+              <div class="p-2 bd-highlight">
+                <div class="d-flex flex-row justify-content-evenly bd-highlight">
+                  <div class="p-2 bd-highlight">
+                    <v-text-field
+                      class="input"
+                      label="display_name"
+                      v-model="editedItem.display_name"
+                      outlined
+                    ></v-text-field>
+                  </div>
+                  <div class="p-2 bd-highlight">
+                    <v-text-field
+                      class="input"
+                      label="First name"
+                      v-model="editedItem.given_name"
+                      outlined
+                    ></v-text-field>
+                  </div>
+                  <div class="p-2 bd-highlight">
+                    <v-text-field
+                      class="input"
+                      label="Family name"
+                      v-model="editedItem.family_name"
+                      outlined
+                    ></v-text-field>
+                  </div>
+                </div>
+              </div>
+              <div class="p-2 bd-highlight">
+                <div class="d-flex flex-row justify-content-evenly bd-highlight">
+                  <div class="p-2 bd-highlight">
+                    <v-text-field
+                      class="input"
+                      label="username"
+                      v-model="editedItem.username"
+                      outlined
+                    ></v-text-field>
+                  </div>
+                  <div class="p-2 bd-highlight">
+                    <v-text-field
+                      class="input"
+                      label="email"
+                      v-model="editedItem.email"
+                      outlined
+                    ></v-text-field>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-2 bd-highlight">
+                <div class="d-flex flex-row justify-content-end bd-highlight">
+                  <v-btn class="my-3" @click="close()" text>close</v-btn>
+                  <v-btn class="my-3" color="#3c84fb" @click="save()" text>Submit</v-btn>
+                </div>
+              </div>
+            </div>
+          </v-form>
+        </v-card-text>
+      </v-card> -->
+    </v-dialog>
   </div>
 </template>
 
@@ -83,6 +215,18 @@ export default {
       users: [],
       total: 0,
       dialog: false,
+      Editdialog: false,
+      editedIndex: -1,
+      editedItem: {
+        display_name: "",
+        username: "",
+        given_name: "",
+        family_name: "",
+        email: "",
+        group: "",
+      },
+      Info: [],
+      items: ["admin", "coordinator", "lecturer"],
     };
   },
   mounted() {
@@ -126,7 +270,11 @@ export default {
         });
     },
     editItem(item) {
+      this.editedIndex = this.Info.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      // eslint-disable-next-line no-console
       console.log(item);
+      this.Editdialog = true;
     },
   },
 };
