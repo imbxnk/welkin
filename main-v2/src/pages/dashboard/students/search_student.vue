@@ -1,37 +1,38 @@
 <template>
-  <div id="app">
+  <div id="app" class="d-flex justify-content-center">
+    <div class="w-100" style="max-width: 1000px">
     Search Student
-    <div class="input-group mb-3">
+    <form class="input-group mb-3" v-on:submit.prevent="getStudent">
       <input
         type="number"
         class="form-control"
         v-model="student_ID"
+        v-on:keyup.enter="getID"
         placeholder="You can only search using Student ID. Example: 6080001"
       />
       <div class="input-group-append">
-        <button class="btn btn-outline-primary" type="button" @click="getID()">Search</button>
+        <button class="btn btn-outline-primary" type="button" @click="getID">Search</button>
       </div>
-    </div>
+    </form>
     <!-- <v-card class="pa-5" style="height:485px;"> </v-card> -->
 
     <v-card class="" style=""
-      ><simplebar data-simplebar-auto-hide="true" class="wk-content-full-height ma-3">
-        <div v-if="!check" class="d-flex justify-content-center mt-5" style="color:red;">
-          <v-icon x-large class="mr-5 mt-n5" color="red">mdi-alert</v-icon>
+      ><simplebar data-simplebar-auto-hide="true">
+        <div v-if="!check" class="d-flex justify-content-center m-4" style="color:red;">
+          <v-icon x-large class="mr-5" color="red">mdi-alert</v-icon>
           <div class="d-flex justify-content-center pa-3">
             <div>
               <h6>Something went wrong..</h6>
-              <p class="caption mt-n2">
+              <p class="caption mt-n2 mb-0">
                 Please try again, make sure that you follow the format (Ex. 60800001)
               </p>
             </div>
           </div>
         </div>
-        <div v-else>
-          <div v-if="loading" class="loading pa-3">
+        <div class="pa-3" v-else>
+          <div v-if="loading" class="loading align-items-center pa-3">
             <v-progress-circular
               :size="50"
-              class="ml-16"
               color="primary"
               indeterminate
             ></v-progress-circular>
@@ -114,6 +115,7 @@
         </div></simplebar
       >
     </v-card>
+  </div>
   </div>
 </template>
 <script>
@@ -218,11 +220,13 @@ export default {
   padding: 1em;
 }
 .loading {
-  position: absolute;
-  top: 35%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  // position: absolute;
+  // top: 35%;
+  // left: 50%;
+  // -ms-transform: translate(-50%, -50%);
+  // transform: translate(-50%, -50%);
 }
 .wk-content-full-height {
   height: calc(var(--app-height) - 156px);
@@ -231,6 +235,9 @@ export default {
   overflow: auto;
 }
 
+input, button{
+  box-shadow: none !important;
+}
 // @media (max-width: 576px) {
 //   .wk-content-full-height-list {
 //     height: calc(var(--app-height) - 237px);
