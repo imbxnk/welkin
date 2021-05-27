@@ -69,6 +69,9 @@
                     <div class="p-2 bd-highlight">
                         <div class="d-flex flex-row justify-content-evenly bd-highlight">
                             <div class="p-2 bd-highlight">
+                                <v-text-field class="input" label="Nickname" v-model="editedItem.nick_name" outlined></v-text-field>
+                            </div>
+                            <div class="p-2 bd-highlight">
                                 <v-text-field class="input" label="Email" v-model="editedItem.email" outlined></v-text-field>
                             </div>
                             <div class="p-2 bd-highlight">
@@ -79,13 +82,35 @@
                     <div class="p-2 bd-highlight">
                         <div class="d-flex flex-row justify-content-end bd-highlight">
                             <v-btn class="my-3" @click="close()" text>close</v-btn>
-                            <v-btn class="my-3" color="#3c84fb" @click="save()" text>Submit</v-btn>
+                            <v-btn class="my-3" color="#3c84fb" @click="dialogCheck=true" text>Submit</v-btn>
                         </div>
                     </div>
                 </div>
             </v-form>
         </v-card-text>
       </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogCheck" max-width="450px">
+      <v-card>
+        <v-card-title class="headline grey lighten-2"> Confirm Student Information </v-card-title><br />
+        <v-card-text
+          >Are you sure you want to edit: 
+          <br/>Student ID: <b>{{ this.editedItem.sid }}</b>
+          <br/>Prefix: <b>{{ this.editedItem.prefix }}</b>
+          <br/>First Name: <b>{{ this.editedItem.given_name }}</b>
+          <br/>Last Name: <b>{{ this.editedItem.family_name }}</b>
+          <br/>Nickname: <b>{{ this.editedItem.nick_name }}</b>
+          <br/>Email: <b>{{ this.editedItem.email }}</b>
+          <br/>Phone: <b>{{ this.editedItem.phone }}</b>
+          <br/>Entry Trimester: <b>{{ this.editedItem.entry_trimester }}</b>
+          <br/>Entry Year: <b>{{ this.editedItem.entry_year }}</b>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text color="error" @click="dialogCheck=false">No</v-btn>
+          <v-btn text color="success" @click="save()">Yes</v-btn>
+        </v-card-actions></v-card
+      >
     </v-dialog>
   </v-container>
 </template>
@@ -135,6 +160,7 @@ export default {
       },
       Info: [],
       dialog: false,
+      dialogCheck: false,
       prefix:["Mr.", "Ms.", "Mrs",],
       search:"",
     };
@@ -204,6 +230,7 @@ export default {
     
     close() {
         this.dialog = false;
+        this.dialogCheck = false;
         this.$nextTick(() => {
             this.editedItem = Object.assign({}, this.defaultItem);
             this.editedIndex = -1;
