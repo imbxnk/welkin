@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container class="mx-auto">
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
         <v-btn color="primary" @click="dialog = true">Add Instructor<v-icon>mdi-plus</v-icon></v-btn>
@@ -8,7 +8,7 @@
         <v-card style="max-width: auto"
           ><v-card-title>
               <div class="d-flex flex-column">
-                <span>Manage Instructor</span>
+                <span>Instructors</span>
                 <span style="font-size:0.8rem; color:#999; margin-top: -10px;">Total: {{ total }}</span>
               </div>
             <v-spacer></v-spacer>
@@ -22,22 +22,12 @@
           ></v-card-title>
           <v-data-table
             :headers="headers"
-            :items="users"
+            :items="instructors"
             :search="search"
             class="student px-3 pb-3"
             hide-default-footer
             disable-pagination
           >
-            <template v-slot:[`item.avatar.small`]="{ item }">
-              <v-avatar
-                size="35"
-                :style="
-                  `background: url(${item.avatar.small ||
-                    $config.defaultAvatar}) center center / cover;`
-                "
-              >
-              </v-avatar>
-            </template>
             <template v-slot:[`item.display_name`]="{ item }">
               {{ item.display_name == null ? "- " : item.display_name }}
             </template>
@@ -60,29 +50,24 @@
         <AddInstructor></AddInstructor>
       </v-card>
     </v-dialog>
-  </div>
+  </v-container>
 </template>
 
 <script>
 // import AddInstuctor from "./components/add_instructor.vue"
 export default {
-  components: { 
-    // AddInstuctor 
+  components: {
+    // AddInstuctor
   },
   data() {
     return {
       search: "",
       headers: [
-        { sortable: false, value: "avatar.small", width: "1%" },
-        { text: "Display Name", sortable: false, value: "display_name", width: "9%" },
-        { text: "Username", sortable: false, value: "username", width: "9%" },
-        { text: "Name", sortable: false, value: "name", width: "9%" },
-        { text: "Email", sortable: false, value: "email", width: "9%" },
-        { text: "Group", sortable: false, value: "group", width: "9%" },
-
+        { text: "Prefix", sortable: false, value: "title", width: "1%" },
+        { text: "Name", sortable: false, value: "name", width: "98%" },
         { text: "Edit", sortable: false, value: "actions", width: "1%" },
       ],
-      users: [],
+      instructors: [],
       total: 0,
       dialog: false,
     };
@@ -93,16 +78,21 @@ export default {
   methods: {
     async getInstructors() {
       let query = `
+            query {
+              instructors {
+                total
+                instructors {
+                  name
+                  title
+                }
+              }
+            }
           `;
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res.data.data.users);
-          this.total = res.data.data.users.total;
-          this.users = res.data.data.users.users;
-          this.users.forEach((user) => {
-            user["name"] = [user.given_name, user.family_name].join(" ");
-          });
+          this.total = res.data.data.instructors.total;
+          this.instructors = res.data.data.instructors.instructors;
         })
         .catch((err) => {
           console.log(err);
