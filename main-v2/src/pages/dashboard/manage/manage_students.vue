@@ -45,7 +45,7 @@
                             <div class="p-2 bd-highlight">
                                 <v-select class="input" label="Prefix" :items="prefix" outlined v-model="editedItem.prefix"></v-select>
                             </div>
-                            <div class="p-2 bd-highlight"> 
+                            <div class="p-2 bd-highlight">
                                 <v-text-field class="input" label="First name" v-model="editedItem.given_name" outlined></v-text-field>
                             </div>
                             <div class="p-2 bd-highlight">
@@ -94,7 +94,7 @@
       <v-card>
         <v-card-title class="headline grey lighten-2"> Confirm Student Information </v-card-title><br />
         <v-card-text
-          >Are you sure you want to edit: 
+          >Are you sure you want to edit:
           <br/>Student ID: <b>{{ this.editedItem.sid }}</b>
           <br/>Prefix: <b>{{ this.editedItem.prefix }}</b>
           <br/>First Name: <b>{{ this.editedItem.given_name }}</b>
@@ -219,7 +219,7 @@ export default {
           console.log(err);
         });
     },
-    
+
     editItem(item) {
         this.editedIndex = this.Info.indexOf(item);
         this.editedItem = Object.assign({}, item);
@@ -227,7 +227,7 @@ export default {
         console.log(this.editedItem, this.editedIndex);
         this.dialog = true;
     },
-    
+
     close() {
         this.dialog = false;
         this.dialogCheck = false;
