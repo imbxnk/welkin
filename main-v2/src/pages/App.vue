@@ -58,13 +58,14 @@
                         :key="item.title"
                         :class="{ unread: !notifications.includes(item._id) }"
                       >
+                        <div :class="{ notification_active: true }" class=""></div>
                         <v-list-item-content>
                           <v-list-item-title>{{ item.title }}</v-list-item-title>
                           <v-list-item-subtitle style="opacity: 0.4; font-size: 0.7rem">{{ readableDate(item.createdAt) + " - " + readableDate(item.endDate) }}</v-list-item-subtitle>
                           <!-- <v-list-item-subtitle>{{ item.user.display_name || item.user.username }}</v-list-item-subtitle> -->
-                          <v-list-item-subtitle class="wrap-text mt-2"><span style="font-size: 0.8rem">{{ item.content }}</span></v-list-item-subtitle>
+                          <v-list-item-subtitle class="wrap-text mt-2"><span style="font-size: 0.8rem" v-html="item.content"></span></v-list-item-subtitle>
                         </v-list-item-content>
-                        <div :class="{ notification_active: true }" class=""></div>
+                        <v-btn icon class="align-self-start toggle-read" @click="toggleRead(item._id)"><v-icon>mdi-check</v-icon></v-btn>
                       </v-list-item>
                     </template>
                   </v-list>
@@ -530,6 +531,10 @@ export default {
       this.$config.announcements.forEach((announcement) => {
         this.notifications.push(announcement._id)
       })
+    },
+    toggleRead(id) {
+      if(this.notifications.includes(id)) this.notifications.splice(this.notifications.indexOf(id), 1)
+      else this.notifications.push(id)
     },
     readableDate(date) {
       return this.moment(parseInt(date)).format("DD MMMM YYYY (HH:MM)")

@@ -930,7 +930,8 @@ main {
   height: 8px;
   border-radius: 50%;
   background: #3c84fb;
-  margin-left: 5px;
+  margin-right: 10px;
+  margin-left: -5px;
 }
 
 .wk-noti-box > div > .unread {
@@ -939,4 +940,8 @@ main {
 
 .wk-noti-box > div > .unread > div > .v-list-item__title {
   font-weight: 700;
+}
+
+.toggle-read {
+  margin: 5px -10px 0 5px;
 }
