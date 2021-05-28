@@ -28,7 +28,7 @@
                 dot
                 offset-x="9"
                 offset-y="-2"
-                v-if="notifications === 'true'"
+                v-if="notifications.length != $config.announcements.length"
               >
               </v-badge>
             </v-btn>
@@ -36,42 +36,40 @@
             <div class="wk-notifications">
               <div class="wk-notifications-header d-flex">
                 <div class="flex-grow-1" style="font-weight: 700">Announcements</div>
-                <v-btn plain rounded x-small style="font-size: 0.8rem; cursor: pointer; color: #007bff; letter-spacing: 0; text-index: 0; text-transform: unset" @click="clearNoti">Mark all as Read</v-btn>
+                <v-btn v-if="notifications.length != $config.announcements.length" plain rounded x-small style="font-size: 0.8rem; cursor: pointer; color: #007bff; letter-spacing: 0; text-index: 0; text-transform: unset" @click="clearNoti">Mark all as Read</v-btn>
               </div>
               <v-divider
                 :inset=false
                 class="my-0"
               ></v-divider>
-                <div class="wk-noti-wrap">
+              <div class="wk-noti-wrap">
                 <div class="wk-noti-box">
-                <v-list>
-                  <template v-for="(item, index) in $config.announcements">
+                  <v-list class="py-0">
+                    <template v-for="(item, index) in $config.announcements">
 
-                    <v-divider
-                      v-if="index !== 0"
-                      :key="index"
-                      :inset=false
-                      class="my-1"
-                    ></v-divider>
+                      <v-divider
+                        v-if="index !== 0"
+                        :key="index"
+                        :inset=false
+                        class="my-0"
+                      ></v-divider>
 
-                    <v-list-item
-                      :key="item.title"
-                    >
-                      <!-- <v-list-item-avatar>
-                        <v-img :src="item.user.avatar.small"></v-img>
-                      </v-list-item-avatar> -->
-
-                      <v-list-item-content>
-                        <v-list-item-title>{{ item.title }}</v-list-item-title>
-                        <v-list-item-subtitle style="opacity: 0.4; font-size: 0.7rem">{{ readableDate(item.createdAt) + " - " + readableDate(item.endDate) }}</v-list-item-subtitle>
-                        <!-- <v-list-item-subtitle>{{ item.user.display_name || item.user.username }}</v-list-item-subtitle> -->
-                        <v-list-item-subtitle class="wrap-text mt-2"><span style="font-size: 0.8rem">{{ item.content }}</span></v-list-item-subtitle>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </template>
-                </v-list>
-              </div>
-              <div class="cover-bar"></div>
+                      <v-list-item
+                        :key="item.title"
+                        :class="{ unread: !notifications.includes(item._id) }"
+                      >
+                        <v-list-item-content>
+                          <v-list-item-title>{{ item.title }}</v-list-item-title>
+                          <v-list-item-subtitle style="opacity: 0.4; font-size: 0.7rem">{{ readableDate(item.createdAt) + " - " + readableDate(item.endDate) }}</v-list-item-subtitle>
+                          <!-- <v-list-item-subtitle>{{ item.user.display_name || item.user.username }}</v-list-item-subtitle> -->
+                          <v-list-item-subtitle class="wrap-text mt-2"><span style="font-size: 0.8rem">{{ item.content }}</span></v-list-item-subtitle>
+                        </v-list-item-content>
+                        <div :class="{ notification_active: true }" class=""></div>
+                      </v-list-item>
+                    </template>
+                  </v-list>
+                </div>
+                <div class="cover-bar"></div>
               </div>
           </div>
         </v-menu>
@@ -286,13 +284,19 @@ export default {
         this.$config = config;
       }
     },
-    notifications(noti) {
-      localStorage.notifications = noti
-    },
+    notifications: {
+      handler: function(newValue) {
+        localStorage.user = JSON.stringify({
+          notifications: newValue
+        })
+      },
+      deep: true
+    }
   },
   mounted() {
-    if (localStorage.notifications) {
-      this.notifications = localStorage.notifications
+    if (localStorage.user) {
+      let localUser = JSON.parse(localStorage.user)
+      this.notifications = localUser.notifications
     }
 
     console.log('%cWelkin', 'color: #3c84fb; font-family: monospace')
@@ -323,7 +327,7 @@ export default {
     isAuth: false,
     sidebarMenu: true,
     toggleMini: false,
-    notifications: 'true',
+    notifications: [],
     items: [
       {
         title: "Home",
@@ -522,7 +526,10 @@ export default {
         .catch((err) => {});
     },
     clearNoti() {
-      this.notifications = 'false'
+      this.notifications = []
+      this.$config.announcements.forEach((announcement) => {
+        this.notifications.push(announcement._id)
+      })
     },
     readableDate(date) {
       return this.moment(parseInt(date)).format("DD MMMM YYYY (HH:MM)")
