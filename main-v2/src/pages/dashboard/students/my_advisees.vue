@@ -80,7 +80,7 @@ export default {
         { text: "Name", sortable: false, value: "name", width: 350 },
         { text: "Nickname", sortable: false, align: "center", value: "nick_name", width: 100 },
         {
-          text: "Earned Credits ",
+          text: "Earned Credits",
           align: "center",
           sortable: true,
           value: "records.total_credits",
