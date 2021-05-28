@@ -15,7 +15,7 @@
     "firebase": "^8.4.3",
     "jquery": "^3.6.0",
     "moment": "^2.29.1",
-    "simplebar-vue": "^1.6.0",
+    "simplebar-vue": "^1.6.3",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.6.1",
     "vue-axios": "^3.2.4",

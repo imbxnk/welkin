@@ -39,7 +39,7 @@ export default{
         config {
           selectedBatches
           defaultAvatar
-          announcements { content user { display_name username } createdAt startDate endDate }
+          announcements { _id title content user { display_name username } createdAt startDate endDate }
         }
       }
     `

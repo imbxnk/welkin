@@ -25,7 +25,7 @@ export default {
 <style>
 .ex1 {
   height: 130px;
-  overflow: auto;
+  /* overflow: auto; */
 }
 .announce-card {
   margin: 5px;

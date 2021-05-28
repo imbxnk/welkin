@@ -866,3 +866,75 @@ main {
   -ms-user-select: none;
   user-select: none;
 }
+
+.wk-notifications {
+  max-height: 500px;
+  background: #fff;
+}
+
+.wk-notifications-header {
+  padding: 16px;
+}
+
+.wrap-text {
+  -webkit-line-clamp: unset !important;
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+}
+
+.wk-noti-wrap {
+  position: relative;
+}
+
+.wk-noti-box {
+  background: rgba(0,0,0,0.01);
+  width: 400px;
+  height: 380px;
+  overflow-y: scroll;
+}
+
+.wk-noti-box::-webkit-scrollbar {
+  width: .45em;
+}
+
+.wk-noti-box::-webkit-scrollbar,
+.wk-noti-box::-webkit-scrollbar-thumb {
+  overflow:visible;
+  border-radius: 4px;
+}
+
+.wk-noti-box::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.2);
+}
+
+.cover-bar {
+  position: absolute;
+  background: #fff;;
+  height: 100%;
+  top: 0;
+  right: 0;
+  width: .45em;
+  -webkit-transition: all .5s;
+  opacity: 1;
+}
+
+.wk-noti-wrap:hover .cover-bar {
+  opacity: 0;
+ -webkit-transition: all .5s;
+}
+
+/* .wk-noti-box::-webkit-scrollbar {
+  background-color: transparent;
+  width: 8px;
+  opacity: 0;
+  transition: opacity 0.1s linear !important;
+}
+
+.wk-noti-box:hover::-webkit-scrollbar {
+  opacity: 1;
+  transition: opacity 0.1s linear !important;
+}
+
+.wk-noti-box:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+} */
