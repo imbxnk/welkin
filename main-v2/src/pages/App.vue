@@ -22,7 +22,7 @@
 
           <template v-slot:activator="{ on, attrs }">
             <v-btn class="me-3" style="border-radius: 50% !important;" v-bind="attrs" v-on="on" icon>
-              <v-icon>mdi-bell</v-icon>
+              <v-icon>mdi-bullhorn</v-icon>
               <v-badge
                 color="pink"
                 dot
@@ -113,7 +113,7 @@
                 </p>
                 <v-btn
                   class="btn-manage-account"
-                  @click="$router.push({ name: 'MyProfile' })"
+                  @click="$router.push({ name: 'MyProfile' }).catch(err => {})"
                   depressed
                   outlined
                   rounded
