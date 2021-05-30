@@ -148,7 +148,7 @@ const routes = [
     meta: {
       requiresAuth: true,
       authorizedGroup: ["coordinator"],
-      title: "Manage Instructor",
+      title: "Instructor Management",
     },
   },
   {
@@ -157,7 +157,7 @@ const routes = [
     component: ManageUser,
     meta: {
       requiresAuth: true,
-      title: "Add User",
+      title: "User Management",
       authorizedGroup: ["coordinator"],
     },
   },
@@ -167,7 +167,7 @@ const routes = [
     component: ManageWebsite,
     meta: {
       requiresAuth: true,
-      title: "Manage Website",
+      title: "Website Management",
       authorizedGroup: ["coordinator"],
     },
   },
