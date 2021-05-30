@@ -305,7 +305,8 @@ export default {
     if (localStorage.user) {
       let localUser = JSON.parse(localStorage.user)
       this.notifications = localUser.notifications || []
-      this.toggleMini = localUser.nav || true
+      this.toggleMini = localUser.nav
+      console.log(this.toggleMini)
     }
 
     console.log('%cWelkin', 'color: #3c84fb; font-family: monospace')
@@ -335,7 +336,7 @@ export default {
     SITE_NAME: process.env.VUE_APP_SITE_NAME,
     isAuth: false,
     sidebarMenu: true,
-    toggleMini: null,
+    toggleMini: true,
     notifications: [],
     items: [
       {
