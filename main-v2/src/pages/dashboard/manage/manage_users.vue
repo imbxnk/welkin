@@ -251,11 +251,6 @@ export default {
       });
     },
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.Info[this.editedIndex], this.editedItem);
-      } else {
-        this.Info.push(this.editedItem);
-      }
       // eslint-disable-next-line no-console
       console.log(this.Info[this.editedIndex]);
       let query = `
@@ -281,6 +276,11 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
+          if (this.editedIndex > -1) {
+            Object.assign(this.Info[this.editedIndex], this.editedItem);
+          } else {
+            this.Info.push(this.editedItem);
+          }
           this.close();
           console.log(res.data.data);
         })
