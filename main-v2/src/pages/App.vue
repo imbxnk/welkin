@@ -297,7 +297,7 @@ export default {
   mounted() {
     if (localStorage.user) {
       let localUser = JSON.parse(localStorage.user)
-      this.notifications = localUser.notifications
+      this.notifications = localUser.notifications ? localStorage.notifications : []
     }
 
     console.log('%cWelkin', 'color: #3c84fb; font-family: monospace')
