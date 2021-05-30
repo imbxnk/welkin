@@ -12,6 +12,16 @@
         <a @click="$router.push(`/course/${code.toLowerCase()}`)">Course History</a>
       </div>
       <div class="overline my-n1">{{ code }} : {{ course.name }}</div>
+
+      <div v-if="course.description !== 'No description'">
+        <v-card elevation="0" class="pa-3 mt-2 description">
+          <span class="caption"
+            ><span class="primary--text">Course Description:</span> <br />{{
+              course.description
+            }}</span
+          ></v-card
+        >
+      </div>
       <v-divider></v-divider>
       <remainChart :batch="b" :total="tt" :passed="p"></remainChart>
       <!-- <table style="width:100%;">
@@ -138,7 +148,9 @@ export default {
           }
           this.loading = false;
         })
-        .catch((err) => { this.loading = false; });
+        .catch((err) => {
+          this.loading = false;
+        });
     },
   },
 };
@@ -158,5 +170,8 @@ td {
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+.description {
+  background: #f7f7f8;
 }
 </style>

@@ -3,23 +3,9 @@
     <!-- 1st column -->
     <v-col style="padding: 0 8px 0 0">
       <v-card>
-        <a @click="$router.back()" class="overline back primary--text pt-16 px-3"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-arrow-left"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
-            />
-          </svg>
-          BACK</a
+        <v-card-title class="text-uppercase pt-7 primary--text"
+          ><a @click="$router.back()"> &lt; {{ $route.params.code }} </a></v-card-title
         >
-        <v-card-title class="text-uppercase mt-n3">{{ $route.params.code }}</v-card-title>
         <v-list class="px-3 pb-3">
           <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list">
             <v-list-item-group
