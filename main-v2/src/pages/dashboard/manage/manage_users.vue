@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container class="mx-auto">
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
         <v-btn color="primary" @click="dialog = true">Add User<v-icon>mdi-plus</v-icon></v-btn>
@@ -156,7 +156,7 @@
     <v-snackbar centered v-model="snackbar" :timeout="1000">
       {{ snackbartext }}
     </v-snackbar>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -171,9 +171,7 @@ export default {
         { text: "Display Name", sortable: false, value: "display_name", width: "9%" },
         { text: "Username", sortable: false, value: "username", width: "9%" },
         { text: "Name", sortable: false, value: "name", width: "9%" },
-        { text: "Email", sortable: false, value: "email", width: "9%" },
         { text: "Group", sortable: false, value: "group", width: "9%" },
-
         { text: "Edit", sortable: false, value: "actions", width: "1%" },
       ],
       users: [],
@@ -265,7 +263,7 @@ export default {
             updateAccount(username: "${this.Info[this.editedIndex].username}", userInput: {
               username: "${this.Info[this.editedIndex].username}"
               given_name: "${this.Info[this.editedIndex].given_name}",
-              family_name:"${this.Info[this.editedIndex].family_name}",    
+              family_name:"${this.Info[this.editedIndex].family_name}",
               display_name: "${this.Info[this.editedIndex].display_name}"
               email:"${this.Info[this.editedIndex].email}"
               group:"${this.Info[this.editedIndex].group}"
