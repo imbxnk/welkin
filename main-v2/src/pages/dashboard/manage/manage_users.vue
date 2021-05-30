@@ -7,10 +7,12 @@
       <div class="p-2 bd-highlight">
         <v-card style="max-width: auto"
           ><v-card-title>
-              <div class="d-flex flex-column">
-                <span>Users</span>
-                <span style="font-size:0.8rem; color:#999; margin-top: -10px;">Total: {{ total }}</span>
-              </div>
+            <div class="d-flex flex-column">
+              <span>Users</span>
+              <span style="font-size:0.8rem; color:#999; margin-top: -10px;"
+                >Total: {{ total }}</span
+              >
+            </div>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -125,72 +127,6 @@
           </v-form>
         </div>
       </v-card>
-      <!-- <v-card>
-        <v-card-title>
-          Edit Student
-        </v-card-title>
-        <v-card-text>
-          <v-form>
-            <div class="d-flex flex-column bd-highlight">
-              <div class="p-2 bd-highlight">
-                <div class="d-flex flex-row justify-content-evenly bd-highlight">
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      class="input"
-                      label="display_name"
-                      v-model="editedItem.display_name"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      class="input"
-                      label="First name"
-                      v-model="editedItem.given_name"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      class="input"
-                      label="Family name"
-                      v-model="editedItem.family_name"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                </div>
-              </div>
-              <div class="p-2 bd-highlight">
-                <div class="d-flex flex-row justify-content-evenly bd-highlight">
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      class="input"
-                      label="username"
-                      v-model="editedItem.username"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      class="input"
-                      label="email"
-                      v-model="editedItem.email"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                </div>
-              </div>
-
-              <div class="p-2 bd-highlight">
-                <div class="d-flex flex-row justify-content-end bd-highlight">
-                  <v-btn class="my-3" @click="close()" text>close</v-btn>
-                  <v-btn class="my-3" color="#3c84fb" @click="save()" text>Submit</v-btn>
-                </div>
-              </div>
-            </div>
-          </v-form>
-        </v-card-text>
-      </v-card> -->
     </v-dialog>
   </div>
 </template>
@@ -226,7 +162,7 @@ export default {
         group: "",
       },
       Info: [],
-      items: ["admin", "coordinator", "lecturer"],
+      items: ["coordinator", "program director", "lecturer"],
     };
   },
   mounted() {
