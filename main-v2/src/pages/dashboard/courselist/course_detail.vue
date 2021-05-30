@@ -1,8 +1,8 @@
 <template>
-  <v-row>
+  <v-row v-resize="onResize">
     <!-- 1st column -->
-    <v-col style="padding: 0 8px 0 0">
-      <v-card>
+    <v-col class="wk-left-col" cols="12" md="6" :class="{ hide: !isHidden }">
+      <v-card class="mt-3">
         <v-card-title class="text-uppercase pt-7 primary--text"
           ><a @click="$router.back()"> &lt; {{ $route.params.code }} </a></v-card-title
         >
@@ -168,7 +168,7 @@ export default {
   overflow-x: hidden;
 }
 .wk-content-full-height-list {
-  height: calc(var(--app-height) - 226px);
+  height: calc(var(--app-height) - 189px);
   overflow: auto;
 }
 
