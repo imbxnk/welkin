@@ -288,16 +288,24 @@ export default {
     notifications: {
       handler: function(newValue) {
         localStorage.user = JSON.stringify({
-          notifications: newValue
+          notifications: newValue,
+          nav: this.toggleMini
         })
       },
       deep: true
+    },
+    toggleMini(newValue) {
+      localStorage.user = JSON.stringify({
+        notifications: this.notifications,
+        nav: newValue
+      })
     }
   },
   mounted() {
     if (localStorage.user) {
       let localUser = JSON.parse(localStorage.user)
       this.notifications = localUser.notifications || []
+      this.toggleMini = localUser.nav || true
     }
 
     console.log('%cWelkin', 'color: #3c84fb; font-family: monospace')
@@ -327,7 +335,7 @@ export default {
     SITE_NAME: process.env.VUE_APP_SITE_NAME,
     isAuth: false,
     sidebarMenu: true,
-    toggleMini: false,
+    toggleMini: null,
     notifications: [],
     items: [
       {
@@ -400,22 +408,22 @@ export default {
             icon: "mdi-account-edit",
           },
           {
-            title: "Course",
+            title: "Courses",
             href: "/course",
             icon: "mdi-plus",
           },
           {
-            title: "Curriculum",
+            title: "Curriculums",
             href: "/curriculum",
             icon: "mdi-plus",
           },
           {
-            title: "Instructor",
+            title: "Instructors",
             href: "/instructor",
             icon: "mdi-plus",
           },
           {
-            title: "User",
+            title: "Users",
             href: "/user",
             icon: "mdi-plus",
           },
