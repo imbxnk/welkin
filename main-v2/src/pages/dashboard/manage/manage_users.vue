@@ -68,7 +68,7 @@
         <v-card-title
           >Edit User
           <v-spacer></v-spacer>
-          <v-icon @click="Editdialog = false">mdi-close</v-icon></v-card-title
+          <v-icon @click="close()">mdi-close</v-icon></v-card-title
         >
         <div class="pa-3">
           <v-form ref="form">
@@ -122,12 +122,40 @@
             </div>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary">submit</v-btn>
+              <v-btn color="primary" @click="confirm1 = true">submit</v-btn>
             </v-card-actions>
           </v-form>
         </div>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="confirm1" max-width="450px">
+      <v-card>
+        <v-card-title class="headline grey lighten-2"> Confirm edit </v-card-title><br />
+        <v-card-text
+          >Are you sure you want to edit: <br />Display name:
+          <b>{{ this.editedItem.display_name || "-" }}</b>
+          <br />Username:
+          <b>{{ this.editedItem.username || "-" }}</b>
+          <br />Given name:
+          <b>{{ this.editedItem.given_name || "-" }}</b>
+          <br />Family name:
+          <b>{{ this.editedItem.family_name || "-" }}</b>
+          <br />Email:
+          <b>{{ this.editedItem.email || "-" }}</b>
+          <br />Group:
+          <b>{{ this.editedItem.group || "-" }}</b>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text color="error" @click="confirm1 = false">No</v-btn>
+          <v-btn text color="success" @click="save()">Yes</v-btn>
+        </v-card-actions></v-card
+      >
+    </v-dialog>
+
+    <v-snackbar centered v-model="snackbar" :timeout="1000">
+      {{ snackbartext }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -151,6 +179,7 @@ export default {
       users: [],
       total: 0,
       dialog: false,
+      confirm1: false,
       Editdialog: false,
       editedIndex: -1,
       editedItem: {
@@ -163,6 +192,8 @@ export default {
       },
       Info: [],
       items: ["coordinator", "program director", "lecturer"],
+      snackbar: false,
+      snackbartext: "success",
     };
   },
   mounted() {
@@ -197,6 +228,7 @@ export default {
           console.log(res.data.data.users);
           this.total = res.data.data.users.total;
           this.users = res.data.data.users.users;
+          this.Info = res.data.data.users.users;
           this.users.forEach((user) => {
             user["name"] = [user.given_name, user.family_name].join(" ");
           });
@@ -211,6 +243,52 @@ export default {
       // eslint-disable-next-line no-console
       console.log(item);
       this.Editdialog = true;
+    },
+    close() {
+      this.Editdialog = false;
+      this.confirm1 = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.Info[this.editedIndex], this.editedItem);
+      } else {
+        this.Info.push(this.editedItem);
+      }
+      // eslint-disable-next-line no-console
+      console.log(this.Info[this.editedIndex]);
+      let query = `
+          mutation {
+            updateAccount(username: "${this.Info[this.editedIndex].username}", userInput: {
+              username: "${this.Info[this.editedIndex].username}"
+              given_name: "${this.Info[this.editedIndex].given_name}",
+              family_name:"${this.Info[this.editedIndex].family_name}",    
+              display_name: "${this.Info[this.editedIndex].display_name}"
+              email:"${this.Info[this.editedIndex].email}"
+              group:"${this.Info[this.editedIndex].group}"
+
+            }) {
+              _id
+              given_name
+              family_name
+              password
+              username
+              group
+            }
+          }
+        `;
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.close();
+          console.log(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
