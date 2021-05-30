@@ -295,8 +295,8 @@ export default {
     }
   },
   mounted() {
-    let localUser = JSON.parse(localStorage.user)
     if (localStorage.user) {
+      let localUser = JSON.parse(localStorage.user)
       this.notifications = localUser.notifications || []
     }
 
