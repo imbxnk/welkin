@@ -59,7 +59,7 @@
                                 <v-select class="input" label="Entry Trimester" :items="trimester" outlined v-model="editedItem.entry_trimester"></v-select>
                             </div>
                             <div class="p-2 bd-highlight">
-                                <v-text-field class="input" label="Entry Year" v-model="editedItem.entry_year" outlined :rules="[() => (!!entry_year && entry_year.length >= 4) || 'Required at least 4 characters',]"></v-text-field>
+                                <v-text-field type="number" class="input" label="Entry Year" v-model="editedItem.entry_year" outlined :rules="[() => (entry_year.length >= 4) || 'Required 4 characters',]"></v-text-field>
                             </div>
                             <div class="p-2 bd-highlight">
                                 <v-text-field class="input" label="Program" v-model="editedItem.program" outlined></v-text-field>
@@ -81,6 +81,7 @@
                     </div>
                     <div class="p-2 bd-highlight">
                         <div class="d-flex flex-row justify-content-end bd-highlight">
+                            <v-btn class="my-3 mr-auto success" text>Line</v-btn>
                             <v-btn class="my-3" @click="close()" text>close</v-btn>
                             <v-btn class="my-3" color="#3c84fb" @click="dialogCheck=true" text>Submit</v-btn>
                         </div>
