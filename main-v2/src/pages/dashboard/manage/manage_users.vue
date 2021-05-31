@@ -75,14 +75,14 @@
             <div class="d-flex px-3 justify-content-between flex-column flex-sm-row">
               <div class=" ">
                 <v-text-field
-                  label="display_name"
+                  label="Display Name"
                   v-model="editedItem.display_name"
                   outlined
                 ></v-text-field>
               </div>
               <div class="">
                 <v-text-field
-                  label="username"
+                  label="Username"
                   v-model="editedItem.username"
                   outlined
                 ></v-text-field>
@@ -91,14 +91,14 @@
             <div class="d-flex px-3  justify-content-between flex-column flex-sm-row">
               <div class="">
                 <v-text-field
-                  label="given_name"
+                  label="Given Name"
                   v-model="editedItem.given_name"
                   outlined
                 ></v-text-field>
               </div>
               <div class="">
                 <v-text-field
-                  label="Family name"
+                  label="Family Name"
                   v-model="editedItem.family_name"
                   outlined
                 ></v-text-field>
@@ -107,10 +107,10 @@
 
             <div class="d-flex justify-content-center flex-column">
               <div class="px-3">
-                <v-text-field label="email" v-model="editedItem.email" outlined></v-text-field>
+                <v-text-field label="Email" v-model="editedItem.email" outlined></v-text-field>
               </div>
             </div>
-            <div class="d-flex justify-content-center flex-column">
+            <div class="d-flex justify-content-center flex-column" v-if="editedItem.group !== 'admin'">
               <div class="px-3">
                 <v-select
                   :items="items"
@@ -118,6 +118,11 @@
                   label="Group"
                   outlined
                 ></v-select>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center flex-column" v-else>
+              <div class="px-3">
+                Group: <span style="color: #999; margin-left: 20px">{{ editedItem.group }}</span>
               </div>
             </div>
             <v-card-actions>
