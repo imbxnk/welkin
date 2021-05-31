@@ -26,14 +26,14 @@
             <div class="p-2 flex-sm-grow-1 bd-highlight md-12">
               <v-card v-if="importFile" color="#97b8f0" class="mb-12" style="min-width: 100px">
             <v-card-text>
-              <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"  @vdropzone-success="selectFile" @success="e6=2" style="min-width:80px" lazy-validation>
+              <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"  @vdropzone-success="selectFile" style="min-width:80px" lazy-validation>
               </vue-dropzone>
             </v-card-text>
           </v-card>
               <v-form v-if="addManually" ref="form" lazy-validation style="min-width:300px">
                 <div class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center">
                   <div class="p-2 bd-highlight">
-                    <v-text-field class="input" label="ID" id="id" v-model="manuallyData.ID" :rules="[rules.required]" dense outlined required></v-text-field>
+                    <v-text-field type="number" class="input" label="ID" id="id" v-model="manuallyData.ID" :rules="[rules.required]" dense outlined required></v-text-field>
                   </div>
                   <div class="p-2 bd-highlight">
                     <v-select class="input" :items="icProgram" label="Program" v-model="manuallyData.Program" :rules="[rules.required]" dense outlined required></v-select>
@@ -68,7 +68,7 @@
           </div>
           <div class="d-flex flex-row bd-highlight">
             <div class="p-2 bd-highlight">
-              <v-btn color="#3c84fb" @click="toStep2(); submitForm()" style="color: white;">
+              <v-btn color="#3c84fb" @click.prevent="toStep2(); submitForm()" style="color: white;">
                 Submit
               </v-btn>
               <v-btn color="#3c84fb" text @click="cancelStep1()">
@@ -349,6 +349,8 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
           let new_data = {...this.manuallyData}
           this.studentsData.push(new_data)
           console.log(this.studentsData)
+        }else{
+          this.e6 = 1
         }
       },
       getSelectedValue(event){
@@ -410,6 +412,8 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
         },
         cancelStep2(){
           this.e6 = 1
+          this.manuallyData = {}
+          this.selectedFile = {}
         },
         cancelStep3(){
           this.e6 = 2
@@ -418,13 +422,6 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
           this.$router.push({ name: "manage_student" });
         },
         toStep2(){
-          if(this.$refs.form.validate()){
-            this.e6 = 2
-          }else if (this.$refs.myVueDropzone.validate()){
-            this.e6 = 2
-          }else {
-            this.e6 = 1
-          }
         }
     }
   }
