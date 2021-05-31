@@ -15,13 +15,18 @@
         <v-menu
           transition="slide-y-transition"
           bottom
-          :allow-overflow=true
+          :allow-overflow="true"
           max-width="400px"
-          :close-on-content-click=false
+          :close-on-content-click="false"
         >
-
           <template v-slot:activator="{ on, attrs }">
-            <v-btn class="me-3" style="border-radius: 50% !important;" v-bind="attrs" v-on="on" icon>
+            <v-btn
+              class="me-3"
+              style="border-radius: 50% !important;"
+              v-bind="attrs"
+              v-on="on"
+              icon
+            >
               <v-icon>mdi-bullhorn</v-icon>
               <v-badge
                 color="pink"
@@ -33,45 +38,55 @@
               </v-badge>
             </v-btn>
           </template>
-            <div class="wk-notifications">
-              <div class="wk-notifications-header d-flex">
-                <div class="flex-grow-1" style="font-weight: 700">Announcements</div>
-                <v-btn v-if="notifications.length != $config.announcements.length" plain rounded x-small style="font-size: 0.8rem; cursor: pointer; color: #007bff; letter-spacing: 0; text-index: 0; text-transform: unset" @click="clearNoti">Mark all as Read</v-btn>
-              </div>
-              <v-divider
-                :inset=false
-                class="my-0"
-              ></v-divider>
-              <div class="wk-noti-wrap">
-                <div class="wk-noti-box">
-                  <v-list class="py-0">
-                    <template v-for="(item, index) in $config.announcements">
+          <div class="wk-notifications">
+            <div class="wk-notifications-header d-flex">
+              <div class="flex-grow-1" style="font-weight: 700">Announcements</div>
+              <v-btn
+                v-if="notifications.length != $config.announcements.length"
+                plain
+                rounded
+                x-small
+                style="font-size: 0.8rem; cursor: pointer; color: #007bff; letter-spacing: 0; text-index: 0; text-transform: unset"
+                @click="clearNoti"
+                >Mark all as Read</v-btn
+              >
+            </div>
+            <v-divider :inset="false" class="my-0"></v-divider>
+            <div class="wk-noti-wrap">
+              <div class="wk-noti-box">
+                <v-list class="py-0">
+                  <template v-for="(item, index) in $config.announcements">
+                    <v-divider
+                      v-if="index !== 0"
+                      :key="index"
+                      :inset="false"
+                      class="my-0"
+                    ></v-divider>
 
-                      <v-divider
-                        v-if="index !== 0"
-                        :key="index"
-                        :inset=false
-                        class="my-0"
-                      ></v-divider>
-
-                      <v-list-item
-                        :key="item.title"
-                        :class="{ unread: !notifications.includes(item._id) }"
+                    <v-list-item
+                      :key="item.title"
+                      :class="{ unread: !notifications.includes(item._id) }"
+                    >
+                      <div :class="{ notification_active: true }" class=""></div>
+                      <v-list-item-content>
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        <v-list-item-subtitle style="opacity: 0.4; font-size: 0.7rem">{{
+                          readableDate(item.createdAt) + " - " + readableDate(item.endDate)
+                        }}</v-list-item-subtitle>
+                        <!-- <v-list-item-subtitle>{{ item.user.display_name || item.user.username }}</v-list-item-subtitle> -->
+                        <v-list-item-subtitle class="wrap-text mt-2"
+                          ><span style="font-size: 0.8rem" v-html="item.content"></span
+                        ></v-list-item-subtitle>
+                      </v-list-item-content>
+                      <v-btn icon class="align-self-start toggle-read" @click="toggleRead(item._id)"
+                        ><v-icon>mdi-check</v-icon></v-btn
                       >
-                        <div :class="{ notification_active: true }" class=""></div>
-                        <v-list-item-content>
-                          <v-list-item-title>{{ item.title }}</v-list-item-title>
-                          <v-list-item-subtitle style="opacity: 0.4; font-size: 0.7rem">{{ readableDate(item.createdAt) + " - " + readableDate(item.endDate) }}</v-list-item-subtitle>
-                          <!-- <v-list-item-subtitle>{{ item.user.display_name || item.user.username }}</v-list-item-subtitle> -->
-                          <v-list-item-subtitle class="wrap-text mt-2"><span style="font-size: 0.8rem" v-html="item.content"></span></v-list-item-subtitle>
-                        </v-list-item-content>
-                        <v-btn icon class="align-self-start toggle-read" @click="toggleRead(item._id)"><v-icon>mdi-check</v-icon></v-btn>
-                      </v-list-item>
-                    </template>
-                  </v-list>
-                </div>
-                <div class="cover-bar"></div>
+                    </v-list-item>
+                  </template>
+                </v-list>
               </div>
+              <div class="cover-bar"></div>
+            </div>
           </div>
         </v-menu>
 
@@ -113,7 +128,7 @@
                 </p>
                 <v-btn
                   class="btn-manage-account"
-                  @click="$router.push({ name: 'MyProfile' }).catch(err => {})"
+                  @click="$router.push({ name: 'MyProfile' }).catch((err) => {})"
                   depressed
                   outlined
                   rounded
@@ -283,34 +298,37 @@ export default {
       },
       $config(config) {
         this.$config = config;
-      }
+      },
     },
     notifications: {
       handler: function(newValue) {
         localStorage.user = JSON.stringify({
           notifications: newValue,
-          nav: this.toggleMini
-        })
+          nav: this.toggleMini,
+        });
       },
-      deep: true
+      deep: true,
     },
     toggleMini(newValue) {
       localStorage.user = JSON.stringify({
         notifications: this.notifications,
-        nav: newValue
-      })
-    }
+        nav: newValue,
+      });
+    },
   },
   mounted() {
     if (localStorage.user) {
-      let localUser = JSON.parse(localStorage.user)
-      this.notifications = localUser.notifications || []
-      this.toggleMini = localUser.nav
-      console.log(this.toggleMini)
+      let localUser = JSON.parse(localStorage.user);
+      this.notifications = localUser.notifications || [];
+      this.toggleMini = localUser.nav;
+      console.log(this.toggleMini);
     }
 
-    console.log('%cWelkin', 'color: #3c84fb; font-family: monospace')
-    console.log('%c6080728 Kanin S. (Mix)\n6080727 Phattharaporn R. (Phat)\n6080728 Phongchai P. (Bank)\n6080779 Santhisa CH. (Nhan)', 'font-size: 0.7rem; color: #666')
+    console.log("%cWelkin", "color: #3c84fb; font-family: monospace");
+    console.log(
+      "%c6080728 Kanin S. (Mix)\n6080727 Phattharaporn R. (Phat)\n6080728 Phongchai P. (Bank)\n6080779 Santhisa CH. (Nhan)",
+      "font-size: 0.7rem; color: #666"
+    );
     const appHeight = () => {
       const doc = document.documentElement;
       doc.style.setProperty("--app-height", `${window.innerHeight}px`);
@@ -377,7 +395,7 @@ export default {
       {
         title: "Curriculum",
         href: "/curriculum",
-        icon: "mdi-book-open-outline",
+        icon: "mdi-notebook-outline",
       },
       // {
       //   title: "Manage",
@@ -406,27 +424,27 @@ export default {
           {
             title: "Students",
             href: "/student",
-            icon: "mdi-account-edit",
+            icon: "mdi-account-edit-outline",
           },
           {
             title: "Courses",
             href: "/course",
-            icon: "mdi-plus",
+            icon: "mdi-file-document-edit-outline",
           },
           {
             title: "Curriculums",
             href: "/curriculum",
-            icon: "mdi-plus",
+            icon: "mdi-notebook-edit-outline",
           },
           {
             title: "Instructors",
             href: "/instructor",
-            icon: "mdi-plus",
+            icon: "mdi-account-edit-outline",
           },
           {
             title: "Users",
             href: "/user",
-            icon: "mdi-plus",
+            icon: "mdi-clipboard-edit-outline",
           },
           {
             title: "Website",
@@ -536,18 +554,19 @@ export default {
         .catch((err) => {});
     },
     clearNoti() {
-      this.notifications = []
+      this.notifications = [];
       this.$config.announcements.forEach((announcement) => {
-        this.notifications.push(announcement._id)
-      })
+        this.notifications.push(announcement._id);
+      });
     },
     toggleRead(id) {
-      if(this.notifications.includes(id)) this.notifications.splice(this.notifications.indexOf(id), 1)
-      else this.notifications.push(id)
+      if (this.notifications.includes(id))
+        this.notifications.splice(this.notifications.indexOf(id), 1);
+      else this.notifications.push(id);
     },
     readableDate(date) {
-      return this.moment(parseInt(date)).format("DD MMMM YYYY (HH:MM)")
-    }
+      return this.moment(parseInt(date)).format("DD MMMM YYYY (HH:MM)");
+    },
   },
 };
 </script>
