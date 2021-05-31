@@ -56,10 +56,10 @@
                     <div class="p-2 bd-highlight">
                         <div class="d-flex flex-row justify-content-evenly bd-highlight">
                             <div class="p-2 bd-highlight">
-                                <v-text-field class="input" label="Entry Trimester" v-model="editedItem.entry_trimester" outlined></v-text-field>
+                                <v-select class="input" label="Entry Trimester" :items="trimester" outlined v-model="editedItem.entry_trimester"></v-select>
                             </div>
                             <div class="p-2 bd-highlight">
-                                <v-text-field class="input" label="Entry Year" v-model="editedItem.entry_year" outlined></v-text-field>
+                                <v-text-field class="input" label="Entry Year" v-model="editedItem.entry_year" outlined :rules="[() => (!!entry_year && entry_year.length >= 4) || 'Required at least 4 characters',]"></v-text-field>
                             </div>
                             <div class="p-2 bd-highlight">
                                 <v-text-field class="input" label="Program" v-model="editedItem.program" outlined></v-text-field>
@@ -163,6 +163,7 @@ export default {
       dialogCheck: false,
       prefix:["Mr.", "Ms.", "Mrs",],
       search:"",
+      trimester:["1", "2", "3"]
     };
   },
   mounted() {
