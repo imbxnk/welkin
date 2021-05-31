@@ -260,13 +260,13 @@ export default {
       console.log(this.Info[this.editedIndex]);
       let query = `
           mutation {
-            updateAccount(username: "${this.Info[this.editedIndex].username}", userInput: {
-              username: "${this.Info[this.editedIndex].username}"
-              given_name: "${this.Info[this.editedIndex].given_name}",
-              family_name:"${this.Info[this.editedIndex].family_name}",
-              display_name: "${this.Info[this.editedIndex].display_name}"
-              email:"${this.Info[this.editedIndex].email}"
-              group:"${this.Info[this.editedIndex].group}"
+            updateAccount(username: "${this.editedItem.username}", userInput: {
+              username: "${this.editedItem.username}"
+              given_name: "${this.editedItem.given_name}",
+              family_name:"${this.editedItem.family_name}",
+              display_name: "${this.editedItem.display_name}"
+              email:"${this.editedItem.email}"
+              group:"${this.editedItem.group}"
 
             }) {
               _id
