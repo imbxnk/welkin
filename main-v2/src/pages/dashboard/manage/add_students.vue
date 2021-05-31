@@ -26,7 +26,7 @@
             <div class="p-2 flex-sm-grow-1 bd-highlight md-12">
               <v-card v-if="importFile" color="#97b8f0" class="mb-12" style="min-width: 100px">
             <v-card-text>
-              <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"  @vdropzone-success="selectFile" style="min-width:80px">
+              <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"  @vdropzone-success="selectFile" @success="e6=2" style="min-width:80px" lazy-validation>
               </vue-dropzone>
             </v-card-text>
           </v-card>
@@ -36,7 +36,7 @@
                     <v-text-field class="input" label="ID" id="id" v-model="manuallyData.ID" :rules="[rules.required]" dense outlined required></v-text-field>
                   </div>
                   <div class="p-2 bd-highlight">
-                    <v-text-field class="input" label="Program" v-model="manuallyData.Program" :rules="[rules.required]" dense outlined required></v-text-field>
+                    <v-select class="input" :items="icProgram" label="Program" v-model="manuallyData.Program" :rules="[rules.required]" dense outlined required></v-select>
                   </div>
                 </div>
                 <div class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center">
@@ -55,12 +55,20 @@
                     <v-text-field class="input" label="Advisor" v-model="manuallyData.Advisor" :rules="[rules.required]" dense outlined></v-text-field>
                   </div>
                 </div>
+                <div class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center">
+                  <div class="p-2 bd-highlight">
+                    <v-text-field type="number" class="input" label="Entry Trimester" v-model="manuallyData.entry_trimester" :rules="[rules.required]" dense outlined></v-text-field>
+                  </div>
+                  <div class="p-2 bd-highlight">
+                    <v-text-field type="number" class="input" label="Entry Year" v-model="manuallyData.entry_year" :rules="[rules.required]" dense outlined></v-text-field>
+                  </div>
+                </div>
               </v-form>
             </div>
           </div>
           <div class="d-flex flex-row bd-highlight">
             <div class="p-2 bd-highlight">
-              <v-btn color="#3c84fb" @click="e6 = 2; submitForm()" style="color: white;">
+              <v-btn color="#3c84fb" @click="toStep2(); submitForm()" style="color: white;">
                 Submit
               </v-btn>
               <v-btn color="#3c84fb" text @click="cancelStep1()">
@@ -68,24 +76,17 @@
               </v-btn>
             </div>
             <div class="ms-auto p-2 bd-highlight justify-content-sm-start">
-              <v-speed-dial v-model="fab" :transition="transition">
-              <template v-slot:activator>
-                <v-btn class="speed-dial" v-model="fab" dark color="#3c84fb">
-                  <v-icon v-if="fab">
-                    mdi-close
-                  </v-icon>
-                  <v-icon v-else>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn class="speed-dial" dark color="#3c84fb" @click.prevent="toggleForm()" v-bind="attrs" v-on="on">
+                  <v-icon>
                     mdi-account-circle
                   </v-icon>
                 </v-btn>
-              </template>
-              <v-btn class="speed-dial" fab  dark  small @click="changeToManually()"  color="#3c84fb">
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-              <v-btn class="speed-dial" fab dark small @click="changeToImport()" color="#3c84fb">
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </v-speed-dial>
+                  </template>
+                  <span>Change to add manually or import files</span>
+                </v-tooltip>
+
             </div>
         </div>
         </v-stepper-content>
@@ -197,7 +198,6 @@
                           <td>{{ item.Name }}</td>
                           <td>{{ item.LastName }}</td>
                           <td>{{ item.Advisor }}</td>
-                          <td>Add Success!</td>
                           </tr>
                       </tbody>
                       <tbody v-else-if="duplicateStatus">
@@ -213,7 +213,6 @@
                           <td>{{ item.Name }}</td>
                           <td>{{ item.LastName }}</td>
                           <td>{{ item.Advisor }}</td>
-                          <td>Duplicate!</td>
                           </tr>
                       </tbody>
                       </template>
@@ -254,13 +253,26 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
         },
         addManually : false,
         importFile: true,
-        //speed dial data
-        fab: false,
-        transition: 'slide-y-reverse-transition',
-        tabs : null,
 
         //manual
         prefix:["Mr.", "Ms.", "Mrs",],
+        icProgram:[ 'ICBE',
+                    'ICCI',
+                    'ICCS',
+                    'ICMI',
+                    'ICMF',
+                    'ICMK',
+                    'ICCU',
+                    'ICSS',
+                    'ICMC',
+                    'ICCD',
+                    'ICIR',
+                    'ICIH',
+                    'ICIB',
+                    'ICEN',
+                    'ICCH',
+                    'ICPY',
+                    'ICFS'],
         manuallyData: {
           ID: "",
           Program: "",
@@ -285,6 +297,7 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
         workbook: {},
         selectedFile: "",
         fileStatus: false,
+        fileStep: false,
         //duplicate
         duplicateStudents: [],
         duplicateStatus: false,
@@ -294,15 +307,14 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
         vueDropzone: vue2Dropzone
     },
     methods:{
-      changeToManually(){
-        this.addManually = true,
-        this.importFile = false
-      },
-      changeToImport(){
-        this.importFile = true,
-        this.addManually = false
+      toggleForm(){
+        this.addManually = !this.addManually
+        this.importFile = !this.importFile
+        console.log(this.addManually, this.importFile)
       },
       selectFile(file){
+        //show file is already upload
+          this.fileStep = true
         //show the select component
           this.fileStatus = true
         //get the selected file' info
@@ -405,6 +417,15 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
         ToEditPage() {
           this.$router.push({ name: "manage_student" });
         },
+        toStep2(){
+          if(this.$refs.form.validate()){
+            this.e6 = 2
+          }else if (this.$refs.myVueDropzone.validate()){
+            this.e6 = 2
+          }else {
+            this.e6 = 1
+          }
+        }
     }
   }
 </script>
