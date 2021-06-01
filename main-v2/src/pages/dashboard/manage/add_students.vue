@@ -422,6 +422,7 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
           this.$router.push({ name: "manage_student" });
         },
         toStep2(){
+          this.e6 = 2
         }
     }
   }
