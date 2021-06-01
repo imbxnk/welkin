@@ -17,7 +17,7 @@
         <div class="overline text-center">{{ stdDetail.sid }}</div>
       </v-col>
       <v-col cols="12" sm="6">
-        <b>Email:</b> <span v-if="stdDetail.email">{{ stdDetail.email }}</span
+        <b>Email:</b> <span v-if="stdDetail.email">{{ checkNull(stdDetail.email) }}</span
         ><span v-else>-</span><br />
         <template v-if="stdDetail.records">
           <b>GPA:</b> <span>{{ stdDetail.records.egci_cumulative_gpa }}</span
@@ -52,6 +52,19 @@ export default {
   props: ["stdDetail"],
   components: { StudentRemark },
   mounted() {},
+  methods: {
+    checkNull(item) {
+      if (item == " ") {
+        return " - ";
+      } else if (item == "null") {
+        return " - ";
+      } else if (!item) {
+        return " - ";
+      } else {
+        return item;
+      }
+    },
+  },
 };
 </script>
 <style scoped>

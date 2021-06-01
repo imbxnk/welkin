@@ -41,10 +41,12 @@
             </v-chip>
           </template>
           <template v-slot:[`item.nick_name`]="{ item }">
-            {{ item.nick_name == null ? " - " : item.nick_name }}
+            <!-- {{ !!item.nick_name || item.nick_name == " " ? item.nick_name : " - " }} -->
+            {{ checkNull(item.nick_name) }}
           </template>
           <template v-slot:[`item.email`]="{ item }">
-            {{ item.email == null ? " - " : item.email }}
+            <!-- {{ item.email == null ? " - " : item.email }} -->
+            {{ checkNull(item.email) }}
           </template>
         </v-data-table>
         <!-- dialog1 show info -->
@@ -104,6 +106,17 @@ export default {
     this.getMyAdvisees();
   },
   methods: {
+    checkNull(item) {
+      if (item == " ") {
+        return " - ";
+      } else if (item == "null") {
+        return " - ";
+      } else if (!item) {
+        return " - ";
+      } else {
+        return item;
+      }
+    },
     getColor(status) {
       // 'Studying',
       // 'Leave of absence',
