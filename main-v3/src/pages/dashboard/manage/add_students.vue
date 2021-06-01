@@ -403,17 +403,18 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
         this.selectedFile = {}
       },
       cancelStep2(){
-        this.e6 = 2
+        this.e6 = 1
         this.manuallyData = {}
         this.selectedFile = {}
       },
       cancelStep3(){
-        this.e6 = 3
+        this.e6 = 2
       },
       ToEditPage() {
         this.$router.push({ name: "manage_student" });
       },
       toStep2(){
+        this.e6 = 2
       }
     }
   }
