@@ -1,71 +1,56 @@
 <template>
-  <div class="pa-3">
-    <v-form ref="form" v-model="valid" lazy-validation>
-      <div class="d-flex px-3 justify-content-between flex-column flex-sm-row">
-        <div class="">
-          <v-text-field
-            ref="firstName"
-            v-model="firstName"
-            label="First Name"
-            outlined
-            required
-            :rules="[() => !!firstName || 'Required']"
-          ></v-text-field>
-        </div>
-        <div class="">
-          <v-text-field
-            ref="familyName"
-            v-model="familyName"
-            label="Family Name"
-            outlined
-            required
-            :rules="[() => !!familyName || 'Required']"
-          ></v-text-field>
-        </div>
+  <div>
+    <v-form ref="form" lazy-validation>
+      <div class="d-flex flex-column bd-highlight">
+          <div class="p-2 bd-highlight mx-auto">
+              <div class="d-flex flex-row justify-content-evenly bd-highlight">
+                  <div class="p-2 bd-highlight">
+                    <v-text-field label="Title" v-model="instrucData.title" :rules="[rules.required]" outlined required></v-text-field>
+                  </div>
+                  <div class="p-2 bd-highlight">
+                    <v-text-field label="First Name" v-model="instrucData.given_name" :rules="[rules.required, rules.counter]" outlined required></v-text-field>
+                  </div>
+                  <div class="p-2 bd-highlight">
+                    <v-text-field label="Last Name" v-model="instrucData.family_name" :rules="[rules.required, rules.counter]" outlined required></v-text-field>
+                  </div>
+              </div>
+          </div>
+          <div class="p-2 bd-highlight mx-auto">
+              <div class="d-flex flex-row justify-content-evenly bd-highlight">
+                  <div class="p-2 bd-highlight">
+                    <v-text-field label="email" v-model="instrucData.email" outlined></v-text-field>
+                  </div>
+                  <div class="p-2 bd-highlight">
+                    <v-text-field label="phone" v-model="instrucData.phone" :rules="[]" outlined></v-text-field>
+                  </div>
+              </div>
+          </div>
       </div>
-      <div class="d-flex justify-content-center flex-column">
-        <div class="px-3">
-          <v-text-field
-            ref="email"
-            v-model="email"
-            label="Email"
-            outlined
-            required
-            :rules="[() => !!email || 'Required', rules.email]"
-          ></v-text-field>
-        </div>
-        <div class="px-3">
-          <v-text-field
-            ref="phone"
-            v-model="phone"
-            label="Phone"
-            outlined
-            required
-            >
-        </div>
+  </v-form>
+  <v-card-action>
+    <div class="d-flex flex-row justify-content-end bd-highlight">
+      <div class="p-2 bd-highlight">
+        <v-btn class="my-4" text @click="clear()">clear</v-btn>
+        <v-btn class="my-4" color="#3c84fb" @click="validate()" text>Submit</v-btn>
       </div>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="error" @click="clearText()">clear</v-btn>
-        <v-btn color="primary" @click="validate">submit</v-btn>
-      </v-card-actions>
-    </v-form>
-
-    <v-dialog v-model="dialog" max-width="450px">
+    </div>
+  </v-card-action>
+  
+  <v-dialog v-model="dialogCheck" max-width="450px">
       <v-card>
-        <v-card-title class="headline grey lighten-2"> Confirm Add </v-card-title><br />
+        <v-card-title class="headline grey lighten-2"> Confirm instructor information</v-card-title><br />
         <v-card-text
-          >Are you sure you want to add: <br />First Name: <b>{{ this.input.firstName }}</b>
-          <br />
-          Family Name: <b>{{ this.input.familyName }}</b
-          ><br />Email: <b>{{ this.input.email }}</b> <br />
-          Password: <b>{{ this.input.password == "" ? " - " : this.input.password }}</b>
+          >Are you sure you want to edit:
+          <br/>Title: <b>{{ this.inputData.title }}</b>
+          <br/>First Name: <b>{{ this.inputData.given_name }}</b>
+          <br/>Last Name: <b>{{ this.inputData.family_name }}</b>
+          <br/>Email: <b>{{ this.inputData.email }}</b>
+          <br/>Phone: <b>{{ this.inputData.phone }}</b>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text color="error" @click="dialog = false">No</v-btn>
-          <v-btn text color="success" @click="addUser()">Yes</v-btn>
+          <v-btn text color="error" @click="dialogCheck = false">No</v-btn>
+          <v-btn text color="success" @click="addInstructor()">Yes</v-btn>
         </v-card-actions></v-card
       >
     </v-dialog>
@@ -77,81 +62,83 @@
 
 <script>
 export default {
-  name: "add_user",
-  props: [],
-  mounted() {},
-  data() {
+  data () {
     return {
-      firstName: "",
-      familyName: "",
-      email: "",
-      password: "",
-      dialog: false,
-      snackbar: false,
-      input: {
-        firstName: "",
-        familyName: "",
+      instrucData:{
+        title: "",
+        given_name: "",
+        family_name: "",
         email: "",
-        password: "",
+        phone: ""
       },
-      valid: true,
-      rules: {
-        counter: [(v) => v.length <= 4 || "Min 4 characters"],
+      inputData:{
+        title: "",
+        given_name: "",
+        family_name: "",
+        email: "",
+        phone: ""
+      },
+      dialogCheck : false,
+       rules: {
+        required: (value) => !!value || "Required.",
+        counter: [(v) => v.length <= 2 || "Min 2 characters"],
         email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Invalid e-mail.";
         },
       },
-    };
+    }
   },
-  computed: {
-    form() {
-      return {
-        firstName: this.firstName,
-        familyName: this.familyName,
-        email: this.email,
-        password: this.password,
-      };
+  methods:{
+    validate(){
+      if(this.$refs.form.validate()){
+        this.inputData.title = this.instrucData.title
+        this.inputData.given_name = this.instrucData.given_name
+        this.inputData.family_name = this.instrucData.family_name
+        this.inputData.email = this.instrucData.email
+        this.inputData.phone = this.instrucData.phone
+        this.dialogCheck = true
+      }else{
+      }
     },
-  },
-  methods: {
-    clearText() {
-      (this.firstName = ""), (this.familyName = ""), (this.email = ""), (this.password = "");
+    clear() {
+      (this.instrucData.title = ""), (this.instrucData.given_name = ""), (this.instrucData.family_name = ""), (this.instrucData.email = ""), (this.instrucData.phone = "")
       Object.keys(this.form).forEach((f) => {
         this.$refs[f].reset();
       });
     },
-    validate() {
-      this.$refs.form.validate();
-      console.log(this.$refs.form.validate());
-      if (this.$refs.form.validate()) {
-        this.input.firstName = this.firstName;
-        this.input.familyName = this.familyName;
-        this.input.email = this.email;
-        this.input.password = this.password;
-        this.dialog = true;
-      } else {
-      }
-    },
-
-    addInstructor() {
-      let query = ``;
+    addInstructor(){
+      let query = `mutation{
+                    addInstructor(instructorInput:{
+                      title: "${this.inputData.title}",
+                      given_name: "${this.inputData.given_name}",
+                      family_name: "${this.inputData.family_name}",
+                      email: "${this.inputData.email}",
+                      phone"${this.inputData.phone}",
+                    }){
+                        title
+                        name
+                        email
+                        phone
+                    }
+                }`;
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           console.log(res);
           this.dialog = false;
+          this.dialogCheck = false;
           this.snackbar = true;
         })
         .catch((err) => {
           console.log(err);
         });
-    },
-    // clearForm() {
-    //   this.userData = {};
-    // },
-  },
-};
+    }
+  }
+  
+}
 </script>
 
-<style></style>
+<style>
+
+</style>
