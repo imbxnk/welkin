@@ -114,21 +114,18 @@ export default {
                         code
                         name
                         description
-                        category
                         credit
                       }
                       required_courses {
                         code
                         name
                         description
-                        category
                         credit
                       }
                       elective_courses {
                         code
                         name
                         description
-                        category
                         credit
                       }
                     }

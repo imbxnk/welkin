@@ -367,6 +367,9 @@ import vue2Dropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
 export default {
   name: "add_student",
+  mounted() {
+    this.loadAdvisors()
+  },
   data() {
     return {
       e6: 1,
@@ -384,7 +387,7 @@ export default {
       //manual
       prefix: ["Mr.", "Ms.", "Mrs"],
       entrytri: ["1", "2", "3"],
-      advisorlist: ["Mingmanas SIVARAKSA", "Lalita NARUPIYAKUL", "Vasin SUTTICHAYA"],
+      advisorlist: [],
       icProgram: [
         "ICBE",
         "ICCI",
@@ -539,25 +542,50 @@ export default {
                     this.duplicateStatus = true
                 })
             }
-        },
-        cancelStep1(){
-          this.manuallyData = {}
-          this.selectedFile = {}
-        },
-        cancelStep2(){
-          this.e6 = 1
-          this.manuallyData = {}
-          this.selectedFile = {}
-        },
-        cancelStep3(){
-          this.e6 = 2
-        },
-        ToEditPage() {
-          this.$router.push({ name: "manage_student" });
-        },
-        toStep2(){
-          this.e6 = 2
-        }
+      },
+      cancelStep1(){
+        this.manuallyData = {}
+        this.selectedFile = {}
+      },
+      cancelStep2(){
+        this.e6 = 1
+        this.manuallyData = {}
+        this.selectedFile = {}
+      },
+      cancelStep3(){
+        this.e6 = 2
+      },
+      ToEditPage() {
+        this.$router.push({ name: "manage_student" });
+      },
+      toStep2(){
+        this.e6 = 2
+      },
+      async loadAdvisors() {
+        let query = `
+            query {
+              instructors {
+                total
+                instructors {
+                  name
+                  title
+                  given_name
+                  family_name
+                }
+              }
+            }
+          `;
+        await this.axios
+          .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+          .then((res) => {
+            res.data.data.instructors.instructors.forEach((instructor) => {
+              this.advisorlist.push(instructor.name)
+            })
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      },
     }
   }
 </script>

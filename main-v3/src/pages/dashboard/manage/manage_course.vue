@@ -9,7 +9,7 @@
           ><v-card-title>
             <div class="d-flex flex-column">
               <span>Courses</span>
-              <span style="font-size:0.8rem; color:#999; margin-top: -10px;">Total: {{}}</span>
+              <span style="font-size:0.8rem; color:#999; margin-top: -10px;">Total: {{ total }}</span>
             </div>
             <v-spacer></v-spacer>
             <v-text-field
@@ -44,6 +44,7 @@ export default {
     return {
       dialog: false,
       search: "",
+      total: 0,
     };
   },
   mounted() {},
