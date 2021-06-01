@@ -144,16 +144,15 @@ export default {
                         family_name : "${this.input.familyName}",
                         password : "${this.input.password}",
                         email : "${this.input.email}",}) {
-                    token
-                    userId
+                    success
+                    message
                     }
                 }`;
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           console.log(res);
-          this.dialog = false;
-          this.snackbar = true;
+          this.clearText();
         })
         .catch((err) => {
           console.log(err);
