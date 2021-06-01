@@ -99,12 +99,11 @@ export default {
                 course (searchInput: { code: "${code}" }) {
                         _id
                         name
-                        category
                         description
                         credit_description {
-                        lab
-                        lecture
-                        self_study
+                          lab
+                          lecture
+                          self_study
                         }
                         credit
                     }

@@ -86,7 +86,7 @@
             </div>
             <div class="order-2 text-center">
               <p class="mt-n1">Required</p>
-              <h4 class="primary--text mt-n4">{{ this.students.records.major_credits }}</h4>
+              <h4 class="primary--text mt-n4">{{ this.students.records.required_credits }}</h4>
               <p class="small mt-n2 ">credits</p>
             </div>
             <div class="order-3 text-center">
@@ -101,8 +101,8 @@
         <v-card elevation="0" class="pa-3">
           <span class="overline">Core Courses</span>
           <v-divider></v-divider>
-          <div v-if="this.students.core_courses.length > 0">
-            <div v-for="(course, i) in this.students.core_courses" :key="i">
+          <div v-if="this.students.taken_courses.core_courses.length > 0">
+            <div v-for="(course, i) in this.students.taken_courses.core_courses" :key="i">
               <div class="d-flex pb-3 justify-content-between  flex-column flex-sm-row">
                 <div>{{ course.class.course.name }}</div>
                 <div>{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</div>
@@ -116,7 +116,7 @@
             </div>
           </div>
           <div v-else>
-            <span style="color: #666">No Course to Show</span>
+            <span style="color: #b4b4b4">This student has not enrolled any courses from Core Courses</span>
           </div>
         </v-card>
       </div>
@@ -200,8 +200,8 @@
         <v-card elevation="0" class="pa-3">
           <span class="overline">Required Major Courses</span>
           <v-divider></v-divider>
-          <div v-if="this.students.required_courses.length > 0">
-            <div v-for="(course, i) in this.students.required_courses" :key="i">
+          <div v-if="this.students.taken_courses.required_courses.length > 0">
+            <div v-for="(course, i) in this.students.taken_courses.required_courses" :key="i">
               <div class="d-flex pb-3 justify-content-between  flex-column flex-sm-row">
                 <div>{{ course.class.course.name }}</div>
                 <div>{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</div>
@@ -225,8 +225,8 @@
         <v-card elevation="0" class="pa-3">
           <span class="overline">Elective Major Courses</span>
           <v-divider></v-divider>
-          <div v-if="this.students.elective_courses.length > 0">
-            <div v-for="(course, i) in this.students.elective_courses" :key="i">
+          <div v-if="this.students.taken_courses.elective_courses.length > 0">
+            <div v-for="(course, i) in this.students.taken_courses.elective_courses" :key="i">
               <div class="d-flex pb-3 justify-content-between  flex-column flex-sm-row">
                 <div>{{ course.class.course.name }}</div>
                 <div>{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</div>
@@ -281,9 +281,11 @@ export default {
         tri: "",
       },
       students: {
-        core_courses: [],
-        required_courses: [],
-        elective_courses: [],
+        taken_courses: {
+          core_courses: [],
+          required_courses: [],
+          elective_courses: [],
+        },
         records: {},
       },
     };
@@ -341,28 +343,48 @@ export default {
                               message
                             }
                             taken_courses{
+                              core_courses {
                                 _id
                                 class{
-                                  course{
-                                      name
-                                      credit
-                                      category
-                                    }
-                                  instructor{
-                                      name
-                                    }
+                                  course{ name credit }
+                                  instructor{ name }
                                   trimester
                                   year
                                   section
                                 }
-                              grade
-                              isGrading
+                                grade
+                                isGrading
+                              }
+                              required_courses {
+                                _id
+                                class{
+                                  course{ name credit }
+                                  instructor{ name }
+                                  trimester
+                                  year
+                                  section
+                                }
+                                grade
+                                isGrading
+                              }
+                              elective_courses {
+                                _id
+                                class{
+                                  course{ name credit }
+                                  instructor{ name }
+                                  trimester
+                                  year
+                                  section
+                                }
+                                grade
+                                isGrading
+                              }
                             }
                             records{
                               egci_cumulative_gpa
                               total_credits
                               core_credits
-                              major_credits
+                              required_credits
                               elective_credits
                              }
                         }
@@ -374,23 +396,25 @@ export default {
           this.students = res.data.data.student;
           this.entry.year = this.students.entry_year;
           this.entry.tri = this.students.entry_trimester;
+
+          console.log(this.students)
           // Loop separate courses
-          this.students.core_courses = [];
-          this.students.required_courses = [];
-          this.students.elective_courses = [];
-          this.students.taken_courses.forEach((course) => {
-            switch (course.class.course.category) {
-              case "core_courses":
-                this.students.core_courses.push(course);
-                break;
-              case "required_courses":
-                this.students.required_courses.push(course);
-                break;
-              case "elective_courses":
-                this.students.elective_courses.push(course);
-                break;
-            }
-          });
+          // this.students.core_courses = [];
+          // this.students.required_courses = [];
+          // this.students.elective_courses = [];
+          // this.students.taken_courses.forEach((course) => {
+          //   switch (course.class.course.category) {
+          //     case "core_courses":
+          //       this.students.core_courses.push(course);
+          //       break;
+          //     case "required_courses":
+          //       this.students.required_courses.push(course);
+          //       break;
+          //     case "elective_courses":
+          //       this.students.elective_courses.push(course);
+          //       break;
+          //   }
+          // });
 
           // console.log(this.students);
         })
