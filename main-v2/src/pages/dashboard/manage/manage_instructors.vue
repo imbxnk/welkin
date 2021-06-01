@@ -40,24 +40,70 @@
         </v-card>
       </div>
     </div>
-    <v-dialog v-model="dialog" max-width="500px">
+    <v-dialog v-model="dialog" max-width="600px">
       <v-card>
         <v-card-title
           >Add Instructor
           <v-spacer></v-spacer>
-          <v-icon @click="dialog = false">mdi-close</v-icon></v-card-title
-        >
-        <AddInstructor></AddInstructor>
+          <v-icon @click="dialog = false">mdi-close</v-icon></v-card-title>
+        <add-instuctor></add-instuctor>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="editDialog" max-width="550px">
+      <v-card>
+        <v-card-title>
+            Edit Student
+             <v-spacer></v-spacer>
+            <v-icon @click="editDialog = false">mdi-close</v-icon>
+        </v-card-title>
+        <v-card-text>
+            <v-form>
+                <div class="d-flex flex-column bd-highlight">
+                    <div class="p-2 bd-highlight mx-auto">
+                        <div class="d-flex flex-row justify-content-evenly bd-highlight">
+                            <div class="p-2 bd-highlight">
+                              <v-text-field label="Title" v-model="editedItem.title" outlined ></v-text-field>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                              <v-text-field label="First Name" v-model="editedItem.given_name" outlined ></v-text-field>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                              <v-text-field label="Last Name" v-model="editedItem.family_name" outlined ></v-text-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-2 bd-highlight mx-auto">
+                        <div class="d-flex flex-row justify-content-evenly bd-highlight">
+                            <div class="p-2 bd-highlight">
+                              <v-text-field label="email" v-model="editedItem.email" outlined ></v-text-field>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                              <v-text-field type="number" label="phone" v-model="editedItem.phone" outlined></v-text-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </v-form>
+        </v-card-text>
+        <v-card-action>
+          <div class="d-flex flex-row justify-content-end bd-highlight">
+            <div class="p-2 bd-highlight">
+              <v-btn class="my-4" text @click="clear">clear</v-btn>
+              <v-btn class="my-4" color="#3c84fb" @click="dialogCheck=true" text>Submit</v-btn>
+            </div>
+          </div>
+        </v-card-action>
       </v-card>
     </v-dialog>
   </v-container>
 </template>
 
 <script>
-// import AddInstuctor from "./components/add_instructor.vue"
+import AddInstuctor from "./components/add_instructor.vue"
 export default {
   components: {
-    // AddInstuctor
+    AddInstuctor
   },
   data() {
     return {
@@ -68,8 +114,18 @@ export default {
         { text: "Edit", sortable: false, value: "actions", width: "1%" },
       ],
       instructors: [],
+      Info: [],
       total: 0,
       dialog: false,
+      editDialog: false,
+      editedItem:{
+        title: "",
+        given_name: "",
+        family_name: "",
+        email: "",
+        phone: "",
+      },
+      intrucTitle:["Asst.", "Assoc.", "Prof.", "Dr."]
     };
   },
   mounted() {
@@ -84,6 +140,8 @@ export default {
                 instructors {
                   name
                   title
+                  given_name
+                  family_name
                 }
               }
             }
@@ -99,10 +157,25 @@ export default {
         });
     },
     editItem(item) {
-      console.log(item);
+      this.editedIndex = this.Info.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      // eslint-disable-next-line no-console
+      console.log(this.editedItem, this.editedIndex);
+      this.editDialog = true
+    },
+    close(){
+      this.dialog = false
+      this.editDialog = false
+    },
+    clear() {
+      (this.editedItem.title = ""), (this.editedItem.given_name = ""), (this.editedItem.family_name = ""), (this.editedItem.email = ""), (this.editedItem.phone = "")
+      Object.keys(this.form).forEach((f) => {
+        this.$refs[f].reset();
+      });
     },
   },
 };
 </script>
 
-<style></style>
+<style>
+</style>
