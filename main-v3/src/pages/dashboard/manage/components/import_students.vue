@@ -1,0 +1,228 @@
+<template>
+    <div>
+        <v-card style="width: 800px; padding: 10px 10px;">
+        <v-card-title id="cardTitle">
+            <v-row>
+                <v-col cols="8">
+                    Import Student
+                </v-col>
+                <v-col cols="4">
+                    <v-btn plain text class="float-right overline primary--text" style="font-size:0.8rem; font-weight: normal" :value="importStatus" @click="changeToAddManually">Add Manually</v-btn>
+                </v-col>
+            </v-row>
+        </v-card-title>
+        <v-card-text>
+            <div class="row mt-1">
+                <div class="col-lg-12 col-sm-12 mt-1">
+                <!-- <input type="file" @change="selectFile" accept=".xls,.xlsx" label="Choose a file"> -->
+                <vue-dropzone
+                    ref="myVueDropzone"
+                    id="dropzone"
+                    :options="dropzoneOptions"
+                    @vdropzone-success="selectFile"></vue-dropzone>
+                </div>
+                <div class="col-6 mt-4" v-show="uploadSuccess">
+                <select class="form-control" name="sheetName" id="sheetName" @change="getSelectedValue($event)">
+                    <label>Please select a sheet</label>
+                    <option v-for="(item, index) in this.sheetNames" :key="index" :value="item">{{ item }}</option>
+                </select>
+                </div>
+                <br>
+            </div>
+        </v-card-text>
+        </v-card>
+            <div class="row mt-3">
+                <div class="col-12 mt-3">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Program</th>
+                            <th>Prefix</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Advisor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item,index) in studentsData" :key="index" :value="item">
+                            <td scope="row">{{item.ID}}</td>
+                            <td scope="row">{{item.Program}}</td>
+                            <td scope="row">{{item.Prefix}}</td>
+                            <td scope="row">{{item.Name}}</td>
+                            <td scope="row">{{item.LastName}}</td>
+                            <td scope="row">{{item.Advisor}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            <button class="btn btn-primary" @click="upload()">Upload</button>
+            <div v-show="showContent">
+            <div class="row mt-3">
+            <div class="col-12 mt-3">
+                <h2>Duplicated Students: </h2>
+            </div>
+            <div class="col-12 mt-3">
+                <table class="table table-stripped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Program</th>
+                            <th>Prefix</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Advisor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item,index) in duplicateStudents" :key="index" :value="item">
+                            <td scope="row">{{item.ID}}</td>
+                            <td scope="row">{{item.Program}}</td>
+                            <td scope="row">{{item.Prefix}}</td>
+                            <td scope="row">{{item.Name}}</td>
+                            <td scope="row">{{item.LastName}}</td>
+                            <td scope="row">{{item.Advisor}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            </div>
+        </div>
+</template>
+
+<script>
+//already downloaded the package "npm i xlsx axios", and import some vaiables from them
+import XLSX from 'xlsx'
+import axios from 'axios'
+import vue2Dropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+
+export default {
+    data(){
+        return{
+            selectedFile: "",
+            data: [{}],
+            sheetNames: [],
+            sheetName: "",
+            selectedValue: "",
+            studentsData: [],
+            allStudentData: [],
+            entryTrimester: "",
+            entryYear: "",
+            workbook: {},
+            duplicateStudents: [],
+            url: process.env.VUE_APP_GRAPHQL_URL,
+            showContent: false,
+            dropzoneOptions: {
+                url: 'https://httpbin.org/post',
+                thumbnailWidth: 150,
+                maxFilesize: 2,
+                parallelUploads: 1,
+                acceptedFiles: ".xls, .xlsx",
+                maxFiles: 1,
+                addRemoveLinks: true
+            },
+            uploadSuccess: false,
+            importStatus: true,
+            tableStudentsData:[]
+        };
+    },
+    props:[
+        "cpnStatus"
+    ],
+    components:{
+        vueDropzone: vue2Dropzone
+    },
+    methods:{
+        upload:async function () {
+            //clear the duplicatedStudents
+            this.duplicateStudents = [];
+            //get entry_year and entry_trimester
+            [this.entryYear,this.entryTrimester] = this.sheetName.split("T");
+            let students = {...this.studentsData}
+            for(var i in students) {
+                let std = {...students[i]};
+                //post graphql by using axios
+                let gql = `
+                        mutation{
+                            addStudent ( studentInput: {
+                                    sid: "${std.ID}",
+                                    prefix: "${std.Prefix}",
+                                    given_name: "${std.Name}",
+                                    family_name: "${std.LastName}",
+                                    program: "${std.Program}",
+                                    entry_trimester: "${this.entryTrimester}",
+                                    entry_year: "${this.entryYear}"
+                                }
+                            ){
+                                sid given_name
+                            }
+                        }
+                    `
+                await axios.post(this.url, {
+                    query : gql
+                }).then(res => {
+                    console.log(res);
+                }).catch (err => {
+                    console.log(err);
+                    this.duplicateStudents.push(std);
+                    this.showContent = true
+                })
+            }
+        },
+        readMyFile: function (workbook,currentSheetName){
+            return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[currentSheetName]);
+        },
+        selectFile(file){
+            //get the selected file' info
+            this.selectedFile = file;
+            XLSX.utils.json_to_sheet(this.data,'out.xlsx');
+            //if file is selected
+            if(this.selectedFile){
+                this.uploadSuccess = true
+                //read data and store it in our variable
+                let fileReader = new FileReader();
+                fileReader.readAsBinaryString(this.selectedFile);
+                fileReader.onload = (event) => {
+                    //the data is unreadable
+                    let data = event.target.result;
+                    //we have to convert it and store in our variable
+                    this.workbook = XLSX.read(data, {type: "binary"});
+                    //save the data, so we can use later in other functions
+                    this.sheetNames = this.workbook.SheetNames;
+                    this.sheetName = this.sheetNames[0];
+                    this.studentsData = this.readMyFile(this.workbook,this.sheetName);
+                    // get entry_year and entry_trimester
+                    [this.entryYear,this.entryTrimester] = this.sheetName.split("T");
+                }
+            }
+
+        },
+        getSelectedValue(event){
+            //clear the duplicatedStudents
+            this.duplicateStudents = [];
+            //hide the Duplicate div
+            this.showContent = false;
+            //get sheet name
+            this.sheetName = event.target.value;
+            //get entry_year and entry_trimester
+            this.studentsData = this.readMyFile(this.workbook,this.sheetName);
+            // get entry_year and entry_trimester
+            [this.entryYear,this.entryTrimester] = this.sheetName.split("T");
+            this.tableStudentsData = this.studentsData
+            this.$emit("tabelContent", this.tableStudentsData)
+            console.log(this.tableStudentsData)
+        },
+        changeToAddManually(event){
+            this.$emit("importCardStatus", event.target.value)
+            console.log(event.target.value)
+        }
+    }
+}
+</script>
+
+<style>
+@import url("https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css");
+</style>

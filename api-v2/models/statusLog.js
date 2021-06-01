@@ -33,4 +33,4 @@ const statusLogSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('StatusLog', statusLogSchema);
+module.exports = mongoose.model('StatusLog', statusLogSchema)
