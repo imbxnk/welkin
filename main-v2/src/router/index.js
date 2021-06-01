@@ -18,11 +18,12 @@ import SearchStudent from "../pages/dashboard/students/search_student";
 import CourseList from "../pages/dashboard/courselist/courselist";
 import CourseDetail from "../pages/dashboard/courselist/course_detail";
 import Curriculum from "../pages/dashboard/curriculum/curriculum";
-import ManageGrade from "../pages/dashboard/manage/manage_grade";
+// import ManageGrade from "../pages/dashboard/manage/manage_grade";
 import ManageInstructor from "../pages/dashboard/manage/manage_instructors";
 import AddStudent from "../pages/dashboard/manage/add_students";
 import ManageWebsite from "../pages/dashboard/manage/manage_website";
 import ManageUser from "../pages/dashboard/manage/manage_users";
+import ManageCourses from "../pages/dashboard/manage/manage_course";
 // Auth Route
 import Login from "../pages/auth/login";
 import PasswordRecovery from "../pages/auth/passwordRecovery";
@@ -131,14 +132,24 @@ const routes = [
       title: "Student Management",
     },
   },
+  // {
+  //   name: "manage_grade",
+  //   path: "/manage/student/grade/upload",
+  //   component: ManageGrade,
+  //   meta: {
+  //     requiresAuth: true,
+  //     authorizedGroup: ["coordinator"],
+  //     title: "Upload Grade",
+  //   },
+  // },
   {
-    name: "manage_grade",
-    path: "/manage/student/grade/upload",
-    component: ManageGrade,
+    name: "manage_course",
+    path: "/manage/course",
+    component: ManageCourses,
     meta: {
       requiresAuth: true,
       authorizedGroup: ["coordinator"],
-      title: "Upload Grade",
+      title: "Course Management",
     },
   },
   {

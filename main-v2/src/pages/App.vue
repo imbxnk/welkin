@@ -451,17 +451,7 @@ export default {
             href: "/website",
             icon: "mdi-plus",
           },
-          {
-            title: "Students",
-            href: "/student",
-            children: [
-              {
-                title: "Upload Grade",
-                href: "/grade/upload",
-                icon: "mdi-plus",
-              },
-            ],
-          },
+
           // {
           //   title: "Course",
           //   href: "/course",
