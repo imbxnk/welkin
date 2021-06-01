@@ -1,26 +1,16 @@
 const gql = require('graphql-tag')
 
 module.exports = gql`
-    type UserType {
-        username: String
-        password: String!
-        given_name: String!
-        family_name: String!
-        email: String!
-        group: String
-        linked_instructor: ID
-        isAdvisor: Boolean
-        avatar_url: String
-        createdAt: String
-        remarks: [ID]
-        resetPasswordToken: String
-        resetPasswordExpire: String
+    type AuthType {
+        success: Boolean
+        token: String
+        userId: String
+        message: String
     }
 
-    type AuthType {
-        token: String!
-        userId: String!
-        message: String
+    type CheckTokenType {
+        success: Boolean
+        email: String!
     }
 
     input CreateUserInputData {
@@ -35,10 +25,13 @@ module.exports = gql`
 
     type Query {
         logout: AuthType!
+        checkToken(token: String!): CheckTokenType!
     }
 
     type Mutation {
         createUser(userInput: CreateUserInputData): AuthType!
         login(username: String!, password: String!): AuthType!
+        requestPasswordRecovery(username: String!): MessageType!
+        resetPassword(token: String!, password: String!): AuthType!
     }
 `

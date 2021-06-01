@@ -1,20 +1,24 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const remarkSchema = new mongoose.Schema({
-    user : {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required : true
+        required: true
     },
-    student : {
+    student: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
-        required : true
+        required: true
     },
-    content : {
-        type : String,
-        required : true
+    message: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
-});
+})
 
-module.exports = mongoose.model('Remark', remarkSchema);
+module.exports = mongoose.model('Remark', remarkSchema)

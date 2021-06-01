@@ -5,75 +5,82 @@ const JWT = require('jsonwebtoken');
 const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
-    username : {
-        type : String,
-        required : true,
-        lowercase : true,
-        unique : [true, 'This username already exists.']
+    display_name: {
+        type: String
     },
-    password : {
-        type : String,
-        required : true,
-        select : false
+    username: {
+        type: String,
+        required: true,
+        lowercase: true,
+        unique: [true, 'This username already exists.']
     },
-    given_name : {
-        type : String,
-        required : [true, 'Please enter the given name.']
+    password: {
+        type: String,
+        required: true,
+        select: false
     },
-    family_name : {
-        type : String,
-        required : [true, 'Please enter the family name.']
+    given_name: {
+        type: String,
+        required: [true, 'Please enter the given name.']
     },
-    email : {
-        type : String,
-        required : [true, 'Please enter the email address.'],
-        unique : [true, 'This email already exists.'],
-        validate : [validator.isEmail, 'Please enter a valid email address.']
+    family_name: {
+        type: String,
+        required: [true, 'Please enter the family name.']
     },
-    group : {
-        type : String,
-        enum : {
-            values : [
+    email: {
+        type: String,
+        required: [true, 'Please enter the email address.'],
+        unique: [true, 'This email already exists.'],
+        validate: [validator.isEmail, 'Please enter a valid email address.']
+    },
+    group: {
+        type: String,
+        enum: {
+            values: [
                 'coordinator',
                 'program director',
                 'lecturer',
                 'admin'
             ],
-            message : 'Please select correct group type.'
+            message: 'Please select a correct group type.'
         },
-        default : 'lecturer'
+        default: 'lecturer'
     },
-    linked_instructor : {
+    linked_instructor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Instructor'
     },
-    isAdvisor : {
-        type : Boolean,
-        default : false
+    isAdvisor: {
+        type: Boolean,
+        default: false
     },
-    avatar_url : {
-        type : String
+    avatar: {
+        small: String,
+        medium: String,
+        large: String
     },
-    createdAt : {
-        type : Date,
-        default : Date.now
+    createdAt: {
+        type: Date,
+        default: Date.now
     },
-    remarks : [{
+    remarks: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Remarks'
+        ref: 'Remark'
     }],
-    resetPasswordToken : String,
-    resetPasswordExpire : Date
+    resetPasswordToken: String,
+    resetPasswordExpire: Date
 });
 
-// Hashing Password
 userSchema.pre('save', async function(next) {
+    // Hashing Password
     if(!this.isModified('password'))  next();
     this.password = await bcrypt.hash(this.password, 10)
+    // Format
+    this.family_name = this.family_name.toUpperCase()
 });
 
 // Return JSON Web Token
-userSchema.methods.getJwtToken = function() {
+userSchema.methods.getJWT = function() {
     return JWT.sign({ id: this._id }, process.env.JWT_SECRET, {
         expiresIn : process.env.JWT_EXPIRES_TIME
     });

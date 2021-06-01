@@ -1,0 +1,27 @@
+{
+  "name": "line-webhook",
+  "version": "1.0.0",
+  "description": "Webhook for Line Bot",
+  "main": "line_server.js",
+  "scripts": {
+    "start": "sudo node line.js",
+    "dev": "sudo nodemon line.js",
+    "prod": "export NODE_ENV=production && sudo -E nodemon line.js"
+  },
+  "author": "Welkin",
+  "license": "ISC",
+  "dependencies": {
+    "@line/bot-sdk": "^7.2.0",
+    "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "dialogflow": "^4.0.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.4",
+    "mongoose": "^5.12.3",
+    "request": "^2.88.2",
+    "validator": "^13.6.0"
+  }
+}
