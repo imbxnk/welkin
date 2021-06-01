@@ -1,21 +1,26 @@
 const JWT = require('jsonwebtoken')
 const User = require('../models/user')
-const ErrorHandler = require('../utils/errorHandlers')
+const moment = require('moment')
 
 // Check Authenticated User
 exports.isAuthenticated = async (req, res, next) => {
     let token
+    try {
+        // Get Token from Cookies
+        if(req.headers.cookies) token = req.headers.cookies.split("=")[1]  //Remove this if production
+        else token = req.cookies.token
 
-    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        token = req.headers.authorization.split(' ')[1]
-    } else {
+        // Authorization if Using Bearer
+        // if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        //     token = req.headers.authorization.split(' ')[1]
+        // } else {
+        //     req.isAuth = false
+        //     return next()
+        // }
+    } catch (err) {
         req.isAuth = false
         return next()
     }
-
-    // if(!token) {
-    //     throw new ErrorHandler('Not authenticated.', 401)
-    // }
 
     let decoded
     try {
@@ -30,8 +35,10 @@ exports.isAuthenticated = async (req, res, next) => {
         return next()
     }
     
-    req.user = await User.findById(decoded.id)
     req.isAuth = true
+    req.user = await User.findById(decoded.id)
+    // Just For Log Checking
+    console.log(`[${moment().format('Do MMM YYYY] [hh:mm:ss')}] ${req.user.username} (${req.headers["x-real-ip"] || req.connection.remoteAddress})`)
 
     next()
 }

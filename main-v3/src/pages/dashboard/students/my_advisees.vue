@@ -1,0 +1,200 @@
+<template>
+  <div id="app">
+    <!-- <div v-if="advisees.length == 0 && !isLoading">You have no advisees</div>
+    <div v-else-if="!isLoading">{{ advisees }}</div> -->
+    <v-card class=" pa-3">
+      <v-row>
+        <v-col>
+          <v-card-title> My Advisees </v-card-title>
+        </v-col>
+        <v-col cols="6" md="5" lg="4" xl="3">
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            type="text"
+            class="mr-3"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-card :elevation="0">
+        <!-- if loading -->
+        <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table>
+        <!-- else -->
+        <v-data-table
+          v-else
+          :headers="headers"
+          :items="advisees"
+          :search="search"
+          mobile-breakpoint="0"
+          @click:row="ShowDetail"
+          class="advisee"
+        >
+          <template v-slot:[`item.status.current`]="{ item }">
+            <v-chip
+              small
+              :color="getColor(item.status.current)"
+              :dark="isDark(item.status.current)"
+              class="d-flex justify-center"
+            >
+              {{ item.status.current }}
+            </v-chip>
+          </template>
+          <template v-slot:[`item.nick_name`]="{ item }">
+            <!-- {{ !!item.nick_name || item.nick_name == " " ? item.nick_name : " - " }} -->
+            {{ checkNull(item.nick_name) }}
+          </template>
+          <template v-slot:[`item.email`]="{ item }">
+            <!-- {{ item.email == null ? " - " : item.email }} -->
+            {{ checkNull(item.email) }}
+          </template>
+        </v-data-table>
+        <!-- dialog1 show info -->
+        <v-dialog v-model="dialog" max-width="500px">
+          <v-card>
+            <v-card-title class="overline lighten-2">
+              {{ avsDetail.name }}
+              <v-spacer></v-spacer>
+              <v-icon @click="dialog = false">mdi-close</v-icon>
+            </v-card-title>
+            <StudentInfo :stdDetail="avsDetail"></StudentInfo>
+          </v-card>
+        </v-dialog>
+      </v-card>
+    </v-card>
+  </div>
+</template>
+<script>
+import StudentInfo from "./components/std_info";
+export default {
+  name: "advisees_table",
+  components: { StudentInfo },
+  data() {
+    return {
+      search: "",
+      click: 0,
+      deley: 700,
+      timer: null,
+      loading: true,
+      dialog: false,
+      headers: [
+        { text: "Student ID", sortable: false, value: "sid", width: 100 },
+        { text: "Name", sortable: false, value: "name", width: 350 },
+        { text: "Nickname", sortable: false, align: "center", value: "nick_name", width: 100 },
+        {
+          text: "Earned Credits",
+          align: "center",
+          sortable: true,
+          value: "records.total_credits",
+          width: 100,
+        },
+        {
+          text: "EGCI CUM-GPA",
+          align: "center",
+          sortable: true,
+          value: "records.egci_cumulative_gpa",
+          width: 100,
+        },
+        { text: "Email", sortable: false, align: "center", value: "email", width: 250 },
+        { text: "Status", sortable: false, align: "center", value: "status.current", width: 180 },
+      ],
+      advisees: [],
+      avsDetail: [],
+    };
+  },
+  mounted() {
+    this.getMyAdvisees();
+  },
+  methods: {
+    checkNull(item) {
+      if (item == " ") {
+        return " - ";
+      } else if (item == "null") {
+        return " - ";
+      } else if (!item) {
+        return " - ";
+      } else {
+        return item;
+      }
+    },
+    getColor(status) {
+      // 'Studying',
+      // 'Leave of absence',
+      // 'On Exchange',
+      // 'Retired',
+      // 'Resigned',
+      // 'Alumni'
+      // 'Unknown'
+      if (status == "Studying") return "green";
+      else if (status == "Leave of absence") return "amber";
+      else if (status == "On Exchange") return "blue";
+      // else if (status == "Retired") return "grey";
+      else if (status == "Resigned") return "grey";
+      else if (status == "Alumni") return "grey lighten-2";
+      else if (status == "Unknown") return "grey";
+      else return "red";
+    },
+    isDark(status) {
+      if (status == "Alumni") {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    getMyAdvisees() {
+      let query = `
+          query {
+            students (searchInput: { advisor: "${this.$currentUser.linked_instructor._id}"}, sortBy: "status") {
+              advisees:students {
+                sid
+                prefix
+                given_name
+                family_name
+                email
+                nick_name
+                entry_trimester
+                entry_year
+                avatar_url
+                batch
+                records{
+                  egci_cumulative_gpa
+                  core_credits
+                  major_credits
+                  elective_credits
+                  total_credits
+                }
+                status{
+                  current
+                }
+              }
+              total
+            }
+          }
+      `;
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.loading = false;
+          this.advisees = res.data.data.students.advisees;
+          this.advisees.forEach((advisee) => {
+            advisee["name"] = [advisee.given_name, advisee.family_name].join(" ");
+          });
+        })
+        .catch((err) => {
+          this.loading = false;
+        });
+    },
+    ShowDetail(row) {
+      this.click++;
+      if (this.click == 1) {
+        setTimeout(() => (this.click = 0), this.deley);
+      } else {
+        clearTimeout(this.timer);
+        this.dialog = true;
+        this.avsDetail = row;
+        this.click = 0;
+      }
+    },
+  },
+};
+</script>
