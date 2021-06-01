@@ -20,7 +20,7 @@ import CourseDetail from "../pages/dashboard/courselist/course_detail";
 import Curriculum from "../pages/dashboard/curriculum/curriculum";
 // import ManageGrade from "../pages/dashboard/manage/manage_grade";
 import ManageInstructor from "../pages/dashboard/manage/manage_instructors";
-import AddStudent from "../pages/dashboard/manage/add_students";
+import AddStudent from "../pages/dashboard/manage/components/add_students";
 import ManageWebsite from "../pages/dashboard/manage/manage_website";
 import ManageUser from "../pages/dashboard/manage/manage_users";
 import ManageCourses from "../pages/dashboard/manage/manage_course";

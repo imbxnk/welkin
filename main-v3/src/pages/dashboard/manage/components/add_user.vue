@@ -152,8 +152,7 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           console.log(res);
-          this.dialog = false;
-          this.snackbar = true;
+          this.clearText();
         })
         .catch((err) => {
           console.log(err);
@@ -165,5 +164,3 @@ export default {
   },
 };
 </script>
-
-<style></style>
