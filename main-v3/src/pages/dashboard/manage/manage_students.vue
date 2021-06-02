@@ -222,11 +222,12 @@ export default {
           this.Info = [...res.data.data.students.students];
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
-            if(student.entry_trimester != null && student.entry_year !=null){
-                student["entry_tri_year"] = "T" + [student.entry_trimester, student.entry_year].join("/");
-            }else{
-                student["entry_tri_year"] = null
-            }
+            student["entry_tri_year"] = (student.entry_trimester && student.entry_year) ? `T${student.entry_trimester}/${student.entry_year}` : null
+            // if(student.entry_trimester != null && student.entry_year !=null){
+            //     student["entry_tri_year"] = "T" + [student.entry_trimester, student.entry_year].join("/");
+            // }else{
+            //     student["entry_tri_year"] = [student.entry_trimester, student.entry_year].join(" ");
+            // }
             if(!student.advisor) student.advisor.name = null
           });
         })
