@@ -41,7 +41,7 @@
               </v-avatar>
             </template>
             <template v-slot:[`item.display_name`]="{ item }">
-              {{ item.display_name == null ? "- " : item.display_name }}
+              {{ item.display_name ? item.display_name : '-' }}
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon small @click="editItem(item)">

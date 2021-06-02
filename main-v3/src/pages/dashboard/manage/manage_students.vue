@@ -22,6 +22,9 @@
                 >
                 </v-avatar>
                 </template>
+                <template v-slot:[`item.nick_name`]="{ item }">
+                  {{ item.nick_name ? item.nick_name : '-' }}
+                </template>
                 <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small @click="editItem(item)">
                     mdi-pencil

@@ -35,7 +35,7 @@
       </div>
     </div>
   </v-card-action>
-  
+
   <v-dialog v-model="dialogCheck" max-width="450px">
       <v-card>
         <v-card-title class="headline grey lighten-2"> Confirm instructor information</v-card-title><br />
@@ -135,7 +135,7 @@ export default {
         });
     }
   }
-  
+
 }
 </script>
 
