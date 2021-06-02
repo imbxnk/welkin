@@ -889,7 +889,7 @@ main {
 .wk-noti-box {
   background: rgba(0,0,0,0.01);
   width: 400px;
-  height: 380px;
+  max-height: 380px;
   overflow-y: scroll;
 }
 

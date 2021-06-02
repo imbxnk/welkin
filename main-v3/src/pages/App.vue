@@ -54,6 +54,7 @@
             <v-divider :inset="false" class="my-0"></v-divider>
             <div class="wk-noti-wrap">
               <div class="wk-noti-box">
+                <div style="font-size: 0.8rem; text-align: center; width: 100%; padding: 20px 0;" v-if="$config.announcements.length === 0">No Announcements</div>
                 <v-list class="py-0">
                   <template v-for="(item, index) in $config.announcements">
                     <v-divider

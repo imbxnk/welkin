@@ -24,7 +24,7 @@
           ><br />
           <b>Core Courses:</b> <span>{{ stdDetail.records.core_credits }}</span
           ><br />
-          <b>Required Courses:</b> <span>{{ stdDetail.records.major_credits }}</span
+          <b>Required Courses:</b> <span>{{ stdDetail.records.required_credits }}</span
           ><br />
           <b>Elective Courses:</b> <span>{{ stdDetail.records.elective_credits }}</span
           ><br />
