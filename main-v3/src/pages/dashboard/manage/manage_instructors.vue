@@ -28,8 +28,8 @@
             hide-default-footer
             disable-pagination
           >
-            <template v-slot:[`item.display_name`]="{ item }">
-              {{ item.display_name == null ? "- " : item.display_name }}
+            <template v-slot:[`item.title`]="{ item }">
+              {{ item.title || "-" }}
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon small @click="editItem(item)">

@@ -13,17 +13,26 @@
             </v-card-title>
             <v-data-table :headers="headers" :items="students" :search="search" class="student px-3 pb-3" hide-default-footer disable-pagination>
                 <template v-slot:[`item.avatar_url`]="{ item }">
-                <v-avatar
-                    size="35"
-                    :style="
-                    `background: url(${item.avatar_url ||
-                        $config.defaultAvatar}) center center / cover;`
-                    "
-                >
-                </v-avatar>
+                  <v-avatar
+                      size="35"
+                      :style="
+                      `background: url(${item.avatar_url ||
+                          $config.defaultAvatar}) center center / cover;`
+                      "
+                  >
+                  </v-avatar>
+                </template>
+                <template v-slot:[`item.prefix`]="{ item }">
+                  {{ item.prefix || '-' }}
                 </template>
                 <template v-slot:[`item.nick_name`]="{ item }">
-                  {{ item.nick_name ? item.nick_name : '-' }}
+                  {{ item.nick_name || '-' }}
+                </template>
+                <template v-slot:[`item.entry_tri_year`]="{ item }">
+                  {{ item.entry_tri_year || 'Unknown' }}
+                </template>
+                <template v-slot:[`item.advisor.name`]="{ item }">
+                  {{ item.advisor ? item.advisor.name : 'Unknown' }}
                 </template>
                 <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small @click="editItem(item)">
@@ -216,8 +225,9 @@ export default {
             if(student.entry_trimester != null && student.entry_year !=null){
                 student["entry_tri_year"] = "T" + [student.entry_trimester, student.entry_year].join("/");
             }else{
-                student["entry_tri_year"] = [student.entry_trimester, student.entry_year].join(" ");
+                student["entry_tri_year"] = null
             }
+            if(!student.advisor) student.advisor.name = null
           });
         })
         .catch((err) => {
