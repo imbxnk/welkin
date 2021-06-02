@@ -381,7 +381,6 @@ export default {
       addManually: false,
       importFile: true,
 
-<<<<<<< Updated upstream
       //manual
       prefix: ["Mr.", "Ms.", "Mrs"],
       entrytri: ["1", "2", "3"],
@@ -530,211 +529,37 @@ export default {
                                 given_name
                             }
                         }
-                    `;
-        await this.axios
-          .post(this.url, { query: gql }, { withCredentials: true })
-          .then((res) => {
-            console.log(res);
-            this.addingSuccessStatus = true;
-          })
-          .catch((err) => {
-            console.log(err);
-            this.duplicateStudents.push(std);
-            this.duplicateStatus = true;
-          });
-      }
-    },
-    cancelStep1() {
-      this.manuallyData = {};
-      this.selectedFile = {};
-    },
-    cancelStep2() {
-      this.e6 = 1;
-      this.manuallyData = {};
-      this.selectedFile = {};
-    },
-    cancelStep3() {
-      this.e6 = 2;
-    },
-    ToEditPage() {
-      this.$router.push({ name: "manage_student" });
-    },
-    toStep2() {},
-  },
-};
-=======
-        //manual
-        prefix:["Mr.", "Ms.", "Mrs",],
-        icProgram:[ 'ICCI',
-                    'ICBE',
-                    'ICCS',
-                    'ICMI',
-                    'ICMF',
-                    'ICMK',
-                    'ICCU',
-                    'ICSS',
-                    'ICMC',
-                    'ICCD',
-                    'ICIR',
-                    'ICIH',
-                    'ICIB',
-                    'ICEN',
-                    'ICCH',
-                    'ICPY',
-                    'ICFS'],
-        manuallyData: {
-          ID: "",
-          Program: "",
-          Prefix: "",
-          Name: "",
-          LastName: "",
-          Advisor: ""
-        },
-        rules:{
-          required: (value) => !!value || "Required.",
-          min: (v) => v.length >= 4 || "Min 4 characters",
-        },
-        //importFile
-        data: [{}],
-        sheetNames: [],
-        sheetName: "",
-        selectedValue: "",
-        studentsData: [],
-        allStudentData: [],
-        entryTrimester: "",
-        entryYear: "",
-        workbook: {},
-        selectedFile: "",
-        fileStatus: false,
-        fileStep: false,
-        //duplicate
-        duplicateStudents: [],
-        duplicateStatus: false,
-      }
-    },
-    components:{
-      vueDropzone: vue2Dropzone
-    },
-    methods:{
-      toggleForm(){
-        this.addManually = !this.addManually
-        this.importFile = !this.importFile
-        console.log(this.addManually, this.importFile)
-      },
-      selectFile(file){
-        //show file is already upload
-        this.fileStep = true
-        //show the select component
-        this.fileStatus = true
-        //get the selected file' info
-        this.selectedFile = file;
-        XLSX.utils.json_to_sheet(this.data,'out.xlsx');
-        //if file is selected
-        if(this.selectedFile){
-          this.uploadSuccess = true
-          //read data and store it in our variable
-          let fileReader = new FileReader();
-          fileReader.readAsBinaryString(this.selectedFile);
-          fileReader.onload = (event) => {
-          //the data is unreadable
-          let data = event.target.result;
-          //we have to convert it and store in our variable
-          this.workbook = XLSX.read(data, {type: "binary"});
-          //save the data, so we can use later in other functions
-          this.sheetNames = this.workbook.SheetNames;
-          this.sheetName = this.sheetNames[0];
-          this.studentsData = this.readMyFile(this.workbook,this.sheetName);
-          // get entry_year and entry_trimester
-          [this.entryYear,this.entryTrimester] = this.sheetName.split("T");
-          }
-        }
-      },
-      submitForm(){
-        if(this.manuallyData == {}){
-          console.log(this.studentsData)
-        }
-        else if(this.$refs.form.validate()){
-          console.log(this.manuallyData)
-          let new_data = {...this.manuallyData}
-          this.studentsData.push(new_data)
-          console.log(this.studentsData)
-        }else{
-          this.e6 = 1
-        }
-      },
-      getSelectedValue(event){
-        //clear the duplicatedStudents
-        this.duplicateStudents = [];
-        //hide the Duplicate div
-        this.showContent = false;
-        //get sheet name
-        this.sheetName = event.target.value;
-        //get entry_year and entry_trimester
-        this.studentsData = this.readMyFile(this.workbook,this.sheetName);
-        // get entry_year and entry_trimester
-        [this.entryYear,this.entryTrimester] = this.sheetName.split("T");
-      },
-      readMyFile: function (workbook,currentSheetName){
-          return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[currentSheetName]);
-      },
-      upload:async function () {
-        //clear the duplicatedStudents
-        this.duplicateStudents = [];
-        //get entry_year and entry_trimester
-        [this.entryYear,this.entryTrimester] = this.sheetName.split("T");
-        let students = {...this.studentsData}
-        for(var i in students) {
-          let std = {...students[i]};
-          //post graphql by using axios
-          std.Advisor = std.Advisor.trim().split(". ").slice(-1).pop().trim()
-          let gql = `
-            mutation{
-              addStudent ( studentInput: {
-                sid: "${std.ID}",
-                prefix: "${std.Prefix}",
-                given_name: "${std.Name}",
-                family_name: "${std.LastName}",
-                program: "${std.Program}",
-                entry_trimester: "${this.entryTrimester}",
-                entry_year: "${this.entryYear}",
-                advisor_name: "${std.Advisor}"
-              }
-              ){
-                sid
-                given_name
-              }
+                    `
+                await this.axios.post(this.url, { query : gql }, { withCredentials: true }).then(res => {
+                    console.log(res);
+                    this.addingSuccessStatus = true
+                }).catch (err => {
+                    console.log(err);
+                    this.duplicateStudents.push(std);
+                    this.duplicateStatus = true
+                })
             }
-          `
-          await this.axios.post(this.url, { query : gql }, { withCredentials: true }).then(res => {
-            console.log(res);
-            this.addingSuccessStatus = true
-          }).catch (err => {
-            console.log(err);
-            this.duplicateStudents.push(std);
-            this.duplicateStatus = true
-          })
+        },
+        cancelStep1(){
+          this.manuallyData = {}
+          this.selectedFile = {}
+        },
+        cancelStep2(){
+          this.e6 = 1
+          this.manuallyData = {}
+          this.selectedFile = {}
+        },
+        cancelStep3(){
+          this.e6 = 2
+        },
+        ToEditPage() {
+          this.$router.push({ name: "manage_student" });
+        },
+        toStep2(){
+          this.e6 = 2
         }
-      },
-      cancelStep1(){
-        this.manuallyData = {}
-        this.selectedFile = {}
-      },
-      cancelStep2(){
-        this.e6 = 1
-        this.manuallyData = {}
-        this.selectedFile = {}
-      },
-      cancelStep3(){
-        this.e6 = 2
-      },
-      ToEditPage() {
-        this.$router.push({ name: "manage_student" });
-      },
-      toStep2(){
-      }
     }
   }
->>>>>>> Stashed changes
 </script>
 
 <style>
