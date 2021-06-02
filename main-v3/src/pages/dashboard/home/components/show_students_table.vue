@@ -86,17 +86,13 @@ export default {
                     phone
                     lineID
                     avatar_url
-                    advisor {
-                              name
-                            }
-                    status {
-                      current
-                    }
+                    advisor { name }
+                    status { current }
                     records {
                       egci_cumulative_gpa
                       total_credits
                       core_credits
-                      major_credits
+                      required_credits
                       elective_credits
                     }
                   }

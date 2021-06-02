@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="chart">
-      <apexchart type="bar" height="240" :options="chartOptions" :series="series"></apexchart>
+      <apexchart type="bar" :height=height :options="chartOptions" :series="series"></apexchart>
     </div>
     <v-dialog v-model="dialog" width="300">
       <v-card>
@@ -29,9 +29,14 @@ export default {
   props: ["batch", "total", "passed"],
   component: [],
   created() {},
+  mounted() {
+    this.height = 160 + (this.$config.selectedBatches.length * 20)
+    console.log(this.height)
+  },
   data() {
     return {
       index: 0,
+      height: 200,
       dialog: false,
       series: [
         {
@@ -46,7 +51,7 @@ export default {
       chartOptions: {
         chart: {
           type: "bar",
-          height: 240,
+          height: this.height,
           stacked: true,
           fontFamily: "Quicksand, sans-serif",
           toolbar: {

@@ -94,7 +94,7 @@
                         <div class="order-2 text-center">
                           <p class="mt-n1">Required</p>
                           <h4 class="primary--text mt-n4">
-                            {{ std_details.records.major_credits }}
+                            {{ std_details.records.required_credits }}
                           </h4>
                           <p class="small mt-n2 ">credits</p>
                         </div>
@@ -191,7 +191,7 @@ export default {
                       egci_cumulative_gpa
                       total_credits
                       core_credits
-                      major_credits
+                      required_credits
                       elective_credits
 
                     }

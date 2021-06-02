@@ -35,7 +35,8 @@
         <div
           v-if="
             this.$currentUser.group == 'coordinator' ||
-              this.$currentUser.group == 'program director'
+            this.$currentUser.group == 'program director' ||
+            this.$currentUser.group == 'admin'
           "
           class="col-md-8 order-3 float-right py-2"
         >

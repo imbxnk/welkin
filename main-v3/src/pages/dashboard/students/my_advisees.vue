@@ -159,7 +159,7 @@ export default {
                 records{
                   egci_cumulative_gpa
                   core_credits
-                  major_credits
+                  required_credits
                   elective_credits
                   total_credits
                 }
