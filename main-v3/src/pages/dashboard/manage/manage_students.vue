@@ -32,7 +32,7 @@
                   {{ item.entry_tri_year ? item.entry_tri_year : 'Unknown' }}
                 </template>
                 <template v-slot:[`item.advisor.name`]="{ item }">
-                  {{ item.advisor ? item.advisor.name : 'Unknown' }}
+                  {{ item.advisor.name ? item.advisor.name : 'Unknown' }}
                 </template>
                 <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small @click="editItem(item)">
@@ -223,12 +223,7 @@ export default {
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
             student["entry_tri_year"] = (student.entry_trimester && student.entry_year) ? `T${student.entry_trimester}/${student.entry_year}` : null
-            // if(student.entry_trimester != null && student.entry_year !=null){
-            //     student["entry_tri_year"] = "T" + [student.entry_trimester, student.entry_year].join("/");
-            // }else{
-            //     student["entry_tri_year"] = [student.entry_trimester, student.entry_year].join(" ");
-            // }
-            if(!student.advisor) student.advisor.name = null
+            if(!student.advisor) student.advisor = { name: '' }
           });
         })
         .catch((err) => {
