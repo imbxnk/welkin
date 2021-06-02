@@ -23,13 +23,13 @@
                   </v-avatar>
                 </template>
                 <template v-slot:[`item.prefix`]="{ item }">
-                  {{ item.prefix || '-' }}
+                  {{ item.prefix ? item.prefix : '-' }}
                 </template>
                 <template v-slot:[`item.nick_name`]="{ item }">
-                  {{ item.nick_name || '-' }}
+                  {{ item.nick_name ? item.nick_name : '-' }}
                 </template>
                 <template v-slot:[`item.entry_tri_year`]="{ item }">
-                  {{ item.entry_tri_year || 'Unknown' }}
+                  {{ item.entry_tri_year ? item.entry_tri_year : 'Unknown' }}
                 </template>
                 <template v-slot:[`item.advisor.name`]="{ item }">
                   {{ item.advisor ? item.advisor.name : 'Unknown' }}

@@ -29,7 +29,7 @@
             disable-pagination
           >
             <template v-slot:[`item.title`]="{ item }">
-              {{ item.title || "-" }}
+              {{ item.title ? item.title : "-" }}
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon small @click="editItem(item)">
