@@ -16,9 +16,7 @@
           <h3>
             Hello,
             <span class="primary--text">{{
-              this.$currentUser.display_name == null
-                ? this.$currentUser.given_name
-                : this.$currentUser.display_name
+              this.$currentUser.display_name ? this.$currentUser.display_name : this.$currentUser.given_name
             }}</span>
           </h3>
           <h6 class="grey--text">have a nice day :)</h6>
