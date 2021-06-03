@@ -22,6 +22,26 @@
           </div>
         </div>
       </div>
+      <div>
+        <v-snackbar
+        v-model="successStatus"
+        :timeout="4000"
+        absolute
+        color="success"
+        top
+        text
+      >Uploading Success!! <br/>Detail: {{ this.message}}
+      </v-snackbar>
+      <v-snackbar
+        v-model="errorStatus"
+        :timeout="4000"
+        absolute
+        color="error"
+        top
+        text
+      >Uploading fail! <br/>Detail: {{ this.message}}
+    </v-snackbar>
+      </div>
   </div>
 </template>
 
@@ -53,7 +73,10 @@ export default {
             sheetName: "",
             selectedValue: "",
             duplicateGrade: [],
-            url: process.env.VUE_APP_GRAPHQL_URL
+            url: process.env.VUE_APP_GRAPHQL_URL,
+            message: "",
+            successStatus: false,
+            errorStatus: false
         }
     },
     components:{
@@ -87,6 +110,14 @@ export default {
                 this.pdffile = url
                 await this.axios.post(this.url, { query : gql }, { withCredentials: true }).then(res => {
                     console.log(res);
+                    if(res.data.errors[0].success == true){
+                      this.message = res.data.errors[0].message
+                      this.successStatus = true
+                    }else{
+                      this.message = res.data.errors[0].message
+                      this.errorStatus = true
+                    }
+                    console.log(this.message)
                 }).catch (err => {
                     console.log(err);
                 })
@@ -99,7 +130,7 @@ export default {
 
 <style>
   .dropZone{
-    width: 560px;
+    min-width: 80px;
     height: 250px;
   }
 </style>
