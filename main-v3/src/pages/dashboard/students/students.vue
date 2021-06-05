@@ -2,22 +2,27 @@
   <div>
     <v-card class=" pa-3">
       <v-row>
-        <v-col>
+        <v-col cols="12" md="6">
           <v-card-title>
             Students
           </v-card-title>
         </v-col>
-        <v-col cols="6" md="5" lg="4" xl="3">
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Search"
-            type="text"
-            class="mr-3"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="6" md="5" lg="4" xl="3">
-          <v-select :items="statusmenu" v-model="statusFilterValue" label="Status"></v-select>
+        <v-col cols="12" md="6">
+          <v-row class="mx-1">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              type="text"
+              class="mr-2"
+            ></v-text-field>
+            <v-select
+              :items="statusmenu"
+              v-model="statusFilterValue"
+              label="Status"
+              class="mr-2"
+            ></v-select>
+          </v-row>
         </v-col>
       </v-row>
       <v-card :elevation="0">
