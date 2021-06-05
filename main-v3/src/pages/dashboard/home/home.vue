@@ -16,7 +16,9 @@
           <h3>
             Hello,
             <span class="primary--text">{{
-              this.$currentUser.display_name ? this.$currentUser.display_name : this.$currentUser.given_name
+              this.$currentUser.display_name
+                ? this.$currentUser.display_name
+                : this.$currentUser.given_name
             }}</span>
           </h3>
           <h6 class="grey--text">have a nice day :)</h6>
@@ -33,17 +35,25 @@
         <div
           v-if="
             this.$currentUser.group == 'coordinator' ||
-            this.$currentUser.group == 'program director' ||
-            this.$currentUser.group == 'admin'
+              this.$currentUser.group == 'program director' ||
+              this.$currentUser.group == 'admin'
           "
           class="col-md-8 order-3 float-right py-2"
         >
           <ShowStudentsTable></ShowStudentsTable>
         </div>
 
+        <div
+          v-if="this.$currentUser.isAdvisor == true && this.$currentUser.groip == 'lecturer'"
+          class="col-md-8 order-4 float-right py-2"
+        >
+          hello advisor
+          <ShowAdviseeTable></ShowAdviseeTable>
+        </div>
         <div v-else class="col-md-8 order-3 float-right py-2">
           <ShowStudentGraph></ShowStudentGraph>
         </div>
+
         <!-- <div class="col-md-8 order-4 float-right py-2"><ShowStudentsTable></ShowStudentsTable></div> -->
 
         <!-- <div class="row order-4 pt-2">
@@ -60,6 +70,7 @@
 </template>
 <script>
 import ShowStudentsTable from "./components/show_students_table";
+import ShowAdviseeTable from "./components/show_advisee_table";
 import ShowBatchesSummary from "./components/show_batches_summary";
 import ShowStudentGraph from "./components/show_student_graph";
 import ShowAnnouncement from "./components/show_announce";
@@ -71,6 +82,7 @@ export default {
     ShowBatchesSummary,
     ShowAnnouncement,
     ShowStudentGraph,
+    ShowAdviseeTable,
   },
   mounted() {
     console.log(this.$currentUser);

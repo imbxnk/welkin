@@ -1,11 +1,11 @@
 <template>
   <v-card class="pa-3">
-    <v-card-title>All students</v-card-title>
+    <v-card-title>Advisees</v-card-title>
     <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table>
     <v-data-table
       v-else
       :headers="headers"
-      :items="students"
+      :items="advisees"
       mobile-breakpoint="680"
       height="528"
       class="home"
@@ -45,7 +45,7 @@ export default {
       headers: [
         { text: "Student ID", sortable: false, value: "sid" },
         { text: "Name", align: "start", sortable: false, value: "name" },
-        { text: "Advisor", sortable: false, value: "advisor.name", align: "center" },
+
         {
           text: "Earned Credits",
           sortable: false,
@@ -54,12 +54,12 @@ export default {
         },
         { text: "Performance", sortable: false, value: "", align: "center" },
       ],
-      students: [],
+      advisees: [],
       stdDetail: [],
     };
   },
   mounted() {
-    this.getStudents();
+    this.getMyAdvisees();
   },
   methods: {
     getColor(status) {
@@ -74,58 +74,47 @@ export default {
       this.stdDetail = row;
       console.log(this.stdDetail);
     },
-    async getStudents() {
+    getMyAdvisees() {
       let query = `
-              query {
-                students (sortBy: "status") {
-                  students {
-                    sid
-                    batch
-                    given_name
-                    family_name
-                    email
-                    phone
-                    lineID
-                    avatar_url
-                    advisor { name }
-                    status { current }
-                    records {
-                      egci_cumulative_gpa
-                      total_credits
-                      core_credits
-                      required_credits
-                      elective_credits
-                    }
-                  }
+          query {
+            students (searchInput: { advisor: "${this.$currentUser.linked_instructor._id}"}, sortBy: "status") {
+              advisees:students {
+                sid
+                prefix
+                given_name
+                family_name
+                email
+                nick_name
+                entry_trimester
+                entry_year
+                avatar_url
+                batch
+                records{
+                  egci_cumulative_gpa
+                  core_credits
+                  required_credits
+                  elective_credits
+                  total_credits
                 }
-                curriculums {
-                    total
-                    curriculums {
-                      batches
-                      passing_conditions {
-                        core_courses
-                        required_courses
-                        elective_courses
-                      }
-                    }
-                  }
+                status{
+                  current
+                }
               }
-          `;
-      await this.axios
+              total
+            }
+          }
+      `;
+      this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          // console.log(res.data.data.students);
-          this.students = [...res.data.data.students.students];
-          this.curriculums = [...res.data.data.curriculums.curriculums];
-          this.students.forEach((student) => {
-            student["name"] = [student.given_name, student.family_name].join(" ");
-          });
-
-          console.log(this.students);
           this.loading = false;
+          this.advisees = res.data.data.students.advisees;
+          this.advisees.forEach((advisee) => {
+            advisee["name"] = [advisee.given_name, advisee.family_name].join(" ");
+          });
         })
         .catch((err) => {
-          console.log(err);
+          this.loading = false;
         });
     },
   },
