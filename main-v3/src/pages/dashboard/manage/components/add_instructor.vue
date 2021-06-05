@@ -2,50 +2,66 @@
   <div>
     <v-form ref="form" lazy-validation>
       <div class="d-flex flex-column bd-highlight">
-          <div class="p-2 bd-highlight mx-auto">
-              <div class="d-flex flex-row justify-content-evenly bd-highlight">
-                  <div class="p-2 bd-highlight">
-                    <v-text-field label="Title" v-model="instrucData.title" outlined></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field label="First Name" v-model="instrucData.given_name" :rules="[rules.required, rules.counter]" outlined required></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field label="Last Name" v-model="instrucData.family_name" :rules="[rules.required, rules.counter]" outlined required></v-text-field>
-                  </div>
-              </div>
+        <div class="p-2 bd-highlight mx-auto">
+          <div class="d-flex flex-row justify-content-evenly bd-highlight">
+            <div class="p-2 bd-highlight">
+              <v-text-field label="Title" v-model="instrucData.title" outlined></v-text-field>
+            </div>
+            <div class="p-2 bd-highlight">
+              <v-text-field
+                label="First Name"
+                v-model="instrucData.given_name"
+                :rules="[rules.required, rules.counter]"
+                outlined
+                required
+              ></v-text-field>
+            </div>
+            <div class="p-2 bd-highlight">
+              <v-text-field
+                label="Last Name"
+                v-model="instrucData.family_name"
+                :rules="[rules.required, rules.counter]"
+                outlined
+                required
+              ></v-text-field>
+            </div>
           </div>
-          <div class="p-2 bd-highlight mx-auto">
-              <div class="d-flex flex-row justify-content-evenly bd-highlight">
-                  <div class="p-2 bd-highlight">
-                    <v-text-field label="email" v-model="instrucData.email" outlined></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field label="phone" v-model="instrucData.phone" :rules="[]" outlined></v-text-field>
-                  </div>
-              </div>
+        </div>
+        <div class="p-2 bd-highlight mx-auto">
+          <div class="d-flex flex-row justify-content-evenly bd-highlight">
+            <div class="p-2 bd-highlight">
+              <v-text-field label="email" v-model="instrucData.email" outlined></v-text-field>
+            </div>
+            <div class="p-2 bd-highlight">
+              <v-text-field
+                label="phone"
+                v-model="instrucData.phone"
+                :rules="[]"
+                outlined
+              ></v-text-field>
+            </div>
           </div>
+        </div>
       </div>
-  </v-form>
-  <v-card-action>
-    <div class="d-flex flex-row justify-content-end bd-highlight">
-      <div class="p-2 bd-highlight">
-        <v-btn class="my-4" text @click="clear()">clear</v-btn>
-        <v-btn class="my-4" color="#3c84fb" @click="validate()" text>Submit</v-btn>
+    </v-form>
+    <v-card-action>
+      <div class="d-flex flex-row justify-content-end bd-highlight">
+        <div class="p-2 bd-highlight">
+          <v-btn class="my-4" text @click="clear()">clear</v-btn>
+          <v-btn class="my-4" color="#3c84fb" @click="validate()" text>Submit</v-btn>
+        </div>
       </div>
-    </div>
-  </v-card-action>
+    </v-card-action>
 
-  <v-dialog v-model="dialogCheck" max-width="450px">
+    <v-dialog v-model="dialogCheck" max-width="450px">
       <v-card>
-        <v-card-title class="headline grey lighten-2"> Confirm instructor information</v-card-title><br />
+        <v-card-title class="headline grey lighten-2"> Confirm instructor information</v-card-title
+        ><br />
         <v-card-text
-          >Are you sure you want to add:
-          <br/>Title: <b>{{ this.inputData.title }}</b>
-          <br/>First Name: <b>{{ this.inputData.given_name }}</b>
-          <br/>Last Name: <b>{{ this.inputData.family_name }}</b>
-          <br/>Email: <b>{{ this.inputData.email }}</b>
-          <br/>Phone: <b>{{ this.inputData.phone }}</b>
+          >Are you sure you want to add: <br />Title: <b>{{ this.inputData.title }}</b> <br />First
+          Name: <b>{{ this.inputData.given_name }}</b> <br />Last Name:
+          <b>{{ this.inputData.family_name }}</b> <br />Email: <b>{{ this.inputData.email }}</b>
+          <br />Phone: <b>{{ this.inputData.phone }}</b>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -62,24 +78,25 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      instrucData:{
+      snackbar: false,
+      instrucData: {
         title: "",
         given_name: "",
         family_name: "",
         email: "",
-        phone: ""
+        phone: "",
       },
-      inputData:{
+      inputData: {
         title: "",
         given_name: "",
         family_name: "",
         email: "",
-        phone: ""
+        phone: "",
       },
-      dialogCheck : false,
-       rules: {
+      dialogCheck: false,
+      rules: {
         required: (value) => !!value || "Required.",
         counter: [(v) => v.length <= 2 || "Min 2 characters"],
         email: (value) => {
@@ -87,27 +104,31 @@ export default {
           return pattern.test(value) || "Invalid e-mail.";
         },
       },
-    }
+    };
   },
-  methods:{
-    validate(){
-      if(this.$refs.form.validate()){
-        this.inputData.title = this.instrucData.title
-        this.inputData.given_name = this.instrucData.given_name
-        this.inputData.family_name = this.instrucData.family_name
-        this.inputData.email = this.instrucData.email
-        this.inputData.phone = this.instrucData.phone
-        this.dialogCheck = true
-      }else{
+  methods: {
+    validate() {
+      if (this.$refs.form.validate()) {
+        this.inputData.title = this.instrucData.title;
+        this.inputData.given_name = this.instrucData.given_name;
+        this.inputData.family_name = this.instrucData.family_name;
+        this.inputData.email = this.instrucData.email;
+        this.inputData.phone = this.instrucData.phone;
+        this.dialogCheck = true;
+      } else {
       }
     },
     clear() {
-      (this.instrucData.title = ""), (this.instrucData.given_name = ""), (this.instrucData.family_name = ""), (this.instrucData.email = ""), (this.instrucData.phone = "")
+      (this.instrucData.title = ""),
+        (this.instrucData.given_name = ""),
+        (this.instrucData.family_name = ""),
+        (this.instrucData.email = ""),
+        (this.instrucData.phone = "");
       Object.keys(this.form).forEach((f) => {
         this.$refs[f].reset();
       });
     },
-    addInstructor(){
+    addInstructor() {
       let query = `mutation{
                     addInstructor(instructorInput:{
                       title: "${this.inputData.title}",
@@ -133,12 +154,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-    }
-  }
-
-}
+    },
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
