@@ -16,6 +16,9 @@
             class="mr-3"
           ></v-text-field>
         </v-col>
+        <v-col cols="6" md="5" lg="4" xl="3">
+          <v-select :items="statusmenu" v-model="statusFilterValue" label="Status"></v-select>
+        </v-col>
       </v-row>
       <v-card :elevation="0">
         <!-- if loading -->
@@ -27,6 +30,10 @@
           :items="advisees"
           :search="search"
           mobile-breakpoint="0"
+          :footer-props="{
+            'items-per-page-options': [20, 50, 100, { text: 'All', value: -1 }],
+          }"
+          :options.sync="options"
           @click:row="ShowDetail"
           class="advisee"
         >
@@ -77,6 +84,17 @@ export default {
       timer: null,
       loading: true,
       dialog: false,
+      statusFilterValue: null,
+      statusmenu: [
+        "All",
+        "Studying",
+        "Leave of absence",
+        "On Exchange",
+        "Retired",
+        "Resigned",
+        "Alumni",
+        "Unknown",
+      ],
       headers: [
         { text: "Student ID", sortable: false, value: "sid", width: 100 },
         { text: "Name", sortable: false, value: "name", width: 350 },
@@ -86,17 +104,24 @@ export default {
           align: "center",
           sortable: true,
           value: "records.total_credits",
-          width: 100,
+          width: 150,
         },
         {
           text: "EGCI CUM-GPA",
           align: "center",
           sortable: true,
           value: "records.egci_cumulative_gpa",
-          width: 100,
+          width: 150,
         },
         { text: "Email", sortable: false, align: "center", value: "email", width: 250 },
-        { text: "Status", sortable: false, align: "center", value: "status.current", width: 180 },
+        {
+          text: "Status",
+          sortable: false,
+          filter: this.statusFilter,
+          align: "center",
+          value: "status.current",
+          width: 180,
+        },
       ],
       advisees: [],
       avsDetail: [],
@@ -116,6 +141,12 @@ export default {
       } else {
         return item;
       }
+    },
+    statusFilter(value) {
+      if (this.statusFilterValue == null || this.statusFilterValue == "All") {
+        return true;
+      }
+      return value === this.statusFilterValue;
     },
     getColor(status) {
       // 'Studying',
