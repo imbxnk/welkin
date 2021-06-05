@@ -1,5 +1,10 @@
 import axios from "axios";
 
+// For Development Only
+const headers = {
+  Cookies: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYyMjgwNTYzMCwiZXhwIjoxNjI1Mzk3NjMwfQ.9aQlessuyBelIdkAGzQ5XX7o-85rZwtMBW76dminlTI"
+}
+
 export default{
   getUser: async function() {
     let query = `
@@ -7,7 +12,7 @@ export default{
         me { display_name username given_name family_name group isAdvisor email avatar { small medium large } createdAt linked_instructor { _id title name given_name family_name } }
       }
     `
-    return await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+    return await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { headers })
       .catch(()=> {
         return null;
       });
@@ -21,7 +26,10 @@ export default{
     `
 
     const currentUser = await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, {
-      withCredentials: true
+      // for developing
+      headers
+      // for production
+      // withCredentials: true
     })
       .then((res) => {
         return res.data.data.me
@@ -46,7 +54,10 @@ export default{
     `
 
     const current = await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, {
-      withCredentials: true
+      // for developing
+      headers
+      // for production
+      // withCredentials: true
     })
       .then((res) => {
         return res.data.data.config
