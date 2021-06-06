@@ -44,8 +44,7 @@
         <v-list dense class="mx-n4 mb-n5 mt-n3">
           <v-list-item v-for="(instuctor, i) in instuctors" :key="i" two-line class="mt-n3">
             <v-list-item-content>
-              <v-list-item-title>
-                {{ i + 1 }}. {{ instuctor.title }} {{ instuctor.name }}
+              <v-list-item-title v-text="i + 1 + '. ' + instuctor.title + ' ' + instuctor.name">
               </v-list-item-title>
               <v-list-item-subtitle
                 >Email : {{ instuctor.email == "" ? "-" : nstuctor.email }}</v-list-item-subtitle
