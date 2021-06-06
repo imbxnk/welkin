@@ -38,10 +38,10 @@
       </table> -->
 
       <v-divider></v-divider>
-      <h6 class="primary--text mb-5">Instructor list:</h6>
-      <span v-if="instuctors.length == 0" style="color: #b4b4b4">No record</span>
+      <h6 class="primary--text ">Instructor list:</h6>
+      <span v-if="instuctors.length == 0" class="mt-n7" style="color: #b4b4b4">No record</span>
       <span v-else>
-        <v-list dense class="ma-n4 ">
+        <v-list dense class="mx-n4 mb-n5 mt-n3">
           <v-list-item v-for="(instuctor, i) in instuctors" :key="i" two-line class="mt-n3">
             <v-list-item-content>
               <v-list-item-title>
