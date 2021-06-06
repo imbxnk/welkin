@@ -37,7 +37,6 @@
           :footer-props="{
             'items-per-page-options': [20, 50, 100, { text: 'All', value: -1 }],
           }"
-          :options.sync="options"
           @click:row="ShowDetail"
           class="advisee"
         >

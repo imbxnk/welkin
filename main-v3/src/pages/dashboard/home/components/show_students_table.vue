@@ -42,6 +42,9 @@ export default {
     return {
       loading: true,
       dialog: false,
+      click: 0,
+      deley: 700,
+      timer: null,
       headers: [
         { text: "Student ID", sortable: false, value: "sid" },
         { text: "Name", align: "start", sortable: false, value: "name" },
@@ -68,11 +71,15 @@ export default {
       else return "green";
     },
     showDialog(row) {
-      this.dialog = true;
-      // console.log(this.student.stdID);
-      console.log(row);
-      this.stdDetail = row;
-      console.log(this.stdDetail);
+      this.click++;
+      if (this.click == 1) {
+        setTimeout(() => (this.click = 0), this.deley);
+      } else {
+        clearTimeout(this.timer);
+        this.dialog = true;
+        this.stdDetail = row;
+        this.click = 0;
+      }
     },
     async getStudents() {
       let query = `

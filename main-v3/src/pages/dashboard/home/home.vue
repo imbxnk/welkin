@@ -44,10 +44,9 @@
         </div>
 
         <div
-          v-if="this.$currentUser.isAdvisor == true && this.$currentUser.groip == 'lecturer'"
+          v-if="this.$currentUser.isAdvisor == true && this.$currentUser.group == 'lecturer'"
           class="col-md-8 order-4 float-right py-2"
         >
-          hello advisor
           <ShowAdviseeTable></ShowAdviseeTable>
         </div>
         <div v-else class="col-md-8 order-3 float-right py-2">
