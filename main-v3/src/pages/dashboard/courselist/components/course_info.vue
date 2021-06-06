@@ -39,17 +39,22 @@
 
       <v-divider></v-divider>
       <h6 class="primary--text ">Instructor list:</h6>
-      <ul>
-        <li v-for="(instuctor, i) in instuctors" :key="i">
-          {{ instuctor.title }} {{ instuctor.name }}
-        </li>
-      </ul>
+      <div v-if="instuctors.length == 0" style="color: #b4b4b4">No record</div>
+      <div v-else>
+        <ul>
+          <li v-for="(instuctor, i) in instuctors" :key="i">
+            {{ instuctor.title }} {{ instuctor.name }}
+          </li>
+        </ul>
+      </div>
+
       <!-- <div v-for="batch in Object.keys(batches)" :key="batch">
         Remain [{{ batch }}]: {{ batches[batch].total - batches[batch].passed }}/{{
           batches[batch].total
         }}
         students
       </div> -->
+
       <v-divider></v-divider>
     </div>
   </div>
