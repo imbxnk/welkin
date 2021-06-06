@@ -1,80 +1,89 @@
 <template>
-  <div class="pa-3">
-    <v-form ref="form" v-model="valid" lazy-validation>
-      <div class="d-flex px-3 justify-content-between flex-column flex-sm-row">
-        <div class="">
-          <v-text-field
-            ref="firstName"
-            v-model="firstName"
-            label="First Name"
-            outlined
-            required
-            :rules="[() => !!firstName || 'Required']"
-          ></v-text-field>
-        </div>
-        <div class="">
-          <v-text-field
-            ref="familyName"
-            v-model="familyName"
-            label="Family Name"
-            outlined
-            required
-            :rules="[() => !!familyName || 'Required']"
-          ></v-text-field>
-        </div>
-      </div>
-      <div class="d-flex justify-content-center flex-column">
-        <div class="px-3">
-          <v-text-field
-            ref="email"
-            v-model="email"
-            label="Email"
-            outlined
-            required
-            :rules="[() => !!email || 'Required', rules.email]"
-          ></v-text-field>
-        </div>
-        <div class="px-3">
-          <v-text-field
-            ref="password"
-            v-model="password"
-            label="Password"
-            outlined
-            required
-            :rules="[
-              () => (!!password && password.length >= 4) || 'Required at least 4 characters',
-            ]"
-          ></v-text-field>
-        </div>
-      </div>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="error" @click="clearText()">clear</v-btn>
-        <v-btn color="primary" @click="validate">submit</v-btn>
-      </v-card-actions>
-    </v-form>
-
-    <v-dialog v-model="dialog" max-width="450px">
+  <div class="">
+    <v-btn color="primary" @click="dialog = true">Add User<v-icon>mdi-plus</v-icon></v-btn>
+    <v-dialog v-model="dialog" max-width="500px">
       <v-card>
-        <v-card-title class="headline grey lighten-2"> Confirm Add </v-card-title><br />
-        <v-card-text
-          >Are you sure you want to add: <br />First Name: <b>{{ this.input.firstName }}</b>
-          <br />
-          Family Name: <b>{{ this.input.familyName }}</b
-          ><br />Email: <b>{{ this.input.email }}</b> <br />
-          Password: <b>{{ this.input.password == "" ? " - " : this.input.password }}</b>
-        </v-card-text>
-        <v-card-actions>
+        <v-card-title class=""
+          ><h3>Add User</h3>
           <v-spacer></v-spacer>
-          <v-btn text color="error" @click="dialog = false">No</v-btn>
-          <v-btn text color="success" @click="addUser()">Yes</v-btn>
-        </v-card-actions></v-card
-      >
+          <v-icon @click="dialogClose()">mdi-close</v-icon></v-card-title
+        >
+        <v-form ref="form" v-model="valid" lazy-validation class="pa-3">
+          <div class="d-flex px-3 bd-highlight flex-column flex-sm-row">
+            <div class="flex-md-fill pr-md-1">
+              <v-text-field
+                ref="firstName"
+                v-model="firstName"
+                label="First Name"
+                outlined
+                required
+                :rules="[() => !!firstName || 'Required']"
+              ></v-text-field>
+            </div>
+            <div class="flex-md-fill pl-md-1">
+              <v-text-field
+                ref="familyName"
+                v-model="familyName"
+                label="Family Name"
+                outlined
+                required
+                :rules="[() => !!familyName || 'Required']"
+              ></v-text-field>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center flex-column">
+            <div class="px-3">
+              <v-text-field
+                ref="email"
+                v-model="email"
+                label="Email"
+                outlined
+                required
+                :rules="[() => !!email || 'Required', rules.email]"
+              ></v-text-field>
+            </div>
+            <div class="px-3">
+              <v-text-field
+                ref="password"
+                v-model="password"
+                label="Password"
+                outlined
+                required
+                :rules="[
+                  () => (!!password && password.length >= 4) || 'Required at least 4 characters',
+                ]"
+              ></v-text-field>
+            </div>
+          </div>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="error" @click="clearText()">clear</v-btn>
+            <v-btn color="primary" @click="validate">submit</v-btn>
+          </v-card-actions>
+        </v-form>
+
+        <v-dialog v-model="dialog1" max-width="450px">
+          <v-card>
+            <v-card-title class="headline grey lighten-2"> Confirm Add </v-card-title><br />
+            <v-card-text
+              >Are you sure you want to add: <br />First Name: <b>{{ this.input.firstName }}</b>
+              <br />
+              Family Name: <b>{{ this.input.familyName }}</b
+              ><br />Email: <b>{{ this.input.email }}</b> <br />
+              Password: <b>{{ this.input.password == "" ? " - " : this.input.password }}</b>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text color="error" @click="dialog1 = false">No</v-btn>
+              <v-btn text color="success" @click="addUser()">Yes</v-btn>
+            </v-card-actions></v-card
+          >
+        </v-dialog>
+        <v-snackbar centered v-model="snackbar" :timeout="1000">
+          Form submission : success!
+        </v-snackbar>
+      </v-card>
     </v-dialog>
-    <v-snackbar centered v-model="snackbar" :timeout="1000">
-      Form submission : success!
-    </v-snackbar>
   </div>
 </template>
 
@@ -90,6 +99,7 @@ export default {
       email: "",
       password: "",
       dialog: false,
+      dialog1: false,
       snackbar: false,
       input: {
         firstName: "",
@@ -136,7 +146,10 @@ export default {
       } else {
       }
     },
-
+    dialogClose() {
+      this.dialog = false;
+      this.clearText();
+    },
     addUser() {
       let query = `mutation {
                     createUser (userInput : {

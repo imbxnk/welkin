@@ -2,7 +2,7 @@
   <v-container class="mx-auto">
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
-        <v-btn color="primary" @click="dialog = true">Add User<v-icon>mdi-plus</v-icon></v-btn>
+        <AddUser></AddUser>
       </div>
       <div class="p-2 bd-highlight">
         <v-card style="max-width: auto"
@@ -41,7 +41,7 @@
               </v-avatar>
             </template>
             <template v-slot:[`item.display_name`]="{ item }">
-              {{ item.display_name ? item.display_name : '-' }}
+              {{ item.display_name ? item.display_name : "-" }}
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon small @click="editItem(item)">
@@ -110,7 +110,10 @@
                 <v-text-field label="Email" v-model="editedItem.email" outlined></v-text-field>
               </div>
             </div>
-            <div class="d-flex justify-content-center flex-column" v-if="editedItem.group !== 'admin'">
+            <div
+              class="d-flex justify-content-center flex-column"
+              v-if="editedItem.group !== 'admin'"
+            >
               <div class="px-3">
                 <v-select
                   :items="items"
