@@ -1,6 +1,15 @@
 <template>
   <v-card class="pa-3">
-    <v-card-title>All students</v-card-title>
+    <v-card-title
+      >All students
+      <v-spacer></v-spacer>
+      <v-select
+        :items="advisorlist"
+        v-model="advisorFilterValue"
+        label="Advisor"
+        class="mr-2"
+      ></v-select>
+    </v-card-title>
     <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table>
     <v-data-table
       v-else
@@ -45,10 +54,17 @@ export default {
       click: 0,
       deley: 700,
       timer: null,
+      advisorFilterValue: null,
       headers: [
         { text: "Student ID", sortable: false, value: "sid" },
         { text: "Name", align: "start", sortable: false, value: "name" },
-        { text: "Advisor", sortable: false, value: "advisor.name", align: "center" },
+        {
+          text: "Advisor",
+          sortable: false,
+          filter: this.advisorFilter,
+          value: "advisor.name",
+          align: "center",
+        },
         {
           text: "Earned Credits",
           sortable: false,
@@ -59,10 +75,12 @@ export default {
       ],
       students: [],
       stdDetail: [],
+      advisorlist: ["All"],
     };
   },
   mounted() {
     this.getStudents();
+    this.loadAdvisors();
   },
   methods: {
     getColor(status) {
@@ -80,6 +98,37 @@ export default {
         this.stdDetail = row;
         this.click = 0;
       }
+    },
+    async loadAdvisors() {
+      let query = `
+            query {
+              instructors {
+                total
+                instructors {
+                  name
+                  title
+                  given_name
+                  family_name
+                }
+              }
+            }
+          `;
+      await this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          res.data.data.instructors.instructors.forEach((instructor) => {
+            this.advisorlist.push(instructor.name);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    advisorFilter(value) {
+      if (this.advisorFilterValue == null || this.advisorFilterValue == "All") {
+        return true;
+      }
+      return value === this.advisorFilterValue;
     },
     async getStudents() {
       let query = `
