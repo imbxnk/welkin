@@ -38,16 +38,22 @@
       </table> -->
 
       <v-divider></v-divider>
-      <h6 class="primary--text ">Instructor list:</h6>
-      <div v-if="instuctors.length == 0" style="color: #b4b4b4">No record</div>
-      <div v-else>
-        <ul>
-          <li v-for="(instuctor, i) in instuctors" :key="i">
-            {{ instuctor.title }} {{ instuctor.name }}
-          </li>
-        </ul>
-      </div>
-
+      <h6 class="primary--text mb-5">Instructor list:</h6>
+      <span v-if="instuctors.length == 0" style="color: #b4b4b4">No record</span>
+      <span v-else>
+        <v-list dense class="ma-n4 ">
+          <v-list-item v-for="(instuctor, i) in instuctors" :key="i" two-line class="mt-n3">
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ i + 1 }}. {{ instuctor.title }} {{ instuctor.name }}
+              </v-list-item-title>
+              <v-list-item-subtitle
+                >Email : {{ instuctor.email == "" ? "-" : nstuctor.email }}</v-list-item-subtitle
+              >
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </span>
       <!-- <div v-for="batch in Object.keys(batches)" :key="batch">
         Remain [{{ batch }}]: {{ batches[batch].total - batches[batch].passed }}/{{
           batches[batch].total
@@ -99,6 +105,7 @@ export default {
                             instructors{
                               title
                               name
+                              email
                               }
                             }
                 course (searchInput: { code: "${code}" }) {
