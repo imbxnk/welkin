@@ -50,6 +50,9 @@
               {{ item.status.current }}
             </v-chip>
           </template>
+          <template v-slot:[`item.records.total_credits`]="{ item }">
+            {{ item.records.total_credits }}/{{ getTotalCredit(item.batch) }}
+          </template>
           <template v-slot:[`item.nick_name`]="{ item }">
             <!-- {{ !!item.nick_name || item.nick_name == " " ? item.nick_name : " - " }} -->
             {{ checkNull(item.nick_name) }}
@@ -87,6 +90,7 @@ export default {
       timer: null,
       loading: true,
       dialog: false,
+      curriculums: [],
       statusFilterValue: null,
       statusmenu: [
         "All",
@@ -203,16 +207,28 @@ export default {
               }
               total
             }
+            curriculums {
+                    total
+                    curriculums {
+                      batches
+                      passing_conditions {
+                        core_courses
+                        required_courses
+                        elective_courses
+                      }
+                    }
+                  }
           }
       `;
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          this.loading = false;
-          this.advisees = res.data.data.students.advisees;
+          this.advisees = [...res.data.data.students.advisees];
+          this.curriculums = [...res.data.data.curriculums.curriculums];
           this.advisees.forEach((advisee) => {
             advisee["name"] = [advisee.given_name, advisee.family_name].join(" ");
           });
+          this.loading = false;
         })
         .catch((err) => {
           this.loading = false;
@@ -228,6 +244,17 @@ export default {
         this.avsDetail = row;
         this.click = 0;
       }
+    },
+    getTotalCredit(batch) {
+      let total_credits = "?";
+      this.curriculums.forEach((curriculum) => {
+        if (curriculum.batches.includes(batch))
+          return (total_credits =
+            curriculum.passing_conditions.core_courses +
+            curriculum.passing_conditions.required_courses +
+            curriculum.passing_conditions.elective_courses);
+      });
+      return total_credits;
     },
   },
 };

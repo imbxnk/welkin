@@ -16,19 +16,37 @@
         />
         <div class="overline text-center">{{ stdDetail.sid }}</div>
       </v-col>
+
       <v-col cols="12" sm="6">
         <b>Email:</b> <span v-if="stdDetail.email">{{ checkNull(stdDetail.email) }}</span
         ><span v-else>-</span><br />
         <template v-if="stdDetail.records">
           <b>GPA:</b> <span>{{ stdDetail.records.egci_cumulative_gpa }}</span
           ><br />
-          <b>Core Courses:</b> <span>{{ stdDetail.records.core_credits }}</span
+          <b>Core Courses:</b>
+          <span>
+            {{ stdDetail.records.core_credits }}/{{ getPassingCore(stdDetail.batch) }} Credits</span
           ><br />
-          <b>Required Courses:</b> <span>{{ stdDetail.records.required_credits }}</span
+          <b>Required Courses:</b>
+          <span>
+            {{ stdDetail.records.required_credits }}/{{
+              getPassingRequire(stdDetail.batch)
+            }}
+            Credits</span
           ><br />
-          <b>Elective Courses:</b> <span>{{ stdDetail.records.elective_credits }}</span
+          <b>Elective Courses:</b>
+          <span>
+            {{ stdDetail.records.elective_credits }}/{{
+              getPassingElective(stdDetail.batch)
+            }}
+            Credits</span
           ><br />
-          <b>Credits Earned :</b> <span>{{ stdDetail.records.total_credits }}</span
+          <b>Credits Earned:</b>
+          <span>
+            {{ stdDetail.records.total_credits }}/{{
+              getTotalCredit(stdDetail.batch)
+            }}
+            Credits</span
           ><br />
         </template>
         <div class="w-100 d-flex justify-content-end align-self-end mt-sm-16 mt-md-16 ml-md-6 ">
@@ -51,7 +69,19 @@ export default {
   name: "Student_Info",
   props: ["stdDetail"],
   components: { StudentRemark },
-  mounted() {},
+  mounted() {
+    this.getCurriculum();
+  },
+  data() {
+    return {
+      curriculums: [],
+      passing_core: "",
+      passing_required: "",
+      passing_elective: "",
+      current_batch: "",
+    };
+  },
+
   methods: {
     checkNull(item) {
       if (item == " ") {
@@ -63,6 +93,68 @@ export default {
       } else {
         return item;
       }
+    },
+    getCurriculum() {
+      let query = `
+            query {
+               curriculums {
+                    total
+                    curriculums {
+                      batches
+                      passing_conditions {
+                        core_courses
+                        required_courses
+                        elective_courses
+                      }
+                    }
+                }
+            }
+      `;
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          // console.log(res.data.data.students);
+          this.curriculums = [...res.data.data.curriculums.curriculums];
+          console.log(this.curriculums);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getPassingCore(batch) {
+      let core_credits = "?";
+      this.curriculums.forEach((curriculum) => {
+        if (curriculum.batches.includes(batch))
+          return (core_credits = curriculum.passing_conditions.core_courses);
+      });
+      return core_credits;
+    },
+    getPassingRequire(batch) {
+      let required_credits = "?";
+      this.curriculums.forEach((curriculum) => {
+        if (curriculum.batches.includes(batch))
+          return (required_credits = curriculum.passing_conditions.required_courses);
+      });
+      return required_credits;
+    },
+    getPassingElective(batch) {
+      let elective_credits = "?";
+      this.curriculums.forEach((curriculum) => {
+        if (curriculum.batches.includes(batch))
+          return (elective_credits = curriculum.passing_conditions.elective_courses);
+      });
+      return elective_credits;
+    },
+    getTotalCredit(batch) {
+      let total_credits = "?";
+      this.curriculums.forEach((curriculum) => {
+        if (curriculum.batches.includes(batch))
+          return (total_credits =
+            curriculum.passing_conditions.core_courses +
+            curriculum.passing_conditions.required_courses +
+            curriculum.passing_conditions.elective_courses);
+      });
+      return total_credits;
     },
   },
 };
