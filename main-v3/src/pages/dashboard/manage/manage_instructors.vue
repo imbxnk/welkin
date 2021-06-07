@@ -2,15 +2,19 @@
   <v-container class="mx-auto">
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
-        <v-btn color="primary" @click="dialog = true">Add Instructor<v-icon>mdi-plus</v-icon></v-btn>
+        <v-btn color="primary" @click="dialog = true"
+          >Add Instructor<v-icon>mdi-plus</v-icon></v-btn
+        >
       </div>
       <div class="p-2 bd-highlight">
         <v-card style="max-width: auto"
           ><v-card-title>
-              <div class="d-flex flex-column">
-                <span>Instructors</span>
-                <span style="font-size:0.8rem; color:#999; margin-top: -10px;">Total: {{ total }}</span>
-              </div>
+            <div class="d-flex flex-column">
+              <span>Instructors</span>
+              <span style="font-size:0.8rem; color:#999; margin-top: -10px;"
+                >Total: {{ total }}</span
+              >
+            </div>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -25,6 +29,7 @@
             :items="instructors"
             :search="search"
             class="student px-3 pb-3"
+            mobile-breakpoint="0"
             hide-default-footer
             disable-pagination
           >
@@ -45,7 +50,8 @@
         <v-card-title
           >Add Instructor
           <v-spacer></v-spacer>
-          <v-icon @click="dialog = false">mdi-close</v-icon></v-card-title>
+          <v-icon @click="dialog = false">mdi-close</v-icon></v-card-title
+        >
         <add-instuctor></add-instuctor>
       </v-card>
     </v-dialog>
@@ -53,44 +59,57 @@
     <v-dialog v-model="editDialog" max-width="550px">
       <v-card>
         <v-card-title>
-            Edit Student
-             <v-spacer></v-spacer>
-            <v-icon @click="editDialog = false">mdi-close</v-icon>
+          Edit Student
+          <v-spacer></v-spacer>
+          <v-icon @click="editDialog = false">mdi-close</v-icon>
         </v-card-title>
         <v-card-text>
-            <v-form>
-                <div class="d-flex flex-column bd-highlight">
-                    <div class="p-2 bd-highlight mx-auto">
-                        <div class="d-flex flex-row justify-content-evenly bd-highlight">
-                            <div class="p-2 bd-highlight">
-                              <v-text-field label="Title" v-model="editedItem.title" outlined ></v-text-field>
-                            </div>
-                            <div class="p-2 bd-highlight">
-                              <v-text-field label="First Name" v-model="editedItem.given_name" outlined ></v-text-field>
-                            </div>
-                            <div class="p-2 bd-highlight">
-                              <v-text-field label="Last Name" v-model="editedItem.family_name" outlined ></v-text-field>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-2 bd-highlight mx-auto">
-                        <div class="d-flex flex-row justify-content-evenly bd-highlight">
-                            <div class="p-2 bd-highlight">
-                              <v-text-field label="email" v-model="editedItem.email" outlined ></v-text-field>
-                            </div>
-                            <div class="p-2 bd-highlight">
-                              <v-text-field type="number" label="phone" v-model="editedItem.phone" outlined></v-text-field>
-                            </div>
-                        </div>
-                    </div>
+          <v-form>
+            <div class="d-flex flex-column bd-highlight">
+              <div class="p-2 bd-highlight mx-auto">
+                <div class="d-flex flex-row justify-content-evenly bd-highlight">
+                  <div class="p-2 bd-highlight">
+                    <v-text-field label="Title" v-model="editedItem.title" outlined></v-text-field>
+                  </div>
+                  <div class="p-2 bd-highlight">
+                    <v-text-field
+                      label="First Name"
+                      v-model="editedItem.given_name"
+                      outlined
+                    ></v-text-field>
+                  </div>
+                  <div class="p-2 bd-highlight">
+                    <v-text-field
+                      label="Last Name"
+                      v-model="editedItem.family_name"
+                      outlined
+                    ></v-text-field>
+                  </div>
                 </div>
-            </v-form>
+              </div>
+              <div class="p-2 bd-highlight mx-auto">
+                <div class="d-flex flex-row justify-content-evenly bd-highlight">
+                  <div class="p-2 bd-highlight">
+                    <v-text-field label="email" v-model="editedItem.email" outlined></v-text-field>
+                  </div>
+                  <div class="p-2 bd-highlight">
+                    <v-text-field
+                      type="number"
+                      label="phone"
+                      v-model="editedItem.phone"
+                      outlined
+                    ></v-text-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </v-form>
         </v-card-text>
         <v-card-action>
           <div class="d-flex flex-row justify-content-end bd-highlight">
             <div class="p-2 bd-highlight">
               <v-btn class="my-4" text @click="clear">clear</v-btn>
-              <v-btn class="my-4" color="#3c84fb" @click="dialogCheck=true" text>Submit</v-btn>
+              <v-btn class="my-4" color="#3c84fb" @click="dialogCheck = true" text>Submit</v-btn>
             </div>
           </div>
         </v-card-action>
@@ -100,10 +119,10 @@
 </template>
 
 <script>
-import AddInstuctor from "./components/add_instructor.vue"
+import AddInstuctor from "./components/add_instructor.vue";
 export default {
   components: {
-    AddInstuctor
+    AddInstuctor,
   },
   data() {
     return {
@@ -118,14 +137,14 @@ export default {
       total: 0,
       dialog: false,
       editDialog: false,
-      editedItem:{
+      editedItem: {
         title: "",
         given_name: "",
         family_name: "",
         email: "",
         phone: "",
       },
-      intrucTitle:["Asst.", "Assoc.", "Prof.", "Dr."]
+      intrucTitle: ["Asst.", "Assoc.", "Prof.", "Dr."],
     };
   },
   mounted() {
@@ -161,14 +180,18 @@ export default {
       this.editedItem = Object.assign({}, item);
       // eslint-disable-next-line no-console
       console.log(this.editedItem, this.editedIndex);
-      this.editDialog = true
+      this.editDialog = true;
     },
-    close(){
-      this.dialog = false
-      this.editDialog = false
+    close() {
+      this.dialog = false;
+      this.editDialog = false;
     },
     clear() {
-      (this.editedItem.title = ""), (this.editedItem.given_name = ""), (this.editedItem.family_name = ""), (this.editedItem.email = ""), (this.editedItem.phone = "")
+      (this.editedItem.title = ""),
+        (this.editedItem.given_name = ""),
+        (this.editedItem.family_name = ""),
+        (this.editedItem.email = ""),
+        (this.editedItem.phone = "");
       Object.keys(this.form).forEach((f) => {
         this.$refs[f].reset();
       });

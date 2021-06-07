@@ -26,6 +26,7 @@
             :headers="headers"
             :items="users"
             :search="search"
+            mobile-breakpoint="0"
             class="student px-3 pb-3"
             hide-default-footer
             disable-pagination
