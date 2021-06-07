@@ -292,4 +292,10 @@ export default {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+.v-text-field {
+  width: 350px;
+}
+.v-select {
+  width: 100px;
+}
 </style>

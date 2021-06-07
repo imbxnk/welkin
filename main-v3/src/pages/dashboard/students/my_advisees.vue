@@ -6,6 +6,7 @@
       <v-row>
         <v-col cols="12" md="4">
           <v-card-title> My Advisees </v-card-title>
+          <v-card-subtitle>Total: {{ total }}</v-card-subtitle>
         </v-col>
         <v-col cols="12" md="8" class="mt-md-3">
           <v-row class="mx-1">
@@ -95,6 +96,7 @@ export default {
       click: 0,
       deley: 700,
       timer: null,
+      total: 0,
       loading: true,
       dialog: false,
       curriculums: [],
@@ -243,6 +245,7 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.advisees = [...res.data.data.students.advisees];
+          this.total = res.data.data.students.total;
           this.curriculums = [...res.data.data.curriculums.curriculums];
           res.data.data.batches.batches.forEach((batch) => {
             this.batchmenu.push(batch);
@@ -281,3 +284,11 @@ export default {
   },
 };
 </script>
+<style scoped>
+.v-text-field {
+  width: 350px;
+}
+.v-select {
+  width: 100px;
+}
+</style>
