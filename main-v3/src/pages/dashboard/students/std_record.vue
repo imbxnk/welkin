@@ -70,6 +70,7 @@
           {{ this.students.entry_year }}T{{ this.students.entry_trimester }}<br />
           Email: {{ checkNull(this.students.email) }}<br />
           Phone: {{ checkNull(this.students.phone) }}<br />
+          Curriculum: <a href="/curriculum">{{ getCurriculumName(this.students.batch) }}</a>
         </v-card>
       </div>
       <div class="col-md-4 order-3 float-left">
@@ -116,7 +117,9 @@
             </div>
           </div>
           <div v-else>
-            <span style="color: #b4b4b4">This student has not enrolled any courses from Core Courses</span>
+            <span style="color: #b4b4b4"
+              >This student has not enrolled any courses from Core Courses</span
+            >
           </div>
         </v-card>
       </div>
@@ -288,6 +291,7 @@ export default {
         },
         records: {},
       },
+      curriculums: [],
     };
   },
   computed: {
@@ -388,7 +392,20 @@ export default {
                               elective_credits
                              }
                         }
+                  curriculums {
+                    total
+                    curriculums {
+                      name
+                      batches
+                      passing_conditions {
+                        core_courses
+                        required_courses
+                        elective_courses
+                      }
                     }
+                  }
+
+                }
           `;
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
@@ -396,8 +413,8 @@ export default {
           this.students = res.data.data.student;
           this.entry.year = this.students.entry_year;
           this.entry.tri = this.students.entry_trimester;
-
-          console.log(this.students)
+          this.curriculums = [...res.data.data.curriculums.curriculums];
+          console.log(this.curriculums);
           // Loop separate courses
           // this.students.core_courses = [];
           // this.students.required_courses = [];
@@ -444,6 +461,13 @@ export default {
     //       console.log(err);
     //     });
     // },
+    getCurriculumName(batch) {
+      let cur_name = "?";
+      this.curriculums.forEach((curriculum) => {
+        if (curriculum.batches.includes(batch)) return (cur_name = curriculum.name);
+      });
+      return cur_name;
+    },
     closedialog2() {
       this.dialog2 = false;
       this.remark = "";
