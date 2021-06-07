@@ -4,10 +4,10 @@
     <div v-else-if="!isLoading">{{ advisees }}</div> -->
     <v-card class=" pa-3">
       <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="4">
           <v-card-title> My Advisees </v-card-title>
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="8" class="mt-md-3">
           <v-row class="mx-1">
             <v-text-field
               v-model="search"
@@ -16,6 +16,13 @@
               type="text"
               class="mr-2"
             ></v-text-field>
+            <v-select
+              :items="batchmenu"
+              v-model="batchFilterValue"
+              label="Batch"
+              width="50px"
+              class="mr-2"
+            ></v-select>
             <v-select
               :items="statusmenu"
               v-model="statusFilterValue"
@@ -92,6 +99,8 @@ export default {
       dialog: false,
       curriculums: [],
       statusFilterValue: null,
+      batchFilterValue: null,
+      batchmenu: ["All"],
       statusmenu: [
         "All",
         "Studying",
@@ -103,7 +112,7 @@ export default {
         "Unknown",
       ],
       headers: [
-        { text: "Student ID", sortable: false, value: "sid", width: 100 },
+        { text: "Student ID", sortable: false, value: "sid", filter: this.batchFilter, width: 100 },
         { text: "Name", sortable: false, value: "name", width: 350 },
         { text: "Nickname", sortable: false, align: "center", value: "nick_name", width: 100 },
         {
@@ -154,6 +163,12 @@ export default {
         return true;
       }
       return value === this.statusFilterValue;
+    },
+    batchFilter(value) {
+      if (this.batchFilterValue == null || this.batchFilterValue == "All") {
+        return true;
+      }
+      return value.substring(0, 2) === this.batchFilterValue;
     },
     getColor(status) {
       // 'Studying',
@@ -218,6 +233,10 @@ export default {
                       }
                     }
                   }
+                  batches {
+                  total
+                  batches
+                }
           }
       `;
       this.axios
@@ -225,6 +244,9 @@ export default {
         .then((res) => {
           this.advisees = [...res.data.data.students.advisees];
           this.curriculums = [...res.data.data.curriculums.curriculums];
+          res.data.data.batches.batches.forEach((batch) => {
+            this.batchmenu.push(batch);
+          });
           this.advisees.forEach((advisee) => {
             advisee["name"] = [advisee.given_name, advisee.family_name].join(" ");
           });
