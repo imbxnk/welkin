@@ -70,7 +70,7 @@
           </template>
         </v-data-table>
         <!-- dialog1 show info -->
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="dialog" max-width="700px">
           <v-card>
             <v-card-title class="overline lighten-2">
               {{ avsDetail.name }}
