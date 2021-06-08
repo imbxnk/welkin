@@ -197,4 +197,7 @@ export default {
   margin-right: auto;
   width: 100%;
 }
+.v-select {
+  max-width: 280px;
+}
 </style>
