@@ -1,6 +1,10 @@
 <template>
   <v-card class="pa-3">
-    <v-card-title>Advisees</v-card-title>
+    <v-card-title
+      >Advisees
+      <v-spacer></v-spacer>
+      <v-select :items="batchlist" v-model="batchFilterValue" label="Batch" class="mr-2"></v-select>
+    </v-card-title>
     <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table>
     <v-data-table
       v-else
@@ -45,8 +49,9 @@ export default {
       click: 0,
       deley: 700,
       timer: null,
+      batchFilterValue: null,
       headers: [
-        { text: "Student ID", sortable: false, value: "sid" },
+        { text: "Student ID", sortable: false, filter: this.batchFilter, value: "sid" },
         { text: "Name", align: "start", sortable: false, value: "name" },
 
         {
@@ -59,6 +64,7 @@ export default {
       ],
       advisees: [],
       stdDetail: [],
+      batchlist: ["All"],
     };
   },
   mounted() {
@@ -109,6 +115,10 @@ export default {
               }
               total
             }
+            batches {
+                  total
+                  batches
+                }
           }
       `;
       this.axios
@@ -119,10 +129,19 @@ export default {
           this.advisees.forEach((advisee) => {
             advisee["name"] = [advisee.given_name, advisee.family_name].join(" ");
           });
+          res.data.data.batches.batches.forEach((batch) => {
+            this.batchlist.push(batch);
+          });
         })
         .catch((err) => {
           this.loading = false;
         });
+    },
+    batchFilter(value) {
+      if (this.batchFilterValue == null || this.batchFilterValue == "All") {
+        return true;
+      }
+      return value.substring(0, 2) === this.batchFilterValue;
     },
   },
 };
@@ -138,6 +157,6 @@ export default {
   width: 100%;
 }
 .v-select {
-  width: 270px;
+  max-width: 270px;
 }
 </style>
