@@ -30,14 +30,13 @@
                 id="dropzone"
                 :options="dropzoneOptions"
                 @vdropzone-success="selectFile"
-                lazy-validation
               >
               </vue-dropzone>
             </div>
              <div v-else-if="addManually" class="p-2 bd-highlight">
               <v-card class="px-5 py-5">
                 <v-form ref="form" lazy-validation>
-                  <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around">
+                  <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
                     <div class="p-2 bd-highlight">
                       <v-text-field
                         type="number"
@@ -65,7 +64,7 @@
                     </div>
                   </div>
                   
-                  <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around">
+                  <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
                     <div class="p-2 bd-highlight">
                       <v-select
                         class="input"
@@ -91,7 +90,7 @@
                     </div>
                   </div>
 
-                   <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around">
+                   <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
                     <div class="p-2 bd-highlight">
                       <v-text-field
                         class="input"
@@ -117,7 +116,7 @@
                     </div>
                   </div>
 
-                   <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around">
+                   <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
                     <div class="p-2 bd-highlight">
                       <v-select
                         type="number"
@@ -146,7 +145,7 @@
               </v-card>
             </div>
 
-              <div class="d-flex flex-md-row flex-column bd-highlight justify-content-end">
+              <div class="d-flex flex-row bd-highlight justify-content-end">
                 <div class="p-2 flex-fill bd-highlight">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
@@ -167,10 +166,10 @@
                   </v-tooltip>
                 </div>
                 <div class="p-2 bd-highlight">
-                  <v-btn color="error" text @click="e1 = 1">
+                  <v-btn color="error" text @click="clear()">
                     Clear
                   </v-btn>
-                  <v-btn color="primary" text @click="e1 = 2" >
+                  <v-btn color="primary" text @click="toSecondStep()" >
                     Continue
                   </v-btn>
                 </div>
@@ -179,11 +178,16 @@
         </v-stepper-content>
 
         <v-stepper-content step="2">
-          <v-card
-            class="mb-12"
-            color="grey lighten-1"
-            height="200px"
-          ></v-card>
+          <div class="d-flex flex-column bd-highlight">
+            <div class="p-2 bd-highlight">
+              <v-select label="Please select academic term" :items="this.sheetNames"></v-select>
+            </div>
+            <div class="p-2 bd-highlight">
+              <v-data-table :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
+
+              </v-data-table>
+            </div>
+          </div>
 
           <v-btn
             color="primary"
@@ -270,18 +274,115 @@ export default {
         Name: "",
         LastName: "",
         Advisor: "",
+        entry_trimester: "",
+        entry_year: ""
       },
       rules: {
         required: (value) => !!value || "Required.",
         min: (v) => v.length >= 4 || "Min 4 characters",
       },
+      sheetNames: [],
+      sheetName: "",
+      selectedFile: "",
+      data: [{}],
+      studentsData: [],
+      allStudentData: [],
+      workbook: "",
+      file: "",
+      duplicateStudents: [],
+      headers:[
+        { text: "Student ID", sortable: false, value: "ID", width: "9%" },
+        { text: "Prefix", sortable: false, value: "Prefix", width: "1%" },
+        { text: "Name", sortable: false, value: "Name", width: 80 },
+        { text: "Program", sortable: false, value: "Program", width: 80 },
+        { text: "Entry Trimester", sortable: false, value: "entry_trimester", width: 100 },
+        { text: "Entry Year", sortable: false, value: "entry_year", width: 100 },
+        { text: "advisor", sortable: false, value: "Advisor", width: 120 },
+      ]
     }
+  },
+  mounted(){
+    this.loadAdvisors();
   },
   methods:{
     toggleForm(){
       this.addManually = !this.addManually
       this.importFile = !this.importFile
       console.log(this.addManually, this.importFile)
+    },
+    clear(){
+      (this.manuallyData.ID = ""),(this.manuallyData.Program = ""), (this.manuallyData.Prefix = ""), (this.manuallyData.Name = ""), (this.manuallyData.LastName = ""), (this.manuallyData.Advisor = ""), (this.manuallyData.entry_trimester = ""), (this.manuallyData.entry_year = ""),
+      Object.keys(this.form).forEach((f) => {
+        this.$refs[f].reset();
+      });
+    },
+    async loadAdvisors() {
+        let query = `
+            query {
+              instructors {
+                total
+                instructors {
+                  name
+                  title
+                  given_name
+                  family_name
+                }
+              }
+            }
+          `;
+        await this.axios
+          .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+          .then((res) => {
+            res.data.data.instructors.instructors.forEach((instructor) => {
+              this.advisorlist.push(instructor.name)
+            })
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      },
+      selectFile(file) {
+        console.log(file)
+      //get the selected file' info
+      this.selectedFile = file;
+      XLSX.utils.json_to_sheet(this.data, "out.xlsx");
+      //if file is selected
+      if (this.selectedFile) {
+        this.uploadSuccess = true;
+        //read data and store it in our variable
+        let fileReader = new FileReader();
+        fileReader.readAsBinaryString(this.selectedFile);
+        fileReader.onload = (event) => {
+          //the data is unreadable
+          let data = event.target.result;
+          //we have to convert it and store in our variable
+          this.workbook = XLSX.read(data, { type: "binary" });
+          //save the data, so we can use later in other functions
+          this.sheetNames = this.workbook.SheetNames;
+          this.sheetName = this.sheetNames[0];
+          this.studentsData = this.readMyFile(this.workbook, this.sheetName);
+          // get entry_year and entry_trimester
+          [this.entryYear, this.entryTrimester] = this.sheetName.split("T");
+        };
+      }
+    },
+    getSelectedValue(event) {
+      //clear the duplicatedStudents
+      this.duplicateStudents = [];
+      //hide the Duplicate div
+      this.showContent = false;
+      //get sheet name
+      this.sheetName = event.target.value;
+      //get entry_year and entry_trimester
+      this.studentsData = this.readMyFile(this.workbook, this.sheetName);
+      // get entry_year and entry_trimester
+      [this.entryYear, this.entryTrimester] = this.sheetName.split("T");
+    },
+    readMyFile: function(workbook, currentSheetName) {
+      return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[currentSheetName]);
+    },
+    toSecondStep(){
+      this.e1 = 2
     }
   }
 }
