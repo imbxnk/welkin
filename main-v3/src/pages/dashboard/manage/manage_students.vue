@@ -2,7 +2,7 @@
   <v-container class="mx-auto">
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
-        <v-btn @click.prevent="ToImportPage()" color="#3c84fb" style="color: white;"
+        <v-btn @click.prevent="importDialog = true" color="#3c84fb" style="color: white;"
           >Import Student</v-btn
         >
       </div>
@@ -59,6 +59,17 @@
         </v-card>
       </div>
     </div>
+
+    <v-dialog class="upload-Dialog" v-model="importDialog" width="1000px">
+      <v-card>
+        <v-card-title class="card-title"
+          >Import Student
+          <v-spacer></v-spacer>
+          <v-icon @click="importDialog = false">mdi-close</v-icon></v-card-title
+        >
+        <AddStudent></AddStudent>
+      </v-card>
+    </v-dialog>
 
     <v-dialog v-model="dialog" max-width="1000px">
       <v-card>
@@ -195,9 +206,13 @@
 </template>
 
 <script>
+import AddStudent from "./components/add_students.vue"
 export default {
+  components:{
+    AddStudent
+  },
   data() {
-    return {
+   return {
       headers: [
         { sortable: false, value: "avatar_url", width: "1%" },
         { text: "Student ID", sortable: false, value: "sid", width: "9%" },
@@ -243,15 +258,13 @@ export default {
       prefix: ["Mr.", "Ms.", "Mrs"],
       search: "",
       trimester: ["1", "2", "3"],
+      importDialog: false,
     };
   },
   mounted() {
     this.getStudents();
   },
   methods: {
-    ToImportPage() {
-      this.$router.push({ name: "add_student" });
-    },
     async getStudents() {
       let query = `
               query {
@@ -377,5 +390,12 @@ export default {
   min-width: 50px;
   max-width: 300px;
   width: 300px;
+}
+.card-title{
+    background: #97b8f0;
+    color: white;
+  }
+.upload-Dialog{
+  min-height: 500px;
 }
 </style>
