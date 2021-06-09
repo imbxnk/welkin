@@ -47,7 +47,7 @@
     </div>
     <v-dialog v-model="dialog" max-width="600px">
       <v-card>
-        <v-card-title
+        <v-card-title class="card-title"
           >Add Instructor
           <v-spacer></v-spacer>
           <v-icon @click="dialog = false">mdi-close</v-icon></v-card-title
@@ -58,7 +58,7 @@
 
     <v-dialog v-model="editDialog" max-width="550px">
       <v-card>
-        <v-card-title>
+        <v-card-title class="card-title">
           Edit Student
           <v-spacer></v-spacer>
           <v-icon @click="editDialog = false">mdi-close</v-icon>
@@ -199,3 +199,10 @@ export default {
   },
 };
 </script>
+
+<style>
+  .card-title{
+    background: #97b8f0;
+    color: white;
+  }
+</style>
