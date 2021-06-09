@@ -569,7 +569,7 @@ export default {
   padding: 1em;
 }
 .profile-card {
-  height: 300px;
+  height: 350px;
   padding: 1em;
 }
 .center {
