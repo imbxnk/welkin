@@ -178,12 +178,12 @@
         </v-stepper-content>
 
         <v-stepper-content step="2">
-          <div class="d-flex flex-column bd-highlight">
+          <div class="d-flex flex-column bd-highlight justify-content-center">
             <div class="p-2 bd-highlight">
-              <v-select label="Please select academic term" :items="this.sheetNames"></v-select>
+              <v-select label="Please select academic term" :items="this.sheetNames" @change="getSelectedValue($event)"></v-select>
             </div>
             <div class="p-2 bd-highlight">
-              <v-data-table :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
+              <v-data-table id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
 
               </v-data-table>
             </div>
@@ -367,12 +367,14 @@ export default {
       }
     },
     getSelectedValue(event) {
+      console.log(event, event.target.value)
       //clear the duplicatedStudents
       this.duplicateStudents = [];
       //hide the Duplicate div
       this.showContent = false;
       //get sheet name
       this.sheetName = event.target.value;
+      console.log(this.sheetName)
       //get entry_year and entry_trimester
       this.studentsData = this.readMyFile(this.workbook, this.sheetName);
       // get entry_year and entry_trimester
