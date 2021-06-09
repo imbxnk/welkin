@@ -15,6 +15,21 @@
             ></v-text-field>
           </v-col>
         </v-row>
+
+        <!-- <v-btn
+          x-small
+          class="mx-3 justify-end"
+          color="primary"
+          v-if="
+            this.$currentUser.group == 'coordinator' ||
+              this.$currentUser.group == 'program director' ||
+              this.$currentUser.group == 'admin'
+          "
+          @click="$router.push(`/course_overall`)"
+        >
+          Overall Student Registration
+        </v-btn> -->
+
         <v-list class="pa-3">
           <simplebar
             v-if="loading"
@@ -91,6 +106,7 @@
 <script>
 import CourseInfo from "./components/course_info.vue";
 import simplebar from "simplebar-vue";
+// import OverallRemain from "./components/overall_remain.vue";
 import "simplebar/dist/simplebar.min.css";
 
 export default {
@@ -98,6 +114,7 @@ export default {
   components: {
     CourseInfo,
     simplebar,
+    // OverallRemain,
   },
   mounted() {
     this.getClasses();

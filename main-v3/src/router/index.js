@@ -18,12 +18,14 @@ import SearchStudent from "../pages/dashboard/students/search_student";
 import CourseList from "../pages/dashboard/courselist/courselist";
 import CourseDetail from "../pages/dashboard/courselist/course_detail";
 import Curriculum from "../pages/dashboard/curriculum/curriculum";
+import OverallRemain from "../pages/dashboard/courselist/components/overall_remain";
 // import ManageGrade from "../pages/dashboard/manage/manage_grade";
 import ManageInstructor from "../pages/dashboard/manage/manage_instructors";
 import AddStudent from "../pages/dashboard/manage/components/add_students";
 import ManageWebsite from "../pages/dashboard/manage/manage_website";
 import ManageUser from "../pages/dashboard/manage/manage_users";
 import ManageCourses from "../pages/dashboard/manage/manage_course";
+
 // Auth Route
 import Login from "../pages/auth/login";
 import PasswordRecovery from "../pages/auth/passwordRecovery";
@@ -85,6 +87,16 @@ const routes = [
     meta: {
       requiresAuth: true,
       title: "Course List",
+    },
+  },
+  {
+    name: "Overall_Remain",
+    path: "/course_overall",
+    component: OverallRemain,
+    meta: {
+      requiresAuth: true,
+      authorizedGroup: ["coordinator", "program director", "admin"],
+      title: "Overall Student Registration",
     },
   },
   {
