@@ -500,7 +500,7 @@ export default {
 
       await this.axios
         .post(
-          "https://api.welkin.app/v2/graphql",
+          process.env.VUE_APP_GRAPHQL_URL,
           { query },
           {
             withCredentials: true,
@@ -539,7 +539,7 @@ export default {
               `;
       this.axios
         .post(
-          "https://api.welkin.app/v2/graphql",
+          process.env.VUE_APP_GRAPHQL_URL,
           { query },
           {
             withCredentials: true,
