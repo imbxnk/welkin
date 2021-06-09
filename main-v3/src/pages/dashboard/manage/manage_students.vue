@@ -3,7 +3,7 @@
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
         <v-btn @click.prevent="importDialog = true" color="#3c84fb" style="color: white;"
-          >Import Student</v-btn
+          >Import Student<v-icon>mdi-plus</v-icon></v-btn
         >
       </div>
       <div class="p-2 bd-highlight">
@@ -73,7 +73,7 @@
 
     <v-dialog v-model="dialog" max-width="1000px">
       <v-card>
-        <v-card-title>
+        <v-card-title class="card-title">
           Edit Student
         </v-card-title>
         <v-card-text>
