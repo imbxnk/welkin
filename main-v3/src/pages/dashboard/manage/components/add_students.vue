@@ -169,7 +169,7 @@
                   <v-btn color="error" text @click="clear()">
                     Clear
                   </v-btn>
-                  <v-btn color="primary" text @click="toSecondStep()" >
+                  <v-btn color="primary" text @click="toSecondStep(); submitForm();" >
                     Continue
                   </v-btn>
                 </div>
@@ -180,25 +180,29 @@
         <v-stepper-content step="2">
           <div class="d-flex flex-column bd-highlight justify-content-center">
             <div class="p-2 bd-highlight">
-              <v-select label="Please select academic term" :items="this.sheetNames" @change="getSelectedValue($event)"></v-select>
+              <v-select label="Please select academic term" name="sheetName" id="sheetName" :items="this.sheetNames" @change="getSelectedValue($event)"></v-select>
             </div>
             <div class="p-2 bd-highlight">
               <v-data-table id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
-
               </v-data-table>
             </div>
           </div>
+          <div class="d-flex flex-row bd-highlight justify-content-end">
+            <div class="p-2 bd-highlight">
+              <v-btn
+                color="primary"
+                @click="e1 = 3"
+              >
+                Upload
+              </v-btn>
+              <v-btn text>
+                Cancel
+              </v-btn>
+            </div>
+          </div>
+          
 
-          <v-btn
-            color="primary"
-            @click="e1 = 3"
-          >
-            Continue
-          </v-btn>
-
-          <v-btn text>
-            Cancel
-          </v-btn>
+          
         </v-stepper-content>
 
         <v-stepper-content step="3">
@@ -290,6 +294,7 @@ export default {
       workbook: "",
       file: "",
       duplicateStudents: [],
+      Info: [],
       headers:[
         { text: "Student ID", sortable: false, value: "ID", width: "9%" },
         { text: "Prefix", sortable: false, value: "Prefix", width: "1%" },
@@ -342,9 +347,9 @@ export default {
           });
       },
       selectFile(file) {
-        console.log(file)
+      console.log(file)
       //get the selected file' info
-      this.selectedFile = file;
+      this.selectedFile = file
       XLSX.utils.json_to_sheet(this.data, "out.xlsx");
       //if file is selected
       if (this.selectedFile) {
@@ -367,13 +372,11 @@ export default {
       }
     },
     getSelectedValue(event) {
-      console.log(event, event.target.value)
+      console.log(event)
       //clear the duplicatedStudents
       this.duplicateStudents = [];
-      //hide the Duplicate div
-      this.showContent = false;
       //get sheet name
-      this.sheetName = event.target.value;
+      this.sheetName = event;
       console.log(this.sheetName)
       //get entry_year and entry_trimester
       this.studentsData = this.readMyFile(this.workbook, this.sheetName);
@@ -382,6 +385,18 @@ export default {
     },
     readMyFile: function(workbook, currentSheetName) {
       return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[currentSheetName]);
+    },
+    submitForm() {
+      if (this.manuallyData == {}) {
+        console.log(this.studentsData);
+      } else if (this.$refs.form.validate()) {
+        console.log(this.manuallyData);
+        let new_data = { ...this.manuallyData };
+        this.studentsData.push(new_data);
+        console.log(this.studentsData);
+      } else {
+        this.e6 = 1;
+      }
     },
     toSecondStep(){
       this.e1 = 2
