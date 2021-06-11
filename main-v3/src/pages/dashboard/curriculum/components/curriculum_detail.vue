@@ -106,7 +106,7 @@ export default {
     loadCurriculum(id) {
       this.loading = true;
       let query = `
-                query {
+                {
                   curriculum(searchInput: { curriculumId : "${id}"})
                   {
                     courses {
@@ -137,7 +137,7 @@ export default {
                   }
                 }
             `;
-      console.log(id);
+      query = query.replace(/\s+/g, ' ').trim()
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

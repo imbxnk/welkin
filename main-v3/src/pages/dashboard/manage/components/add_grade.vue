@@ -76,16 +76,17 @@ export default {
         ()=>{
             this.uploadValue=100
             storageRef.snapshot.ref.getDownloadURL().then(async (url)=>{
-                let gql = `
+                let query = `
                     mutation{
                         uploadUrl(url: "${url}"){
                             message
                         }
                     }
                 `
+                query = query.replace(/\s+/g, ' ').trim()
                 console.log(url);
                 this.pdffile = url
-                await this.axios.post(this.url, { query : gql }, { withCredentials: true }).then(res => {
+                await this.axios.post(this.url, { query }, { withCredentials: true }).then(res => {
                     console.log(res);
                 }).catch (err => {
                     console.log(err);

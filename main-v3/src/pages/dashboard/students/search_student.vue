@@ -158,7 +158,7 @@ export default {
       }
     },
     async getStudent(id) {
-      let query = ` query {
+      let query = ` {
                 students (searchInput:{sid:"${id}"}) {
                   students {
                     sid
@@ -199,6 +199,7 @@ export default {
                 }
               }
       `;
+      query = query.replace(/\s+/g, ' ').trim()
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

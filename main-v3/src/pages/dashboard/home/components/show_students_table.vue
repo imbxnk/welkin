@@ -101,7 +101,7 @@ export default {
     },
     async loadAdvisors() {
       let query = `
-            query {
+            {
               instructors {
                 total
                 instructors {
@@ -113,6 +113,7 @@ export default {
               }
             }
           `;
+      query = query.replace(/\s+/g, ' ').trim()
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
@@ -132,8 +133,8 @@ export default {
     },
     async getStudents() {
       let query = `
-              query {
-                students (sortBy: "status") {
+              {
+                students (sortBy: "status", searchInput: { batch: ${JSON.stringify(this.$config.selectedBatches)} }) {
                   students {
                     sid
                     batch
@@ -167,6 +168,7 @@ export default {
                   }
               }
           `;
+      query = query.replace(/\s+/g, ' ').trim()
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

@@ -143,6 +143,7 @@ export default {
                         phone
                     }
                 }`;
+      query = query.replace(/\s+/g, ' ').trim()
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

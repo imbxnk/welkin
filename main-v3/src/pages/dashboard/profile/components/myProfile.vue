@@ -82,9 +82,7 @@
 <script>
 export default {
   name: 'MyProfile',
-  mounted() {
-    console.log(this.$currentUser)
-  },
+  mounted() {},
   data() {
     return {
     }

@@ -50,11 +50,12 @@ export default {
         queryStr += `batch${batch}:students (searchInput: { batch : "${batch}"}) { total }`;
       });
       let query = `
-              query {
+              {
                 ${queryStr}
               }
           `;
       if(this.queryBatches.length > 0) {
+        query = query.replace(/\s+/g, ' ').trim()
         this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

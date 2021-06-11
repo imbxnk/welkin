@@ -63,7 +63,7 @@
                       ></v-select>
                     </div>
                   </div>
-                  
+
                   <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
                     <div class="p-2 bd-highlight">
                       <v-select
@@ -201,9 +201,9 @@
               </v-btn>
             </div>
           </div>
-          
 
-          
+
+
         </v-stepper-content>
 
         <v-stepper-content step="3">
@@ -337,7 +337,7 @@ export default {
     },
     async loadAdvisors() {
         let query = `
-            query {
+            {
               instructors {
                 total
                 instructors {
@@ -349,6 +349,7 @@ export default {
               }
             }
           `;
+        query = query.replace(/\s+/g, ' ').trim()
         await this.axios
           .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
           .then((res) => {

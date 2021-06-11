@@ -115,7 +115,7 @@ export default {
     },
     loadClasses() {
       let query = `
-                    query {
+                    {
                       classes (searchInput: { course_code: "${this.$route.params.code}" }) {
                         total
                         classes {
@@ -136,6 +136,7 @@ export default {
                       }
                     }
                 `;
+      query = query.replace(/\s+/g, ' ').trim()
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

@@ -55,7 +55,7 @@ export default {
   methods: {
     loadStudent(class_id) {
       let query = `
-                    query {
+                    {
                       class(classId: "${class_id}") {
                          _id
                         course {
@@ -82,6 +82,7 @@ export default {
                       }
                     }
                 `;
+      query = query.replace(/\s+/g, ' ').trim()
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

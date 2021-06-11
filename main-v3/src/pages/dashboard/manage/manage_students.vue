@@ -267,7 +267,7 @@ export default {
   methods: {
     async getStudents() {
       let query = `
-              query {
+              {
                 students (sortBy: "status") {
                   students {
                     sid
@@ -293,6 +293,7 @@ export default {
                 }
               }
           `;
+      query = query.replace(/\s+/g, ' ').trim()
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
@@ -371,6 +372,7 @@ export default {
             }
           }
         `;
+      query = query.replace(/\s+/g, ' ').trim()
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

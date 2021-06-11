@@ -24,7 +24,7 @@ import ManageInstructor from "../pages/dashboard/manage/manage_instructors";
 import AddStudent from "../pages/dashboard/manage/components/add_students";
 import ManageWebsite from "../pages/dashboard/manage/manage_website";
 import ManageUser from "../pages/dashboard/manage/manage_users";
-import ManageCourses from "../pages/dashboard/manage/manage_course";
+import ManageCourses from "../pages/dashboard/manage/manage_courses";
 
 // Auth Route
 import Login from "../pages/auth/login";
