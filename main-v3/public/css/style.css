@@ -93,6 +93,31 @@ main {
   box-shadow:0 0 18px rgba(0,0,0,0.6);
 }
 
+.wk-footer {
+  display: flex;
+  align-items: center;
+}
+
+.wk-footer-icon {
+  display: block!important;
+  color: #6a737d !important;
+}
+
+.wk-footer-icon:hover {
+  color: #1976d2 !important;
+}
+
+.wk-footer-icon svg {
+  overflow: visible!important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.wk-footer-text {
+  font-size: 14px;
+  color: #6a737d;
+}
+
 /* CUSTOM TABLE */
 
 .home .v-data-table__wrapper table .v-data-table-header-mobile tr th {
