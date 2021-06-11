@@ -89,7 +89,7 @@ export default {
     },
     getMyAdvisees() {
       let query = `
-          query {
+          {
             students (searchInput: { advisor: "${this.$currentUser.linked_instructor._id}"}, sortBy: "status") {
               advisees:students {
                 sid
@@ -121,6 +121,7 @@ export default {
                 }
           }
       `;
+      query = query.replace(/\s+/g, ' ').trim()
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

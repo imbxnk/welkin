@@ -3,10 +3,11 @@ import axios from "axios";
 export default{
   getUser: async function() {
     let query = `
-      query {
+      {
         me { display_name username given_name family_name group isAdvisor email avatar { small medium large } createdAt linked_instructor { _id title name given_name family_name } }
       }
     `
+    query = query.replace(/\s+/g, ' ').trim()
     return await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
       .catch(()=> {
         return null;
@@ -15,11 +16,11 @@ export default{
 
   auth: async function() {
     let query = `
-      query {
+      {
         me { display_name username given_name family_name group isAdvisor email avatar { small medium large } createdAt linked_instructor { _id title name given_name family_name } }
       }
     `
-
+    query = query.replace(/\s+/g, ' ').trim()
     const currentUser = await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, {
       withCredentials: true
     })
@@ -35,7 +36,7 @@ export default{
 
   config: async function() {
     let query = `
-      query {
+      {
         config {
           selectedBatches
           defaultAvatar
@@ -44,7 +45,7 @@ export default{
         }
       }
     `
-
+    query = query.replace(/\s+/g, ' ').trim()
     const current = await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, {
       withCredentials: true
     })

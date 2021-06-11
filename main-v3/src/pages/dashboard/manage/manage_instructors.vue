@@ -153,7 +153,7 @@ export default {
   methods: {
     async getInstructors() {
       let query = `
-            query {
+            {
               instructors {
                 total
                 instructors {
@@ -165,6 +165,7 @@ export default {
               }
             }
           `;
+      query = query.replace(/\s+/g, ' ').trim()
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

@@ -163,6 +163,7 @@ export default {
             }
           }
       `;
+      query = query.replace(/\s+/g, ' ').trim()
       let file = this.dataURLtoFile(imgDataUrl, `${this.$currentUser.username}.png`)
       let operations = JSON.stringify({ query, variables: { file: null }})
       formData.append("operations", operations)
@@ -194,6 +195,7 @@ export default {
                       message
                     }
                   }`
+      query = query.replace(/\s+/g, ' ').trim()
       this.axios
           .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
           .then((res) => {
@@ -219,6 +221,7 @@ export default {
           message
         }
       }`
+      query = query.replace(/\s+/g, ' ').trim()
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

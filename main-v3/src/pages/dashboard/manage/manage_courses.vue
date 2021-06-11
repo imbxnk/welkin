@@ -53,8 +53,41 @@ export default {
       search: "",
     };
   },
-  mounted() {},
-  methods: {},
+  mounted() {
+    this.getCourses()
+  },
+  methods: {
+    async getCourses() {
+      let query = `
+            {
+              courses {
+                total
+                courses {
+                  code
+                  name
+                  description
+                  credit
+                  credit_description {
+                    lecture
+                    lab
+                    self_study
+                  }
+                }
+              }
+            }
+          `;
+      query = query.replace(/\s+/g, ' ').trim()
+      await this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.total = res.data.data.instructors.total;
+          this.instructors = res.data.data.instructors.instructors;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  },
 };
 </script>
 

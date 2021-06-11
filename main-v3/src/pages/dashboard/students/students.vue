@@ -185,8 +185,8 @@ export default {
     },
     async getStudents() {
       let query = `
-              query {
-                students (sortBy: "status") {
+              {
+                students (sortBy: "status", searchInput: { batch: ${JSON.stringify(this.$config.selectedBatches)} })  {
                   students {
                     sid
                     batch
@@ -228,6 +228,7 @@ export default {
                 }
               }
           `;
+      query = query.replace(/\s+/g, ' ').trim()
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
@@ -235,8 +236,11 @@ export default {
           this.students = [...res.data.data.students.students];
           this.curriculums = [...res.data.data.curriculums.curriculums];
 
-          console.log(this.batchmenu);
-          res.data.data.batches.batches.forEach((batch) => {
+          // console.log(this.batchmenu);
+          // res.data.data.batches.batches.forEach((batch) => {
+          //   this.batchmenu.push(batch);
+          // });
+          this.$config.selectedBatches.forEach((batch) => {
             this.batchmenu.push(batch);
           });
           this.students.forEach((student) => {

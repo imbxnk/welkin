@@ -209,7 +209,7 @@ export default {
   methods: {
     async getUser() {
       let query = `
-              query {
+              {
                 users {
                     total
                     users {
@@ -229,6 +229,7 @@ export default {
                 }
                 }
           `;
+      query = query.replace(/\s+/g, ' ').trim()
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
@@ -282,6 +283,7 @@ export default {
             }
           }
         `;
+      query = query.replace(/\s+/g, ' ').trim()
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

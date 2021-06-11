@@ -2,16 +2,17 @@ import axios from "axios";
 
 // For Development Only
 const headers = {
-  Cookies: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYyMjgwNTYzMCwiZXhwIjoxNjI1Mzk3NjMwfQ.9aQlessuyBelIdkAGzQ5XX7o-85rZwtMBW76dminlTI"
+  Cookies: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNDkyMTE1NjVjNzgxMzQ3MGJlOTgxZCIsImlhdCI6MTYyMzM5NjI2MywiZXhwIjoxNjI1OTg4MjYzfQ.6-i0UqRmwRYPbIemFdSpLVIdD09J_-lh5NDuxOpPMHA"
 }
 
 export default{
   getUser: async function() {
     let query = `
-      query {
+      {
         me { display_name username given_name family_name group isAdvisor email avatar { small medium large } createdAt linked_instructor { _id title name given_name family_name } }
       }
     `
+    query = query.replace(/\s+/g, ' ').trim()
     return await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { headers })
       .catch(()=> {
         return null;
@@ -20,11 +21,11 @@ export default{
 
   auth: async function() {
     let query = `
-      query {
+      {
         me { display_name username given_name family_name group isAdvisor email avatar { small medium large } createdAt linked_instructor { _id title name given_name family_name } }
       }
     `
-
+    query = query.replace(/\s+/g, ' ').trim()
     const currentUser = await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, {
       // for developing
       headers
@@ -43,7 +44,7 @@ export default{
 
   config: async function() {
     let query = `
-      query {
+      {
         config {
           selectedBatches
           defaultAvatar
@@ -52,7 +53,7 @@ export default{
         }
       }
     `
-
+    query = query.replace(/\s+/g, ' ').trim()
     const current = await axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, {
       // for developing
       headers
