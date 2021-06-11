@@ -4,7 +4,7 @@
       <div class="ml-auto p-2 bd-highlight">
         <div class="d-flex flex-row justify-content-end bd-highlight">
           <div class="p-2 bd-highlight">
-            <v-btn color="primary" @click="classDialog = true">Add Course<v-icon>mdi-plus</v-icon></v-btn>
+            <v-btn color="primary" @click="classDialog = true">Add Curriculum<v-icon>mdi-plus</v-icon></v-btn>
           </div>
         </div>
       </div>
@@ -26,15 +26,15 @@
           ></v-card-title>
           <v-data-table
             :headers="headers"
-            :items="courses"
+            :items="curriculums"
             :search="search"
             class="student px-3 pb-3"
             mobile-breakpoint="0"
             hide-default-footer
             disable-pagination
           >
-            <template v-slot:[`item.name`]="{ item }">
-              {{ item.name + ` (${item.credit_description.lecture}-${item.credit_description.lab}-${item.credit_description.self_study})` }}
+            <template v-slot:[`item.batches`]="{ item }">
+              {{ item.batches.toString() }}
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon small @click="editItem(item)">
@@ -48,52 +48,45 @@
     <v-dialog class="upload-Dialog" v-model="classDialog" max-width="1000px" width="600px" min-height="500px">
       <v-card>
         <v-card-title class="card-title"
-          >Add Course
+          >Add Curriculum
           <v-spacer></v-spacer>
           <v-icon @click="classDialog = false">mdi-close</v-icon></v-card-title
         >
-        <AddCourse></AddCourse>
+        <AddCurriculum></AddCurriculum>
       </v-card>
     </v-dialog>
   </v-container>
 </template>
 
 <script>
-import AddCourse from "./components/add_course";
+import AddCurriculum from "./components/add_curriculum";
 export default {
-  components: { AddCourse },
+  components: { AddCurriculum },
   data() {
     return {
       classDialog: false,
       search: "",
       headers: [
-        { text: "Code", sortable: true, value: "code", width: "1%" },
-        { text: "Course Name", sortable: false, value: "name", width: "98%" },
+        { text: "Curriculum Name", sortable: true, value: "name", width: "80%" },
+        { text: "Batches", sortable: true, value: "batches", width: "19%" },
         { text: "Edit", sortable: false, value: "actions", width: "1%" },
       ],
-      courses: [],
+      curriculums: [],
       total: 0,
     };
   },
   mounted() {
-    this.getCourses()
+    this.getCurriculums()
   },
   methods: {
-    async getCourses() {
+    async getCurriculums() {
       let query = `
             {
-              courses {
+              curriculums {
                 total
-                courses {
-                  code
+                curriculums {
                   name
-                  description
-                  credit
-                  credit_description {
-                    lecture
-                    lab
-                    self_study
-                  }
+                  batches
                 }
               }
             }
@@ -102,8 +95,8 @@ export default {
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          this.total = res.data.data.courses.total;
-          this.courses = res.data.data.courses.courses;
+          this.total = res.data.data.curriculums.total;
+          this.curriculums = res.data.data.curriculums.curriculums;
         })
         .catch((err) => {
           console.log(err);

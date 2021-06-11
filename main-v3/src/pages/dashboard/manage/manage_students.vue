@@ -8,8 +8,13 @@
       </div>
       <div class="p-2 bd-highlight">
         <v-card style="max-width: auto">
-          <v-card-title class="ml-6">
-            Manage Students
+          <v-card-title>
+            <div class="d-flex flex-column">
+              <span>Students</span>
+              <span style="font-size:0.8rem; color:#999; margin-top: -10px;"
+                >Total: {{ total }}</span
+              >
+            </div>
             <v-spacer></v-spacer>
             <v-text-field
               class="mx-auto"
@@ -225,6 +230,7 @@ export default {
         { text: "Edit", sortable: false, value: "actions", width: "1%" },
       ],
       students: [],
+      total: 0,
       editedIndex: -1,
       editedItem: {
         sid: "",
@@ -269,6 +275,7 @@ export default {
       let query = `
               {
                 students (sortBy: "status") {
+                  total
                   students {
                     sid
                     given_name
@@ -297,6 +304,7 @@ export default {
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
+          this.total = res.data.data.students.total
           // console.log(res.data.data.students);
           this.students = [...res.data.data.students.students];
           this.Info = [...res.data.data.students.students];

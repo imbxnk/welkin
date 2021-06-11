@@ -456,7 +456,7 @@ export default {
           {
             title: "Website",
             href: "/website",
-            icon: "mdi-plus",
+            icon: "mdi-palette-outline",
           },
 
           // {
