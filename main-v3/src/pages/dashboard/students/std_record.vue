@@ -590,4 +590,7 @@ export default {
   height: 144px;
   padding: 1em;
 }
+.v-image.v-responsive {
+  border-radius: none;
+}
 </style>
