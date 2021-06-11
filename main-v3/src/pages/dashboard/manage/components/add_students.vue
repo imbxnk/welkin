@@ -13,11 +13,11 @@
           :complete="e1 > 2"
           step="2"
         >
-          Check each student data
+          Checking & Uploading
         </v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step step="3">
-          Upload to the database
+          Result of uploading
         </v-stepper-step>
       </v-stepper-header>
       <v-stepper-items>
@@ -189,14 +189,15 @@
           </div>
           <div class="d-flex flex-row bd-highlight justify-content-end">
             <div class="p-2 bd-highlight">
-              <v-btn
-                color="primary"
-                @click="e1 = 3"
-              >
-                Upload
-              </v-btn>
               <v-btn text>
                 Cancel
+              </v-btn>
+              <v-btn
+                color="primary"
+                @click="upload()"
+                text
+              >
+                Upload
               </v-btn>
             </div>
           </div>
@@ -206,22 +207,33 @@
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <v-card
-            class="mb-12"
-            color="grey lighten-1"
-            height="200px"
-          ></v-card>
-
-          <v-btn
-            color="primary"
-            @click="e1 = 1"
-          >
-            Continue
-          </v-btn>
-
-          <v-btn text>
-            Cancel
-          </v-btn>
+          <div class="d-flex flex-column bd-highlight justify-content-center">
+            <div class="p-2 bd-highlight" v-if="successData">
+               <v-data-table class="success-table" style="color:#47db16" id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
+              </v-data-table>
+            </div>
+            <div class="duplicate-table p-2 bd-highlight" v-else-if="duplicatedData">
+               <v-data-table class="duplicate-table" style="color:#db9b12" id="sheetName" :headers="headers" :items="duplicateStudents" mobile-breakpoint="0" hide-default-footer disable-pagination>
+              </v-data-table>
+            </div>
+          </div>
+            <div class="p-2 bd-highlight">
+              <div class="d-flex flex-row bd-highlight justify-content-end">
+                <div class="p-2 bd-highlight">
+                  <v-btn text>
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    color="primary"
+                    @click="e1 = 1"
+                    text
+                  >
+                    Continue
+                  </v-btn>
+                </div>
+              </div>
+            </div>
+          
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -294,6 +306,8 @@ export default {
       workbook: "",
       file: "",
       duplicateStudents: [],
+      successData: false,
+      duplicatedData: false,
       Info: [],
       headers:[
         { text: "Student ID", sortable: false, value: "ID", width: "9%" },
@@ -401,7 +415,62 @@ export default {
     },
     toSecondStep(){
       this.e1 = 2
-    }
+    },
+    upload: async function() {
+      //clear the duplicatedStudents
+      this.duplicateStudents = [];
+      //get entry_year and entry_trimester
+      [this.entryYear, this.entryTrimester] = this.sheetName.split("T");
+      let students = { ...this.studentsData };
+      for (var i in students) {
+        let std = { ...students[i] };
+        //post graphql by using axios
+        std.Advisor = std.Advisor.trim()
+          .split(". ")
+          .slice(-1)
+          .pop()
+          .trim();
+        let gql = `
+                        mutation{
+                            addStudent ( studentInput: {
+                                    sid: "${std.ID}",
+                                    prefix: "${std.Prefix}",
+                                    given_name: "${std.Name}",
+                                    family_name: "${std.LastName}",
+                                    program: "${std.Program}",
+                                    entry_trimester: "${this.entry_trimester}",
+                                    entry_year: "${this.entry_year}",
+                                    advisor_name: "${std.Advisor}"
+                                }
+                            ){
+                                 sid
+                                  given_name
+                                  family_name
+                                  prefix
+                                  program
+                                  entry_trimester
+                                  entry_year
+                                  advisor{
+                                    name
+                                }
+                            }
+                        }
+                    `
+                await this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query : gql }, { withCredentials: true }).then(res => {
+                    console.log(res);
+                    this.e1 = 3;
+                    this.addingSuccessStatus = true
+                    this.successData = true
+                }).catch (err => {
+                    console.log(err);
+                    this.duplicateStudents.push(std);
+                    console.log(this.duplicateStudents)
+                    this.duplicateStatus = true;
+                    this.duplicatedData = true;
+                    this.e1 = 3;
+                })
+            }
+      },
   }
 }
 </script>
@@ -409,5 +478,13 @@ export default {
 <style>
   .drop-zone{
     height: 280px;
+  }
+
+  .success-table{
+    color: green;
+  }
+
+  .duplicate-table{
+    color: yellow;
   }
 </style>

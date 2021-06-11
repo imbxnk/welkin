@@ -67,17 +67,20 @@
           <span class="overline">About this student</span>
           <h3>{{ this.students.given_name }} {{ this.students.family_name }}</h3>
           <v-divider></v-divider>
-          {{ this.students.entry_year }}T{{ this.students.entry_trimester }}<br />
-          Email: {{ checkNull(this.students.email) }}<br />
-          Phone: {{ checkNull(this.students.phone) }}<br />
-          Curriculum: <a href="/curriculum">{{ getCurriculumName(this.students.batch) }}</a>
+          <b>Entry Trimester: </b>
+          <span v-if="this.students.entry_year && this.students.entry_year"
+            >{{ this.students.entry_year }}T{{ this.students.entry_trimester }}<br
+          /></span>
+          <span v-else> -<br /></span>
+          <b>Email:</b> {{ checkNull(this.students.email) }}<br />
+          <b>Phone:</b> {{ checkNull(this.students.phone) }}<br />
+          <b>Curriculum:</b> <a href="/curriculum">{{ getCurriculumName(this.students.batch) }}</a>
         </v-card>
       </div>
       <div class="col-md-4 order-3 float-left">
-        <v-card elevation="0" class="pa-3"
-          ><span class="overline">Taken courses</span>
-
-          <div class="d-flex justify-content-around flex-wrap flex-row">
+        <v-card elevation="0" class="pa-3">
+          <!-- <span class="overline">Taken courses</span> -->
+          <div class="d-flex justify-content-around flex-wrap flex-row mt-4">
             <div class="order-1 text-center">
               <p class="mt-n1">Core</p>
               <h4 class="primary--text mt-n4">
