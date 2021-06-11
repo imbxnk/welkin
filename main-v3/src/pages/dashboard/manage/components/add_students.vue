@@ -189,8 +189,9 @@
           </div>
           <div class="d-flex flex-row bd-highlight justify-content-end">
             <div class="p-2 bd-highlight">
-              <v-btn text>
-                Cancel
+              <v-btn text @click="e1 = 1">Cancel</v-btn>
+              <v-btn color="error" text @click="clearCheck()">
+                clear
               </v-btn>
               <v-btn
                 color="primary"
@@ -220,15 +221,15 @@
             <div class="p-2 bd-highlight">
               <div class="d-flex flex-row bd-highlight justify-content-end">
                 <div class="p-2 bd-highlight">
-                  <v-btn text>
+                  <v-btn text @click="e1 = 2">
                     Cancel
                   </v-btn>
                   <v-btn
                     color="primary"
-                    @click="e1 = 1"
+                    @click="reset(); removefile();"
                     text
                   >
-                    Continue
+                    Add more
                   </v-btn>
                 </div>
               </div>
@@ -430,6 +431,7 @@ export default {
           .slice(-1)
           .pop()
           .trim();
+          console.log(std.Advisor, std)
         let gql = `
                         mutation{
                             addStudent ( studentInput: {
@@ -440,7 +442,6 @@ export default {
                                     program: "${std.Program}",
                                     entry_trimester: "${this.entry_trimester}",
                                     entry_year: "${this.entry_year}",
-                                    advisor_name: "${std.Advisor}"
                                 }
                             ){
                                  sid
@@ -471,6 +472,20 @@ export default {
                 })
             }
       },
+      reset(){
+        this.studentsData = []
+        this.duplicatedData = []
+        this.sheetName = ""
+        this.sheetNames = []
+        this.manuallyData = {}
+        this.e1 = 1
+      },
+      removefile(){
+
+      },
+      clearCheck(){
+        this.studentsData = []
+      }
   }
 }
 </script>
