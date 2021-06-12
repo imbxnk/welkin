@@ -65,7 +65,7 @@
         </div> -->
       </div>
     </div>
-    <div class="wk-footer justify-content-between">
+    <div class="wk-footer justify-content-between flex-sm-row">
       <div class="d-flex align-items-center">
         <a class="wk-footer-icon mr-2" href="https://welkin.app">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 600 600">
@@ -74,7 +74,7 @@
         </a>
         <span class="wk-footer-text">© 2021 Welkin</span>
       </div>
-      <div class="d-flex align-items-end flex-column">
+      <div class="d-flex align-items-center align-items-sm-end flex-column">
         <span class="wk-footer-text" style="font-size: 0.8rem;">Computer Engineering</span>
         <span class="wk-footer-text" style="font-size: 0.7rem">Mahidol University International College</span>
       </div>
