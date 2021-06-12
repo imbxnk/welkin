@@ -12,7 +12,7 @@
         <v-card style="max-width: auto"
           ><v-card-title>
             <div class="d-flex flex-column">
-              <span>Courses</span>
+              <span>Curriculums</span>
               <span style="font-size:0.8rem; color:#999; margin-top: -10px;">Total: {{ total }}</span>
             </div>
             <v-spacer></v-spacer>

@@ -120,7 +120,7 @@ export default {
                     }
             `;
       this.queryBatches.forEach((batch) => {
-        queryStr += `batch${batch}:countStudent(course_code: "${code}", batch: "${batch}") { total }
+        queryStr += `batch${batch}:countStudent(course_code: "${code}", batch: "${batch}") { total unregistered { sid given_name family_name } }
                             total${batch}:students (searchInput: { batch : "${batch}"}) { total }
                             `;
       });
