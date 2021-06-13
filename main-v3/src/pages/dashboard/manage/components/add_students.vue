@@ -210,7 +210,7 @@
         <v-stepper-content step="3">
           <div class="d-flex flex-column bd-highlight justify-content-center">
             <div class="p-2 bd-highlight" v-if="successData">
-               <v-data-table class="success-table" style="color:#47db16" id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
+               <v-data-table class="success-table" style="color:#47db16"  id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
               </v-data-table>
             </div>
             <div class="duplicate-table p-2 bd-highlight" v-else-if="duplicatedData">
@@ -294,6 +294,8 @@ export default {
         entry_trimester: "",
         entry_year: ""
       },
+      entry_trimester: "",
+      entry_year: "",
       rules: {
         required: (value) => !!value || "Required.",
         min: (v) => v.length >= 4 || "Min 4 characters",
@@ -383,7 +385,7 @@ export default {
           this.sheetName = this.sheetNames[0];
           this.studentsData = this.readMyFile(this.workbook, this.sheetName);
           // get entry_year and entry_trimester
-          [this.entryYear, this.entryTrimester] = this.sheetName.split("T");
+          [this.entry_trimester, this.entry_year] = this.sheetName.split("T");
         };
       }
     },
@@ -431,7 +433,7 @@ export default {
           .slice(-1)
           .pop()
           .trim();
-          console.log(std.Advisor, std)
+          console.log(std)
           console.log(this.entryTrimester)
           console.log(this.entryYear)
         let gql = `
@@ -442,8 +444,8 @@ export default {
                                     given_name: "${std.Name}",
                                     family_name: "${std.LastName}",
                                     program: "${std.Program}",
-                                    entry_trimester: "${this.entry_trimester}",
-                                    entry_year: "${this.entry_year}",
+                                    entry_trimester: "${std.entry_trimester}",
+                                    entry_year: "${std.entry_year}",
                                 }
                             ){
                                  sid
