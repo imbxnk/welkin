@@ -17,7 +17,12 @@
         class="mr-2"
       ></v-select>
     </v-card-title>
-    <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table>
+    <v-data-table
+      height="528"
+      v-if="loading"
+      loading
+      loading-text="Loading... Please wait"
+    ></v-data-table>
     <v-data-table
       v-else
       :headers="headers"

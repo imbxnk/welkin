@@ -5,7 +5,12 @@
       <v-spacer></v-spacer>
       <v-select :items="batchlist" v-model="batchFilterValue" label="Batch" class="mr-2"></v-select>
     </v-card-title>
-    <v-data-table v-if="loading" loading loading-text="Loading... Please wait"></v-data-table>
+    <v-data-table
+      v-if="loading"
+      height="528"
+      loading
+      loading-text="Loading... Please wait"
+    ></v-data-table>
     <v-data-table
       v-else
       :headers="headers"
@@ -121,7 +126,7 @@ export default {
                 }
           }
       `;
-      query = query.replace(/\s+/g, ' ').trim()
+      query = query.replace(/\s+/g, " ").trim();
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
