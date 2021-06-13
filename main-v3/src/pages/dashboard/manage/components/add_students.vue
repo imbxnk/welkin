@@ -183,7 +183,7 @@
               <v-select label="Please select academic term" name="sheetName" id="sheetName" :items="sheetNames" @change="getSelectedValue($event)" v-model="sheetNames[0]"></v-select>
             </div>
             <div class="p-2 bd-highlight">
-              <v-data-table id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
+              <v-data-table id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer >
               </v-data-table>
             </div>
           </div>
@@ -210,7 +210,7 @@
         <v-stepper-content step="3">
           <div class="d-flex flex-column bd-highlight justify-content-center">
             <div class="p-2 bd-highlight" v-if="successData">
-               <v-data-table class="success-table" style="color:#47db16" id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
+               <v-data-table class="success-table" style="color:#47db16"  id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
               </v-data-table>
             </div>
             <div class="duplicate-table p-2 bd-highlight" v-else-if="duplicatedData">
@@ -222,7 +222,7 @@
               <div class="d-flex flex-row bd-highlight justify-content-end">
                 <div class="p-2 bd-highlight">
                   <v-btn text @click="e1 = 2">
-                    Cancel
+                    Back
                   </v-btn>
                   <v-btn
                     color="primary"
@@ -294,6 +294,8 @@ export default {
         entryTrimester: "",
         entryYear: ""
       },
+      entry_trimester: "",
+      entry_year: "",
       rules: {
         required: (value) => !!value || "Required.",
         min: (v) => v.length >= 4 || "Min 4 characters",
