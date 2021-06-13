@@ -39,8 +39,7 @@
         <v-data-table
           v-else
           :headers="headers"
-          :items="advisees"
-          :search="search"
+          :items="filterStudents"
           mobile-breakpoint="0"
           :footer-props="{
             'items-per-page-options': [20, 50, 100, { text: 'All', value: -1 }],
@@ -148,6 +147,25 @@ export default {
   mounted() {
     this.getMyAdvisees();
   },
+  computed: {
+    filterStudents: function() {
+      return this.advisees.filter((advisee) => {
+        if (advisee.email != null) {
+          return (
+            advisee.sid.match(this.search) ||
+            advisee.name.toLowerCase().match(this.search.toLowerCase()) ||
+            advisee.email.match(this.search)
+          );
+        } else {
+          return (
+            advisee.sid.match(this.search) ||
+            advisee.name.toLowerCase().match(this.search.toLowerCase())
+          );
+        }
+      });
+    },
+  },
+
   methods: {
     checkNull(item) {
       if (item == " ") {
@@ -241,7 +259,7 @@ export default {
                 }
           }
       `;
-      query = query.replace(/\s+/g, ' ').trim()
+      query = query.replace(/\s+/g, " ").trim();
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
