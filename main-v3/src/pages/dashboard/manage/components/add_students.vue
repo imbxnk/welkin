@@ -225,6 +225,7 @@
                <v-data-table class="duplicate-table" style="color:#db9b12" id="sheetName" :headers="headers" :items="duplicateStudents" mobile-breakpoint="0" hide-default-footer disable-pagination>
               </v-data-table>
             </div>
+            <div></div>
           </div>
             <div class="p-2 bd-highlight">
               <div class="d-flex flex-row bd-highlight justify-content-end">
@@ -483,16 +484,17 @@ export default {
                     switch(err.response.data.errors[0].status){
                       case 409: // duplicated
                         console.log(err.response.data.errors[0].message)
+                        this.duplicateStudents.push(std);
+                        this.duplicateStatus = true;
+                        this.duplicatedData = true;
+                        this.e1 = 3;
                         break
                       default: // other errors
                         console.log(err.response.data.errors[0].message)
                         break
                     }
-                    this.duplicateStudents.push(std);
                     // console.log(this.duplicateStudents)
-                    this.duplicateStatus = true;
-                    this.duplicatedData = true;
-                    this.e1 = 3;
+                    
                 })
             }
       },
