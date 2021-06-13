@@ -2,9 +2,13 @@
   <v-container class="mx-auto">
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
-        <v-btn @click.prevent="importDialog = true" color="#3c84fb" style="color: white;"
-          >Import Student<v-icon>mdi-plus</v-icon></v-btn
-        >
+        <div class="d-flex flex-row justify-content-end bd-highlight">
+          <div class="p-2 bd-highlight">
+            <v-btn @click.prevent="importDialog = true" color="#3c84fb" style="color: white;"
+              ><v-icon>mdi-plus</v-icon> Import Students</v-btn
+            >
+          </div>
+        </div>
       </div>
       <div class="p-2 bd-highlight">
         <v-card style="max-width: auto">

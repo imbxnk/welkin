@@ -1,6 +1,10 @@
 <template>
   <div class="">
-    <v-btn color="primary" @click="dialog = true">Add User<v-icon>mdi-plus</v-icon></v-btn>
+    <div class="d-flex flex-row justify-content-end bd-highlight">
+      <div class="p-2 bd-highlight">
+        <v-btn color="primary" @click="dialog = true"><v-icon>mdi-plus</v-icon> Add User</v-btn>
+      </div>
+    </div>
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title class=""

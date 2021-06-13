@@ -3,7 +3,7 @@
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
         <v-btn color="primary" @click="dialog = true"
-          >Add Instructor<v-icon>mdi-plus</v-icon></v-btn
+          ><v-icon>mdi-plus</v-icon>Add Instructor</v-btn
         >
       </div>
       <div class="p-2 bd-highlight">

@@ -4,7 +4,7 @@
       <div class="ml-auto p-2 bd-highlight">
         <div class="d-flex flex-row justify-content-end bd-highlight">
           <div class="p-2 bd-highlight">
-            <v-btn color="primary" @click="classDialog = true">Add Curriculum<v-icon>mdi-plus</v-icon></v-btn>
+            <v-btn color="primary" @click="classDialog = true"><v-icon>mdi-plus</v-icon> Add Curriculum</v-btn>
           </div>
         </div>
       </div>
