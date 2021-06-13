@@ -1,5 +1,5 @@
 <template>
-  <v-card class="card-height pa-3">
+  <v-card class=" pa-3">
     <v-card-title>Overall Student Registration</v-card-title>
 
     <table class="table table-hover">
@@ -9,22 +9,15 @@
         <th colspan="6" align="center">Remain Student</th>
       </tr>
       <tr>
-        <th>57</th>
-        <th>58</th>
-        <th>59</th>
-        <th>60</th>
-        <th>61</th>
-        <th>63</th>
+        <th v-for="(batch, i) in this.$config.selectedBatches" :key="i">{{ batch }}</th>
       </tr>
-      <tr>
-        <td>C</td>
-        <td>EGCI100</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-        <td>6</td>
-        <td>7</td>
-        <td>8</td>
+      <tr v-for="(course, i) in courses" :key="i">
+        <td>course type</td>
+        <td>{{ course.name }}</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
       </tr>
     </table>
   </v-card>
@@ -36,12 +29,43 @@ export default {
   components: {},
   created() {},
   data() {
-    return {};
+    return {
+      courses: [],
+    };
+  },
+  mounted() {
+    this.getClasses();
+    console.log(this.$config.selectedBatches);
+  },
+  methods: {
+    getClasses() {
+      let query = `
+              {
+              courses {
+                total
+                courses {
+                  name
+                  code
+                }
+              }
+            }
+          `;
+      query = query.replace(/\s+/g, " ").trim();
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.courses = [...res.data.data.courses.courses];
+          console.log(this.courses);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>
 <style scoped>
-.card-height {
+/* .card-height {
   height: calc(var(--app-height) - 85px);
-}
+} */
 </style>
