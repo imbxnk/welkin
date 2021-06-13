@@ -1,38 +1,5 @@
 <template>
   <div id="app">
-    <!-- hello this is std rec {{ this.$route.params.sid }}<br />
-    {{ this.students.given_name }} {{ this.students.family_name }}<br />
-    {{ this.students.entry_year }}T{{ this.students.entry_trimester }}<br />
-    Email: {{ this.students.email }}<br />
-    Line id: {{ this.students.lineID }}<br />
-    status: {{ this.students.status.current }}<br />
-    taken_courses:<br />
-    core
-    <div v-for="(course, i) in this.students.taken_courses" :key="i">
-      <div v-if="course.class.course.category == 'core_courses'">
-        {{ course.class.course.name }} {{ course.grade }} {{ course.class.year }}T{{
-          course.class.trimester
-        }}
-      </div>
-    </div>
-    required
-    <div v-for="(course, i) in this.students.taken_courses" :key="i">
-      <div v-if="course.class.course.category == 'required_courses'">
-        {{ course.class.course.name }} {{ course.grade }} {{ course.class.year }}T{{
-          course.class.trimester
-        }}
-      </div>
-    </div>
-    elective
-    <div v-for="(course, i) in this.students.taken_courses" :key="i">
-      <div v-if="course.class.course.category == 'elective_courses'">
-        {{ course.class.course.name }} {{ course.grade }} {{ course.class.year }}T{{
-          course.class.trimester
-        }}
-      </div>
-    </div>
-    <br /> -->
-
     <!-- <v-btn @click="$router.back()" class="ma-3">back </v-btn> -->
     <a @click="$router.back()" class="overline my-n1 back primary--text"
       ><svg
@@ -50,7 +17,16 @@
       </svg>
       BACK</a
     >
-    <div class="row d-md-block">
+    <div v-if="loading">
+      <v-progress-circular
+        :size="50"
+        class="loading-center  "
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
+    </div>
+
+    <div v-else class="row d-md-block">
       <div class="col-md-4 order-1 float-left">
         <v-card elevation="0" class="text-center pa-3">
           <v-img
@@ -159,6 +135,7 @@
           </v-card-actions>
         </v-card>
       </div>
+
       <v-dialog v-model="dialog2" max-width="300px">
         <v-card class=" pa-3">
           <v-card-title>
@@ -279,6 +256,7 @@ export default {
       dialog2: false,
       dialog3: false,
       snackbar: false,
+      loading: true,
       rules: [(v) => v.length <= 140 || "Max 140 characters"],
       remark: "",
       remarktext: {
@@ -432,6 +410,7 @@ export default {
           this.entry.year = this.students.entry_year;
           this.entry.tri = this.students.entry_trimester;
           this.curriculums = [...res.data.data.curriculums.curriculums];
+          this.loading = false;
           console.log(this.curriculums);
           // Loop separate courses
           // this.students.core_courses = [];
@@ -606,5 +585,13 @@ export default {
 }
 .v-image.v-responsive {
   border-radius: none;
+}
+.loading-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 </style>
