@@ -36,7 +36,12 @@
              <div v-else-if="addManually" class="p-2 bd-highlight">
               <v-card class="px-5 py-5">
                 <v-form ref="form" lazy-validation>
-                  <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
+                  <div class="d-flex flex-column">
+                    <div class="p-2 bd-highlight">
+                      <v-divider inset></v-divider>
+                    </div>
+                    <div class="p-2 bd-highlight">
+                      <div class="d-flex flex-row bd-highlight justify-content-center">
                     <div class="p-2 bd-highlight">
                       <v-text-field
                         type="number"
@@ -63,6 +68,9 @@
                       ></v-select>
                     </div>
                   </div>
+                    </div>
+                  </div>
+                  
 
                   <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
                     <div class="p-2 bd-highlight">
