@@ -23,7 +23,7 @@
         >
       </div>
       <v-divider></v-divider>
-      <remainChart :batch="b" :total="tt" :passed="p"></remainChart>
+      <remainChart :batch="b" :total="tt" :passed="p" :code="code"></remainChart>
       <!-- <table style="width:100%;">
         <tr>
           <th class="text-left">Year:</th>
@@ -129,7 +129,7 @@ export default {
                     ${queryStr}
                 }
             `;
-      query = query.replace(/\s+/g, ' ').trim()
+      query = query.replace(/\s+/g, " ").trim();
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

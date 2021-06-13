@@ -1,9 +1,9 @@
 <template>
   <div>
     <div id="chart">
-      <apexchart type="bar" :height=height :options="chartOptions" :series="series"></apexchart>
+      <apexchart type="bar" :height="height" :options="chartOptions" :series="series"></apexchart>
     </div>
-    <v-dialog v-model="dialog" width="300">
+    <v-dialog v-model="dialog" width="500">
       <v-card>
         <v-card-title class="mb-n2">
           Student with ID {{ this.batch[this.index] }}<v-spacer></v-spacer>
@@ -13,7 +13,15 @@
         <v-divider class="mx-5"></v-divider>
         <v-card-text>
           Registered : {{ this.passed[this.index] }}<br />
-          Remain : {{ this.total[this.index] }}
+          Remain : {{ this.total[this.index] }}<br /><br />
+          <b>Remain Students: </b>
+          <div class="remain-list">
+            <ul class="mx-3">
+              <li v-for="(student, i) in unregistered" :key="i">
+                {{ student.name }} <span style="float: right">{{ student.sid }} </span>
+              </li>
+            </ul>
+          </div>
         </v-card-text>
 
         <v-card-actions>
@@ -26,17 +34,19 @@
 <script>
 export default {
   name: "remainChart",
-  props: ["batch", "total", "passed"],
+  props: ["batch", "total", "passed", "code"],
   component: [],
   created() {},
   mounted() {
-    this.height = 160 + (this.$config.selectedBatches.length * 20)
-    console.log(this.height)
+    this.height = 160 + this.$config.selectedBatches.length * 20;
+    console.log(this.height);
   },
   data() {
     return {
       index: 0,
       height: 200,
+      registered: [],
+      unregistered: [],
       dialog: false,
       series: [
         {
@@ -128,9 +138,50 @@ export default {
     getBatch(i) {
       this.index = i;
       this.dialog = true;
+      console.log(this.code);
+      this.getList(this.code, this.batch[this.index]);
       console.log(this.batch[this.index]);
+    },
+    getList(code, batch) {
+      let query = `
+             query{
+                countStudent(course_code:"${code}",batch:"${batch}"){
+                  batch
+                  course
+                  total
+                  students {
+                    sid
+                    grade
+                  }
+                  unregistered {
+                    sid
+                    given_name
+                    family_name
+                  }
+                }
+              }
+          `;
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.registered = res.data.data.countStudent.students;
+          this.unregistered = res.data.data.countStudent.unregistered;
+          this.unregistered.forEach((student) => {
+            student["name"] = [student.given_name, student.family_name].join(" ");
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.remain-list {
+  height: 200px;
+  padding: 10px;
+  /* margin-top: 15px; */
+  overflow: auto;
+}
+</style>
