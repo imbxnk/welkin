@@ -183,7 +183,7 @@
               <v-select label="Please select academic term" name="sheetName" id="sheetName" :items="this.sheetNames" @change="getSelectedValue($event)"></v-select>
             </div>
             <div class="p-2 bd-highlight">
-              <v-data-table id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
+              <v-data-table id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer >
               </v-data-table>
             </div>
           </div>
