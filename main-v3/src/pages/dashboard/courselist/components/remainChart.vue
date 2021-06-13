@@ -18,7 +18,8 @@
           <div class="remain-list">
             <ul class="mr-3">
               <li v-for="(student, i) in unregistered" :key="i" class="my-2">
-                {{ student.name }} <span style="float: right">{{ student.sid }} </span>
+                {{ student.name }} {{ checkNull(student.nick_name) }}
+                <span style="float: right">{{ student.sid }} </span>
               </li>
             </ul>
           </div>
@@ -135,6 +136,17 @@ export default {
     };
   },
   methods: {
+    checkNull(item) {
+      if (item == " ") {
+        return "";
+      } else if (item == "null") {
+        return "";
+      } else if (!item) {
+        return "";
+      } else {
+        return "(" + item + ")";
+      }
+    },
     getBatch(i) {
       this.index = i;
       this.dialog = true;
@@ -155,6 +167,7 @@ export default {
                   }
                   unregistered {
                     sid
+                    nick_name
                     given_name
                     family_name
                   }
