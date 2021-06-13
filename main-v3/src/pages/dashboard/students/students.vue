@@ -39,8 +39,7 @@
         <v-data-table
           v-else
           :headers="headers"
-          :items="students"
-          :search="search"
+          :items="filterStudents"
           mobile-breakpoint="0"
           :footer-props="{
             'items-per-page-options': [20, 50, 100, { text: 'All', value: -1 }],
@@ -114,7 +113,13 @@ export default {
       ],
       search: "",
       headers: [
-        { text: "Student ID", sortable: false, value: "sid", filter: this.batchFilter, width: 80 },
+        {
+          text: "Student ID",
+          sortable: false,
+          value: "sid",
+          filter: this.batchFilter,
+          width: 80,
+        },
         { text: "Name", align: "start", sortable: false, value: "name", width: 380 },
         // { text: "Email", align: "start", sortable: false, value: "email", width: 200 },
         // { text: "Phone", align: "start", sortable: false, value: "phone", width: 200 },
@@ -135,7 +140,6 @@ export default {
         {
           text: "Advisor",
           align: "center",
-          sortable: true,
           value: "advisor.name",
           width: 350,
         },
@@ -153,6 +157,16 @@ export default {
       stdDetail: [],
     };
   },
+  computed: {
+    filterStudents: function() {
+      return this.students.filter((student) => {
+        return (
+          student.sid.match(this.search) ||
+          student.name.toLowerCase().match(this.search.toLowerCase())
+        );
+      });
+    },
+  },
   methods: {
     statusFilter(value) {
       if (this.statusFilterValue == null || this.statusFilterValue == "All") {
@@ -163,8 +177,9 @@ export default {
     batchFilter(value) {
       if (this.batchFilterValue == null || this.batchFilterValue == "All") {
         return true;
+      } else {
+        return value.substring(0, 2) === this.batchFilterValue;
       }
-      return value.substring(0, 2) === this.batchFilterValue;
     },
     getColor(status) {
       if (status == "Studying") return "green";
@@ -224,7 +239,7 @@ export default {
                       }
                     }
                   }
-              
+
               }
           `;
       query = query.replace(/\s+/g, " ").trim();
