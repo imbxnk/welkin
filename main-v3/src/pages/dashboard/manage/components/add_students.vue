@@ -432,6 +432,8 @@ export default {
           .pop()
           .trim();
           console.log(std.Advisor, std)
+          console.log(this.entryTrimester)
+          console.log(this.entryYear)
         let gql = `
                         mutation{
                             addStudent ( studentInput: {
