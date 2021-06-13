@@ -20,11 +20,11 @@
       class="home"
       @click:row="showDialog"
     >
-      <!-- <template v-slot:[`item.status`]="{ item }">
-        <v-chip :color="getColor(item.status)" dark class="d-flex justify-center">
-          {{ item.status }}
+      <template v-slot:[`item.performance`]="{ item }">
+        <v-chip small :color="getColor(item.performance)" dark class="d-flex justify-center">
+          {{ item.performance }}
         </v-chip>
-      </template> -->
+      </template>
       <template v-slot:[`item.advisor.name`]="{ item }">
         {{ item.advisor ? item.advisor.name : "-" }}
       </template>
@@ -65,7 +65,7 @@ export default {
           value: "records.total_credits",
           align: "center",
         },
-        { text: "Performance", sortable: false, value: "", align: "center" },
+        { text: "Performance", sortable: false, value: "performance", align: "center", width: 150 },
       ],
       advisees: [],
       stdDetail: [],
@@ -78,8 +78,9 @@ export default {
   methods: {
     getColor(status) {
       if (status == "Behind") return "red";
-      else if (status == "On track") return "orange";
-      else return "green";
+      else if (status == "Ahead") return "primary";
+      else if (status == "On Track") return "green";
+      else return "grey";
     },
     showDialog(row) {
       this.click++;
@@ -95,7 +96,7 @@ export default {
     getMyAdvisees() {
       let query = `
           {
-            students (searchInput: { advisor: "${this.$currentUser.linked_instructor._id}"}, sortBy: "status") {
+            students (searchInput: { advisor: "${this.$currentUser.linked_instructor._id}"}, sortBy: "status", performance:true) {
               advisees:students {
                 sid
                 prefix
@@ -103,6 +104,8 @@ export default {
                 family_name
                 email
                 nick_name
+                performance
+                trimester_count
                 entry_trimester
                 entry_year
                 avatar_url
