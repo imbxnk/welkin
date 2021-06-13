@@ -131,7 +131,7 @@
                         class="input"
                         :items="entrytri"
                         label="Entry Trimester"
-                        v-model="manuallyData.entry_trimester"
+                        v-model="manuallyData.entryTrimester"
                         :rules="[rules.required]"
                         dense
                         outlined
@@ -142,7 +142,7 @@
                         type="number"
                         class="input"
                         label="Entry Year"
-                        v-model="manuallyData.entry_year"
+                        v-model="manuallyData.entryYear"
                         :rules="[rules.required]"
                         dense
                         outlined
@@ -188,7 +188,7 @@
         <v-stepper-content step="2">
           <div class="d-flex flex-column bd-highlight justify-content-center">
             <div class="p-2 bd-highlight">
-              <v-select label="Please select academic term" name="sheetName" id="sheetName" :items="this.sheetNames" @change="getSelectedValue($event)"></v-select>
+              <v-select label="Please select academic term" name="sheetName" id="sheetName" :items="sheetNames" @change="getSelectedValue($event)" v-model="sheetNames[0]"></v-select>
             </div>
             <div class="p-2 bd-highlight">
               <v-data-table id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer >
@@ -197,7 +197,7 @@
           </div>
           <div class="d-flex flex-row bd-highlight justify-content-end">
             <div class="p-2 bd-highlight">
-              <v-btn text @click="e1 = 1">Cancel</v-btn>
+              <v-btn text @click="e1 = 1">Back</v-btn>
               <v-btn color="error" text @click="clearCheck()">
                 clear
               </v-btn>
@@ -230,7 +230,7 @@
               <div class="d-flex flex-row bd-highlight justify-content-end">
                 <div class="p-2 bd-highlight">
                   <v-btn text @click="e1 = 2">
-                    Cancel
+                    Back
                   </v-btn>
                   <v-btn
                     color="primary"
@@ -299,8 +299,8 @@ export default {
         Name: "",
         LastName: "",
         Advisor: "",
-        entry_trimester: "",
-        entry_year: ""
+        entryTrimester: "",
+        entryYear: ""
       },
       entry_trimester: "",
       entry_year: "",
@@ -325,8 +325,8 @@ export default {
         { text: "Prefix", sortable: false, value: "Prefix", width: "1%" },
         { text: "Name", sortable: false, value: "Name", width: 80 },
         { text: "Program", sortable: false, value: "Program", width: 80 },
-        { text: "Entry Trimester", sortable: false, value: "entry_trimester", width: 100 },
-        { text: "Entry Year", sortable: false, value: "entry_year", width: 100 },
+        { text: "Entry Trimester", sortable: false, value: "entryTrimester", width: 100 },
+        { text: "Entry Year", sortable: false, value: "entryYear", width: 100 },
         { text: "advisor", sortable: false, value: "Advisor", width: 120 },
       ]
     }
@@ -341,7 +341,7 @@ export default {
       console.log(this.addManually, this.importFile)
     },
     clear(){
-      (this.manuallyData.ID = ""),(this.manuallyData.Program = ""), (this.manuallyData.Prefix = ""), (this.manuallyData.Name = ""), (this.manuallyData.LastName = ""), (this.manuallyData.Advisor = ""), (this.manuallyData.entry_trimester = ""), (this.manuallyData.entry_year = ""),
+      (this.manuallyData.ID = ""),(this.manuallyData.Program = ""), (this.manuallyData.Prefix = ""), (this.manuallyData.Name = ""), (this.manuallyData.LastName = ""), (this.manuallyData.Advisor = ""), (this.manuallyData.entryTrimester = ""), (this.manuallyData.entryYear = ""),
       Object.keys(this.form).forEach((f) => {
         this.$refs[f].reset();
       });
@@ -393,21 +393,27 @@ export default {
           this.sheetName = this.sheetNames[0];
           this.studentsData = this.readMyFile(this.workbook, this.sheetName);
           // get entry_year and entry_trimester
-          [this.entry_trimester, this.entry_year] = this.sheetName.split("T");
+          [this.entryYear, this.entryTrimester] = this.sheetName.split("T");
+          for (var i = 0; i<this.studentsData.length; i++){
+            this.studentsData[i].entryYear = this.entryYear
+            this.studentsData[i].entryTrimester = this.entryTrimester
+          }
         };
       }
     },
     getSelectedValue(event) {
-      console.log(event)
       //clear the duplicatedStudents
       this.duplicateStudents = [];
       //get sheet name
       this.sheetName = event;
-      console.log(this.sheetName)
       //get entry_year and entry_trimester
       this.studentsData = this.readMyFile(this.workbook, this.sheetName);
       // get entry_year and entry_trimester
       [this.entryYear, this.entryTrimester] = this.sheetName.split("T");
+      for (var i = 0; i<this.studentsData.length; i++){
+        this.studentsData[i].entryYear = this.entryYear
+        this.studentsData[i].entryTrimester = this.entryTrimester
+      }
     },
     readMyFile: function(workbook, currentSheetName) {
       return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[currentSheetName]);
@@ -441,10 +447,7 @@ export default {
           .slice(-1)
           .pop()
           .trim();
-          console.log(std)
-          console.log(this.entryTrimester)
-          console.log(this.entryYear)
-        let gql = `
+        let query = `
                         mutation{
                             addStudent ( studentInput: {
                                     sid: "${std.ID}",
@@ -452,8 +455,9 @@ export default {
                                     given_name: "${std.Name}",
                                     family_name: "${std.LastName}",
                                     program: "${std.Program}",
-                                    entry_trimester: "${std.entry_trimester}",
-                                    entry_year: "${std.entry_year}",
+                                    entry_trimester: "${this.entryTrimester}",
+                                    entry_year: "${this.entryYear}",
+                                    advisor_name: "${std.Advisor}"
                                 }
                             ){
                                  sid
@@ -469,15 +473,23 @@ export default {
                             }
                         }
                     `
-                await this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query : gql }, { withCredentials: true }).then(res => {
+                query = query.replace(/\s+/g, ' ').trim()
+                await this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true }).then(res => {
                     console.log(res);
                     this.e1 = 3;
                     this.addingSuccessStatus = true
                     this.successData = true
                 }).catch (err => {
-                    console.log(err);
+                    switch(err.response.data.errors[0].status){
+                      case 409: // duplicated
+                        console.log(err.response.data.errors[0].message)
+                        break
+                      default: // other errors
+                        console.log(err.response.data.errors[0].message)
+                        break
+                    }
                     this.duplicateStudents.push(std);
-                    console.log(this.duplicateStudents)
+                    // console.log(this.duplicateStudents)
                     this.duplicateStatus = true;
                     this.duplicatedData = true;
                     this.e1 = 3;
