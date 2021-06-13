@@ -186,7 +186,9 @@ export default {
     async getStudents() {
       let query = `
               {
-                students (sortBy: "status", searchInput: { batch: ${JSON.stringify(this.$config.selectedBatches)} })  {
+                students (sortBy: "status", searchInput: { batch: ${JSON.stringify(
+                  this.$config.selectedBatches
+                )} })  {
                   students {
                     sid
                     batch
@@ -222,13 +224,10 @@ export default {
                       }
                     }
                   }
-                batches {
-                  total
-                  batches
-                }
+              
               }
           `;
-      query = query.replace(/\s+/g, ' ').trim()
+      query = query.replace(/\s+/g, " ").trim();
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

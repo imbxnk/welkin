@@ -4,6 +4,13 @@
       >All students
       <v-spacer></v-spacer>
       <v-select
+        :items="batchmenu"
+        v-model="batchFilterValue"
+        label="Batch"
+        width="50px"
+        class="mr-2 batch-select"
+      ></v-select>
+      <v-select
         :items="advisorlist"
         v-model="advisorFilterValue"
         label="Advisor"
@@ -27,6 +34,9 @@
       </template> -->
       <template v-slot:[`item.advisor.name`]="{ item }">
         {{ item.advisor ? item.advisor.name : "-" }}
+      </template>
+      <template v-slot:[`item.records.total_credits`]="{ item }">
+        {{ item.records.total_credits }}/{{ getTotalCredit(item.batch) }}
       </template>
     </v-data-table>
 
@@ -55,8 +65,10 @@ export default {
       deley: 700,
       timer: null,
       advisorFilterValue: null,
+      batchFilterValue: null,
+      batchmenu: ["All"],
       headers: [
-        { text: "Student ID", sortable: false, value: "sid" },
+        { text: "Student ID", sortable: false, filter: this.batchFilter, value: "sid" },
         { text: "Name", align: "start", sortable: false, value: "name" },
         {
           text: "Advisor",
@@ -113,7 +125,7 @@ export default {
               }
             }
           `;
-      query = query.replace(/\s+/g, ' ').trim()
+      query = query.replace(/\s+/g, " ").trim();
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
@@ -131,10 +143,18 @@ export default {
       }
       return value === this.advisorFilterValue;
     },
+    batchFilter(value) {
+      if (this.batchFilterValue == null || this.batchFilterValue == "All") {
+        return true;
+      }
+      return value.substring(0, 2) === this.batchFilterValue;
+    },
     async getStudents() {
       let query = `
               {
-                students (sortBy: "status", searchInput: { batch: ${JSON.stringify(this.$config.selectedBatches)} }) {
+                students (sortBy: "status", searchInput: { batch: ${JSON.stringify(
+                  this.$config.selectedBatches
+                )} }) {
                   students {
                     sid
                     batch
@@ -168,7 +188,7 @@ export default {
                   }
               }
           `;
-      query = query.replace(/\s+/g, ' ').trim()
+      query = query.replace(/\s+/g, " ").trim();
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
@@ -178,13 +198,26 @@ export default {
           this.students.forEach((student) => {
             student["name"] = [student.given_name, student.family_name].join(" ");
           });
-
+          this.$config.selectedBatches.forEach((batch) => {
+            this.batchmenu.push(batch);
+          });
           console.log(this.students);
           this.loading = false;
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+    getTotalCredit(batch) {
+      let total_credits = "?";
+      this.curriculums.forEach((curriculum) => {
+        if (curriculum.batches.includes(batch))
+          return (total_credits =
+            curriculum.passing_conditions.core_courses +
+            curriculum.passing_conditions.required_courses +
+            curriculum.passing_conditions.elective_courses);
+      });
+      return total_credits;
     },
   },
 };
@@ -201,5 +234,8 @@ export default {
 }
 .v-select {
   max-width: 280px;
+}
+.batch-select {
+  max-width: 80px;
 }
 </style>
