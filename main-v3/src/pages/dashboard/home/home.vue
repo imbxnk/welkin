@@ -11,36 +11,36 @@
       </v-col>
     </v-row> -->
     <div class="py-5 wk-home-container">
-      <div class="row d-md-block">
-        <span v-if="this.$currentUser.group == 'lecturer' && this.$currentUser.isAdvisor == false">
+      <span v-if="this.$currentUser.group == 'lecturer' && this.$currentUser.isAdvisor == false">
+        <div class="row d-md-block">
           <div class="col-md-4 float-left">
             <div>
-              <div>
-                <h3>
-                  Hello,
-                  <span class="primary--text">{{
-                    this.$currentUser.display_name
-                      ? this.$currentUser.display_name
-                      : this.$currentUser.given_name
-                  }}</span>
-                </h3>
-                <h6 class="grey--text">have a nice day :)</h6>
+              <h3>
+                Hello,
+                <span class="primary--text">{{
+                  this.$currentUser.display_name
+                    ? this.$currentUser.display_name
+                    : this.$currentUser.given_name
+                }}</span>
+              </h3>
+              <h6 class="grey--text">have a nice day :)</h6>
 
-                <v-divider class="mb-n2"></v-divider>
-              </div>
+              <v-divider class="mb-n2"></v-divider>
             </div>
           </div>
-          <div class="col-md-8 float-right order-1">
+          <div class="col-md-8 float-right order-0">
             <div><ShowAnnouncement></ShowAnnouncement></div>
           </div>
-          <div class="col-md-4 float-left order-0">
+          <div class="col-md-4 float-left order-1">
             <div><ShowBatchesSummary></ShowBatchesSummary></div>
           </div>
           <!-- <div class="col-md-4 float-left order-last">
             <div style="height:50px;width:100%;background-color: yellow;">D</div>
           </div> -->
-        </span>
-        <span v-else>
+        </div>
+      </span>
+      <span v-else>
+        <div class="row d-md-block">
           <div class="col-md-4 float-left">
             <div>
               <div>
@@ -78,13 +78,15 @@
             <div><ShowAnnouncement></ShowAnnouncement></div>
           </div>
           <div class="col-md-4 float-left order-1">
-            <div><ShowBatchesSummary></ShowBatchesSummary></div></div
-        ></span>
-      </div>
+            <div><ShowBatchesSummary></ShowBatchesSummary></div>
+          </div>
+        </div>
+      </span>
+    </div>
 
-      <!-- <div class="col-md-8 order-4 float-right py-2"><ShowStudentsTable></ShowStudentsTable></div> -->
+    <!-- <div class="col-md-8 order-4 float-right py-2"><ShowStudentsTable></ShowStudentsTable></div> -->
 
-      <!-- <div class="row order-4 pt-2">
+    <!-- <div class="row order-4 pt-2">
           <div class="col-md-6 order-1 float-left ">
             <v-card class="rounded-card pa-5"> x</v-card>
           </div>
@@ -92,7 +94,7 @@
             <v-card class="rounded-card pa-5"> x</v-card>
           </div>
         </div> -->
-    </div>
+
     <div class="wk-footer justify-content-between flex-sm-row">
       <div class="d-flex align-items-center">
         <a class="wk-footer-icon mr-2" href="https://welkin.app">
