@@ -32,11 +32,11 @@
       class="home"
       @click:row="showDialog"
     >
-      <!-- <template v-slot:[`item.status`]="{ item }">
-        <v-chip :color="getColor(item.status)" dark class="d-flex justify-center">
-          {{ item.status }}
+      <template v-slot:[`item.performance`]="{ item }">
+        <v-chip small :color="getColor(item.performance)" dark class="d-flex justify-center">
+          {{ item.performance }}
         </v-chip>
-      </template> -->
+      </template>
       <template v-slot:[`item.advisor.name`]="{ item }">
         {{ item.advisor ? item.advisor.name : "-" }}
       </template>
@@ -88,7 +88,7 @@ export default {
           value: "records.total_credits",
           align: "center",
         },
-        { text: "Performance", sortable: false, value: "", align: "center" },
+        { text: "Performance", sortable: false, value: "performance", align: "center", width: 150 },
       ],
       students: [],
       stdDetail: [],
@@ -102,8 +102,9 @@ export default {
   methods: {
     getColor(status) {
       if (status == "Behind") return "red";
-      else if (status == "On track") return "orange";
-      else return "green";
+      else if (status == "Ahead") return "primary";
+      else if (status == "On Track") return "green";
+      else return "grey";
     },
     showDialog(row) {
       this.click++;
@@ -159,7 +160,7 @@ export default {
               {
                 students (sortBy: "status", searchInput: { batch: ${JSON.stringify(
                   this.$config.selectedBatches
-                )} }) {
+                )} }, performance:true) {
                   students {
                     sid
                     batch
@@ -168,6 +169,8 @@ export default {
                     email
                     phone
                     lineID
+                    performance
+                    trimester_count
                     avatar_url
                     advisor { name }
                     status { current }
