@@ -74,7 +74,14 @@
           <span v-else> -<br /></span>
           <b>Email:</b> {{ checkNull(this.students.email) }}<br />
           <b>Phone:</b> {{ checkNull(this.students.phone) }}<br />
-          <b>Curriculum:</b> <a href="/curriculum">{{ getCurriculumName(this.students.batch) }}</a>
+          <b>Performance:</b>
+          <span>
+            <v-chip small :color="getColor(this.students.performance)" dark class="mx-3 mt-n1">
+              {{ this.students.performance }}
+            </v-chip></span
+          ><br />
+          <b>Curriculum:</b>
+          <a href="/curriculum"> {{ getCurriculumName(this.students.batch) }}</a>
         </v-card>
       </div>
       <div class="col-md-4 order-3 float-left">
@@ -318,10 +325,16 @@ export default {
         return item;
       }
     },
+    getColor(status) {
+      if (status == "Behind") return "red";
+      else if (status == "Ahead") return "primary";
+      else if (status == "On Track") return "green";
+      else return "grey";
+    },
     async getStudentsDetail() {
       let query = `
               {
-                      student (searchInput: { sid: "${this.$route.params.sid}" }) {
+                      student (searchInput: { sid: "${this.$route.params.sid}" } , performance:true) {
                             sid
                             program
                             prefix
@@ -331,6 +344,7 @@ export default {
                             entry_year
                             nick_name
                             avatar_url
+                            performance
                             email
                             phone
                             lineID
@@ -410,7 +424,7 @@ export default {
 
                 }
           `;
-      query = query.replace(/\s+/g, ' ').trim()
+      query = query.replace(/\s+/g, " ").trim();
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

@@ -96,7 +96,7 @@ export default {
     getMyAdvisees() {
       let query = `
           {
-            students (searchInput: { advisor: "${this.$currentUser.linked_instructor._id}"}, sortBy: "status", performance:true) {
+            students (searchInput: { advisor: "${this.$currentUser.linked_instructor._id}"}, sortBy: "performance", performance:true) {
               advisees:students {
                 sid
                 prefix

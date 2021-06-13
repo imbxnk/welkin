@@ -160,7 +160,7 @@ export default {
               {
                 students (sortBy: "status", searchInput: { batch: ${JSON.stringify(
                   this.$config.selectedBatches
-                )} }, performance:true) {
+                )} }, sortBy: "performance", performance:true) {
                   students {
                     sid
                     batch
