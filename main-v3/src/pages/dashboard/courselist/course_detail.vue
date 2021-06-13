@@ -6,9 +6,21 @@
         <v-card-title class="text-uppercase pt-7 primary--text"
           ><a @click="$router.back()"> &lt; {{ $route.params.code }} </a></v-card-title
         >
+        <div v-if="loading">
+          <v-progress-circular
+            :size="50"
+            class="loading-center  "
+            color="primary"
+            indeterminate
+          ></v-progress-circular>
+        </div>
         <v-list class="px-3 pb-3">
           <simplebar data-simplebar-auto-hide="true" class="wk-content-full-height-list">
+            <div v-if="!loading && this.classes.length == 0" class="mx-2" style="color: #b4b4b4">
+              No record
+            </div>
             <v-list-item-group
+              v-else
               v-model="selected"
               style="margin-top:15px;"
               active-class="primary--text"
@@ -94,6 +106,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       status: false,
       selected: false,
       classes: [],
@@ -136,7 +149,7 @@ export default {
                       }
                     }
                 `;
-      query = query.replace(/\s+/g, ' ').trim()
+      query = query.replace(/\s+/g, " ").trim();
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
@@ -247,5 +260,13 @@ export default {
 }
 .odd {
   background: #fff;
+}
+.loading-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 </style>
