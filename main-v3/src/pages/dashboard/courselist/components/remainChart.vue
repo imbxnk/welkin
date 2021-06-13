@@ -16,8 +16,8 @@
           Remain : {{ this.total[this.index] }}<br /><br />
           <b>Remain Students: </b>
           <div class="remain-list">
-            <ul class="mx-3">
-              <li v-for="(student, i) in unregistered" :key="i">
+            <ul class="mr-3">
+              <li v-for="(student, i) in unregistered" :key="i" class="my-2">
                 {{ student.name }} <span style="float: right">{{ student.sid }} </span>
               </li>
             </ul>
