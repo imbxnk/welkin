@@ -158,7 +158,7 @@ export default {
     async getStudents() {
       let query = `
               {
-                students (sortBy: "status", searchInput: { batch: ${JSON.stringify(
+                students ( searchInput: { batch: ${JSON.stringify(
                   this.$config.selectedBatches
                 )} }, sortBy: "performance", performance:true) {
                   students {
