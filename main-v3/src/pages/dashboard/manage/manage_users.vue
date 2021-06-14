@@ -155,17 +155,17 @@
         <v-card-title class="headline grey lighten-2"> Confirm edit </v-card-title><br />
         <v-card-text
           >Are you sure you want to edit: <br />Display name:
-          <b>{{ this.editedItem.display_name || "-" }}</b>
+          <b>{{ editedItem.display_name || "-" }}</b>
           <br />Username:
-          <b>{{ this.editedItem.username || "-" }}</b>
+          <b>{{ editedItem.username || "-" }}</b>
           <br />Given name:
-          <b>{{ this.editedItem.given_name || "-" }}</b>
+          <b>{{ editedItem.given_name || "-" }}</b>
           <br />Family name:
-          <b>{{ this.editedItem.family_name || "-" }}</b>
+          <b>{{ editedItem.family_name || "-" }}</b>
           <br />Email:
-          <b>{{ this.editedItem.email || "-" }}</b>
+          <b>{{ editedItem.email || "-" }}</b>
           <br />Group:
-          <b>{{ this.editedItem.group || "-" }}</b>
+          <b>{{ editedItem.group || "-" }}</b>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -287,7 +287,7 @@ export default {
               display_name: "${this.editedItem.display_name}"
               email:"${this.editedItem.email}"
               group:"${this.editedItem.group}"
-              isActive: ${this.editItem.isActive}
+              isActive: ${this.editedItem.isActive}
             }) {
               _id
               given_name
