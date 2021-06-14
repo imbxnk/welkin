@@ -17,7 +17,7 @@
         <v-card elevation="0" class="pa-3 mt-2 description">
           <span class="caption"
             ><span class="primary--text">Course Description:</span> <br />{{
-              course.description
+              unescapeHtml(course.description)
             }}</span
           ></v-card
         >
@@ -170,26 +170,33 @@ export default {
           this.loading = false;
         });
     },
+    unescapeHtml(safe) {
+      return safe.replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'");
+    }
   },
 };
 </script>
 <style scoped>
-table,
-th,
-tr,
-td {
-  border: 1px solid rgba(139, 139, 139, 0.2);
-  padding: 5px;
-}
-.loading-center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-.description {
-  background: #f7f7f8;
-}
+  table,
+  th,
+  tr,
+  td {
+    border: 1px solid rgba(139, 139, 139, 0.2);
+    padding: 5px;
+  }
+  .loading-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .description {
+    background: #f7f7f8;
+  }
 </style>
