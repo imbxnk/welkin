@@ -998,3 +998,30 @@ main {
 .toggle-read {
   margin: 5px -10px 0 5px;
 }
+
+.wk-disabled {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wk-disabled-container {
+  width: 480px !important;
+  text-align: center;
+}
+
+.wk-disabled-container .text-logo {
+  width: 96px;
+  height: auto;
+  margin-top: 20px;
+}

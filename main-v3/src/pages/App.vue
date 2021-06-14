@@ -3,7 +3,8 @@
     <router-view></router-view>
   </v-app>
   <v-app v-else>
-    <v-app-bar app flat color="white" height="50">
+    <div v-if="$currentUser.isActive">
+      <v-app-bar app flat color="white" height="50">
       <div class="wk-header">
         <router-link to="/">
           <v-toolbar-title class="primary--text">
@@ -286,6 +287,45 @@
         <router-view class="ma-4"></router-view>
       </simplebar>
     </v-main>
+    </div>
+    <div class="wk-disabled" v-else>
+      <v-card class="wk-disabled-container">
+        <!-- <div><img class="text-logo" src="https://cdn.welkin.app/static/img/text-logo-mini.png"></div> -->
+        <v-icon style="margin-top: 30px; color:red" large>mdi-alert-circle</v-icon>
+        <v-card-title class="justify-content-center pb-0">Your Welkin Account is disabled</v-card-title>
+        <div>
+          <v-avatar
+            v-if="$currentUser.avatar.small"
+            class="mr-2"
+            size="25"
+            :style="`background: url(${$currentUser.avatar.small}) center center / cover;`"
+            v-bind="attrs"
+            v-on="on"
+          >
+          </v-avatar>
+          <v-avatar class="mr-2" color="primary" size="25" v-bind="attrs" v-on="on" v-else>
+            <span class="white--text">
+              {{ $currentUser.initials }}
+            </span>
+          </v-avatar>
+          <span style="color:#666">{{ $currentUser.email }}</span>
+        </div>
+        <v-card-text class="px-4">
+          If you're redirected to this page, your account has been disabled. Please contact Admininstrator for more information.
+        </v-card-text>
+        <v-divider class="mx-3"></v-divider>
+        <v-card-actions class="justify-content-center">
+          <v-btn
+            class="mt-n1 mb-4 px-3"
+            color="red"
+            elevation="2"
+            style="color: #fff"
+            rounded
+            @click="logout()"
+          >Logout</v-btn>
+        </v-card-actions>
+      </v-card>
+    </div>
   </v-app>
 </template>
 
