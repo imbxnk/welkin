@@ -10,7 +10,7 @@ export default{
   getUser: async function() {
     let query = `
       {
-        me { display_name username given_name family_name group isAdvisor email isActive avatar { small medium large } createdAt linked_instructor { _id title name given_name family_name } }
+        me { _id display_name username given_name family_name group isAdvisor email isActive avatar { small medium large } createdAt linked_instructor { _id title name given_name family_name } }
       }
     `
     query = query.replace(/\s+/g, ' ').trim()
@@ -23,7 +23,7 @@ export default{
   auth: async function() {
     let query = `
       {
-        me { display_name username given_name family_name group isAdvisor email isActive avatar { small medium large } createdAt linked_instructor { _id title name given_name family_name } }
+        me { _id display_name username given_name family_name group isAdvisor email isActive avatar { small medium large } createdAt linked_instructor { _id title name given_name family_name } }
       }
     `
     query = query.replace(/\s+/g, ' ').trim()

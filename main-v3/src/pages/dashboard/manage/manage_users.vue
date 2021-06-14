@@ -136,6 +136,7 @@
                 v-model="editedItem.isActive"
                 inset
                 :label="`${ editedItem.isActive ? 'Active' : 'Disable' }`"
+                :disabled="$currentUser._id === editedItem._id"
               ></v-switch>
             </div>
             <div class="d-flex justify-content-start mx-3" v-else>
@@ -203,6 +204,7 @@ export default {
       Editdialog: false,
       editedIndex: -1,
       editedItem: {
+        _id: "",
         display_name: "",
         username: "",
         given_name: "",
@@ -227,6 +229,7 @@ export default {
                 users {
                     total
                     users {
+                    _id
                     display_name
                     username
                     given_name
