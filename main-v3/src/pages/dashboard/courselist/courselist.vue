@@ -96,7 +96,7 @@
             </svg>
             BACK</a
           >
-          <CourseInfo :code="this.course.code"></CourseInfo>
+          <CourseInfo :curriculums="this.curriculums" :code="this.course.code"></CourseInfo>
         </simplebar>
       </v-card>
     </v-col>
@@ -139,6 +139,7 @@ export default {
       items: [],
       search: "",
       isHidden: true,
+      curriculums: [],
       windowSize: {
         x: 0,
         y: 0,
@@ -177,6 +178,23 @@ export default {
                   code
                 }
               }
+              curriculums {
+                total
+                curriculums {
+                  batches
+                  courses {
+                    core_courses {
+                      code
+                    }
+                    required_courses {
+                      code
+                    }
+                    elective_courses {
+                      code
+                    }
+                  }
+                }
+              }
             }
           `;
       query = query.replace(/\s+/g, ' ').trim()
@@ -185,6 +203,7 @@ export default {
         .then((res) => {
           this.items = [...res.data.data.courses.courses];
           this.loading = false;
+          this.curriculums = [...res.data.data.curriculums.curriculums]
         })
         .catch((err) => {
           console.log(err);

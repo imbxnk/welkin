@@ -39,8 +39,7 @@ export default {
   component: [],
   created() {},
   mounted() {
-    this.height = 160 + this.$config.selectedBatches.length * 20;
-    console.log(this.height);
+    this.height = 124 + this.batch.length * 35;
   },
   data() {
     return {
@@ -156,7 +155,7 @@ export default {
     },
     getList(code, batch) {
       let query = `
-             query{
+             {
                 countStudent(course_code:"${code}",batch:"${batch}"){
                   batch
                   course
@@ -174,6 +173,7 @@ export default {
                 }
               }
           `;
+      query = query.replace(/\s+/g, ' ').trim()
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {

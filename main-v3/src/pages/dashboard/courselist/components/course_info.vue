@@ -68,7 +68,7 @@
 import remainChart from "./remainChart";
 export default {
   name: "Class_info",
-  props: ["code"],
+  props: ["code", "curriculums"],
   components: { remainChart },
   created() {
     this.loadCourse(this.$props.code);
@@ -97,6 +97,7 @@ export default {
       this.b = [];
       this.tt = [];
       this.p = [];
+      this.batches = {}
 
       var queryStr = `
                 courseInstructors(course_code:"${code}"){
@@ -120,9 +121,15 @@ export default {
                     }
             `;
       this.queryBatches.forEach((batch) => {
-        queryStr += `batch${batch}:countStudent(course_code: "${code}", batch: "${batch}") { total unregistered { sid given_name family_name } }
-                            total${batch}:students (searchInput: { batch : "${batch}"}) { total }
-                            `;
+        this.$props.curriculums.forEach((curriculum) => {
+          let courses = [...curriculum.courses.core_courses, ...curriculum.courses.required_courses, ...curriculum.courses.elective_courses]
+          if(curriculum.batches.includes(batch) && courses.filter(c => c.code === code).length > 0) {
+            console.log(batch, code)
+            queryStr += `batch${batch}:countStudent(course_code: "${code}", batch: "${batch}") { total unregistered { sid given_name family_name } }
+                          total${batch}:students (searchInput: { batch : "${batch}"}) { total }
+                        `;
+          }
+        })
       });
       let query = `
                 {
