@@ -36,12 +36,7 @@
              <div v-else-if="addManually" class="p-2 bd-highlight">
               <v-card class="px-5 py-5">
                 <v-form ref="form" lazy-validation>
-                  <div class="d-flex flex-column">
-                    <div class="p-2 bd-highlight">
-                      <v-divider inset></v-divider>
-                    </div>
-                    <div class="p-2 bd-highlight">
-                      <div class="d-flex flex-row bd-highlight justify-content-center">
+                  <div class="d-flex flex-row bd-highlight justify-content-center">
                     <div class="p-2 bd-highlight">
                       <v-text-field
                         type="number"
@@ -66,8 +61,6 @@
                         outlined
                         required
                       ></v-select>
-                    </div>
-                  </div>
                     </div>
                   </div>
                   
@@ -218,14 +211,17 @@
         <v-stepper-content step="3">
           <div class="d-flex flex-column bd-highlight justify-content-center">
             <div class="p-2 bd-highlight" v-if="successData">
-               <v-data-table class="success-table" style="color:#47db16"  id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
+               <v-data-table class="success-table" id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
               </v-data-table>
             </div>
             <div class="duplicate-table p-2 bd-highlight" v-else-if="duplicatedData">
-               <v-data-table class="duplicate-table" style="color:#db9b12" id="sheetName" :headers="headers" :items="duplicateStudents" mobile-breakpoint="0" hide-default-footer disable-pagination>
+               <v-data-table class="duplicate-table" id="sheetName" :headers="headers" :items="duplicateStudents" mobile-breakpoint="0" hide-default-footer disable-pagination>
               </v-data-table>
             </div>
-            <div></div>
+            <div class="duplicate-table p-2 bd-highlight" v-else-if="errorData">
+               <v-data-table class="error-table"  id="sheetName" :headers="headers" :items="errorStudents" mobile-breakpoint="0" hide-default-footer disable-pagination>
+              </v-data-table>
+            </div>
           </div>
             <div class="p-2 bd-highlight">
               <div class="d-flex flex-row bd-highlight justify-content-end">
@@ -318,8 +314,10 @@ export default {
       workbook: "",
       file: "",
       duplicateStudents: [],
+      errorStudents:[],
       successData: false,
       duplicatedData: false,
+      errorData: false,
       Info: [],
       headers:[
         { text: "Student ID", sortable: false, value: "ID", width: "9%" },
@@ -491,6 +489,9 @@ export default {
                         break
                       default: // other errors
                         console.log(err.response.data.errors[0].message)
+                        this.errorStudents.push(std);
+                        this.errorStatus = true;
+                        this.errorData = true;
                         break
                     }
                     // console.log(this.duplicateStudents)
@@ -527,5 +528,9 @@ export default {
 
   .duplicate-table{
     color: yellow;
+  }
+  
+  .error-table{
+    color: red;
   }
 </style>
