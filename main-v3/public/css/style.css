@@ -908,7 +908,7 @@ main {
   overflow-wrap: break-word !important;
 }
 
-.wk-noti-wrap {
+.wk-noti-wrap, .wk-remain-std-wrap {
   position: relative;
 }
 
@@ -919,19 +919,46 @@ main {
   overflow-y: scroll;
 }
 
-.wk-noti-box::-webkit-scrollbar {
+.wk-remain-std-box::-webkit-scrollbar,.wk-noti-box::-webkit-scrollbar {
   width: .45em;
 }
 
 .wk-noti-box::-webkit-scrollbar,
-.wk-noti-box::-webkit-scrollbar-thumb {
+.wk-remain-std-box::-webkit-scrollbar,
+.wk-noti-box::-webkit-scrollbar-thumb,
+.wk-remain-std-box::-webkit-scrollbar-thumb {
   overflow:visible;
   border-radius: 4px;
 }
 
-.wk-noti-box::-webkit-scrollbar-thumb {
+.wk-noti-box::-webkit-scrollbar-thumb,
+.wk-remain-std-box::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,.2);
 }
+
+
+.wk-remain-std-box {
+  width: 100%;
+  max-height: 200px;
+  overflow-y: scroll;
+  padding: 0 10px;
+  margin-top: 10px;
+}
+
+.wk-remain-std-box::-webkit-scrollbar {
+  width: .45em;
+}
+
+.wk-remain-std-box::-webkit-scrollbar,
+.wk-remain-std-box::-webkit-scrollbar-thumb {
+  overflow:visible;
+  border-radius: 4px;
+}
+
+.wk-remain-std-box::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.2);
+}
+
 
 .cover-bar {
   position: absolute;
@@ -945,7 +972,7 @@ main {
   opacity: 1;
 }
 
-.wk-noti-wrap:hover .cover-bar {
+.wk-noti-wrap:hover .cover-bar, .wk-remain-std-wrap:hover .cover-bar {
   opacity: 0;
   visibility: hidden;
  -webkit-transition: all .5s;

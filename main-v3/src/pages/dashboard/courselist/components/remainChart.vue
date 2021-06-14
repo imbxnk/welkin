@@ -15,13 +15,15 @@
           Registered : {{ this.passed[this.index] }}<br />
           Remain : {{ this.total[this.index] }}<br /><br />
           <b>Remain Students: </b>
-          <div class="remain-list">
-            <ul class="mr-3">
-              <li v-for="(student, i) in unregistered" :key="i" class="my-2">
-                {{ student.name }} {{ checkNull(student.nick_name) }}
+          <div class="wk-remain-std-wrap">
+            <div class="wk-remain-std-box">
+              <div v-for="(student, i) in unregistered" :key="i" class="my-2">
+                {{ i+1 + ". " }} {{ student.name }} {{ checkNull(student.nick_name) }}
                 <span style="float: right">{{ student.sid }} </span>
-              </li>
-            </ul>
+              </div>
+              <div v-if="unregistered.length === 0">None</div>
+            </div>
+            <div class="cover-bar"></div>
           </div>
         </v-card-text>
 
@@ -36,7 +38,7 @@
 export default {
   name: "remainChart",
   props: ["batch", "total", "passed", "code"],
-  component: [],
+  components: {},
   created() {},
   mounted() {
     this.height = 124 + this.batch.length * 35;
@@ -192,9 +194,10 @@ export default {
 </script>
 <style scoped>
 .remain-list {
-  height: 200px;
-  padding: 10px;
-  /* margin-top: 15px; */
-  overflow: auto;
+  min-height: 50px;
+  max-height: 200px;
+}
+.test {
+  height: 100px;
 }
 </style>
