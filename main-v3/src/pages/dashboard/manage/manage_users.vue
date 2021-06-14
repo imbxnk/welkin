@@ -129,6 +129,19 @@
                 Group: <span style="color: #999; margin-left: 20px">{{ editedItem.group }}</span>
               </div>
             </div>
+            <div class="d-flex justify-content-start align-items-center mx-4" v-if="editedItem.group !== 'admin'">
+              <label>Account Status:</label>
+              <v-switch
+                class="ms-4"
+                v-model="editedItem.isActive"
+                inset
+                :label="`${ editedItem.isActive ? 'Active' : 'Disable' }`"
+              ></v-switch>
+            </div>
+            <div class="d-flex justify-content-start mx-3" v-else>
+              <label class="me-3">Account Status: </label>
+              <span style="color: rgb(153, 153, 153);">{{ `${ editedItem.isActive ? 'Active' : 'Disable' }` }}</span>
+            </div>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="primary" @click="confirm1 = true">submit</v-btn>
@@ -196,6 +209,7 @@ export default {
         family_name: "",
         email: "",
         group: "",
+        isActive: true,
       },
       Info: [],
       items: ["coordinator", "program director", "lecturer"],
@@ -220,6 +234,7 @@ export default {
                     email
                     group
                     createdAt
+                    isActive
                     avatar {
                         small
                         medium
@@ -272,12 +287,11 @@ export default {
               display_name: "${this.editedItem.display_name}"
               email:"${this.editedItem.email}"
               group:"${this.editedItem.group}"
-
+              isActive: ${this.editItem.isActive}
             }) {
               _id
               given_name
               family_name
-              password
               username
               group
             }
