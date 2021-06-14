@@ -47,7 +47,7 @@
               <v-list-item-title v-text="i + 1 + '. ' + instuctor.title + ' ' + instuctor.name">
               </v-list-item-title>
               <v-list-item-subtitle
-                >Email : {{ instuctor.email == "" ? "-" : nstuctor.email }}</v-list-item-subtitle
+                >Email : {{ instuctor.email ? instuctor.email : "-" }}</v-list-item-subtitle
               >
             </v-list-item-content>
           </v-list-item>

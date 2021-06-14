@@ -142,6 +142,7 @@ export default {
                           instructor {
                             title
                             name
+                            email
                           }
                           trimester
                           year

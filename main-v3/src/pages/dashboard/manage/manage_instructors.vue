@@ -161,6 +161,8 @@ export default {
                   title
                   given_name
                   family_name
+                  email
+                  phone
                 }
               }
             }
