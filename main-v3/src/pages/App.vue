@@ -181,9 +181,11 @@
 
       <v-list expand nav>
         <template v-for="(item, i) in items">
+
+          <v-divider :key="i" v-if="item.separate && checkAuthGroup(i)"></v-divider>
           <!-- lists that have no children -->
           <v-list-item
-            v-if="!item.children && checkAuthGroup(i)"
+            v-if="!item.children && checkAuthGroup(i) && !item.separate"
             :key="item.title"
             link
             :to="item.href"
@@ -462,6 +464,10 @@ export default {
       //     },
       //   ],
       // },
+      {
+        separate: true,
+        authorizedGroup: ["coordinator", "admin"],
+      },
       {
         title: "Manage",
         href: "/manage",

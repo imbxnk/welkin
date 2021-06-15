@@ -12,7 +12,7 @@
         <v-card style="max-width: auto"
           ><v-card-title>
             <div class="d-flex flex-column">
-              <span>Courses</span>
+              <span>{{ this.$route.params.code.toUpperCase() }}</span>
               <span style="font-size:0.8rem; color:#999; margin-top: -10px;">Total: {{ total }}</span>
             </div>
             <v-spacer></v-spacer>
@@ -26,7 +26,7 @@
           ></v-card-title>
           <v-data-table
             :headers="headers"
-            :items="courses"
+            :items="classes"
             :search="search"
             class="student px-3 pb-3"
             mobile-breakpoint="0"
@@ -34,16 +34,19 @@
             disable-pagination
           >
             <template v-slot:[`item.name`]="{ item }">
-              {{ item.name + ` (${item.credit_description.lecture}-${item.credit_description.lab}-${item.credit_description.self_study})` }}
+              <v-list-item-content>
+                <v-list-item-title
+                  v-text="item.year + 'T' + item.trimester + ' SEC' + item.section"
+                ></v-list-item-title>
+                <v-list-item-subtitle style="font-size: 0.8rem; color: #999">
+                  {{ item.instructor.title }} {{ item.instructor.name }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
             </template>
-            <template v-slot:[`item.class`]="{ item }">
-              <router-link :to="{ name: 'manage_class', params: { code: item.code.toLowerCase() }}" target="_blank" style="text-decoration: none">
-                <v-icon small>
-                  mdi-folder-multiple
-                </v-icon>
-              </router-link>
+            <template v-slot:[`item.enrollments`]="{ item }">
+              {{ item.enrollments.length }}
             </template>
-            <template v-slot:[`item.edit`]="{ item }">
+            <template v-slot:[`item.actions`]="{ item }">
               <v-icon small @click="editItem(item)">
                 mdi-pencil
               </v-icon>
@@ -74,12 +77,14 @@ export default {
       classDialog: false,
       search: "",
       headers: [
-        { text: "Code", sortable: true, value: "code", width: "1%" },
-        { text: "Course Name", sortable: false, value: "name", width: "97%" },
-        { text: "Classes", sortable: false, value: "class", width: "1%", align: "center" },
-        { text: "Edit", sortable: false, value: "edit", width: "1%", align: "center" },
+        { text: "Class Name", sortable: false, value: "name", width: "30%" },
+        { text: "Year", sortable: true, value: "year", width: "10%"},
+        { text: "Trimester", sortable: true, value: "trimester", width: "15%" },
+        { text: "Enrollments", sortable: false, value: "enrollments", width: "1%", align: "center" },
+        { text: "", sortable: false, value: "", width: "98%", align: "center" },
+        { text: "Action", sortable: false, value: "actions", width: "1%", align: "center" },
       ],
-      courses: [],
+      classes: [],
       total: 0,
     };
   },
@@ -90,18 +95,25 @@ export default {
     async getCourses() {
       let query = `
             {
-              courses {
+              classes (searchInput: { course_code: "${this.$route.params.code}" }) {
                 total
-                courses {
-                  code
-                  name
-                  description
-                  credit
-                  credit_description {
-                    lecture
-                    lab
-                    self_study
+                classes {
+                  _id
+                  course {
+                    code
+                    name
+                    description
                   }
+                  enrollments {
+                    _id
+                  }
+                  section
+                  instructor {
+                    title
+                    name
+                  }
+                  trimester
+                  year
                 }
               }
             }
@@ -110,8 +122,8 @@ export default {
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          this.total = res.data.data.courses.total;
-          this.courses = res.data.data.courses.courses;
+          this.total = res.data.data.classes.total;
+          this.classes = res.data.data.classes.classes;
         })
         .catch((err) => {
           console.log(err);

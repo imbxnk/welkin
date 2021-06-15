@@ -25,6 +25,7 @@ import AddStudent from "../pages/dashboard/manage/components/add_students";
 import ManageWebsite from "../pages/dashboard/manage/manage_website";
 import ManageUser from "../pages/dashboard/manage/manage_users";
 import ManageCourses from "../pages/dashboard/manage/manage_courses";
+import ManageClasses from "../pages/dashboard/manage/manage_classes";
 import ManageCurriculums from "../pages/dashboard/manage/manage_curriculums";
 
 // Auth Route
@@ -159,6 +160,16 @@ const routes = [
     name: "manage_course",
     path: "/manage/course",
     component: ManageCourses,
+    meta: {
+      requiresAuth: true,
+      authorizedGroup: ["coordinator"],
+      title: "Course Management",
+    },
+  },
+  {
+    name: "manage_class",
+    path: "/manage/course/:code",
+    component: ManageClasses,
     meta: {
       requiresAuth: true,
       authorizedGroup: ["coordinator"],

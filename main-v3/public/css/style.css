@@ -1025,3 +1025,7 @@ main {
   height: auto;
   margin-top: 20px;
 }
+
+.mdi-pencil, .mdi-folder-multiple {
+  font-size: 20px !important;
+}
