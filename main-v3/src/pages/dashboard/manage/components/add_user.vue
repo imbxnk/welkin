@@ -62,11 +62,11 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="error" @click="clearText()">clear</v-btn>
-            <v-btn color="primary" @click="validate">submit</v-btn>
+            <v-btn color="primary" @click="validate()">submit</v-btn>
           </v-card-actions>
         </v-form>
 
-        <v-dialog v-model="dialog1" max-width="450px">
+        <v-dialog v-model="dialog" max-width="450px">
           <v-card>
             <v-card-title class="headline grey lighten-2"> Confirm Add </v-card-title><br />
             <v-card-text
@@ -171,6 +171,7 @@ export default {
         .then((res) => {
           console.log(res);
           this.clearText();
+          this.dialog = false
         })
         .catch((err) => {
           console.log(err);
