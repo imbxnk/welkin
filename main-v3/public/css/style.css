@@ -1029,3 +1029,17 @@ main {
 .mdi-pencil, .mdi-folder-multiple {
   font-size: 20px !important;
 }
+
+.v-list-group.v-list-group--active {
+  /* background: rgba(0, 0, 0, 0.01); */
+  border-radius: 5px;
+}
+
+.v-list-group__header.v-list-item.v-list-item--active {
+  background: #fff;
+}
+
+/* .v-list-item--active {
+  background: #3c84fb !important;
+  color: #fff !important;
+} */
