@@ -293,7 +293,7 @@ export default {
       console.log(this.Info[this.editedIndex]);
       let query = `
           mutation {
-            updateAccount(username: "${this.editedItem._id}", userInput: {
+            updateAccount(id: "${this.editedItem._id}", userInput: {
               username: "${this.editedItem.username}"
               given_name: "${this.editedItem.given_name}",
               family_name:"${this.editedItem.family_name}",
