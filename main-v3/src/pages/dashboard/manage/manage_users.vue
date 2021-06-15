@@ -34,6 +34,7 @@
             <template v-slot:[`item.avatar.small`]="{ item }">
               <v-avatar
                 size="35"
+                :class="{isDisabled: !item.isActive}"
                 :style="
                   `background: url(${item.avatar.small ||
                     $config.defaultAvatar}) center center / cover;`
@@ -42,7 +43,16 @@
               </v-avatar>
             </template>
             <template v-slot:[`item.display_name`]="{ item }">
-              {{ item.display_name ? item.display_name : "-" }}
+              <span :class="{isDisabled: !item.isActive}">{{ item.display_name ? item.display_name : "-" }}</span>
+            </template>
+            <template v-slot:[`item.username`]="{ item }">
+              <span :class="{isDisabled: !item.isActive}">{{ item.username }}</span>
+            </template>
+            <template v-slot:[`item.name`]="{ item }">
+              <span :class="{isDisabled: !item.isActive}">{{ item.name }}</span>
+            </template>
+            <template v-slot:[`item.group`]="{ item }">
+              <span :class="{isDisabled: !item.isActive}">{{ item.group }}</span>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon small @click="editItem(item)">
@@ -283,11 +293,11 @@ export default {
       console.log(this.Info[this.editedIndex]);
       let query = `
           mutation {
-            updateAccount(username: "${this.editedItem.username}", userInput: {
+            updateAccount(username: "${this.editedItem._id}", userInput: {
               username: "${this.editedItem.username}"
               given_name: "${this.editedItem.given_name}",
               family_name:"${this.editedItem.family_name}",
-              display_name: "${this.editedItem.display_name}"
+              display_name: "${this.editedItem.display_name || ''}"
               email:"${this.editedItem.email}"
               group:"${this.editedItem.group}"
               isActive: ${this.editedItem.isActive}
@@ -320,4 +330,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.isDisabled {
+  opacity: 0.4;
+}
+</style>
