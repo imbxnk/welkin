@@ -43,7 +43,7 @@
             <div class="wk-notifications-header d-flex">
               <div class="flex-grow-1" style="font-weight: 700">Announcements</div>
               <v-btn
-                v-if="notifications.length != $config.announcements.length"
+                v-if="(notifications.length != $config.announcements.length) && $config.announcements.length !== 0"
                 plain
                 rounded
                 x-small
