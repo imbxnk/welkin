@@ -34,7 +34,7 @@
                 dot
                 offset-x="9"
                 offset-y="-2"
-                v-if="notifications.length != $config.announcements.length"
+                v-if="(notifications.length != $config.announcements.length) && $config.announcements.length !== 0"
               >
               </v-badge>
             </v-btn>

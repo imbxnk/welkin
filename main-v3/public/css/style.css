@@ -1026,8 +1026,12 @@ main {
   margin-top: 20px;
 }
 
-.mdi-pencil, .mdi-folder-multiple {
+.mdi-pencil, .mdi-folder-multiple, .mdi-delete {
   font-size: 20px !important;
+}
+
+.mdi-delete:hover {
+  color:rgb(226, 64, 86) !important;
 }
 
 .v-list-group.v-list-group--active {
