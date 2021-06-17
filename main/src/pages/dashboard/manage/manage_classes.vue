@@ -4,7 +4,7 @@
       <div class="ml-auto p-2 bd-highlight">
         <div class="d-flex flex-row justify-content-end bd-highlight">
           <div class="p-2 bd-highlight">
-            <v-btn color="primary" @click="classDialog = true"><v-icon>mdi-plus</v-icon> Add Course</v-btn>
+            <v-btn color="primary" @click="classDialog = true"><v-icon>mdi-plus</v-icon> Add Class</v-btn>
           </div>
         </div>
       </div>
@@ -62,21 +62,24 @@
     </div>
     <v-dialog class="upload-Dialog" v-model="classDialog" max-width="1000px" width="600px" min-height="500px">
       <v-card>
-        <v-card-title class="card-title"
-          >Add Course
+        <v-card-title class="card-title">
+          Add Class
           <v-spacer></v-spacer>
-          <v-icon @click="classDialog = false">mdi-close</v-icon></v-card-title
-        >
-        <AddCourse></AddCourse>
+          <v-icon @click="classDialog = false">mdi-close</v-icon>
+        </v-card-title>
+        <div class="mx-4 mt-4">
+          Please Upload Grade Report File
+        </div>
+        <AddClass></AddClass>
       </v-card>
     </v-dialog>
   </v-container>
 </template>
 
 <script>
-import AddCourse from "./components/add_course";
+import AddClass from "./components/add_grade";
 export default {
-  components: { AddCourse },
+  components: { AddClass },
   data() {
     return {
       classDialog: false,

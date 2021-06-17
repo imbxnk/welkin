@@ -34,7 +34,7 @@
             disable-pagination
           >
             <template v-slot:[`item.batches`]="{ item }">
-              {{ item.batches.toString() }}
+              {{ (item.batches.toString()).replaceAll(',', '/') }}
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon small @click="editItem(item)">
