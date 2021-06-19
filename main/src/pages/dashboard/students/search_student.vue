@@ -129,6 +129,12 @@
 import simplebar from "simplebar-vue";
 import "simplebar/dist/simplebar.min.css";
 export default {
+  mounted() {
+    if(this.$route.query.id) {
+      this.student_ID = this.$route.query.id.replace(/[^0-9]+/g, '').substring(0,7)
+      this.getID()
+    }
+  },
   components: {
     simplebar,
   },
@@ -157,6 +163,7 @@ export default {
     },
     getID() {
       if (this.student_ID.length == 7) {
+        this.$router.replace({name: "search_student", query: {id: this.student_ID}})
         this.search_ID = this.student_ID;
         this.loading = true;
         this.check = true;
