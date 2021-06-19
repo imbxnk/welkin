@@ -4,8 +4,16 @@
       Search Student
       <form class="input-group mb-3" v-on:submit.prevent="getStudent">
         <input
-          type="number"
+          type="text"
+          pattern="\d*"
+          onkeydown="return ( event.ctrlKey || event.altKey
+                    || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false)
+                    || (95<event.keyCode && event.keyCode<106)
+                    || (event.keyCode==8) || (event.keyCode==9)
+                    || (event.keyCode>34 && event.keyCode<40)
+                    || (event.keyCode==46) )"
           class="form-control"
+          maxlength="7"
           v-model="student_ID"
           v-on:keyup.enter="getID"
           placeholder="You can only search using Student ID. Example: 6080001"
