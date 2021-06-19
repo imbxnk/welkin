@@ -32,7 +32,7 @@
               <div>
                 <h6>Something went wrong..</h6>
                 <p class="caption mt-n2 mb-0">
-                  Please try again, make sure that you follow the format (Ex. 60800001)
+                  Please try again, make sure that you follow the format (Ex. 6080001)
                 </p>
               </div>
             </div>
