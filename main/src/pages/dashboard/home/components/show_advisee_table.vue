@@ -1,46 +1,87 @@
 <template>
-  <v-card class="pa-3">
-    <v-card-title
-      >Advisees
-      <v-spacer></v-spacer>
-      <v-select :items="batchlist" v-model="batchFilterValue" label="Batch" class="mr-2"></v-select>
-    </v-card-title>
-    <v-data-table
-      v-if="loading"
-      height="528"
-      loading
-      loading-text="Loading... Please wait"
-    ></v-data-table>
-    <v-data-table
-      v-else
-      :headers="headers"
-      :items="advisees"
-      mobile-breakpoint="680"
-      height="528"
-      class="home"
-      @click:row="showDialog"
-    >
-      <template v-slot:[`item.performance`]="{ item }">
-        <v-chip small :color="getColor(item.performance)" dark class="d-flex justify-center">
-          {{ item.performance }}
-        </v-chip>
-      </template>
-      <template v-slot:[`item.advisor.name`]="{ item }">
-        {{ item.advisor ? item.advisor.name : "-" }}
-      </template>
-    </v-data-table>
+  <div>
+    <v-row class="mb-3">
+      <v-col cols="6" md="3"
+        ><v-card class="performance-card"
+          ><div class="overline my-n1 red--text">Behind</div>
+          <div class="h3 text-right red--text ">
+            {{ totalBehind }}
+          </div></v-card
+        ></v-col
+      >
+      <v-col cols="6" md="3"
+        ><v-card class="performance-card"
+          ><div class="overline my-n1 green--text">On Track</div>
+          <div class="h3 text-right green--text ">
+            {{ totalOntrack }}
+          </div></v-card
+        ></v-col
+      >
+      <v-col cols="6" md="3"
+        ><v-card class="performance-card"
+          ><div class="overline my-n1 primary--text">Ahead</div>
+          <div class="h3 text-right primary--text ">
+            {{ totalAhead }}
+          </div></v-card
+        ></v-col
+      >
+      <v-col cols="6" md="3"
+        ><v-card class="performance-card"
+          ><div class="overline my-n1 grey--text">Others</div>
+          <div class="h3 text-right grey--text ">
+            {{ totalUncal }}
+          </div></v-card
+        ></v-col
+      >
+    </v-row>
+    <v-card class="pa-3">
+      <v-card-title
+        >Advisees
+        <v-spacer></v-spacer>
+        <v-select
+          :items="batchlist"
+          v-model="batchFilterValue"
+          label="Batch"
+          class="mr-2"
+        ></v-select>
+      </v-card-title>
+      <v-data-table
+        v-if="loading"
+        height="528"
+        loading
+        loading-text="Loading... Please wait"
+      ></v-data-table>
+      <v-data-table
+        v-else
+        :headers="headers"
+        :items="advisees"
+        mobile-breakpoint="680"
+        height="528"
+        class="home"
+        @click:row="showDialog"
+      >
+        <template v-slot:[`item.performance`]="{ item }">
+          <v-chip small :color="getColor(item.performance)" dark class="d-flex justify-center">
+            {{ item.performance }}
+          </v-chip>
+        </template>
+        <template v-slot:[`item.advisor.name`]="{ item }">
+          {{ item.advisor ? item.advisor.name : "-" }}
+        </template>
+      </v-data-table>
 
-    <v-dialog v-model="dialog" max-width="700px">
-      <v-card>
-        <v-card-title class="overline lighten-2">
-          {{ stdDetail.name }}
-          <v-spacer></v-spacer>
-          <v-icon @click="dialog = false">mdi-close</v-icon>
-        </v-card-title>
-        <StudentInfo :stdDetail="stdDetail"></StudentInfo>
-      </v-card>
-    </v-dialog>
-  </v-card>
+      <v-dialog v-model="dialog" max-width="700px">
+        <v-card>
+          <v-card-title class="overline lighten-2">
+            {{ stdDetail.name }}
+            <v-spacer></v-spacer>
+            <v-icon @click="dialog = false">mdi-close</v-icon>
+          </v-card-title>
+          <StudentInfo :stdDetail="stdDetail"></StudentInfo>
+        </v-card>
+      </v-dialog>
+    </v-card>
+  </div>
 </template>
 <script>
 import StudentInfo from "../../students/components/std_info";
@@ -70,6 +111,10 @@ export default {
       advisees: [],
       stdDetail: [],
       batchlist: ["All"],
+      totalBehind: 0,
+      totalOntrack: 0,
+      totalAhead: 0,
+      totalUncal: 0,
     };
   },
   mounted() {
@@ -141,6 +186,23 @@ export default {
           res.data.data.batches.batches.forEach((batch) => {
             this.batchlist.push(batch);
           });
+          for (const i in this.advisees) {
+            if (this.advisees[i].performance == "Behind") {
+              this.totalBehind += 1;
+            }
+            if (this.advisees[i].performance == "Ahead") {
+              this.totalAhead += 1;
+            }
+            if (this.advisees[i].performance == "On Track") {
+              this.totalOntrack += 1;
+            }
+            if (
+              this.advisees[i].performance == "Uncalculated" ||
+              this.advisees[i].performance == "Unknown"
+            ) {
+              this.totalUncal += 1;
+            }
+          }
         })
         .catch((err) => {
           this.loading = false;
@@ -167,5 +229,8 @@ export default {
 }
 .v-select {
   max-width: 270px;
+}
+.performance-card {
+  padding: 10px;
 }
 </style>

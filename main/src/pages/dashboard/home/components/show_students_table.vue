@@ -1,61 +1,97 @@
 <template>
-  <v-card class="pa-3">
-    <v-card-title
-      >All students
-      <v-spacer></v-spacer>
-      <v-select
-        :items="batchmenu"
-        v-model="batchFilterValue"
-        label="Batch"
-        width="50px"
-        class="mr-2 batch-select"
-      ></v-select>
-      <v-select
-        :items="advisorlist"
-        v-model="advisorFilterValue"
-        label="Advisor"
-        class="mr-2"
-      ></v-select>
-    </v-card-title>
-    <v-data-table
-      height="528"
-      v-if="loading"
-      loading
-      loading-text="Loading... Please wait"
-    ></v-data-table>
-    <v-data-table
-      v-else
-      :headers="headers"
-      :items="students"
-      mobile-breakpoint="680"
-      height="528"
-      class="home"
-      @click:row="showDialog"
-    >
-      <template v-slot:[`item.performance`]="{ item }">
-        <v-chip small :color="getColor(item.performance)" dark class="d-flex justify-center">
-          {{ item.performance }}
-        </v-chip>
-      </template>
-      <template v-slot:[`item.advisor.name`]="{ item }">
-        {{ item.advisor ? item.advisor.name : "-" }}
-      </template>
-      <template v-slot:[`item.records.total_credits`]="{ item }">
-        {{ item.records.total_credits }}/{{ getTotalCredit(item.batch) }}
-      </template>
-    </v-data-table>
+  <div>
+    <v-row class="mb-3">
+      <v-col cols="6" md="3"
+        ><v-card class="performance-card"
+          ><div class="overline my-n1 red--text">Behind</div>
+          <div class="h3 text-right red--text ">
+            {{ totalBehind }}
+          </div></v-card
+        ></v-col
+      >
+      <v-col cols="6" md="3"
+        ><v-card class="performance-card"
+          ><div class="overline my-n1 green--text">On Track</div>
+          <div class="h3 text-right green--text ">
+            {{ totalOntrack }}
+          </div></v-card
+        ></v-col
+      >
+      <v-col cols="6" md="3"
+        ><v-card class="performance-card"
+          ><div class="overline my-n1 primary--text">Ahead</div>
+          <div class="h3 text-right primary--text ">
+            {{ totalAhead }}
+          </div></v-card
+        ></v-col
+      >
+      <v-col cols="6" md="3"
+        ><v-card class="performance-card"
+          ><div class="overline my-n1 grey--text">Others</div>
+          <div class="h3 text-right grey--text ">
+            {{ totalUncal }}
+          </div></v-card
+        ></v-col
+      >
+    </v-row>
+    <v-card class="pa-3">
+      <v-card-title
+        >All students
+        <v-spacer></v-spacer>
+        <v-select
+          :items="batchmenu"
+          v-model="batchFilterValue"
+          label="Batch"
+          width="50px"
+          class="mr-2 batch-select"
+        ></v-select>
+        <v-select
+          :items="advisorlist"
+          v-model="advisorFilterValue"
+          label="Advisor"
+          class="mr-2"
+        ></v-select>
+      </v-card-title>
+      <v-data-table
+        height="528"
+        v-if="loading"
+        loading
+        loading-text="Loading... Please wait"
+      ></v-data-table>
+      <v-data-table
+        v-else
+        :headers="headers"
+        :items="students"
+        mobile-breakpoint="680"
+        height="528"
+        class="home"
+        @click:row="showDialog"
+      >
+        <template v-slot:[`item.performance`]="{ item }">
+          <v-chip small :color="getColor(item.performance)" dark class="d-flex justify-center">
+            {{ item.performance }}
+          </v-chip>
+        </template>
+        <template v-slot:[`item.advisor.name`]="{ item }">
+          {{ item.advisor ? item.advisor.name : "-" }}
+        </template>
+        <template v-slot:[`item.records.total_credits`]="{ item }">
+          {{ item.records.total_credits }}/{{ getTotalCredit(item.batch) }}
+        </template>
+      </v-data-table>
 
-    <v-dialog v-model="dialog" max-width="700px">
-      <v-card>
-        <v-card-title class="overline lighten-2">
-          {{ stdDetail.name }}
-          <v-spacer></v-spacer>
-          <v-icon @click="dialog = false">mdi-close</v-icon>
-        </v-card-title>
-        <StudentInfo :stdDetail="stdDetail"></StudentInfo>
-      </v-card>
-    </v-dialog>
-  </v-card>
+      <v-dialog v-model="dialog" max-width="700px">
+        <v-card>
+          <v-card-title class="overline lighten-2">
+            {{ stdDetail.name }}
+            <v-spacer></v-spacer>
+            <v-icon @click="dialog = false">mdi-close</v-icon>
+          </v-card-title>
+          <StudentInfo :stdDetail="stdDetail"></StudentInfo>
+        </v-card>
+      </v-dialog>
+    </v-card>
+  </div>
 </template>
 <script>
 import StudentInfo from "../../students/components/std_info";
@@ -72,6 +108,10 @@ export default {
       advisorFilterValue: null,
       batchFilterValue: null,
       batchmenu: ["All"],
+      totalBehind: 0,
+      totalOntrack: 0,
+      totalAhead: 0,
+      totalUncal: 0,
       headers: [
         { text: "Student ID", sortable: false, filter: this.batchFilter, value: "sid" },
         { text: "Name", align: "start", sortable: false, value: "name" },
@@ -209,6 +249,23 @@ export default {
           this.$config.selectedBatches.forEach((batch) => {
             this.batchmenu.push(batch);
           });
+          for (const i in this.students) {
+            if (this.students[i].performance == "Behind") {
+              this.totalBehind += 1;
+            }
+            if (this.students[i].performance == "Ahead") {
+              this.totalAhead += 1;
+            }
+            if (this.students[i].performance == "On Track") {
+              this.totalOntrack += 1;
+            }
+            if (
+              this.students[i].performance == "Uncalculated" ||
+              this.students[i].performance == "Unknown"
+            ) {
+              this.totalUncal += 1;
+            }
+          }
           console.log(this.students);
           this.loading = false;
         })
@@ -231,9 +288,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.totaltxt {
-  color: #3c84fb;
-}
 .center {
   display: block;
   margin-left: auto;
@@ -245,5 +299,8 @@ export default {
 }
 .batch-select {
   max-width: 80px;
+}
+.performance-card {
+  padding: 10px;
 }
 </style>
