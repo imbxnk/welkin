@@ -331,7 +331,7 @@ export default {
           mutation {
             createAnnouncement(announcementInput: {
               title: "${this.announcements.newAnnouncement.title}",
-              content: "${this.announcements.newAnnouncement.content.replace(`"`,`'`)}",
+              content: "${this.announcements.newAnnouncement.content.replaceAll(`"`,`'`)}",
               startDate: "${this.announcements.newAnnouncement.range[0]}"
               endDate: "${this.announcements.newAnnouncement.range[1]}"
             }) {
