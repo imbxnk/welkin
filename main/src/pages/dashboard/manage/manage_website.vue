@@ -332,8 +332,8 @@ export default {
             createAnnouncement(announcementInput: {
               title: "${this.announcements.newAnnouncement.title}",
               content: "${this.announcements.newAnnouncement.content.replaceAll(`"`,`'`)}",
-              startDate: "${this.announcements.newAnnouncement.range[0]}"
-              endDate: "${this.announcements.newAnnouncement.range[1]}"
+              startDate: "${this.moment(this.announcements.newAnnouncement.range[0]).format('x')}"
+              endDate: "${this.moment(this.announcements.newAnnouncement.range[1]).format('x')}"
             }) {
               success
               message
