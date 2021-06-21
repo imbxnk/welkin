@@ -1048,10 +1048,6 @@ main {
   color: #fff !important;
 } */
 
-.wk-wysiwyg-editor {
-  margin-bottom: 20px
-}
-
 .wk-wysiwyg-editor > div {
   padding: 10px;
   border-radius: 5px;

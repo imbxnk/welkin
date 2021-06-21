@@ -135,7 +135,7 @@
                 <v-text-field
                   v-model="dateRangeText"
                   label="Duration"
-                  append-icon="mdi-calendar"
+                  append-outer-icon="mdi-calendar"
                   readonly
                   outlined
                   dense
