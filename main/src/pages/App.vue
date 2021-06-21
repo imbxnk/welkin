@@ -378,6 +378,7 @@ export default {
       "%c6080728 Kanin S. (Mix)\n6080727 Phattharaporn R. (Phat)\n6080728 Phongchai P. (Bank)\n6080779 Santhisa CH. (Nhan)",
       "font-size: 0.7rem; color: #666"
     );
+
     const appHeight = () => {
       const doc = document.documentElement;
       doc.style.setProperty("--app-height", `${window.innerHeight}px`);
