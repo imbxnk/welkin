@@ -7,7 +7,7 @@
           <v-card-title class="m-0 p-0 d-flex justify-content-between" style="font-size: 1.1rem">
             {{ announcement.title }}
             <v-card-subtitle class="m-0 p-0">{{
-              readableDate(announcement.createdAt) + " - " + readableDate(announcement.endDate)
+              readableDate(announcement.startDate) + " - " + readableDate(announcement.endDate)
             }}</v-card-subtitle>
           </v-card-title>
           <v-card-text class="m-0 p-0 pt-2" v-html="announcement.content"></v-card-text> </v-card
@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     readableDate(date) {
-      return this.moment(parseInt(date)).format("DD MMMM YYYY (HH:MM)");
+      return this.moment(parseInt(date)).format("DD MMMM YYYY");
     },
   },
 };

@@ -92,7 +92,7 @@
                 </div>
               </template>
               <template v-slot:[`item.content`]="{ item }">
-                <div class="text-truncate" style="max-width: 600px;">
+                <div class="text-truncate" style="max-width: 400px;">
                   {{ item.content }}
                 </div>
               </template>
@@ -100,7 +100,7 @@
                 {{ item.user.display_name || item.user.username }}
               </template>
               <template v-slot:[`item.duration`]="{ item }">
-                {{ getDuration(item.endDate) }}
+                {{ getDuration(item.startDate, item.endDate) }}
               </template>
             </v-data-table>
           </div>
@@ -195,7 +195,7 @@ export default {
       headers: [
         { text: "Title", sortable: false, value: "title", width: "10%" },
         { text: "Content", sortable: false, value: "content", width: "60%" },
-        { text: "Days Left", sortable: false, value: "duration", width: "10%", align: "center" },
+        { text: "Status", sortable: false, value: "duration", width: "10%", align: "center" },
         { text: "Creator", sortable: false, value: "user", width: "1%" },
       ],
       items: [],
@@ -312,10 +312,12 @@ export default {
           this.batches.loading = false
         });
     },
-    getDuration(endDate) {
+    getDuration(startDate, endDate) {
+      let start = this.moment(parseInt(startDate))
       let now = this.moment()
       let end = this.moment(parseInt(endDate))
       let duration = this.moment.duration(end.diff(now))
+      if(start > now && end > now) return 'Scheduled'
       return now < end ? this.moment.utc(duration.as('milliseconds')).format('DD') + ' days' : 'End'
     },
     disablePastDates(val) {
@@ -327,6 +329,8 @@ export default {
     },
     addAnnouncement() {
       this.announcements.loading = true
+      console.log(this.moment(this.announcements.newAnnouncement.range[0]).format('x'))
+      console.log(this.moment(this.announcements.newAnnouncement.range[1]).format('x'))
       let query = `
           mutation {
             createAnnouncement(announcementInput: {
@@ -398,21 +402,5 @@ h5 {
 
 .v-picker--date, .v-menu__content {
   border-radius: 20px !important;
-}
-</style>
-
-<style lang="scss" scoped>
-::v-deep {
-  /* Basic editor styles */
-  .ProseMirror {
-    > * + * {
-      margin-top: 0.75em;
-    }
-
-    code {
-      background-color: rgba(#616161, 0.1);
-      color: #616161;
-    }
-  }
 }
 </style>

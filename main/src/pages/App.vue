@@ -78,7 +78,7 @@
                       <v-list-item-content>
                         <v-list-item-title>{{ item.title }}</v-list-item-title>
                         <v-list-item-subtitle style="opacity: 0.4; font-size: 0.7rem">{{
-                          readableDate(item.createdAt) + " - " + readableDate(item.endDate)
+                          readableDate(item.startDate) + " - " + readableDate(item.endDate)
                         }}</v-list-item-subtitle>
                         <!-- <v-list-item-subtitle>{{ item.user.display_name || item.user.username }}</v-list-item-subtitle> -->
                         <v-list-item-subtitle class="wrap-text mt-2"
