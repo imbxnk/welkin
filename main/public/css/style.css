@@ -1047,3 +1047,37 @@ main {
   background: #3c84fb !important;
   color: #fff !important;
 } */
+
+.wk-wysiwyg-editor {
+  margin-bottom: 20px
+}
+
+.wk-wysiwyg-editor > div {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid rgb(118, 118, 118);
+  min-height: 70px;
+  font-size: 1rem;
+}
+
+.wk-wysiwyg-editor > div:hover {
+  border: 1px solid rgb(0 0 0 / 87%);
+}
+
+.wk-wysiwyg-editor > div > p {
+  margin: 0px;
+}
+
+.wk-wysiwyg-editor > div:focus {
+  outline-color: var(--primary);
+}
+
+.wk-wysiwyg-menu {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.wk-wysiwyg-menu .wk-wysiwyg-btn {
+  padding: 5px;
+}

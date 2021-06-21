@@ -2,6 +2,7 @@
 <v-container class="mx-auto">
   <div class="d-flex flex-column p-2 bd-highlight">
     <div class="p-2 bd-highlight">
+      <!-- SELECTED BATCHES -->
       <v-card style="max-width: auto">
           <div class="d-flex align-items-center mx-4 pt-4">
             <div class="d-flex flex-column flex-grow-1">
@@ -60,13 +61,22 @@
           <v-card-actions>
           </v-card-actions>
       </v-card>
+
       <v-divider></v-divider>
+      <!-- ANNOUNCEMENT -->
       <v-card style="max-width: auto">
         <div class="d-flex align-items-center mx-4 pt-4">
           <div class="d-flex flex-column flex-grow-1">
             <h5 class="m-0">Announcements</h5>
             <span style="font-size: 0.9rem; opacity: 0.8">Manage the announcements</span>
           </div>
+          <v-btn
+              icon
+              @click="announcements.addDialog = true"
+            >
+              <v-icon v-if="!batches.loading">mdi-plus</v-icon>
+              <div v-else class="wk-spinner mx-auto my-4"></div>
+            </v-btn>
         </div>
         <v-container>
           <div class="m-0 d-flex flex-wrap flex-column">
@@ -74,25 +84,106 @@
               :headers="announcements.headers"
               :items="announcements.items"
               mobile-breakpoint="0"
-              class="px-3 pb-3"
-              hide-default-footer
+              :hide-default-footer="announcements.items.length <= 5"
             >
+              <template v-slot:[`item.title`]="{ item }">
+                <div class="text-truncate" style="max-width: 100px;">
+                  {{ item.title }}
+                </div>
+              </template>
+              <template v-slot:[`item.content`]="{ item }">
+                <div class="text-truncate" style="max-width: 600px;">
+                  {{ item.content }}
+                </div>
+              </template>
               <template v-slot:[`item.user`]="{ item }">
                 {{ item.user.display_name || item.user.username }}
               </template>
               <template v-slot:[`item.duration`]="{ item }">
-                {{ getDuration(item.endDate, item.startDate) }}
+                {{ getDuration(item.endDate) }}
               </template>
             </v-data-table>
           </div>
         </v-container>
       </v-card>
+
+      <v-dialog v-model="announcements.addDialog" max-width="500px">
+        <v-card>
+          <v-card-title
+            >Add Announcement
+            <v-spacer></v-spacer>
+            <v-icon @click="announcements.addDialog = false" tabindex="-1">mdi-close</v-icon></v-card-title
+          >
+          <v-card-text class="mt-4">
+            <v-text-field
+              v-model="announcements.newAnnouncement.title"
+              label="Subject"
+              outlined
+              dense
+            ></v-text-field>
+
+            <v-menu
+              ref="startDateMenu"
+              v-model="announcements.newAnnouncement.startDateMenu"
+              :close-on-content-click="false"
+              :return-value.sync="announcements.newAnnouncement.range"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="dateRangeText"
+                  label="Duration"
+                  append-icon="mdi-calendar"
+                  readonly
+                  outlined
+                  dense
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="announcements.newAnnouncement.range"
+                no-title
+                range
+                :allowed-dates="disablePastDates"
+              >
+                <v-spacer></v-spacer>
+                <v-btn
+                  text
+                  color="primary"
+                  @click="menu = false"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.startDateMenu.save(announcements.newAnnouncement.range)"
+                >
+                  OK
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
+            <WYSIWYG v-model="announcements.newAnnouncement.content" placeholder="Content"></WYSIWYG>
+          </v-card-text>
+          <v-card-actions class="pb-4 d-flex justify-content-end">
+            <v-btn
+              :disabled="announcements.newAnnouncement.content.length <= 7 || announcements.newAnnouncement.title.length == 0"
+              color="primary"
+              @click="addAnnouncement"
+            >Create</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </div>
 </v-container>
 </template>
 
 <script>
+import WYSIWYG from './components/editor.vue'
 export default {
   data: () => ({
     batches: {
@@ -102,17 +193,29 @@ export default {
     },
     announcements: {
       headers: [
-        { text: "Title", sortable: false, value: "title", width: "20%" },
+        { text: "Title", sortable: false, value: "title", width: "10%" },
         { text: "Content", sortable: false, value: "content", width: "60%" },
-        { text: "Duration", sortable: false, value: "duration", width: "1%" },
+        { text: "Days Left", sortable: false, value: "duration", width: "10%", align: "center" },
         { text: "Creator", sortable: false, value: "user", width: "1%" },
       ],
       items: [],
+      addDialog: false,
+      newAnnouncement: {
+        startDateMenu: false,
+        title: '',
+        content: '',
+        range: [],
+      },
       loading: false,
     }
   }),
 
+  components: {
+    WYSIWYG
+  },
+
   mounted() {
+    this.getDefaultRanged()
     this.getBatches()
     this.batches.selected = this.$config.selectedBatches
     this.getAnnouncements()
@@ -130,6 +233,9 @@ export default {
       }
 
       return selections
+    },
+    dateRangeText () {
+      return this.announcements.newAnnouncement.range.join(' ~ ')
     },
   },
 
@@ -206,12 +312,53 @@ export default {
           this.batches.loading = false
         });
     },
-    getDuration(startDate, endDate) {
-      let start = this.moment(parseInt(startDate))
+    getDuration(endDate) {
+      let now = this.moment()
       let end = this.moment(parseInt(endDate))
-      let duration = this.moment.duration(start.diff(end))
-      return this.moment.utc(duration.as('milliseconds')).format('DD') + ' days'
-    }
+      let duration = this.moment.duration(end.diff(now))
+      return now < end ? this.moment.utc(duration.as('milliseconds')).format('DD') + ' days' : 'End'
+    },
+    disablePastDates(val) {
+      let current = this.announcements.startDate || new Date().toISOString().substr(0, 10)
+      return val >= current
+    },
+    getDefaultRanged() {
+      this.announcements.newAnnouncement.range = [this.moment().toISOString().substr(0,10), this.moment().add(1,'days').toISOString().substr(0,10)]
+    },
+    addAnnouncement() {
+      this.announcements.loading = true
+      let query = `
+          mutation {
+            createAnnouncement(announcementInput: {
+              title: "${this.announcements.newAnnouncement.title}",
+              content: "${this.announcements.newAnnouncement.content}",
+              startDate: "${this.announcements.newAnnouncement.range[0]}"
+              endDate: "${this.announcements.newAnnouncement.range[1]}"
+            }) {
+              success
+              message
+            }
+          }
+      `
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          console.log(res.data)
+          this.announcements.loading = false;
+          this.announcements.addDialog = false;
+          this.announcements.newAnnouncement = {
+            startDateMenu: false,
+            title: '',
+            content: '',
+            range: [],
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          this.announcements.loading = false;
+        });
+    },
   },
 }
 </script>
@@ -247,5 +394,25 @@ h5 {
 	100% {
 		transform: rotate(360deg)
 	}
+}
+
+.v-picker--date, .v-menu__content {
+  border-radius: 20px !important;
+}
+</style>
+
+<style lang="scss" scoped>
+::v-deep {
+  /* Basic editor styles */
+  .ProseMirror {
+    > * + * {
+      margin-top: 0.75em;
+    }
+
+    code {
+      background-color: rgba(#616161, 0.1);
+      color: #616161;
+    }
+  }
 }
 </style>

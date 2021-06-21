@@ -610,7 +610,7 @@ export default {
       else this.notifications.push(id);
     },
     readableDate(date) {
-      return this.moment(parseInt(date)).format("DD MMMM YYYY (HH:MM)");
+      return this.moment(parseInt(date)).format("DD MMMM YYYY");
     },
   },
 };
