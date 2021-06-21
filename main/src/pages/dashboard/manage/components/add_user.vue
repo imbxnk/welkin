@@ -66,7 +66,7 @@
           </v-card-actions>
         </v-form>
 
-        <v-dialog v-model="dialog" max-width="450px">
+        <v-dialog v-model="dialog1" max-width="450px">
           <v-card>
             <v-card-title class="headline grey lighten-2"> Confirm Add </v-card-title><br />
             <v-card-text
@@ -165,13 +165,13 @@ export default {
                     message
                     }
                 }`;
-      query = query.replace(/\s+/g, ' ').trim()
+      query = query.replace(/\s+/g, " ").trim();
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           console.log(res);
           this.clearText();
-          this.dialog = false
+          this.dialog = false;
         })
         .catch((err) => {
           console.log(err);
