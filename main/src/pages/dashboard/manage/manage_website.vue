@@ -152,14 +152,15 @@
                 <v-spacer></v-spacer>
                 <v-btn
                   text
-                  color="primary"
-                  @click="menu = false"
+                  color="#999"
+                  @click="announcements.newAnnouncement.startDateMenu = false; announcements.newAnnouncement.range = []"
                 >
                   Cancel
                 </v-btn>
                 <v-btn
                   text
                   color="primary"
+                  :disabled="announcements.newAnnouncement.range.length < 2"
                   @click="$refs.startDateMenu.save(announcements.newAnnouncement.range)"
                 >
                   OK
@@ -170,7 +171,7 @@
           </v-card-text>
           <v-card-actions class="pb-4 d-flex justify-content-end">
             <v-btn
-              :disabled="announcements.newAnnouncement.content.length <= 7 || announcements.newAnnouncement.title.length == 0"
+              :disabled="announcements.newAnnouncement.content.length <= 7 || announcements.newAnnouncement.title.length == 0 || announcements.newAnnouncement.range.length < 2"
               color="primary"
               @click="addAnnouncement"
             >Create</v-btn>
@@ -215,7 +216,6 @@ export default {
   },
 
   mounted() {
-    this.getDefaultRanged()
     this.getBatches()
     this.batches.selected = this.$config.selectedBatches
     this.getAnnouncements()
@@ -323,9 +323,6 @@ export default {
     disablePastDates(val) {
       let current = this.announcements.startDate || new Date().toISOString().substr(0, 10)
       return val >= current
-    },
-    getDefaultRanged() {
-      this.announcements.newAnnouncement.range = [this.moment().toISOString().substr(0,10), this.moment().add(1,'days').toISOString().substr(0,10)]
     },
     addAnnouncement() {
       this.announcements.loading = true
