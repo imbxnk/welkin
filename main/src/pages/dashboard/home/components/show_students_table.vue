@@ -5,7 +5,10 @@
         ><v-card class="performance-card"
           ><div class="overline my-n1 red--text">Behind</div>
           <div class="h3 text-right red--text ">
-            {{ totalBehind }}
+            <span v-if="loading"
+              ><v-progress-circular :size="25" color="red" indeterminate></v-progress-circular
+            ></span>
+            <span v-else> {{ totalBehind }}</span>
           </div></v-card
         ></v-col
       >
@@ -13,7 +16,10 @@
         ><v-card class="performance-card"
           ><div class="overline my-n1 green--text">On Track</div>
           <div class="h3 text-right green--text ">
-            {{ totalOntrack }}
+            <span v-if="loading"
+              ><v-progress-circular :size="25" color="green" indeterminate></v-progress-circular
+            ></span>
+            <span v-else>{{ totalOntrack }}</span>
           </div></v-card
         ></v-col
       >
@@ -21,7 +27,10 @@
         ><v-card class="performance-card"
           ><div class="overline my-n1 primary--text">Ahead</div>
           <div class="h3 text-right primary--text ">
-            {{ totalAhead }}
+            <span v-if="loading"
+              ><v-progress-circular :size="25" color="primary" indeterminate></v-progress-circular
+            ></span>
+            <span v-else> {{ totalAhead }}</span>
           </div></v-card
         ></v-col
       >
@@ -29,7 +38,10 @@
         ><v-card class="performance-card"
           ><div class="overline my-n1 grey--text">Others</div>
           <div class="h3 text-right grey--text ">
-            {{ totalUncal }}
+            <span v-if="loading"
+              ><v-progress-circular :size="25" color="green" indeterminate></v-progress-circular
+            ></span>
+            <span v-else> {{ totalUncal }}</span>
           </div></v-card
         ></v-col
       >
