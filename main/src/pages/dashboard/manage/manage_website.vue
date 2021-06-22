@@ -318,7 +318,7 @@ export default {
       let end = this.moment(parseInt(endDate))
       let duration = this.moment.duration(end.diff(now))
       if(start > now && end > now) return 'Scheduled'
-      return now < end ? this.moment.utc(duration.as('milliseconds')).format('DD') + ' days' : 'End'
+      return now < end ? this.moment.utc(duration.as('milliseconds')).format('D') + ' days' : 'End'
     },
     disablePastDates(val) {
       let current = this.announcements.startDate || new Date().toISOString().substr(0, 10)
