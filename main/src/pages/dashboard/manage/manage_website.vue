@@ -326,15 +326,20 @@ export default {
     },
     addAnnouncement() {
       this.announcements.loading = true
-      console.log(this.moment(this.announcements.newAnnouncement.range[0]).format('x'))
-      console.log(this.moment(this.announcements.newAnnouncement.range[1]).format('x'))
+      let startDate = this.moment(this.announcements.newAnnouncement.range[0]).format('x')
+      let endDate = this.moment(this.announcements.newAnnouncement.range[1]).format('x')
+      if(startDate > endDate) {
+        let tmp = startDate
+        startDate = endDate
+        endDate = tmp
+      }
       let query = `
           mutation {
             createAnnouncement(announcementInput: {
               title: "${this.announcements.newAnnouncement.title}",
               content: "${this.announcements.newAnnouncement.content.replaceAll(`"`,`'`)}",
-              startDate: "${this.moment(this.announcements.newAnnouncement.range[0]).format('x')}"
-              endDate: "${this.moment(this.announcements.newAnnouncement.range[1]).format('x')}"
+              startDate: "${startDate}"
+              endDate: "${endDate}"
             }) {
               success
               message
