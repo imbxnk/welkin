@@ -18,7 +18,7 @@
           <div class="wk-remain-std-wrap">
             <div class="wk-remain-std-box">
               <div v-for="(student, i) in unregistered" :key="i" class="my-2">
-                {{ i+1 + ". " }} {{ student.name }} {{ checkNull(student.nick_name) }}
+                {{ i+1 + ". " }} <router-link style="text-decoration: none" target="_blank" :to="{name: 'student_record', params: { sid: student.sid }}">{{ student.name }} {{ checkNull(student.nick_name) }}</router-link>
                 <span style="float: right">{{ student.sid }} </span>
               </div>
               <div v-if="unregistered.length === 0">None</div>
