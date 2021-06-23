@@ -5,7 +5,31 @@
       <v-card class="mt-3">
         <v-row>
           <v-col cols="12" sm="6">
-            <v-card-title class="pt-4 mb-n10">Course List</v-card-title></v-col
+            <v-card-title class="pt-4 mb-n10"
+              >Course List
+              <v-tooltip
+                v-if="
+                  this.$currentUser.group == 'coordinator' ||
+                    this.$currentUser.group == 'program director' ||
+                    this.$currentUser.group == 'admin'
+                "
+                bottom
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    small
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                    class="mx-3"
+                    @click="$router.push(`/course_overall`)"
+                    ><v-icon dark>
+                      mdi-information
+                    </v-icon></v-btn
+                  ></template
+                ><span>see overall</span></v-tooltip
+              ></v-card-title
+            ></v-col
           ><v-col class="mx-4">
             <v-text-field
               v-model="search"
@@ -197,13 +221,13 @@ export default {
               }
             }
           `;
-      query = query.replace(/\s+/g, ' ').trim()
+      query = query.replace(/\s+/g, " ").trim();
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.items = [...res.data.data.courses.courses];
           this.loading = false;
-          this.curriculums = [...res.data.data.curriculums.curriculums]
+          this.curriculums = [...res.data.data.curriculums.curriculums];
         })
         .catch((err) => {
           console.log(err);
