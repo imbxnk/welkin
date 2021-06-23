@@ -20,7 +20,7 @@
             <v-card-text class="m-0 p-0 pt-2" v-html="announcement.content"></v-card-text> </v-card
         ></span>
         <span v-else>
-          <v-card class="announce-card">
+          <v-card elevation="0" color="#f7f7f8" class="announce-card">
             <span style="color: #b4b4b4">There are currently no announcements.</span>
           </v-card>
         </span>
