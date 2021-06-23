@@ -28,7 +28,7 @@
     </div>
 
     <!-- add remark -->
-    <v-dialog v-model="dialog" max-width="300px">
+    <v-dialog v-model="dialog" max-width="500px">
       <v-card class=" pa-3">
         <v-card-title>
           <v-spacer></v-spacer>
@@ -220,7 +220,7 @@ export default {
                   }
                 }
               `;
-      query = query.replace(/\s+/g, ' ').trim()
+      query = query.replace(/\s+/g, " ").trim();
       this.axios
         .post(
           process.env.VUE_APP_GRAPHQL_URL,
