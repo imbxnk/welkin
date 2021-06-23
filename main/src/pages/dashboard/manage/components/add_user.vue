@@ -13,18 +13,18 @@
           <v-icon @click="dialogClose()">mdi-close</v-icon></v-card-title
         >
         <v-form ref="form" v-model="valid" lazy-validation class="pa-3">
-          <div class="d-flex px-3 bd-highlight flex-column flex-sm-row">
-            <div class="flex-md-fill pr-md-1">
+          <div class="d-flex justify-content-center flex-column">
+            <div class="px-3">
               <v-text-field
                 ref="firstName"
                 v-model="firstName"
-                label="First Name"
+                label="Given Name"
                 outlined
                 required
                 :rules="[() => !!firstName || 'Required']"
               ></v-text-field>
             </div>
-            <div class="flex-md-fill pl-md-1">
+            <div class="px-3">
               <v-text-field
                 ref="familyName"
                 v-model="familyName"
@@ -57,6 +57,16 @@
                   () => (!!password && password.length >= 4) || 'Required at least 4 characters',
                 ]"
               ></v-text-field>
+            </div>
+            <div class="px-3">
+              <v-select
+                ref="group"
+                :items="items"
+                v-model="group"
+                label="Group"
+                required
+                outlined
+              ></v-select>
             </div>
           </div>
           <v-card-actions>
@@ -102,6 +112,8 @@ export default {
       familyName: "",
       email: "",
       password: "",
+      group: "",
+      items: ["coordinator", "program director", "lecturer"],
       dialog: false,
       dialog1: false,
       snackbar: false,
@@ -110,6 +122,7 @@ export default {
         familyName: "",
         email: "",
         password: "",
+        group: "",
       },
       valid: true,
       rules: {
@@ -128,12 +141,17 @@ export default {
         familyName: this.familyName,
         email: this.email,
         password: this.password,
+        group: this.group,
       };
     },
   },
   methods: {
     clearText() {
-      (this.firstName = ""), (this.familyName = ""), (this.email = ""), (this.password = "");
+      (this.firstName = ""),
+        (this.familyName = ""),
+        (this.email = ""),
+        (this.password = ""),
+        (this.group = "");
       Object.keys(this.form).forEach((f) => {
         this.$refs[f].reset();
       });
@@ -146,6 +164,7 @@ export default {
         this.input.familyName = this.familyName;
         this.input.email = this.email;
         this.input.password = this.password;
+        this.input.group = this.group;
         this.dialog = true;
       } else {
       }
@@ -160,7 +179,8 @@ export default {
                         given_name : "${this.input.firstName}",
                         family_name : "${this.input.familyName}",
                         password : "${this.input.password}",
-                        email : "${this.input.email}",}) {
+                        email : "${this.input.email}",
+                        group :"${this.input.group}"}) {
                     success
                     message
                     }
