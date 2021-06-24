@@ -137,7 +137,7 @@ export default {
       items: ["coordinator", "program director", "lecturer"],
       dialog: false,
       dialog1: false,
-      snackbar: true,
+      snackbar: false,
       input: {
         firstName: "",
         familyName: "",

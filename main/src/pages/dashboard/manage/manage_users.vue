@@ -2,7 +2,7 @@
   <v-container class="mx-auto">
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
-        <AddUser></AddUser>
+        <AddUser ></AddUser>
       </div>
       <div class="p-2 bd-highlight">
         <v-card style="max-width: auto"
