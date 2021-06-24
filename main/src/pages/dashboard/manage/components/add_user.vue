@@ -137,7 +137,7 @@ export default {
       items: ["coordinator", "program director", "lecturer"],
       dialog: false,
       dialog1: false,
-      snackbar: false,
+      snackbar: true,
       input: {
         firstName: "",
         familyName: "",
@@ -179,12 +179,14 @@ export default {
   },
   methods: {
     clearText() {
+      this.dialog = false;
+      this.dialog1 = false;
       (this.firstName = ""),
-        (this.familyName = ""),
-        (this.email = ""),
-        (this.linked_instructor = null),
-        (this.password = ""),
-        (this.group = "");
+      (this.familyName = ""),
+      (this.email = ""),
+      (this.linked_instructor = null),
+      (this.password = ""),
+      (this.group = "");
       Object.keys(this.form).forEach((f) => {
         this.$refs[f].reset();
       });
@@ -226,10 +228,11 @@ export default {
         .then((res) => {
           console.log(res);
           this.clearText();
-          this.dialog = false;
+          this.snackbar = true;
         })
         .catch((err) => {
           console.log(err);
+          this.snackbar = true;
         });
     },
     getInstructors() {
