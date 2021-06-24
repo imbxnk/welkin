@@ -211,13 +211,13 @@ export default {
     },
     addUser() {
       let query = `mutation {
-                    createUser (userInput : {
-                        given_name : "${this.input.firstName}",
-                        family_name : "${this.input.familyName}",
-                        password : "${this.input.password}",
-                        email : "${this.input.email}",
-                        linked_instructor:  ${this.input.linked_instructor ? (this.input.linked_instructor._id ? '"' + this.input.linked_instructor._id + '"' : null) : null },
-                        ${this.input.group ? 'group: "' + this.input.group + '"' : ''}
+                    createUser (userInput: {
+                        given_name: "${this.input.firstName}",
+                        family_name: "${this.input.familyName}",
+                        password: "${this.input.password}",
+                        email: "${this.input.email}",
+                        linked_instructor:  ${this.input.linked_instructor ? (this.input.linked_instructor._id ? '"' + this.input.linked_instructor._id + '"' : null) : null }
+                        ${this.input.group ? ', group: "' + this.input.group + '"' : ''}
                     ) {
                     success
                     message
