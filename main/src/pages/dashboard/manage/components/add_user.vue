@@ -217,7 +217,8 @@ export default {
                         password : "${this.input.password}",
                         email : "${this.input.email}",
                         linked_instructor:  ${this.input.linked_instructor ? (this.input.linked_instructor._id ? '"' + this.input.linked_instructor._id + '"' : null) : null },
-                        group :"${this.input.group}"}) {
+                        ${this.input.group ? 'group: "' + this.input.group + '"' : ''}
+                    ) {
                     success
                     message
                     }
