@@ -22,7 +22,7 @@
         Loading... ฝากแก้ด้วย เป็นแท่งยาว ๆ ก็ได้
       </div>
       <div v-else>
-        <div class="toggle" @click="remain = !remain" style="cursor: pointer">See {{ remain ? "Registered" : "Remain" }}</div>
+        <div class="toggle"><div @click="remain = !remain" >See {{ remain ? "Registered" : "Remain" }}</div></div>
         <table class="table table-hover wk-overall-table">
           <tr>
             <th rowspan="2" align="center" style="text-align: center !important; vertical-align: bottom">Type</th>
@@ -131,7 +131,7 @@ export default {
         if(curriculum.batches.includes(batch) && courses.filter(c => c.code === course.code).length > 0) return check = true
       })
       if(check) return this.remain ? course.unregistered.filter((e) => e.batch === batch).length : course.students.filter((e) => e.batch === batch).length
-      return "-"
+      return "✕"
     }
   },
 };
@@ -142,7 +142,7 @@ export default {
 } */
 
 .wk-overall-table tr:not(:nth-child(2)) th:first-child {
-  width: 100px;
+  width: 80px;
 }
 
 .wk-overall-table tr:not(:nth-child(2)) th:nth-child(2) {
@@ -160,6 +160,10 @@ export default {
 .toggle {
   display: flex;
   justify-content: flex-end;
+}
+
+.toggle div {
+  cursor: pointer;
   padding: 10px 5px;
   margin-bottom: 10px;
   color: var(--primary);
