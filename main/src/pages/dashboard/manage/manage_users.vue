@@ -128,11 +128,13 @@
               :items="instructors"
               outlined
               v-model="editedItem.linked_instructor"
+              item-value="_id"
+              item-text="name"
             >
-              <template slot="selection" slot-scope="data">
+              <template v-slot:selection="data">
                 {{ data.item.title }} {{ data.item.name }}
               </template>
-              <template slot="item" slot-scope="data">
+              <template v-slot:item="data">
                 {{ data.item.title }} {{ data.item.name }}
               </template>
             </v-select>
