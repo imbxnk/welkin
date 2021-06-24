@@ -21,27 +21,30 @@
       <div class="px-4" v-if="loading">
         Loading... ฝากแก้ด้วย เป็นแท่งยาว ๆ ก็ได้
       </div>
-      <table class="table table-hover wk-overall-table" v-else>
-        <tr>
-          <th rowspan="2" align="center" style="text-align: center !important; vertical-align: bottom">Type</th>
-          <th rowspan="2" align="center" style="text-align: center !important; vertical-align: bottom">Code</th>
-          <th rowspan="2" align="center" style="vertical-align: bottom">Course Name</th>
-          <th :colspan="this.$config.selectedBatches.length" align="center">Remain Student</th>
-        </tr>
-        <tr>
-          <th style="text-align: center !important;" v-for="(batch, i) in $config.selectedBatches" :key="i">{{ batch }}</th>
-        </tr>
-        <template v-for="(course, i) in courses">
-          <tr :key="i" :class="{darken: i%2 == 0}">
-            <td align="center">{{ course.category }}</td>
-            <td align="center"><router-link style="text-decoration: none; color:inherit" target="_blank" :to="{ name: 'course_detail', params: { code: course.code.toLowerCase() }}">{{ course.code }}</router-link></td>
-            <td><router-link style="text-decoration: none; color:inherit" target="_blank" :to="{ name: 'course_detail', params: { code: course.code.toLowerCase() }}">{{ course.name }}</router-link></td>
-            <template v-for="j in $config.selectedBatches">
-              <td align="center" :key="j">{{ getRemainOfBatch(j, course) }}</td>
-            </template>
+      <div v-else>
+        <div class="toggle" @click="remain = !remain" style="cursor: pointer">See {{ remain ? "Registered" : "Remain" }}</div>
+        <table class="table table-hover wk-overall-table">
+          <tr>
+            <th rowspan="2" align="center" style="text-align: center !important; vertical-align: bottom">Type</th>
+            <th rowspan="2" align="center" style="text-align: center !important; vertical-align: bottom">Code</th>
+            <th rowspan="2" align="center" style="vertical-align: bottom">Course Name</th>
+            <th :colspan="this.$config.selectedBatches.length" align="center">{{ remain ? "Remain" : "Registered" }} Student</th>
           </tr>
-        </template>
-      </table>
+          <tr>
+            <th style="text-align: center !important;" v-for="(batch, i) in $config.selectedBatches" :key="i">{{ batch }}</th>
+          </tr>
+          <template v-for="(course, i) in courses">
+            <tr :key="i" :class="{darken: i%2 == 0}">
+              <td align="center">{{ course.category }}</td>
+              <td align="center"><router-link style="text-decoration: none; color:inherit" target="_blank" :to="{ name: 'course_detail', params: { code: course.code.toLowerCase() }}">{{ course.code }}</router-link></td>
+              <td><router-link style="text-decoration: none; color:inherit" target="_blank" :to="{ name: 'course_detail', params: { code: course.code.toLowerCase() }}">{{ course.name }}</router-link></td>
+              <template v-for="j in $config.selectedBatches">
+                <td align="center" :key="j">{{ getRemainOfBatch(j, course) }}</td>
+              </template>
+            </tr>
+          </template>
+        </table>
+      </div>
     </v-card>
   </div>
 </template>
@@ -55,6 +58,7 @@ export default {
     return {
       courses: [],
       loading: true,
+      remain: true,
       curriculums: []
     };
   },
@@ -123,11 +127,10 @@ export default {
     getRemainOfBatch(batch, course) {
       let check = false
       this.curriculums.forEach((curriculum) => {
-        console.log(curriculum)
         let courses = [...curriculum.courses.core_courses, ...curriculum.courses.required_courses, ...curriculum.courses.elective_courses]
         if(curriculum.batches.includes(batch) && courses.filter(c => c.code === course.code).length > 0) return check = true
       })
-      if(check) return course.unregistered.filter((e) => e.batch === batch).length
+      if(check) return this.remain ? course.unregistered.filter((e) => e.batch === batch).length : course.students.filter((e) => e.batch === batch).length
       return "-"
     }
   },
@@ -152,5 +155,12 @@ export default {
 
 .darken {
   background: rgba(100,100,100,0.03);
+}
+
+.toggle {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0;
+  margin-bottom: 10px;
 }
 </style>
