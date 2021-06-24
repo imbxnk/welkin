@@ -160,7 +160,8 @@ export default {
 .toggle {
   display: flex;
   justify-content: flex-end;
-  padding: 10px 0;
+  padding: 10px 5px;
   margin-bottom: 10px;
+  color: var(--primary);
 }
 </style>
