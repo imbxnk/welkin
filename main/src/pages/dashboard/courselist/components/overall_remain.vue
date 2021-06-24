@@ -167,5 +167,10 @@ export default {
   padding: 10px 5px;
   margin-bottom: 10px;
   color: var(--primary);
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }
 </style>
