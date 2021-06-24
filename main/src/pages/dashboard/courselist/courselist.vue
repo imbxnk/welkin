@@ -22,7 +22,7 @@
                     v-bind="attrs"
                     v-on="on"
                     class="mx-3"
-                    @click="$router.push(`/course_overall`)"
+                    @click="$router.push({ name: 'course_overall' })"
                     ><v-icon dark>
                       mdi-information
                     </v-icon></v-btn
@@ -226,8 +226,8 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.items = [...res.data.data.courses.courses];
-          this.loading = false;
           this.curriculums = [...res.data.data.curriculums.curriculums];
+          this.loading = false;
         })
         .catch((err) => {
           console.log(err);

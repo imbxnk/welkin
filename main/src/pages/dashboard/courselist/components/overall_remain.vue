@@ -16,66 +16,94 @@
       </svg>
       BACK</a
     >
-    <v-card class=" pa-3">
+    <v-card class=" pa-3" style="overflow: auto;">
       <v-card-title>Overall Student Registration</v-card-title>
-
-      <table class="table table-hover">
+      <div class="px-4" v-if="loading">
+        Loading... ฝากแก้ด้วย เป็นแท่งยาว ๆ ก็ได้
+      </div>
+      <table class="table table-hover wk-overall-table" v-else>
         <tr>
-          <th rowspan="2" align="center">Course Type</th>
-          <th rowspan="2" align="center">Course Name</th>
-          <th colspan="6" align="center">Remain Student</th>
+          <th rowspan="2" align="center" style="text-align: center !important; vertical-align: bottom">Type</th>
+          <th rowspan="2" align="center" style="text-align: center !important; vertical-align: bottom">Code</th>
+          <th rowspan="2" align="center" style="vertical-align: bottom">Course Name</th>
+          <th :colspan="this.$config.selectedBatches.length" align="center">Remain Student</th>
         </tr>
         <tr>
-          <th v-for="(batch, i) in this.$config.selectedBatches" :key="i">{{ batch }}</th>
+          <th style="text-align: center !important;" v-for="(batch, i) in $config.selectedBatches" :key="i">{{ batch }}</th>
         </tr>
-        <tr v-for="(course, i) in courses" :key="i">
-          <td align="center">{{ course.category }}</td>
-          <td>{{ course.name }}</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-        </tr>
+        <template v-for="(course, i) in courses">
+          <tr :key="i" :class="{darken: i%2 == 0}">
+            <td align="center">{{ course.category }}</td>
+            <td align="center"><router-link style="text-decoration: none; color:inherit" target="_blank" :to="{ name: 'course_detail', params: { code: course.code.toLowerCase() }}">{{ course.code }}</router-link></td>
+            <td><router-link style="text-decoration: none; color:inherit" target="_blank" :to="{ name: 'course_detail', params: { code: course.code.toLowerCase() }}">{{ course.name }}</router-link></td>
+            <template v-for="j in $config.selectedBatches">
+              <td align="center" :key="j">{{ getRemainOfBatch(j, course) }}</td>
+            </template>
+          </tr>
+        </template>
       </table>
     </v-card>
   </div>
 </template>
 <script>
 export default {
-  name: "Overall_Remain",
+  name: "course_overall",
   props: [],
   components: {},
   created() {},
   data() {
     return {
-      courses: {},
+      courses: [],
+      loading: true,
+      curriculums: []
     };
   },
   mounted() {
     this.getClasses();
-    console.log(this.$config.selectedBatches);
   },
   methods: {
     getClasses() {
       let query = `
-              {
-              courses {
-                total
-                courses {
-                  name
-                  code
-                  category
+                {
+                  courseOverall(batches: ${JSON.stringify(this.$config.selectedBatches)}) {
+                    total
+                    courses {
+                      name
+                      code
+                      category
+                      students {
+                        batch
+                      }
+                      unregistered {
+                        batch
+                      }
+                    }
+                  }
+                  curriculums {
+                    total
+                    curriculums {
+                      batches
+                      courses {
+                        core_courses {
+                          code
+                        }
+                        required_courses {
+                          code
+                        }
+                        elective_courses {
+                          code
+                        }
+                      }
+                    }
+                  }
                 }
-              }
-            }
           `;
       query = query.replace(/\s+/g, " ").trim();
 
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          this.courses = [...res.data.data.courses.courses];
+          this.courses = [...res.data.data.courseOverall.courses];
           this.courses.forEach((course) => {
             // course.category = course.category.join(", ");
             course.category = course.category
@@ -84,12 +112,24 @@ export default {
               .replace("required_courses", "R")
               .replace("elective_courses", "E");
           });
-          console.log(this.courses);
+          this.curriculums = [...res.data.data.curriculums.curriculums]
+          this.loading = false
         })
         .catch((err) => {
           console.log(err);
+          this.loading = false
         });
     },
+    getRemainOfBatch(batch, course) {
+      let check = false
+      this.curriculums.forEach((curriculum) => {
+        console.log(curriculum)
+        let courses = [...curriculum.courses.core_courses, ...curriculum.courses.required_courses, ...curriculum.courses.elective_courses]
+        if(curriculum.batches.includes(batch) && courses.filter(c => c.code === course.code).length > 0) return check = true
+      })
+      if(check) return course.unregistered.filter((e) => e.batch === batch).length
+      return "-"
+    }
   },
 };
 </script>
@@ -97,4 +137,20 @@ export default {
 /* .card-height {
   height: calc(var(--app-height) - 85px);
 } */
+
+.wk-overall-table tr th:first-child {
+  width: 100px;
+}
+
+.wk-overall-table tr th:nth-child(2) {
+  width: 100px;
+}
+
+.wk-overall-table tr:not(:first-child):not(:nth-child(2)):hover {
+  background: rgba(100,100,100,0.1);
+}
+
+.darken {
+  background: rgba(100,100,100,0.03);
+}
 </style>

@@ -92,8 +92,8 @@ const routes = [
     },
   },
   {
-    name: "Overall_Remain",
-    path: "/course_overall",
+    name: "course_overall",
+    path: "/course/overall",
     component: OverallRemain,
     meta: {
       requiresAuth: true,

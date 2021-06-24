@@ -138,15 +138,8 @@ export default {
   },
   methods: {
     checkNull(item) {
-      if (item == " ") {
-        return "";
-      } else if (item == "null") {
-        return "";
-      } else if (!item) {
-        return "";
-      } else {
-        return "(" + item + ")";
-      }
+      if (item == " " || item == "null" || !item) return "";
+      return "(" + item + ")";
     },
     getBatch(i) {
       this.index = i;
