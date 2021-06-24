@@ -64,14 +64,14 @@
                 :items="instructors"
                 outlined
                 v-model="linked_instructor"
-                item-value="_id"
                 item-text="name"
+                return-object
               >
                 <template v-slot:selection="data">
-                  {{ data.item.title }} {{ data.item.name }}
+                  {{ data.item._id ? "" : "-" }}{{ data.item.title }} {{ data.item.name }}
                 </template>
                 <template v-slot:item="data">
-                  {{ data.item.title }} {{ data.item.name }}
+                  {{ data.item._id ? "" : "-" }}{{ data.item.title }} {{ data.item.name }}
                 </template>
               </v-select>
             </div>
@@ -158,7 +158,11 @@ export default {
           return pattern.test(value) || "Invalid e-mail.";
         },
       },
-      instructors: []
+      instructors: [{
+        _id: null,
+        name: "-",
+        title: null,
+      }],
     };
   },
   computed: {
@@ -210,7 +214,7 @@ export default {
                         family_name : "${this.input.familyName}",
                         password : "${this.input.password}",
                         email : "${this.input.email}",
-                        linked_instructor: "${this.input.linked_instructor._id}",
+                        linked_instructor:  ${this.input.linked_instructor ? (this.input.linked_instructor._id ? '"' + this.input.linked_instructor._id + '"' : null) : null },
                         group :"${this.input.group}"}) {
                     success
                     message
@@ -245,7 +249,7 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          this.instructors = res.data.data.instructors.instructors
+          this.instructors = [ this.instructors, ...res.data.data.instructors.instructors ]
         })
         .catch((err) => {
           console.log(err);

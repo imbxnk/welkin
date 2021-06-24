@@ -128,17 +128,16 @@
               :items="instructors"
               outlined
               v-model="editedItem.linked_instructor"
-              item-value="_id"
               item-text="name"
+              return-object
             >
               <template v-slot:selection="data">
-                {{ data.item.title }} {{ data.item.name }}
+                {{ data.item._id ? "" : "-" }}{{ data.item.title }} {{ data.item.name }}
               </template>
               <template v-slot:item="data">
-                {{ data.item.title }} {{ data.item.name }}
+                {{ data.item._id ? "" : "-" }}{{ data.item.title }} {{ data.item.name }}
               </template>
             </v-select>
-
             <div
               class="d-flex justify-content-center flex-column"
               v-if="editedItem.group !== 'admin'"
@@ -237,7 +236,11 @@ export default {
         username: "",
         given_name: "",
         family_name: "",
-        linked_instructor: "",
+        linked_instructor: {
+          _id: "",
+          title: "",
+          name: "",
+        },
         email: "",
         group: "",
         isActive: true,
@@ -246,7 +249,11 @@ export default {
       items: ["coordinator", "program director", "lecturer"],
       snackbar: false,
       snackbartext: "success",
-      instructors: []
+      instructors: [{
+        _id: null,
+        name: "-",
+        title: null,
+      }]
     };
   },
   mounted() {
@@ -315,7 +322,7 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          this.instructors = res.data.data.instructors.instructors
+          this.instructors = [ this.instructors, ...res.data.data.instructors.instructors ]
         })
         .catch((err) => {
           console.log(err);
@@ -337,8 +344,10 @@ export default {
       });
     },
     save() {
+      console.log(this.editedItem)
       // eslint-disable-next-line no-console
       console.log(this.Info[this.editedIndex]);
+      console.log("TEST" + JSON.stringify(this.editedItem))
       let query = `
           mutation {
             updateAccount(id: "${this.editedItem._id}", userInput: {
@@ -346,7 +355,7 @@ export default {
               given_name: "${this.editedItem.given_name}",
               family_name:"${this.editedItem.family_name}",
               display_name: "${this.editedItem.display_name || ''}",
-              linked_instructor: "${this.editedItem.linked_instructor._id || null}",
+              linked_instructor: ${this.editedItem.linked_instructor ? (this.editedItem.linked_instructor._id ? '"' + this.editedItem.linked_instructor._id + '"' : null) : null },
               email:"${this.editedItem.email}",
               group:"${this.editedItem.group}",
               isActive: ${this.editedItem.isActive}
