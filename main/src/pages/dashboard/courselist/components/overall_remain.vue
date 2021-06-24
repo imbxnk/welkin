@@ -138,11 +138,11 @@ export default {
   height: calc(var(--app-height) - 85px);
 } */
 
-.wk-overall-table tr th:first-child {
+.wk-overall-table tr:not(:nth-child(2)) th:first-child {
   width: 100px;
 }
 
-.wk-overall-table tr th:nth-child(2) {
+.wk-overall-table tr:not(:nth-child(2)) th:nth-child(2) {
   width: 100px;
 }
 
