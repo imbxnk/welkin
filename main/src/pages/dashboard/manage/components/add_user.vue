@@ -60,6 +60,21 @@
             </div>
             <div class="px-3">
               <v-select
+                label="Linked Instructor"
+                :items="instructors"
+                outlined
+                v-model="linked_instructor"
+              >
+                <template slot="selection" slot-scope="data">
+                  {{ data.item.title }} {{ data.item.name }}
+                </template>
+                <template slot="item" slot-scope="data">
+                  {{ data.item.title }} {{ data.item.name }}
+                </template>
+              </v-select>
+            </div>
+            <div class="px-3">
+              <v-select
                 ref="group"
                 :items="items"
                 v-model="group"
@@ -71,7 +86,7 @@
           </div>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="error" @click="clearText()">clear</v-btn>
+            <v-btn color="gray" text @click="clearText()">clear</v-btn>
             <v-btn color="primary" @click="validate()">submit</v-btn>
           </v-card-actions>
         </v-form>
@@ -80,11 +95,12 @@
           <v-card>
             <v-card-title class="headline grey lighten-2"> Confirm Add </v-card-title><br />
             <v-card-text
-              >Are you sure you want to add: <br />First Name: <b>{{ this.input.firstName }}</b>
+              >Are you sure you want to add: <br />First Name: <b>{{ input.firstName }}</b>
               <br />
-              Family Name: <b>{{ this.input.familyName }}</b
-              ><br />Email: <b>{{ this.input.email }}</b> <br />
-              Password: <b>{{ this.input.password == "" ? " - " : this.input.password }}</b>
+              Family Name: <b>{{ input.familyName }}</b><br />
+              Email: <b>{{ input.email }}</b> <br />
+              Linked Instructor: <b>{{ input.linked_instructor ? input.linked_instructor.title + ' ' + input.linked_instructor.name : '-' }}</b><br>
+              Password: <b>{{ partialPassword(input.password) }}</b>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -105,13 +121,16 @@
 export default {
   name: "add_user",
   props: [],
-  mounted() {},
+  mounted() {
+    this.getInstructors()
+  },
   data() {
     return {
       firstName: "",
       familyName: "",
       email: "",
       password: "",
+      linked_instructor: null,
       group: "",
       items: ["coordinator", "program director", "lecturer"],
       dialog: false,
@@ -121,6 +140,11 @@ export default {
         firstName: "",
         familyName: "",
         email: "",
+        linked_instructor: {
+          _id: '',
+          title: '',
+          name: '',
+        },
         password: "",
         group: "",
       },
@@ -132,6 +156,7 @@ export default {
           return pattern.test(value) || "Invalid e-mail.";
         },
       },
+      instructors: []
     };
   },
   computed: {
@@ -140,6 +165,7 @@ export default {
         firstName: this.firstName,
         familyName: this.familyName,
         email: this.email,
+        linked_instructor: this.linked_instructor._id,
         password: this.password,
         group: this.group,
       };
@@ -150,6 +176,7 @@ export default {
       (this.firstName = ""),
         (this.familyName = ""),
         (this.email = ""),
+        (this.linked_instructor = null),
         (this.password = ""),
         (this.group = "");
       Object.keys(this.form).forEach((f) => {
@@ -163,9 +190,10 @@ export default {
         this.input.firstName = this.firstName;
         this.input.familyName = this.familyName;
         this.input.email = this.email;
+        this.input.linked_instructor = this.linked_instructor;
         this.input.password = this.password;
         this.input.group = this.group;
-        this.dialog = true;
+        this.dialog1 = true;
       } else {
       }
     },
@@ -180,6 +208,7 @@ export default {
                         family_name : "${this.input.familyName}",
                         password : "${this.input.password}",
                         email : "${this.input.email}",
+                        linked_instructor: "${this.input.linked_instructor._id}",
                         group :"${this.input.group}"}) {
                     success
                     message
@@ -197,6 +226,32 @@ export default {
           console.log(err);
         });
     },
+    getInstructors() {
+      let query = `
+            {
+              instructors {
+                total
+                instructors {
+                  _id
+                  title
+                  name
+                }
+              }
+            }
+          `;
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.instructors = res.data.data.instructors.instructors
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    partialPassword(pwd) {
+      return pwd.replaceAll(/(?<!^).(?!$)/g, "*")
+    }
     // clearForm() {
     //   this.userData = {};
     // },

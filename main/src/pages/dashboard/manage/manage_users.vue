@@ -84,7 +84,7 @@
         <div class="pa-3">
           <v-form ref="form">
             <div class="d-flex px-3 justify-content-between flex-column flex-sm-row">
-              <div class=" ">
+              <div class="">
                 <v-text-field
                   label="Display Name"
                   v-model="editedItem.display_name"
@@ -121,6 +121,22 @@
                 <v-text-field label="Email" v-model="editedItem.email" outlined></v-text-field>
               </div>
             </div>
+
+            <v-select
+              class="px-3"
+              label="Linked Instructor"
+              :items="instructors"
+              outlined
+              v-model="editedItem.linked_instructor"
+            >
+              <template slot="selection" slot-scope="data">
+                {{ data.item.title }} {{ data.item.name }}
+              </template>
+              <template slot="item" slot-scope="data">
+                {{ data.item.title }} {{ data.item.name }}
+              </template>
+            </v-select>
+
             <div
               class="d-flex justify-content-center flex-column"
               v-if="editedItem.group !== 'admin'"
@@ -219,6 +235,7 @@ export default {
         username: "",
         given_name: "",
         family_name: "",
+        linked_instructor: "",
         email: "",
         group: "",
         isActive: true,
@@ -227,13 +244,15 @@ export default {
       items: ["coordinator", "program director", "lecturer"],
       snackbar: false,
       snackbartext: "success",
+      instructors: []
     };
   },
   mounted() {
     this.getUser();
+    this.getInstructors();
   },
   methods: {
-    async getUser() {
+    getUser() {
       let query = `
               {
                 users {
@@ -247,6 +266,11 @@ export default {
                     email
                     group
                     createdAt
+                    linked_instructor {
+                      _id
+                      title
+                      name
+                    }
                     isActive
                     avatar {
                         small
@@ -258,16 +282,38 @@ export default {
                 }
           `;
       query = query.replace(/\s+/g, ' ').trim()
-      await this.axios
+      this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res.data.data.users);
           this.total = res.data.data.users.total;
           this.users = res.data.data.users.users;
           this.Info = res.data.data.users.users;
           this.users.forEach((user) => {
             user["name"] = [user.given_name, user.family_name].join(" ");
           });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getInstructors() {
+      let query = `
+            {
+              instructors {
+                total
+                instructors {
+                  _id
+                  title
+                  name
+                }
+              }
+            }
+          `;
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.instructors = res.data.data.instructors.instructors
         })
         .catch((err) => {
           console.log(err);
@@ -297,9 +343,10 @@ export default {
               username: "${this.editedItem.username}"
               given_name: "${this.editedItem.given_name}",
               family_name:"${this.editedItem.family_name}",
-              display_name: "${this.editedItem.display_name || ''}"
-              email:"${this.editedItem.email}"
-              group:"${this.editedItem.group}"
+              display_name: "${this.editedItem.display_name || ''}",
+              linked_instructor: "${this.editedItem.linked_instructor._id || null}",
+              email:"${this.editedItem.email}",
+              group:"${this.editedItem.group}",
               isActive: ${this.editedItem.isActive}
             }) {
               _id
