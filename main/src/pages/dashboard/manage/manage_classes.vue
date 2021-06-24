@@ -46,14 +46,14 @@
             <template v-slot:[`item.enrollments`]="{ item }">
               {{ item.enrollments.length }}
             </template>
-            <template v-slot:[`item.delete`]="{ item }">
-              <v-icon small @click="deleteItem(item)">
-                mdi-delete
-              </v-icon>
-            </template>
             <template v-slot:[`item.edit`]="{ item }">
               <v-icon small @click="editItem(item)">
                 mdi-pencil
+              </v-icon>
+            </template>
+            <template v-slot:[`item.delete`]="{ item }">
+              <v-icon small @click="deleteItem(item)">
+                mdi-delete
               </v-icon>
             </template>
           </v-data-table>
@@ -90,8 +90,8 @@ export default {
         { text: "Trimester", sortable: true, value: "trimester", width: "15%", align: "center" },
         { text: "Enrollments", sortable: false, value: "enrollments", width: "1%", align: "center" },
         { text: "", sortable: false, value: "", width: "98%", align: "center" },
-        { text: "Delete", sortable: false, value: "delete", width: "1%", align: "center" },
         { text: "Edit", sortable: false, value: "edit", width: "1%", align: "center" },
+        { text: "Delete", sortable: false, value: "delete", width: "1%", align: "center" },
       ],
       classes: [],
       total: 0,

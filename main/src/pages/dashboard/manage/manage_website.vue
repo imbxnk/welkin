@@ -49,7 +49,7 @@
               <template v-for="item in batches.items">
                 <div v-if="!batches.selected.includes(item)" class="wk-chip" :key="item">
                   <v-chip
-                    :disabled="loading"
+                    :disabled="batches.loading"
                     @click="batches.selected.push(item); batches.selected.sort()"
                   >
                     <span class="wk-chip-text">{{ item }}</span>
@@ -101,6 +101,16 @@
               </template>
               <template v-slot:[`item.duration`]="{ item }">
                 {{ getDuration(item.startDate, item.endDate) }}
+              </template>
+              <template v-slot:[`item.edit`]="{ item }">
+                <v-icon small @click="editItem(item)">
+                  mdi-pencil
+                </v-icon>
+              </template>
+              <template v-slot:[`item.delete`]="{ item }">
+                <v-icon small @click="confirmDelete(item)">
+                  mdi-delete
+                </v-icon>
               </template>
             </v-data-table>
           </div>
@@ -178,6 +188,34 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog v-model="announcements.deleteDialog" max-width="500px">
+        <v-card>
+          <v-card-title
+            >Are you sure you want to delete?
+            <v-spacer></v-spacer>
+            <v-icon @click="announcements.deleteDialog = false" tabindex="-1">mdi-close</v-icon></v-card-title
+          >
+          <v-card-text class="mt-4">
+            Warning! This cannot be undone.
+            <div class="mt-3">
+              Title: <strong>{{ announcements.deletedItem.title }}</strong>
+              <div class="p-2 wk-del-content" v-html="announcements.deletedItem.content">
+              </div>
+            </div>
+          </v-card-text>
+          <v-card-actions class="pb-4 d-flex justify-content-end">
+            <v-btn
+              color="gray"
+              text
+              @click="announcements.deleteDialog = false"
+            >Cancel</v-btn>
+            <v-btn
+              color="error"
+              @click="deleteAnnouncement"
+            >Delete</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </div>
 </v-container>
@@ -197,12 +235,21 @@ export default {
         { text: "Title", sortable: false, value: "title", width: "10%" },
         { text: "Content", sortable: false, value: "content", width: "60%" },
         { text: "Status", sortable: false, value: "duration", width: "10%", align: "center" },
-        { text: "Creator", sortable: false, value: "user", width: "1%" },
+        { text: "Creator", sortable: false, value: "user", width: "10%" },
+        { text: "Edit", sortable: false, value: "edit", width: "1%", align: "center" },
+        { text: "Delete", sortable: false, value: "delete", width: "1%", align: "center" },
       ],
       items: [],
       addDialog: false,
+      deleteDialog: false,
       newAnnouncement: {
         startDateMenu: false,
+        title: '',
+        content: '',
+        range: [],
+      },
+      deletedItem: {
+        _id: '',
         title: '',
         content: '',
         range: [],
@@ -267,6 +314,7 @@ export default {
           {
             announcements {
               announcements {
+                _id
                 title
                 content
                 user {
@@ -324,6 +372,10 @@ export default {
       let current = this.announcements.startDate || new Date().toISOString().substr(0, 10)
       return val >= current
     },
+    confirmDelete(item) {
+      this.announcements.deleteDialog = true
+      this.announcements.deletedItem = item
+    },
     addAnnouncement() {
       this.announcements.loading = true
       let startDate = this.moment(this.announcements.newAnnouncement.range[0]).format('x')
@@ -365,6 +417,30 @@ export default {
           this.announcements.loading = false;
         });
     },
+    deleteAnnouncement() {
+      this.announcements.loading = true
+      let query = `
+          mutation {
+            deleteAnnouncement(id: ${this.announcements.deletedItem._id}) {
+              success
+              message
+            }
+          }
+      `
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          console.log(res.data)
+          this.announcements.loading = false;
+          this.announcements.deleteDialog = false;
+          this.announcements.items.splice(this.announcements.items.indexOf(this.announcements.deletedItem), 1)
+        })
+        .catch((err) => {
+          console.log(err)
+          this.announcements.loading = false;
+        });
+    }
   },
 }
 </script>
@@ -404,5 +480,13 @@ h5 {
 
 .v-picker--date, .v-menu__content {
   border-radius: 20px !important;
+}
+
+.wk-del-content {
+  background: rgb(249, 249, 249); border-radius: 10px;
+}
+
+.wk-del-content >>> p {
+  margin: 0 !important
 }
 </style>
