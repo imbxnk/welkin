@@ -53,6 +53,7 @@
                 label="Password"
                 outlined
                 required
+                autocomplete="off"
                 :rules="[
                   () => (!!password && password.length >= 4) || 'Required at least 4 characters',
                 ]"
@@ -134,7 +135,7 @@ export default {
       password: "",
       linked_instructor: null,
       group: "",
-      items: ["coordinator", "program director", "lecturer"],
+      items: ["lecturer", "program director", "coordinator"],
       dialog: false,
       dialog1: false,
       snackbar: false,
@@ -218,7 +219,7 @@ export default {
                         email: "${this.input.email}",
                         linked_instructor:  ${this.input.linked_instructor ? (this.input.linked_instructor._id ? '"' + this.input.linked_instructor._id + '"' : null) : null }
                         ${this.input.group ? ', group: "' + this.input.group + '"' : ''}
-                    ) {
+                    }) {
                     success
                     message
                     }
