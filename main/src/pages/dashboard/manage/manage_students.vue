@@ -166,7 +166,7 @@
                 label="Status"
                 :items="allStatus"
                 outlined
-                v-model="editedItem.status"
+                v-model="editedItem.status.current"
                 item-value="current"
               ></v-select>
             </div>
@@ -189,14 +189,15 @@
         ><br />
         <v-card-text
           >Are you sure you want to edit: <br />Student ID: <b>{{ this.editedItem.sid }}</b>
-          <br />Prefix: <b>{{ this.editedItem.prefix }}</b> <br />First Name:
-          <b>{{ this.editedItem.given_name }}</b> <br />Last Name:
-          <b>{{ this.editedItem.family_name }}</b> <br />Nickname:
-          <b>{{ this.editedItem.nick_name }}</b> <br />Email: <b>{{ this.editedItem.email }}</b>
-          <br />Phone: <b>{{ this.editedItem.phone }}</b> <br />Entry Trimester:
-          <b>{{ this.editedItem.entry_trimester }}</b> <br />Entry Year:
-          <b>{{ this.editedItem.entry_year }}</b>
-          <b>{{ this.editedItem.status.current }}</b>
+          <br />Prefix: <b>{{ this.editedItem.prefix }}</b> <br />
+          First Name:<b>{{ this.editedItem.given_name }}</b> <br />
+          Last Name: <b>{{ this.editedItem.family_name }}</b> <br />
+          Nickname: <b>{{ this.editedItem.nick_name || "-" }}</b> <br />
+          Email: <b>{{ this.editedItem.email || "-" }}</b> <br />
+          Phone: <b>{{ this.editedItem.phone || "-" }}</b> <br />
+          Entry Trimester: <b>{{ this.editedItem.entry_trimester }}</b> <br />
+          Entry Year: <b>{{ this.editedItem.entry_year }}</b><br/>
+          Status: <b>{{ this.editedItem.status.current }}</b>
 
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -383,20 +384,23 @@ export default {
         this.Info.push(this.editedItem);
       }
       // eslint-disable-next-line no-console
+      console.log("TEST")
       console.log(this.Info[this.editedIndex]);
       let query = `
           mutation{
-            updateStudent(searchInput: {sid:"${this.Info[this.editedIndex].sid}"},studentInput:{
+            updateStudent(searchInput: {sid:"${this.Info[this.editedIndex].sid}"}, studentInput:{
               given_name:"${this.Info[this.editedIndex].given_name}",
               family_name:"${this.Info[this.editedIndex].family_name}",
-              nick_name: "${this.Info[this.editedIndex].nick_name}"
+              nick_name: "${this.Info[this.editedIndex].nick_name || ''}"
               prefix:"${this.Info[this.editedIndex].prefix}",
               program:"${this.Info[this.editedIndex].program}",
               entry_trimester: "${this.Info[this.editedIndex].entry_trimester}",
               entry_year: "${this.Info[this.editedIndex].entry_year}",
-              phone: "${this.Info[this.editedIndex].phone}",
-              email: "${this.Info[this.editedIndex].email}",
-              }){
+              phone: "${this.Info[this.editedIndex].phone || ''}",
+              email: "${this.Info[this.editedIndex].email || ''}",
+              },
+              status: "${this.Info[this.editedIndex].status.current}"
+              ){
                 sid
                 given_name
                 family_name
@@ -407,14 +411,8 @@ export default {
                 phone
                 email
                 program
-                advisor {
-                _id
-                title
-                name
-                given_name
-                family_name
+
               }
-            }
           }
         `;
       query = query.replace(/\s+/g, ' ').trim()

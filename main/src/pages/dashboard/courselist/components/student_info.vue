@@ -40,6 +40,7 @@ export default {
           value: "student.sid",
           width: 90,
         },
+        { text: "Program", align: "start", sortable: false, value: "student.program", width: 80 },
         { text: "Name", align: "start", sortable: false, value: "student.name", width: 200 },
         { text: "Grade", sortable: false, value: "grade", align: "center", width: 40 },
       ],
@@ -73,6 +74,7 @@ export default {
                         enrollments {
                           student {
                             sid
+                            program
                             given_name
                             family_name
                             email
