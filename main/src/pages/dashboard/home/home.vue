@@ -132,9 +132,7 @@ export default {
     // ShowStudentGraph,
     ShowAdviseeTable,
   },
-  mounted() {
-    console.log(this.$currentUser);
-  },
+  mounted() { },
 };
 </script>
 

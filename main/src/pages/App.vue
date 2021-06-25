@@ -27,6 +27,7 @@
               v-bind="attrs"
               v-on="on"
               icon
+              @click="checkNoti()"
             >
               <v-icon>mdi-bullhorn</v-icon>
               <v-badge
@@ -85,9 +86,10 @@
                           ><span style="font-size: 0.8rem" v-html="item.content"></span
                         ></v-list-item-subtitle>
                       </v-list-item-content>
-                      <v-btn icon class="align-self-start toggle-read" @click="toggleRead(item._id)"
-                        ><v-icon>mdi-check</v-icon></v-btn
-                      >
+                      <v-btn icon class="align-self-start toggle-read" @click="toggleRead(item._id)">
+                        <v-icon v-if="!notifications.includes(item._id)">mdi-email</v-icon>
+                        <v-icon v-else>mdi-email-open</v-icon>
+                      </v-btn>
                     </v-list-item>
                   </template>
                 </v-list>
@@ -370,7 +372,6 @@ export default {
       let localUser = JSON.parse(localStorage.user);
       this.notifications = localUser.notifications || [];
       this.toggleMini = localUser.nav;
-      console.log(this.toggleMini);
     }
 
     console.log("%cWelkin", "color: #3c84fb; font-family: monospace");
@@ -612,6 +613,12 @@ export default {
     readableDate(date) {
       return this.moment(parseInt(date)).format("DD MMMM YYYY");
     },
+    checkNoti() {
+      let announcements = this.$config.announcements
+      this.notifications.forEach((noti) => {
+        if(!announcements.some(a => a._id === noti)) this.notifications.splice(this.notifications.indexOf(noti), 1)
+      })
+    }
   },
 };
 </script>

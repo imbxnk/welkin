@@ -35,7 +35,6 @@ export default {
   name: "Announcements",
   components: { simplebar },
   mounted() {
-    console.log(this.$config.announcements);
   },
   data() {
     return {};

@@ -278,7 +278,6 @@ export default {
               this.totalUncal += 1;
             }
           }
-          console.log(this.students);
           this.loading = false;
         })
         .catch((err) => {

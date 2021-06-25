@@ -39,7 +39,7 @@
             <template v-slot:[`item.class`]="{ item }">
               <router-link :to="{ name: 'manage_class', params: { code: item.code.toLowerCase() }}" target="_blank" style="text-decoration: none">
                 <v-icon small>
-                  mdi-folder-multiple
+                  mdi-folder-open
                 </v-icon>
               </router-link>
             </template>
