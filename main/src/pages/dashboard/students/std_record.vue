@@ -35,6 +35,7 @@
               contain
               max-width="230"
               class="center"
+              style="border-radius: none !important"
             />
             <div class="overline">{{ this.students.sid }}</div>
           </v-card>

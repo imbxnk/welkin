@@ -47,17 +47,17 @@
               >
               </v-avatar>
             </template>
-            <template v-slot:[`item.prefix`]="{ item }">
-              {{ item.prefix ? item.prefix : "-" }}
+            <template v-slot:[`item.name`]="{ item }">
+              {{ item.prefix ? item.prefix + ' ' + item.name : item.name }}
             </template>
-            <template v-slot:[`item.nick_name`]="{ item }">
+            <!-- <template v-slot:[`item.nick_name`]="{ item }">
               {{ item.nick_name ? item.nick_name : "-" }}
-            </template>
+            </template> -->
             <template v-slot:[`item.entry_tri_year`]="{ item }">
               {{ item.entry_tri_year ? item.entry_tri_year : "Unknown" }}
             </template>
-            <template v-slot:[`item.advisor.name`]="{ item }">
-              {{ item.advisor.name ? item.advisor.name : "Unknown" }}
+            <template v-slot:[`item.advisor.given_name`]="{ item }">
+              {{ item.advisor.given_name ? item.advisor.given_name : "Unknown" }}
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon small @click="editItem(item)">
@@ -221,12 +221,11 @@ export default {
       headers: [
         { sortable: false, value: "avatar_url", width: "1%" },
         { text: "Student ID", sortable: false, value: "sid", width: "9%" },
-        { text: "Prefix", sortable: false, value: "prefix", width: "1%" },
-        { text: "Name", sortable: false, value: "name", width: 80 },
-        { text: "Nickname", sortable: false, value: "nick_name", width: 80 },
-        { text: "Program", sortable: false, value: "program", width: 80 },
-        { text: "Entry Period", sortable: false, value: "entry_tri_year", width: 100 },
-        { text: "advisor", sortable: false, value: "advisor.name", width: 120 },
+        { text: "Program", sortable: false, value: "program", width: "1%", align: "center" },
+        { text: "Name", sortable: false, value: "name", width: "40%" },
+        { text: "Status", sortable: false, value: "status.current", width: "10%" },
+        { text: "Entry Period", sortable: false, value: "entry_tri_year", width: "10%" },
+        { text: "advisor", sortable: false, value: "advisor.given_name", width: "10%" },
         { text: "Edit", sortable: false, value: "actions", width: "1%" },
       ],
       students: [],
@@ -331,7 +330,7 @@ export default {
                     prefix
                     program
                     advisor {
-                      name
+                      given_name
                     }
                     status {
                       current
