@@ -391,10 +391,10 @@ export default {
               given_name:"${this.Info[this.editedIndex].given_name}",
               family_name:"${this.Info[this.editedIndex].family_name}",
               nick_name: "${this.Info[this.editedIndex].nick_name || ''}"
-              prefix:"${this.Info[this.editedIndex].prefix}",
+              prefix:"${this.Info[this.editedIndex].prefix || ''}",
               program:"${this.Info[this.editedIndex].program}",
-              entry_trimester: "${this.Info[this.editedIndex].entry_trimester}",
-              entry_year: "${this.Info[this.editedIndex].entry_year}",
+              entry_trimester: "${this.Info[this.editedIndex].entry_trimester || ''}",
+              entry_year: "${this.Info[this.editedIndex].entry_year || ''}",
               phone: "${this.Info[this.editedIndex].phone || ''}",
               email: "${this.Info[this.editedIndex].email || ''}",
               },
