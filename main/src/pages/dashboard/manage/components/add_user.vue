@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="add-user">
     <div class="d-flex flex-row justify-content-end bd-highlight">
       <div class="p-2 bd-highlight">
         <v-btn color="primary" @click="dialog = true"><v-icon>mdi-plus</v-icon> Add User</v-btn>
@@ -156,7 +156,6 @@ export default {
         counter: [(v) => v.length <= 4 || "Min 4 characters"],
         email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          // const pattern = /^[^@]+@[^@]+\.[^@]+$/
           return pattern.test(value) || "Invalid e-mail.";
         },
       },
@@ -262,7 +261,9 @@ export default {
         });
     },
     partialPassword(pwd) {
-      return pwd.replaceAll(/(?<!^).(?!$)/g, "*")
+      let hidden = ''
+      for(var i = 0; i < pwd.length-2; i++) hidden += "*"
+      return pwd.charAt(0) + hidden + pwd.charAt(pwd.length-1)
     }
     // clearForm() {
     //   this.userData = {};

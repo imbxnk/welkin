@@ -63,7 +63,7 @@
         </v-card>
       </div>
     </div>
-    <v-dialog v-model="dialog" max-width="500px">
+    <!-- <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title
           >Add User
@@ -72,7 +72,7 @@
         >
         <AddUser></AddUser>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
 
     <v-dialog v-model="Editdialog" max-width="500px">
       <v-card>
