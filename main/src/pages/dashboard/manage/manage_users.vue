@@ -122,6 +122,31 @@
               </div>
             </div>
 
+            <div
+              class="d-flex justify-content-center flex-column"
+              v-if="editedItem.group !== 'admin'"
+            >
+              <div class="px-3">
+                <v-select
+                  :items="items"
+                  v-model="editedItem.group"
+                  label="Group"
+                  outlined
+                ></v-select>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center flex-column" v-else>
+              <div class="px-3">
+                <v-select
+                  :items="['admin']"
+                  v-model="editedItem.group"
+                  label="Group"
+                  outlined
+                  disabled
+                ></v-select>
+              </div>
+            </div>
+
             <v-select
               class="px-3"
               label="Linked Instructor"
@@ -138,41 +163,42 @@
                 {{ data.item._id ? "" : "-" }}{{ data.item.title }} {{ data.item.name }}
               </template>
             </v-select>
-            <div
-              class="d-flex justify-content-center flex-column"
-              v-if="editedItem.group !== 'admin'"
-            >
-              <div class="px-3">
-                <v-select
-                  :items="items"
-                  v-model="editedItem.group"
-                  label="Group"
-                  outlined
-                ></v-select>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center flex-column" v-else>
-              <div class="px-3">
-                Group: <span style="color: #999; margin-left: 20px">{{ editedItem.group }}</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-start align-items-center mx-4" v-if="editedItem.group !== 'admin'">
-              <label>Account Status:</label>
+
+            <div class="d-flex justify-content-start align-items-center mx-4" v-if="editedItem.linked_instructor ? editedItem.linked_instructor.name ? true : false : false ">
+              <!-- <label>Advisor</label> -->
               <v-switch
-                class="ms-4"
-                v-model="editedItem.isActive"
-                inset
-                :label="`${ editedItem.isActive ? 'Active' : 'Disable' }`"
-                :disabled="$currentUser._id === editedItem._id"
-              ></v-switch>
+                class="v-input--reverse v-input--expand w-100"
+                v-model="editedItem.isAdvisor"
+                hint="Activate Advisor will provide more features to this account"
+                persistent-hint
+              >
+                <template #label>
+                  <span class="me-3" style="color: rgba(0, 0, 0, 0.87)">Advisor:</span> {{ editedItem.isAdvisor ? 'Yes' : 'No' }}
+                </template>
+              </v-switch>
             </div>
-            <div class="d-flex justify-content-start mx-3" v-else>
-              <label class="me-3">Account Status: </label>
+
+            <div class="d-flex justify-content-start align-items-center mx-4 mt-4" v-if="editedItem.group !== 'admin'">
+              <!-- <label>Account Status</label> -->
+              <v-switch
+                class="v-input--reverse v-input--expand w-100"
+                v-model="editedItem.isActive"
+                :disabled="$currentUser._id === editedItem._id"
+                hint="Disable the account will not allow this user to access the website"
+                persistent-hint
+              >
+                <template #label>
+                  <span class="me-3" style="color: rgba(0, 0, 0, 0.87)">Account Status:</span> {{ editedItem.isActive ? 'Active' : 'Disable' }}
+                </template>
+              </v-switch>
+            </div>
+            <div class="d-flex justify-content-start mx-4 mt-4" v-else>
+              <label class="me-3">Account Status</label>
               <span style="color: rgb(153, 153, 153);">{{ `${ editedItem.isActive ? 'Active' : 'Disable' }` }}</span>
             </div>
-            <v-card-actions>
+            <v-card-actions class="mt-4">
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="confirm1 = true">submit</v-btn>
+              <v-btn class="py-3" style="min-width: 120px" color="primary" @click="confirm1 = true">submit</v-btn>
             </v-card-actions>
           </v-form>
         </div>
@@ -182,25 +208,23 @@
       <v-card>
         <v-card-title class="headline grey lighten-2"> Confirm edit </v-card-title><br />
         <v-card-text
-          >Are you sure you want to edit: <br />Display name:
-          <b>{{ editedItem.display_name || "-" }}</b>
-          <br />Username:
-          <b>{{ editedItem.username || "-" }}</b>
-          <br />Given name:
-          <b>{{ editedItem.given_name || "-" }}</b>
-          <br />Family name:
-          <b>{{ editedItem.family_name || "-" }}</b>
-          <br />Email:
-          <b>{{ editedItem.email || "-" }}</b>
-          <br />Group:
-          <b>{{ editedItem.group || "-" }}</b>
+          >Are you sure you want to edit: <br />
+          Display name: <b>{{ editedItem.display_name || "-" }}</b><br />
+          Username: <b>{{ editedItem.username || "-" }}</b><br />
+          Given name: <b>{{ editedItem.given_name || "-" }}</b><br />
+          Family name: <b>{{ editedItem.family_name || "-" }}</b><br />
+          Email:<b>{{ editedItem.email || "-" }}</b><br />
+          Linked Instructor: <b>{{ editedItem.linked_instructor ? editedItem.linked_instructor.name ? editedItem.linked_instructor.title + " " + editedItem.linked_instructor.name : "-" : "-" }}</b><br />
+          Advisor: <b>{{ editedItem.isAdvisor ? "Yes" : "No" }}</b><br />
+          Group: <b>{{ editedItem.group || "-" }}</b>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text color="gray" @click="confirm1 = false">No</v-btn>
+            <v-btn color="primary" style="min-width: 100px" @click="save()">Yes</v-btn>
+          </v-card-actions>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text color="error" @click="confirm1 = false">No</v-btn>
-          <v-btn text color="success" @click="save()">Yes</v-btn>
-        </v-card-actions></v-card
-      >
+      </v-card>
     </v-dialog>
 
     <v-snackbar centered v-model="snackbar" :timeout="1000">
@@ -241,6 +265,7 @@ export default {
           title: "",
           name: "",
         },
+        isAdvisor: false,
         email: "",
         group: "",
         isActive: true,
@@ -249,11 +274,7 @@ export default {
       items: ["coordinator", "program director", "lecturer"],
       snackbar: false,
       snackbartext: "success",
-      instructors: [{
-        _id: null,
-        name: "-",
-        title: null,
-      }]
+      instructors: []
     };
   },
   mounted() {
@@ -275,6 +296,7 @@ export default {
                     email
                     group
                     createdAt
+                    isAdvisor
                     linked_instructor {
                       _id
                       title
@@ -355,6 +377,7 @@ export default {
               given_name: "${this.editedItem.given_name}",
               family_name:"${this.editedItem.family_name}",
               display_name: "${this.editedItem.display_name || ''}",
+              isAdvisor: ${this.editedItem.isAdvisor},
               linked_instructor: ${this.editedItem.linked_instructor ? (this.editedItem.linked_instructor._id ? '"' + this.editedItem.linked_instructor._id + '"' : null) : null },
               email:"${this.editedItem.email}",
               group:"${this.editedItem.group}",

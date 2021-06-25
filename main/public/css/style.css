@@ -1082,3 +1082,27 @@ main {
 .wk-wysiwyg-menu .wk-wysiwyg-btn {
   padding: 5px;
 }
+
+.v-input--reverse .v-input__slot {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  margin-bottom: 0;
+}
+
+.v-input--reverse .v-input__slot label {
+  margin: 0;
+}
+
+.v-application--is-ltr .v-input--reverse .v-input__slot .v-input--selection-controls__input {
+  margin-right: 0;
+  margin-left: 8px;
+}
+.v-application--is-rtl .v-input--reverse .v-input__slot .v-input--selection-controls__input {
+  margin-left: 0;
+  margin-right: 8px;
+}
+
+.v-input--expand .v-input__slot .v-label {
+  display: block;
+  flex: 1;
+}

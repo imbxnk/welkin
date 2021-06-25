@@ -61,6 +61,16 @@
             </div>
             <div class="px-3">
               <v-select
+                ref="group"
+                :items="items"
+                v-model="group"
+                label="Group"
+                required
+                outlined
+              ></v-select>
+            </div>
+            <div class="px-3">
+              <v-select
                 label="Linked Instructor"
                 :items="instructors"
                 outlined
@@ -76,21 +86,24 @@
                 </template>
               </v-select>
             </div>
-            <div class="px-3">
-              <v-select
-                ref="group"
-                :items="items"
-                v-model="group"
-                label="Group"
-                required
-                outlined
-              ></v-select>
+            <div class="d-flex justify-content-start align-items-center mx-4" v-if="linked_instructor ? linked_instructor.name ? true : false : false ">
+              <!-- <label>Advisor</label> -->
+              <v-switch
+                class="v-input--reverse v-input--expand w-100"
+                v-model="isAdvisor"
+                hint="Activate Advisor will provide more features to this account"
+                persistent-hint
+              >
+                <template #label>
+                  <span class="me-3" style="color: rgba(0, 0, 0, 0.87)">Advisor:</span> {{ isAdvisor ? 'Yes' : 'No' }}
+                </template>
+              </v-switch>
             </div>
           </div>
-          <v-card-actions>
+          <v-card-actions class="mt-4">
             <v-spacer></v-spacer>
             <v-btn color="gray" text @click="clearText()">clear</v-btn>
-            <v-btn color="primary" @click="validate()">submit</v-btn>
+            <v-btn class="py-3" style="min-width: 120px" color="primary" @click="validate()">submit</v-btn>
           </v-card-actions>
         </v-form>
 
@@ -102,15 +115,17 @@
               <br />
               Family Name: <b>{{ input.familyName }}</b><br />
               Email: <b>{{ input.email }}</b> <br />
-              Linked Instructor: <b>{{ input.linked_instructor ? input.linked_instructor.title + ' ' + input.linked_instructor.name : '-' }}</b><br>
-              Password: <b>{{ partialPassword(input.password) }}</b>
+              Password: <b>{{ partialPassword(input.password) }}</b><br>
+              Linked Instructor: <b>{{ input.linked_instructor ? input.linked_instructor.name ? input.linked_instructor.title + ' ' + input.linked_instructor.name : '-' : '-' }}</b><br>
+              Advisor: <b>{{ input.isAdvisor ? "Yes" : "No" }}</b><br />
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text color="gray" @click="dialog1 = false">No</v-btn>
+                <v-btn color="primary" style="min-width: 100px" @click="addUser()">Yes</v-btn>
+              </v-card-actions>
             </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn text color="error" @click="dialog1 = false">No</v-btn>
-              <v-btn text color="success" @click="addUser()">Yes</v-btn>
-            </v-card-actions></v-card
-          >
+          </v-card>
         </v-dialog>
         <v-snackbar centered v-model="snackbar" :timeout="1000">
           Form submission : success!
@@ -135,6 +150,7 @@ export default {
       password: "",
       linked_instructor: null,
       group: "",
+      isAdvisor: false,
       items: ["lecturer", "program director", "coordinator"],
       dialog: false,
       dialog1: false,
@@ -148,6 +164,7 @@ export default {
           title: '',
           name: '',
         },
+        isAdvisor: false,
         password: "",
         group: "",
       },
@@ -199,6 +216,7 @@ export default {
         this.input.firstName = this.firstName;
         this.input.familyName = this.familyName;
         this.input.email = this.email;
+        this.input.isAdvisor = this.linked_instructor ? this.linked_instructor.name ? this.isAdvisor : false : false;
         this.input.linked_instructor = this.linked_instructor;
         this.input.password = this.password;
         this.input.group = this.group;
@@ -217,6 +235,7 @@ export default {
                         family_name: "${this.input.familyName}",
                         password: "${this.input.password}",
                         email: "${this.input.email}",
+                        isAdvisor: ${this.input.isAdvisor},
                         linked_instructor:  ${this.input.linked_instructor ? (this.input.linked_instructor._id ? '"' + this.input.linked_instructor._id + '"' : null) : null }
                         ${this.input.group ? ', group: "' + this.input.group + '"' : ''}
                     }) {
