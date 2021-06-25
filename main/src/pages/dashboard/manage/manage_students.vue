@@ -162,6 +162,13 @@
                 v-model="editedItem.phone"
                 outlined
               ></v-text-field>
+              <v-select
+                label="Status"
+                :items="allStatus"
+                outlined
+                v-model="editedItem.status"
+                item-value="current"
+              ></v-select>
             </div>
           </v-form>
           <v-card-actions>
@@ -189,6 +196,7 @@
           <br />Phone: <b>{{ this.editedItem.phone }}</b> <br />Entry Trimester:
           <b>{{ this.editedItem.entry_trimester }}</b> <br />Entry Year:
           <b>{{ this.editedItem.entry_year }}</b>
+          <b>{{ this.editedItem.status.current }}</b>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -234,6 +242,9 @@ export default {
         lineID: "",
         entry_trimester: "",
         entry_year: "",
+        status: {
+          current: "",
+        },
       },
       defaultItem: {
         sid: "",
@@ -273,11 +284,29 @@ export default {
         'ICCH',
         'ICPY',
         'ICFS'
+      ],
+      allStatus: [
+        'Studying',
+        'Leave of absence',
+        'On Exchange',
+        'Retired',
+        'Resigned',
+        'Alumni',
+        'Unknown'
       ]
     };
   },
   mounted() {
     this.getStudents();
+  },
+  watch: {
+    dialog(value) {
+      if(value) {
+        if(!this.programs.includes(this.editedItem.program)) {
+          this.programs.push(this.editedItem.program)
+        }
+      }
+    }
   },
   methods: {
     async getStudents() {
@@ -335,7 +364,6 @@ export default {
       this.editedIndex = this.Info.indexOf(item);
       this.editedItem = Object.assign({}, item);
       // eslint-disable-next-line no-console
-      console.log(this.editedItem, this.editedIndex);
       this.dialog = true;
     },
 
