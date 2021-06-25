@@ -174,8 +174,8 @@ export default {
     },
     async getStudent(id) {
       let query = ` {
-                students (searchInput:{sid:"${id}"}) {
-                  students {
+                student (searchInput:{sid:"${id}"}) {
+
                     sid
                     program
                     prefix
@@ -210,7 +210,6 @@ export default {
                       elective_credits
 
                     }
-                  }
                 }
               }
       `;
@@ -218,11 +217,11 @@ export default {
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          if (!res.data.data.students.students[0]) {
+          if (!res.data.data.student) {
             this.showing = 1;
             this.loading = false;
           } else {
-            this.std_details = res.data.data.students.students[0];
+            this.std_details = res.data.data.student;
             this.showing = 2;
             this.loading = false;
           }

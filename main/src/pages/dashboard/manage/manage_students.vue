@@ -278,7 +278,7 @@ export default {
     async getStudents() {
       let query = `
               {
-                students (sortBy: "status") {
+                students (sortBy: "status", includeNonCI: true) {
                   total
                   students {
                     sid
