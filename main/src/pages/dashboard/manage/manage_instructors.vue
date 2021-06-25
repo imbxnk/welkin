@@ -52,7 +52,9 @@
           <v-spacer></v-spacer>
           <v-icon @click="dialog = false">mdi-close</v-icon></v-card-title
         >
-        <add-instuctor></add-instuctor>
+        <v-card-text>
+          <add-instuctor :titles="intrucTitle"></add-instuctor>
+        </v-card-text>
       </v-card>
     </v-dialog>
 
@@ -65,54 +67,48 @@
         </v-card-title>
         <v-card-text>
           <v-form>
-            <div class="d-flex flex-column bd-highlight">
-              <div class="p-2 bd-highlight mx-auto">
-                <div class="d-flex flex-row justify-content-evenly bd-highlight">
-                  <div class="p-2 bd-highlight">
-                    <v-text-field label="Title" v-model="editedItem.title" outlined></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      label="First Name"
-                      v-model="editedItem.given_name"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      label="Last Name"
-                      v-model="editedItem.family_name"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                </div>
+            <div class="d-flex flex-column">
+              <div class="d-flex">
+                <v-autocomplete
+                  v-model="editedItem.title"
+                  :items="intrucTitle"
+                  label="Title"
+                  class="me-4"
+                  style="max-width: 170px"
+                  clearable
+                  outlined
+                ></v-autocomplete>
+                <v-text-field
+                  label="First Name"
+                  v-model="editedItem.given_name"
+                  outlined
+                ></v-text-field>
               </div>
-              <div class="p-2 bd-highlight mx-auto">
-                <div class="d-flex flex-row justify-content-evenly bd-highlight">
-                  <div class="p-2 bd-highlight">
-                    <v-text-field label="email" v-model="editedItem.email" outlined></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      type="number"
-                      label="phone"
-                      v-model="editedItem.phone"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                </div>
-              </div>
+              <v-text-field
+                label="Last Name"
+                v-model="editedItem.family_name"
+                outlined
+              ></v-text-field>
+              <v-text-field
+                label="Email"
+                v-model="editedItem.email"
+                outlined
+              ></v-text-field>
+              <v-text-field
+                type="number"
+                label="Phone"
+                v-model="editedItem.phone"
+                outlined
+              ></v-text-field>
             </div>
           </v-form>
-        </v-card-text>
-        <v-card-action>
-          <div class="d-flex flex-row justify-content-end bd-highlight">
-            <div class="p-2 bd-highlight">
-              <v-btn class="my-4" text @click="clear">clear</v-btn>
-              <v-btn class="my-4" color="#3c84fb" @click="dialogCheck = true" text>Submit</v-btn>
+          <v-card-action>
+            <div class="d-flex flex-row justify-content-end bd-highlight">
+              <v-btn class="mt-4 me-4" text @click="clear">clear</v-btn>
+              <v-btn class="mt-4" color="primary" @click="dialogCheck = true">Submit</v-btn>
             </div>
-          </div>
-        </v-card-action>
+          </v-card-action>
+        </v-card-text>
       </v-card>
     </v-dialog>
   </v-container>
@@ -144,8 +140,17 @@ export default {
         email: "",
         phone: "",
       },
-      intrucTitle: ["Asst.", "Assoc.", "Prof.", "Dr."],
+      intrucTitle: ["Asst.Prof.", "Assoc.Prof.", "Prof.", "Dr."],
     };
+  },
+  watch: {
+    editDialog(value) {
+      if(value) {
+        if(!this.intrucTitle.includes(this.editedItem.title)) {
+          this.intrucTitle.push(this.editedItem.title)
+        }
+      }
+    }
   },
   mounted() {
     this.getInstructors();

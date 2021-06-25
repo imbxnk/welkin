@@ -197,13 +197,14 @@
           <b>{{ this.editedItem.entry_trimester }}</b> <br />Entry Year:
           <b>{{ this.editedItem.entry_year }}</b>
           <b>{{ this.editedItem.status.current }}</b>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text color="error" @click="dialogCheck = false">No</v-btn>
+            <v-btn color="primary" @click="save()">Yes</v-btn>
+          </v-card-actions>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text color="error" @click="dialogCheck = false">No</v-btn>
-          <v-btn text color="success" @click="save()">Yes</v-btn>
-        </v-card-actions></v-card
-      >
+      </v-card>
     </v-dialog>
   </v-container>
 </template>

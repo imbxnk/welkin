@@ -1,55 +1,50 @@
 <template>
   <div>
     <v-form ref="form" lazy-validation>
-      <div class="d-flex flex-column bd-highlight">
-        <div class="p-2 bd-highlight mx-auto">
-          <div class="d-flex flex-row justify-content-evenly bd-highlight">
-            <div class="p-2 bd-highlight">
-              <v-text-field label="Title" v-model="instrucData.title" outlined></v-text-field>
-            </div>
-            <div class="p-2 bd-highlight">
-              <v-text-field
-                label="First Name"
-                v-model="instrucData.given_name"
-                :rules="[rules.required, rules.counter]"
-                outlined
-                required
-              ></v-text-field>
-            </div>
-            <div class="p-2 bd-highlight">
-              <v-text-field
-                label="Last Name"
-                v-model="instrucData.family_name"
-                :rules="[rules.required, rules.counter]"
-                outlined
-                required
-              ></v-text-field>
-            </div>
-          </div>
+      <div class="d-flex flex-column">
+        <div class="d-flex">
+          <v-autocomplete
+            v-model="instrucData.title"
+            :items="titles"
+            label="Title"
+            class="me-4"
+            style="max-width: 170px"
+            clearable
+            outlined
+          ></v-autocomplete>
+          <v-text-field
+            label="First Name"
+            v-model="instrucData.given_name"
+            :rules="[rules.required, rules.counter]"
+            outlined
+            required
+          ></v-text-field>
         </div>
-        <div class="p-2 bd-highlight mx-auto">
-          <div class="d-flex flex-row justify-content-evenly bd-highlight">
-            <div class="p-2 bd-highlight">
-              <v-text-field label="email" v-model="instrucData.email" outlined></v-text-field>
-            </div>
-            <div class="p-2 bd-highlight">
-              <v-text-field
-                label="phone"
-                v-model="instrucData.phone"
-                :rules="[]"
-                outlined
-              ></v-text-field>
-            </div>
-          </div>
-        </div>
+
+        <v-text-field
+          label="Last Name"
+          v-model="instrucData.family_name"
+          :rules="[rules.required, rules.counter]"
+          outlined
+          required
+        ></v-text-field>
+        <v-text-field
+          label="Email"
+          v-model="instrucData.email"
+          outlined
+        ></v-text-field>
+        <v-text-field
+          label="phone"
+          v-model="instrucData.phone"
+          :rules="[]"
+          outlined
+        ></v-text-field>
       </div>
     </v-form>
     <v-card-action>
-      <div class="d-flex flex-row justify-content-end bd-highlight">
-        <div class="p-2 bd-highlight">
-          <v-btn class="my-4" text @click="clear()">clear</v-btn>
-          <v-btn class="my-4" color="#3c84fb" @click="validate()" text>Submit</v-btn>
-        </div>
+      <div class="d-flex flex-row justify-content-end">
+        <v-btn class="mt-4 me-4" text @click="clear()">clear</v-btn>
+        <v-btn class="mt-4" color="primary" @click="validate()">Submit</v-btn>
       </div>
     </v-card-action>
 
@@ -78,6 +73,7 @@
 
 <script>
 export default {
+  props: ['titles'],
   data() {
     return {
       snackbar: false,
