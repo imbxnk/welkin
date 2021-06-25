@@ -48,7 +48,7 @@
               </v-avatar>
             </template>
             <template v-slot:[`item.name`]="{ item }">
-              {{ item.prefix ? item.prefix + ' ' + item.name : item.name }}
+              <router-link style="text-decoration: none; color:inherit" target="_blank" :to="{ name: 'student_record', params: { sid: item.sid } }">{{ item.prefix ? item.prefix + ' ' + item.name : item.name }}</router-link>
             </template>
             <!-- <template v-slot:[`item.nick_name`]="{ item }">
               {{ item.nick_name ? item.nick_name : "-" }}

@@ -37,29 +37,40 @@
               class="center"
               style="border-radius: none !important"
             />
-            <div class="overline">{{ this.students.sid }}</div>
+            <div class="overline">{{ students.sid }}</div>
           </v-card>
         </div>
         <div class="col-md-8 order-2 float-right">
           <v-card elevation="0" class="profile-card">
             <span class="overline">About this student</span>
-            <h3>{{ this.students.given_name }} {{ this.students.family_name }}</h3>
+            <h3>{{ students.given_name }} {{ students.family_name }}</h3>
             <v-divider></v-divider>
             <b>Entry Trimester: </b>
-            <span v-if="this.students.entry_year && this.students.entry_year"
-              >{{ this.students.entry_year }}T{{ this.students.entry_trimester }}<br
+            <span v-if="students.entry_year && students.entry_year"
+              >{{ students.entry_year }}T{{ students.entry_trimester }}<br
             /></span>
             <span v-else> -<br /></span>
-            <b>Email:</b> {{ checkNull(this.students.email) }}<br />
-            <b>Phone:</b> {{ checkNull(this.students.phone) }}<br />
+            <b>Program:</b> {{ students.program }}<br />
+            <b>Status:</b> {{ students.status.current }}<br />
+            <b>Email:</b> {{ checkNull(students.email) }}<br />
+            <b>Phone:</b> {{ checkNull(students.phone) }}<br />
             <b>Performance:</b>
             <span>
               <v-chip small :color="getColor(this.students.performance)" dark class="mx-3 mt-n1">
                 {{ this.students.performance }}
               </v-chip></span
             ><br />
-            <b>Curriculum:</b>
-            <a href="/curriculum"> {{ getCurriculumName(this.students.batch) }}</a>
+            <b>Curriculum:</b> <a href="/curriculum">{{ getCurriculumName(students.batch) }}</a><br>
+            <span class="my-4" v-if="students.status.history.length">
+              History
+              <ul>
+                <template v-for="(log, i) in students.status.history">
+                <li :key="i">
+                  {{ log.from }} -> {{ log.to }} ({{ readableDate(log.date) }})
+                </li>
+              </template>
+              </ul>
+            </span>
           </v-card>
         </div>
         <div class="col-md-4 order-3 float-left">
@@ -361,6 +372,14 @@ export default {
                             advisor{
                               name
                             }
+                            status {
+                              current
+                              history {
+                                date
+                                from
+                                to
+                              }
+                            }
                             remarks {
                               user {
                                 display_name
@@ -584,6 +603,9 @@ export default {
           console.log(err);
         });
     },
+    readableDate(date) {
+      return this.moment(parseInt(date)).format("DD MMMM YYYY");
+    },
   },
 };
 </script>
@@ -600,7 +622,7 @@ export default {
   padding: 1em;
 }
 .profile-card {
-  height: 350px;
+  min-height: 350px;
   padding: 1em;
 }
 .center {
