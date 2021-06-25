@@ -501,9 +501,9 @@ export default {
             icon: "mdi-clipboard-edit-outline",
           },
           {
-            title: "Website",
+            title: "Configurations",
             href: "/website",
-            icon: "mdi-palette-outline",
+            icon: "mdi-wrench-outline",
           },
 
           // {
