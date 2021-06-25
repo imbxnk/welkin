@@ -80,113 +80,99 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="dialog" max-width="1000px">
+    <v-dialog v-model="dialog" max-width="600px">
       <v-card>
         <v-card-title class="card-title">
           Edit Student
         </v-card-title>
         <v-card-text>
           <v-form>
-            <div class="d-flex flex-column bd-highlight">
-              <div class="p-2 bd-highlight">
-                <div class="d-flex flex-row justify-content-evenly bd-highlight">
-                  <div class="p-2 bd-highlight">
-                    <v-select
-                      class="input"
-                      label="Prefix"
-                      :items="prefix"
-                      outlined
-                      v-model="editedItem.prefix"
-                    ></v-select>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      class="input"
-                      label="First name"
-                      v-model="editedItem.given_name"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      class="input"
-                      label="Family name"
-                      v-model="editedItem.family_name"
-                      outlined
-                    ></v-text-field>
-                  </div>
+            <div class="d-flex flex-column">
+              <div class="d-flex">
+                <v-autocomplete
+                  v-model="editedItem.program"
+                  :items="programs"
+                  label="Program"
+                  class="me-4"
+                  auto-select-first
+                  clearable
+                  outlined
+                ></v-autocomplete>
+                <div class="d-flex">
+                  <v-select
+                    label="Trimester"
+                    :items="trimester"
+                    style="max-width: 80px"
+                    class="me-4"
+                    outlined
+                    v-model="editedItem.entry_trimester"
+                  ></v-select>
+                  <v-text-field
+                    style="max-width: 120px"
+                    type="text"
+                    pattern="\d*"
+                    onkeydown="return ( event.ctrlKey || event.altKey
+                              || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false)
+                              || (95<event.keyCode && event.keyCode<106)
+                              || (event.keyCode==8) || (event.keyCode==9)
+                              || (event.keyCode>34 && event.keyCode<40)
+                              || (event.keyCode==46) )"
+                    label="Year"
+                    v-model="editedItem.entry_year"
+                    outlined
+                    :rules="[() => editedItem.entry_year.length >= 4 || 'Required 4 characters']"
+                  ></v-text-field>
                 </div>
               </div>
-              <div class="p-2 bd-highlight">
-                <div class="d-flex flex-row justify-content-evenly bd-highlight">
-                  <div class="p-2 bd-highlight">
-                    <v-select
-                      class="input"
-                      label="Entry Trimester"
-                      :items="trimester"
-                      outlined
-                      v-model="editedItem.entry_trimester"
-                    ></v-select>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      type="number"
-                      class="input"
-                      label="Entry Year"
-                      v-model="editedItem.entry_year"
-                      outlined
-                      :rules="[() => entry_year.length >= 4 || 'Required 4 characters']"
-                    ></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      class="input"
-                      label="Program"
-                      v-model="editedItem.program"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                </div>
+
+              <div class="d-flex flex-wrap">
+                <v-select
+                  label="Prefix"
+                  :items="prefix"
+                  style="max-width: 100px"
+                  class="me-4"
+                  outlined
+                  v-model="editedItem.prefix"
+                ></v-select>
+                <v-text-field
+                  class="flex-grow-1"
+                  label="First name"
+                  v-model="editedItem.given_name"
+                  outlined
+                ></v-text-field>
               </div>
-              <div class="p-2 bd-highlight">
-                <div class="d-flex flex-row justify-content-evenly bd-highlight">
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      class="input"
-                      label="Nickname"
-                      v-model="editedItem.nick_name"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      class="input"
-                      label="Email"
-                      v-model="editedItem.email"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                  <div class="p-2 bd-highlight">
-                    <v-text-field
-                      class="input"
-                      label="Phone number"
-                      v-model="editedItem.phone"
-                      outlined
-                    ></v-text-field>
-                  </div>
-                </div>
-              </div>
-              <div class="p-2 bd-highlight">
-                <div class="d-flex flex-row justify-content-end bd-highlight">
-                  <v-btn class="my-3 mr-auto success" text>Line</v-btn>
-                  <v-btn class="my-3" @click="close()" text>close</v-btn>
-                  <v-btn class="my-3" color="#3c84fb" @click="dialogCheck = true" text
-                    >Submit</v-btn
-                  >
-                </div>
-              </div>
+              <v-text-field
+                label="Family name"
+                v-model="editedItem.family_name"
+                outlined
+              ></v-text-field>
+
+              <v-text-field
+                label="Nickname (optional)"
+                v-model="editedItem.nick_name"
+                outlined
+              ></v-text-field>
+              <v-text-field
+                label="Email (optional)"
+                v-model="editedItem.email"
+                outlined
+              ></v-text-field>
+              <v-text-field
+                label="Phone number (optional)"
+                v-model="editedItem.phone"
+                outlined
+              ></v-text-field>
             </div>
           </v-form>
+          <v-card-actions>
+            <div class="d-flex justify-content-between w-100">
+              <v-btn class="my-3 me-4 success" text>Line</v-btn>
+              <div class="d-flex">
+                <v-btn class="my-3 me-4" @click="close()" text>close</v-btn>
+                <v-btn class="my-3" color="primary" @click="dialogCheck = true">Submit</v-btn>
+              </div>
+            </div>
+          </v-card-actions>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -269,6 +255,25 @@ export default {
       search: "",
       trimester: ["1", "2", "3"],
       importDialog: false,
+      programs: [
+        'ICCI',
+        'ICBE',
+        'ICCS',
+        'ICMI',
+        'ICMF',
+        'ICMK',
+        'ICCU',
+        'ICSS',
+        'ICMC',
+        'ICCD',
+        'ICIR',
+        'ICIH',
+        'ICIB',
+        'ICEN',
+        'ICCH',
+        'ICPY',
+        'ICFS'
+      ]
     };
   },
   mounted() {
@@ -353,7 +358,6 @@ export default {
       let query = `
           mutation{
             updateStudent(searchInput: {sid:"${this.Info[this.editedIndex].sid}"},studentInput:{
-              sid:"${this.Info[this.editedIndex].sid}",
               given_name:"${this.Info[this.editedIndex].given_name}",
               family_name:"${this.Info[this.editedIndex].family_name}",
               nick_name: "${this.Info[this.editedIndex].nick_name}"
@@ -400,15 +404,6 @@ export default {
 </script>
 
 <style>
-.input {
-  min-width: 50px;
-  max-width: 300px;
-  width: 300px;
-}
-.card-title{
-    background: #97b8f0;
-    color: white;
-  }
 .upload-Dialog{
   min-height: 500px;
 }

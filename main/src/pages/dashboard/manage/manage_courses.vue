@@ -122,8 +122,4 @@ export default {
 </script>
 
 <style>
-  .card-title{
-    background: #97b8f0;
-    color: white;
-  }
 </style>
