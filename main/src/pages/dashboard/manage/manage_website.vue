@@ -526,7 +526,7 @@ export default {
           this.announcements.loading = false;
           this.announcements.addDialog = false;
           this.announcements.startDateMenu = false;
-          this.announcements.items.push(res.data.data.createAnnouncement)
+          this.announcements.items.unshift(res.data.data.createAnnouncement)
           this.announcements.newAnnouncement = {
             title: '',
             content: '',
