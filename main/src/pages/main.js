@@ -7,7 +7,7 @@ import router from "../router";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 
 // Import Axios
-import axios from "axios";
+import axios from "../utils/service";
 import VueAxios from "vue-axios";
 
 // Import firebase
