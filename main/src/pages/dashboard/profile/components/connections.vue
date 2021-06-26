@@ -11,7 +11,7 @@
               <v-expansion-panel-header  style="font-weight: 700 !important;">
                 <div>LINE</div>
               </v-expansion-panel-header>
-              <v-expansion-panel-content style="background: #fff; color: #666; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+              <v-expansion-panel-content v-if="!isLoading" style="background: #fff; color: #666; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                 <div class="mt-4 d-flex flex-sm-row flex-column w-100">
                   <div class="flex-grow-1 d-flex justify-content-center justify-content-sm-start mb-4 mb-sm-0 align-items-center">
                     Status: <span class="ms-4"><b>{{ authorizedApp.line ? 'Connected' : 'Not Connected'}}</b></span>
@@ -42,7 +42,7 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
+      isLoading: true,
       isSuccess: false,
       error: '',
       authorizedApp: {
