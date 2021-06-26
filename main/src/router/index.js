@@ -10,6 +10,7 @@ import Profile from "../pages/dashboard/profile/profile";
 import MyProfile from "../pages/dashboard/profile/components/myProfile";
 import AccountSettings from "../pages/dashboard/profile/components/accountSettings";
 import ChangePassword from "../pages/dashboard/profile/components/changePassword";
+import Connections from "../pages/dashboard/profile/components/connections";
 import ManageStudents from "../pages/dashboard/manage/manage_students";
 import StudentList from "../pages/dashboard/students/students";
 import MyAdvisees from "../pages/dashboard/students/my_advisees";
@@ -125,6 +126,11 @@ const routes = [
         path: "security",
         component: ChangePassword,
       },
+      {
+        name: "Connections",
+        path: "connections",
+        component: Connections,
+      }
     ],
   },
   {
@@ -294,8 +300,6 @@ router.beforeEach(async (to, from, next) => {
   try {
     if (requiresAuth && currentUser.group === "admin") return next();
   } catch (err) {}
-
-  console.log(to)
 
   if (requiresAuth && !currentUser) return next({ path: '/login', query: { redirect: to.fullPath }});
 
