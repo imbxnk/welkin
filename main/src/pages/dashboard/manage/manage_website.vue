@@ -103,7 +103,7 @@
                 {{ getDuration(item.startDate, item.endDate) }}
               </template>
               <template v-slot:[`item.edit`]="{ item }">
-                <v-icon small @click="editItem(item)">
+                <v-icon small @click="editItem(item, announcements.items.indexOf(item))">
                   mdi-pencil
                 </v-icon>
               </template>
@@ -134,7 +134,7 @@
 
             <v-menu
               ref="startDateMenu"
-              v-model="announcements.newAnnouncement.startDateMenu"
+              v-model="announcements.startDateMenu"
               :close-on-content-click="false"
               :return-value.sync="announcements.newAnnouncement.range"
               transition="scale-transition"
@@ -163,7 +163,7 @@
                 <v-btn
                   text
                   color="#999"
-                  @click="announcements.newAnnouncement.startDateMenu = false; announcements.newAnnouncement.range = []"
+                  @click="announcements.startDateMenu = false; announcements.newAnnouncement.range = []"
                 >
                   Cancel
                 </v-btn>
@@ -188,6 +188,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <!-- DELETE ANNOUNCEMENT DIALOG -->
       <v-dialog v-model="announcements.deleteDialog" max-width="500px">
         <v-card>
           <v-card-title
@@ -213,6 +214,91 @@
               color="error"
               @click="deleteAnnouncement"
             >Delete</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- EDIT ANNOUNCEMENT DIALOG -->
+      <v-dialog v-model="announcements.editDialog" max-width="500px">
+        <v-card>
+          <v-card-title>
+            Edit Announcement
+            <v-spacer></v-spacer>
+            <v-icon @click="announcements.editDialog = false" tabindex="-1">mdi-close</v-icon>
+          </v-card-title>
+          <v-card-text class="mt-4">
+            <v-text-field
+              v-model="announcements.editedItem.title"
+              label="Subject"
+              outlined
+              dense
+            ></v-text-field>
+            <div class="d-flex">
+              <v-menu
+                v-model="announcements.startDateMenuEdit"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="startDateRangeText"
+                    label="Start Date"
+                    outlined
+                    readonly
+                    append-icon="mdi-calendar"
+                    dense
+                    v-bind="attrs"
+                    v-on="on"
+                    class="me-2"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  no-title
+                  v-model="startDateRangeText"
+                  @input="announcements.startDateMenuEdit = false"
+                  :allowed-dates="disablePastDates"
+                ></v-date-picker>
+              </v-menu>
+
+              <v-menu
+                v-model="announcements.endDateMenuEdit"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="endDateRangeText"
+                    label="End Date"
+                    outlined
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                    append-icon="mdi-calendar"
+                    dense
+                    class="ms-2"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  no-title
+                  v-model="endDateRangeText"
+                  @input="announcements.endDateMenuEdit = false"
+                  :allowed-dates="disablePastDates"
+                ></v-date-picker>
+              </v-menu>
+            </div>
+            <WYSIWYG v-model="announcements.editedItem.content" placeholder="Content"></WYSIWYG>
+          </v-card-text>
+          <v-card-actions class="pb-4 d-flex justify-content-end">
+            <v-btn
+              :disabled="announcements.editedItem.content.length <= 7 || announcements.editedItem.title.length == 0"
+              color="primary"
+              @click="updateAnnouncement"
+            >Update</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -242,11 +328,21 @@ export default {
       items: [],
       addDialog: false,
       deleteDialog: false,
+      editDialog: false,
+      startDateMenu: false,
+      startDateMenuEdit: false,
       newAnnouncement: {
-        startDateMenu: false,
         title: '',
         content: '',
         range: [],
+      },
+      editedIndex: -1,
+      editedItem: {
+        _id: '',
+        title: '',
+        content: '',
+        startDate: '0',
+        endDate: '0',
       },
       deletedItem: {
         _id: '',
@@ -282,7 +378,23 @@ export default {
       return selections
     },
     dateRangeText () {
-      return this.announcements.newAnnouncement.range.join(' ~ ')
+      return this.announcements.newAnnouncement.range.join(' to ')
+    },
+    startDateRangeText: {
+      get: function () {
+        return this.moment(parseInt(this.announcements.editedItem.startDate)).utcOffset(7).format('YYYY-MM-DD')
+      },
+      set: function (newValue) {
+        this.announcements.editedItem.startDate = this.moment(newValue, 'YYYY-MM-DD').format('x')
+      }
+    },
+    endDateRangeText: {
+      get: function () {
+        return this.moment(parseInt(this.announcements.editedItem.endDate)).utcOffset(8).format('YYYY-MM-DD')
+      },
+      set: function (newValue) {
+        this.announcements.editedItem.endDate = this.moment(newValue, 'YYYY-MM-DD').format('x')
+      }
     },
   },
 
@@ -332,7 +444,7 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          this.announcements.items = res.data.data.announcements.announcements
+          this.announcements.items = [...res.data.data.announcements.announcements]
         })
         .catch((err) => {
           // this.loading = false;
@@ -364,12 +476,12 @@ export default {
       let start = this.moment(parseInt(startDate))
       let now = this.moment()
       let end = this.moment(parseInt(endDate))
-      let duration = this.moment.duration(end.diff(now))
+      let duration = this.moment.duration(end.diff(now)).asDays()
       if(start > now && end > now) return 'Scheduled'
-      return now < end ? this.moment.utc(duration.as('milliseconds')).format('D') + ' days' : 'End'
+      return now < end ? (~~duration+1) + ' days' : 'End'
     },
     disablePastDates(val) {
-      let current = this.announcements.startDate || new Date().toISOString().substr(0, 10)
+      let current = this.moment().utcOffset(7).format('YYYY-MM-DD')
       return val >= current
     },
     confirmDelete(item) {
@@ -393,8 +505,16 @@ export default {
               startDate: "${startDate}"
               endDate: "${endDate}"
             }) {
-              success
-              message
+              _id
+              title
+              content
+              user {
+                display_name
+                username
+              }
+              createdAt
+              startDate
+              endDate
             }
           }
       `
@@ -402,11 +522,12 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res.data)
+          console.log(res.data.data.createAnnouncement)
           this.announcements.loading = false;
           this.announcements.addDialog = false;
+          this.announcements.startDateMenu = false;
+          this.announcements.items.push(res.data.data.createAnnouncement)
           this.announcements.newAnnouncement = {
-            startDateMenu: false,
             title: '',
             content: '',
             range: [],
@@ -421,7 +542,7 @@ export default {
       this.announcements.loading = true
       let query = `
           mutation {
-            deleteAnnouncement(id: ${this.announcements.deletedItem._id}) {
+            deleteAnnouncement(id: "${this.announcements.deletedItem._id}") {
               success
               message
             }
@@ -435,6 +556,53 @@ export default {
           this.announcements.loading = false;
           this.announcements.deleteDialog = false;
           this.announcements.items.splice(this.announcements.items.indexOf(this.announcements.deletedItem), 1)
+        })
+        .catch((err) => {
+          console.log(err)
+          this.announcements.loading = false;
+        });
+    },
+    editItem(item, index) {
+      this.editedIndex = index
+      this.announcements.editedItem = Object.assign({}, item)
+      this.announcements.editDialog = true
+    },
+    updateAnnouncement() {
+      this.announcements.loading = true
+      let editAnnouncement = this.announcements.editedItem
+      // let startDate = this.moment(editAnnouncement.startDate).format('x')
+      // let endDate = this.moment(editAnnouncement.endDate).format('x')
+      let startDate = editAnnouncement.startDate
+      let endDate = editAnnouncement.endDate
+      if(startDate > endDate) {
+        let tmp = startDate
+        startDate = endDate
+        endDate = tmp
+      }
+      let query = `
+        mutation {
+          editAnnouncement(id: "${editAnnouncement._id}", announcementInput: {
+            title: "${editAnnouncement.title}",
+            content: "${editAnnouncement.content.replaceAll(`"`,`'`)}",
+            startDate: "${startDate}",
+            endDate: "${endDate}"
+          }) {
+            success
+            message
+          }
+        }
+      `
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          if(this.editedIndex > -1) {
+            Object.assign(this.announcements.items[this.editedIndex], this.announcements.editedItem)
+          } else {
+            this.announcements.items.push(this.announcements.editedItem)
+          }
+          this.announcements.loading = false;
+          this.announcements.editDialog = false;
         })
         .catch((err) => {
           console.log(err)
