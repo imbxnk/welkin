@@ -90,7 +90,7 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           if(res.data) {
-            window.location.replace("/")
+            window.location.replace(`${this.$route.query.redirect || '/'}`)
           } else {
             alert("Invalid Username or Password");
             this.isLoading = false

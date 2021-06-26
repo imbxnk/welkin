@@ -28,6 +28,7 @@ import ManageCourses from "../pages/dashboard/manage/manage_courses";
 import ManageClasses from "../pages/dashboard/manage/manage_classes";
 import ManageCurriculums from "../pages/dashboard/manage/manage_curriculums";
 
+
 // Auth Route
 import Login from "../pages/auth/login";
 import PasswordRecovery from "../pages/auth/passwordRecovery";
@@ -294,7 +295,9 @@ router.beforeEach(async (to, from, next) => {
     if (requiresAuth && currentUser.group === "admin") return next();
   } catch (err) {}
 
-  if (requiresAuth && !currentUser) return next("/login");
+  console.log(to)
+
+  if (requiresAuth && !currentUser) return next({ path: '/login', query: { redirect: to.fullPath }});
 
   if (!requiresAuth && currentUser) return next("/");
 
