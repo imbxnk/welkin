@@ -89,7 +89,7 @@
           <v-form>
             <div class="d-flex flex-column">
               <div class="d-flex">
-                <v-autocomplete
+                <v-combobox
                   v-model="editedItem.program"
                   :items="programs"
                   label="Program"
@@ -97,7 +97,7 @@
                   auto-select-first
                   clearable
                   outlined
-                ></v-autocomplete>
+                ></v-combobox>
                 <div class="d-flex">
                   <v-select
                     label="Trimester"

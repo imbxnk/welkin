@@ -288,29 +288,29 @@ export default {
                 users {
                     total
                     users {
-                    _id
-                    display_name
-                    username
-                    given_name
-                    family_name
-                    email
-                    group
-                    createdAt
-                    isAdvisor
-                    linked_instructor {
                       _id
-                      title
-                      name
-                    }
-                    isActive
-                    avatar {
-                        small
-                        medium
-                        large
-                    }
+                      display_name
+                      username
+                      given_name
+                      family_name
+                      email
+                      group
+                      createdAt
+                      isAdvisor
+                      linked_instructor {
+                        _id
+                        title
+                        name
+                      }
+                      isActive
+                      avatar {
+                          small
+                          medium
+                          large
+                      }
                     }
                 }
-                }
+              }
           `;
       query = query.replace(/\s+/g, ' ').trim()
       this.axios

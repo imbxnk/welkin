@@ -239,8 +239,25 @@ export default {
                         linked_instructor:  ${this.input.linked_instructor ? (this.input.linked_instructor._id ? '"' + this.input.linked_instructor._id + '"' : null) : null }
                         ${this.input.group ? ', group: "' + this.input.group + '"' : ''}
                     }) {
-                    success
-                    message
+                      display_name
+                      username
+                      given_name
+                      family_name
+                      email
+                      group
+                      createdAt
+                      isAdvisor
+                      linked_instructor {
+                        _id
+                        title
+                        name
+                      }
+                      isActive
+                      avatar {
+                          small
+                          medium
+                          large
+                      }
                     }
                 }`;
       query = query.replace(/\s+/g, " ").trim();
