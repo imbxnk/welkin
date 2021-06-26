@@ -3,7 +3,7 @@
     <v-form ref="form" lazy-validation>
       <div class="d-flex flex-column">
         <div class="d-flex">
-          <v-autocomplete
+          <v-combobox
             v-model="instrucData.title"
             :items="titles"
             label="Title"
@@ -11,7 +11,7 @@
             style="max-width: 170px"
             clearable
             outlined
-          ></v-autocomplete>
+          ></v-combobox>
           <v-text-field
             label="First Name"
             v-model="instrucData.given_name"
@@ -31,22 +31,22 @@
         <v-text-field
           label="Email"
           v-model="instrucData.email"
+          :rules="[rules.email]"
           outlined
         ></v-text-field>
         <v-text-field
           label="phone"
           v-model="instrucData.phone"
-          :rules="[]"
           outlined
         ></v-text-field>
       </div>
     </v-form>
-    <v-card-action>
+    <v-card-actions>
       <div class="d-flex flex-row justify-content-end">
         <v-btn class="mt-4 me-4" text @click="clear()">clear</v-btn>
         <v-btn class="mt-4" color="primary" @click="validate()">Submit</v-btn>
       </div>
-    </v-card-action>
+    </v-card-actions>
 
     <v-dialog v-model="dialogCheck" max-width="450px">
       <v-card>
@@ -94,10 +94,10 @@ export default {
       dialogCheck: false,
       rules: {
         required: (value) => !!value || "Required.",
-        counter: [(v) => v.length <= 2 || "Min 2 characters"],
+        counter: (value) => value.length >= 2 || "Min 2 characters",
         email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          return pattern.test(value) || "Invalid e-mail.";
+          return value.length > 0 ? pattern.test(value) || "Invalid e-mail." : true;
         },
       },
     };
@@ -131,7 +131,7 @@ export default {
                       given_name: "${this.inputData.given_name}",
                       family_name: "${this.inputData.family_name}",
                       email: "${this.inputData.email}",
-                      phone"${this.inputData.phone}",
+                      phone: "${this.inputData.phone}"
                     }){
                         title
                         name
