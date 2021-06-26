@@ -60,17 +60,8 @@
                 {{ this.students.performance }}
               </v-chip></span
             ><br />
-            <b>Curriculum:</b> <a href="/curriculum">{{ getCurriculumName(students.batch) }}</a><br>
-            <span class="my-4" v-if="students.status.history.length">
-              History
-              <ul>
-                <template v-for="(log, i) in students.status.history">
-                <li :key="i">
-                  {{ log.from }} -> {{ log.to }} ({{ readableDate(log.date) }})
-                </li>
-              </template>
-              </ul>
-            </span>
+            <b>Curriculum:</b> <a href="/curriculum">{{ getCurriculumName(students.batch) }}</a
+            ><br />
           </v-card>
         </div>
         <div class="col-md-4 order-3 float-left">
@@ -98,31 +89,88 @@
           </v-card>
         </div>
         <div class="col-md-8 order-5 float-right">
-          <v-card elevation="0" class="pa-3">
-            <span class="overline">Core Courses</span>
-            <v-divider></v-divider>
-            <div v-if="this.students.taken_courses.core_courses.length > 0">
-              <div v-for="(course, i) in this.students.taken_courses.core_courses" :key="i">
-                <div class="d-flex pb-3 justify-content-between  flex-column flex-sm-row">
-                  <div>{{ course.class.course.name }}</div>
-                  <div>
-                    {{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}
+          <div class="order-1">
+            <v-card elevation="0" class="pa-3">
+              <span class="overline">Core Courses</span>
+              <v-divider></v-divider>
+              <div v-if="this.students.taken_courses.core_courses.length > 0">
+                <div v-for="(course, i) in this.students.taken_courses.core_courses" :key="i">
+                  <div class="d-flex pb-3 justify-content-between  flex-column flex-sm-row">
+                    <div>{{ course.class.course.name }}</div>
+                    <div>
+                      {{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}
+                    </div>
                   </div>
-                </div>
-                <!-- <p>
+                  <!-- <p>
                     {{ course.class.course.name }}
                     <span style="float:right;"
                       >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
                     >
                   </p> -->
+                </div>
               </div>
-            </div>
-            <div v-else>
-              <span style="color: #b4b4b4"
-                >This student has not enrolled any courses from Core Courses</span
-              >
-            </div>
-          </v-card>
+              <div v-else>
+                <span style="color: #b4b4b4"
+                  >This student has not enrolled any courses from Core Courses</span
+                >
+              </div>
+            </v-card>
+          </div>
+          <div class="order-2 pt-6">
+            <v-card elevation="0" class="pa-3">
+              <span class="overline">Required Major Courses</span>
+              <v-divider></v-divider>
+              <div v-if="this.students.taken_courses.required_courses.length > 0">
+                <div v-for="(course, i) in this.students.taken_courses.required_courses" :key="i">
+                  <div class="d-flex pb-3 justify-content-between  flex-column flex-sm-row">
+                    <div>{{ course.class.course.name }}</div>
+                    <div>
+                      {{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}
+                    </div>
+                  </div>
+                  <!-- <p>
+                    {{ course.class.course.name }}
+                    <span style="float:right;"
+                      >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
+                    >
+                  </p> -->
+                </div>
+              </div>
+              <div v-else>
+                <span style="color: #b4b4b4"
+                  >This student has not enrolled any courses from Required Major Courses</span
+                >
+              </div>
+            </v-card>
+          </div>
+
+          <div class="order-3 pt-5">
+            <v-card elevation="0" class="pa-6">
+              <span class="overline">Elective Major Courses</span>
+              <v-divider></v-divider>
+              <div v-if="this.students.taken_courses.elective_courses.length > 0">
+                <div v-for="(course, i) in this.students.taken_courses.elective_courses" :key="i">
+                  <div class="d-flex pb-3 justify-content-between  flex-column flex-sm-row">
+                    <div>{{ course.class.course.name }}</div>
+                    <div>
+                      {{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}
+                    </div>
+                  </div>
+                  <!-- <p>
+                    {{ course.class.course.name }}
+                    <span style="float:right;"
+                      >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
+                    >
+                  </p> -->
+                </div>
+              </div>
+              <div v-else>
+                <span style="color: #b4b4b4"
+                  >This student has not enrolled any courses from Elective Major Courses</span
+                >
+              </div>
+            </v-card>
+          </div>
         </div>
         <div class="col-md-4 order-4 float-left">
           <v-card elevation="0" class="pa-3">
@@ -201,58 +249,18 @@
         <v-snackbar centered v-model="snackbar" :timeout="1000">
           {{ snackbartext }}
         </v-snackbar>
-        <div class="col-md-8 order-6 float-right">
+
+        <div class="col-md-4 order-4 float-left">
           <v-card elevation="0" class="pa-3">
-            <span class="overline">Required Major Courses</span>
-            <v-divider></v-divider>
-            <div v-if="this.students.taken_courses.required_courses.length > 0">
-              <div v-for="(course, i) in this.students.taken_courses.required_courses" :key="i">
-                <div class="d-flex pb-3 justify-content-between  flex-column flex-sm-row">
-                  <div>{{ course.class.course.name }}</div>
-                  <div>
-                    {{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}
-                  </div>
-                </div>
-                <!-- <p>
-                    {{ course.class.course.name }}
-                    <span style="float:right;"
-                      >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
-                    >
-                  </p> -->
-              </div>
-            </div>
-            <div v-else>
-              <span style="color: #b4b4b4"
-                >This student has not enrolled any courses from Required Major Courses</span
-              >
-            </div>
-          </v-card>
-        </div>
-        <div class="col-md-8 order-7 float-right">
-          <v-card elevation="0" class="pa-3">
-            <span class="overline">Elective Major Courses</span>
-            <v-divider></v-divider>
-            <div v-if="this.students.taken_courses.elective_courses.length > 0">
-              <div v-for="(course, i) in this.students.taken_courses.elective_courses" :key="i">
-                <div class="d-flex pb-3 justify-content-between  flex-column flex-sm-row">
-                  <div>{{ course.class.course.name }}</div>
-                  <div>
-                    {{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}
-                  </div>
-                </div>
-                <!-- <p>
-                    {{ course.class.course.name }}
-                    <span style="float:right;"
-                      >{{ course.grade }} / {{ course.class.year }}T{{ course.class.trimester }}</span
-                    >
-                  </p> -->
-              </div>
-            </div>
-            <div v-else>
-              <span style="color: #b4b4b4"
-                >This student has not enrolled any courses from Elective Major Courses</span
-              >
-            </div>
+            <span class="overline">Education status History</span><br />
+            <span class="my-4" v-if="students.status.history.length">
+              <ul>
+                <template v-for="(log, i) in students.status.history">
+                  <li :key="i">{{ log.from }} -> {{ log.to }} ({{ readableDate(log.date) }})</li>
+                </template>
+              </ul>
+            </span>
+            <span v-else>-</span>
           </v-card>
         </div>
       </div>
