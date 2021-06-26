@@ -301,7 +301,11 @@ router.beforeEach(async (to, from, next) => {
     if (requiresAuth && currentUser.group === "admin") return next();
   } catch (err) {}
 
-  if (requiresAuth && !currentUser) return next({ path: '/login', query: { redirect: to.fullPath }});
+  if (requiresAuth && !currentUser) {
+    let path = { path: '/login' }
+    if(to.fullPath !== '/') path.query = { redirect: to.fullPath }
+    return next(path);
+  }
 
   if (!requiresAuth && currentUser) return next("/");
 
