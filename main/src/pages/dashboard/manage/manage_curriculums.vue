@@ -4,7 +4,7 @@
       <div class="ml-auto p-2 bd-highlight">
         <div class="d-flex flex-row justify-content-end bd-highlight">
           <div class="p-2 bd-highlight">
-            <AddCurriculum @addCurriculum="addCurriculum"></AddCurriculum>
+            <AddCurriculum @addCurriculum="addCurriculum" @updateCurriculum="updateCurriculum"></AddCurriculum>
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@ export default {
       ],
       curriculums: [],
       total: 0,
-      editedIndex: -1,
+      editedIndex: 0,
       editedItem: {},
     };
   },
@@ -81,40 +81,17 @@ export default {
                 curriculums {
                   _id
                   name
-                  courses {
-                    core_courses {
-                      _id
-                      code
-                      name
-                    }
-                    required_courses{
-                      _id
-                      code
-                      name
-                    }
-                    elective_courses{
-                      _id
-                      code
-                      name
-                    }
-                  }
+                  batches
                   passing_conditions {
                     core_courses
                     required_courses
                     elective_courses
                   }
-                  batches
-                  trimester_milestone {
-                    gap
-                    t4
-                    t5
-                    t6
-                    t7
-                    t8
-                    t9
-                    t10
-                    t11
-                    t12
+                  trimester_milestone { gap t4 t5 t6 t7 t8 t9 t10 t11 t12 }
+                  courses {
+                    core_courses { _id code name }
+                    required_courses { _id code name }
+                    elective_courses { _id code name }
                   }
                 }
               }
@@ -134,10 +111,13 @@ export default {
     addCurriculum(newValue) {
       this.curriculums.push(newValue)
     },
+    updateCurriculum(newValue) {
+      this.getCurriculums()
+    },
     editItem(item, index) {
       this.editedIndex = index
       this.editedItem = Object.assign({}, item)
-    }
+    },
   },
 };
 </script>

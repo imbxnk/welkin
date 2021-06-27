@@ -60,6 +60,7 @@
                   hint="Please add or select eligible batches for this curriculum"
                   height="48"
                   chips
+                  deletable-chips
                   pattern="\d*"
                   onkeydown="return ( event.ctrlKey || event.altKey
                             || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false)
@@ -356,16 +357,35 @@
               <small>Add courses to core courses category</small>
             </v-stepper-step>
             <v-stepper-content step="4">
-              <v-card
-                color="grey lighten-1"
-                class="mb-12"
-                height="200px"
-              ></v-card>
+              <div class="d-flex flex-column w-100 p-1">
+                <v-autocomplete
+                  v-model="item.courses.core_courses"
+                  :items="courses"
+                  outlined
+                  chips
+                  deletable-chips
+                  label="Course"
+                  multiple
+                  small-chips
+                  :item-text="item => item.code + ' ' + item.name"
+                  return-object
+                ></v-autocomplete>
+
+                <v-data-table
+                  v-if="item.courses.core_courses.length > 0"
+                  :headers="headers"
+                  :items="item.courses.core_courses"
+                  hide-default-header
+                  class="elevation-1"
+                  sort-by.sync="code"
+                >
+                </v-data-table>
+              </div>
               <div class="d-flex align-items-center justify-content-end">
                 <v-btn
                   color="primary"
                   class="my-4 mx-2"
-                  @click="stepperAdd = stepperAdd + 1"
+                  @click="addCoreCourses()"
                   :disabled="checkStep()"
                 >
                   Continue
@@ -380,11 +400,30 @@
               <small>Add courses to required major courses category</small>
             </v-stepper-step>
             <v-stepper-content step="5">
-              <v-card
-                color="grey lighten-1"
-                class="mb-12"
-                height="200px"
-              ></v-card>
+              <div class="d-flex flex-column w-100 p-1">
+                <v-autocomplete
+                  v-model="item.courses.required_courses"
+                  :items="courses"
+                  outlined
+                  chips
+                  deletable-chips
+                  label="Course"
+                  multiple
+                  small-chips
+                  :item-text="item => item.code + ' ' + item.name"
+                  return-object
+                ></v-autocomplete>
+
+                <v-data-table
+                  v-if="item.courses.required_courses.length > 0"
+                  :headers="headers"
+                  :items="item.courses.required_courses"
+                  hide-default-header
+                  class="elevation-1"
+                  sort-by.sync="code"
+                >
+                </v-data-table>
+              </div>
               <div class="d-flex align-items-center justify-content-between">
                 <v-btn
                   text
@@ -395,7 +434,7 @@
                 <v-btn
                   color="primary"
                   class="my-4 mx-2"
-                  @click="stepperAdd = stepperAdd + 1"
+                  @click="addRequiredCourses()"
                   :disabled="checkStep()"
                 >
                   Continue
@@ -409,11 +448,30 @@
               <small>Add courses to major elective courses category</small>
             </v-stepper-step>
             <v-stepper-content step="6">
-              <v-card
-                color="grey lighten-1"
-                class="mb-12"
-                height="200px"
-              ></v-card>
+              <div class="d-flex flex-column w-100 p-1">
+                <v-autocomplete
+                  v-model="item.courses.elective_courses"
+                  :items="courses"
+                  outlined
+                  chips
+                  deletable-chips
+                  label="Course"
+                  multiple
+                  small-chips
+                  :item-text="item => item.code + ' ' + item.name"
+                  return-object
+                ></v-autocomplete>
+
+                <v-data-table
+                  v-if="item.courses.elective_courses.length > 0"
+                  :headers="headers"
+                  :items="item.courses.elective_courses"
+                  hide-default-header
+                  class="elevation-1"
+                  sort-by.sync="code"
+                >
+                </v-data-table>
+              </div>
               <div class="d-flex align-items-center justify-content-between">
                 <v-btn
                   text
@@ -424,6 +482,7 @@
                 <v-btn
                   color="primary"
                   class="my-4 mx-2"
+                  @click="addElectiveCourses()"
                   :disabled="checkStep()"
                 >
                   Continue
@@ -442,6 +501,11 @@ export default {
     return {
       addDialog: false,
       stepperAdd: 1,
+      courses: [],
+      headers: [
+        { text: "Code", sortable: true, value: "code", width: "1%" },
+        { text: "Course Name", sortable: false, value: "name", width: "40%" }
+      ],
       item: {
         _id: '',
         name: '',
@@ -462,13 +526,20 @@ export default {
           t10: '',
           t11: '',
           t12: '',
-        }
+        },
+        courses: {
+          core_courses: [],
+          required_courses: [],
+          elective_courses: [],
+        },
       },
     }
   },
+  mounted() {
+    this.getCourses()
+  },
   methods: {
     createCurriculum() {
-      console.log('test')
       let query = `
         mutation {
           addCurriculum (curriculumInput: {
@@ -501,15 +572,49 @@ export default {
               elective_courses
             }
             trimester_milestone { gap t4 t5 t6 t7 t8 t9 t10 t11 t12 }
+            courses {
+              core_courses { _id code name }
+              required_courses { _id code name }
+              elective_courses { _id code name }
+            }
           }
         }
       `
       query = query.replace(/\s+/g, " ").trim();
       this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res.data.data.addCurriculum)
-          this.$emit('addCurriculum', res.data.data.addCurriculum)
+          this.item = res.data.data.addCurriculum
           this.stepperAdd = 4
+          this.$emit('addCurriculum', this.item)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getCourses() {
+      let query = `
+            {
+              courses {
+                total
+                courses {
+                  _id
+                  code
+                  name
+                  description
+                  credit
+                  credit_description {
+                    lecture
+                    lab
+                    self_study
+                  }
+                }
+              }
+            }
+          `;
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.courses = res.data.data.courses.courses;
         })
         .catch((err) => {
           console.log(err);
@@ -533,10 +638,123 @@ export default {
                   this.item.trimester_milestone.t10.length > 0 &&
                   this.item.trimester_milestone.t11.length > 0 &&
                   this.item.trimester_milestone.t12.length > 0)
+        case 4:
+          return false
+        case 5:
+          return false
+        case 6:
+          return false
         default:
           return true
       }
     },
+    getCourseIds(courses) {
+      let courseIds = []
+      courses.forEach((course) => {
+        courseIds.push(course._id)
+      })
+      return courseIds
+    },
+    addCoreCourses() {
+      if(this.item.courses.core_courses.length === 0) return this.stepperAdd = 5
+      let query = `
+        mutation {
+          addCoreCourses(curriculumId: "${this.item._id}", courseId: ${JSON.stringify(this.getCourseIds(this.item.courses.core_courses))}) {
+            success
+            message
+          }
+        }
+      `
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          if(res.data.data.addCoreCourses.success) {
+            console.log(res.data.data.addCoreCourses.message)
+            this.stepperAdd = 5
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    addRequiredCourses() {
+      if(this.item.courses.required_courses.length === 0) return this.stepperAdd = 6
+      let query = `
+        mutation {
+          addRequiredCourses(curriculumId: "${this.item._id}", courseId: ${JSON.stringify(this.getCourseIds(this.item.courses.required_courses))}) {
+            success
+            message
+          }
+        }
+      `
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          if(res.data.data.addRequiredCourses.success) {
+            console.log(res.data.data.addRequiredCourses.message)
+            this.stepperAdd = 6
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    addElectiveCourses() {
+      if(this.item.courses.elective_courses.length === 0) {
+        this.reset()
+        return this.$emit('updateCurriculum', this.item)
+      }
+      let query = `
+        mutation {
+          addElectiveCourses(curriculumId: "${this.item._id}", courseId: ${JSON.stringify(this.getCourseIds(this.item.courses.elective_courses))}) {
+            success
+            message
+          }
+        }
+      `
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          if(res.data.data.addElectiveCourses.success) {
+            this.$emit('updateCurriculum', this.item)
+            this.reset()
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    reset() {
+      this.addDialog = false
+      this.stepperAdd = 1
+      this.item = {
+        _id: '',
+        name: '',
+        batches: [],
+        passing_conditions: {
+          core_courses: '',
+          required_courses: '',
+          elective_courses: ''
+        },
+        trimester_milestone: {
+          gap: 6,
+          t4: '',
+          t5: '',
+          t6: '',
+          t7: '',
+          t8: '',
+          t9: '',
+          t10: '',
+          t11: '',
+          t12: '',
+        },
+        courses: {
+          core_courses: [],
+          required_courses: [],
+          elective_courses: [],
+        }
+      }
+    }
   },
 }
 </script>
