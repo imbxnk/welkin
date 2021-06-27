@@ -18,26 +18,63 @@
     >
     <v-card class=" pa-3" style="overflow: auto;">
       <v-card-title>Overall Student Registration</v-card-title>
-      <div class="px-4" v-if="loading">
-        Loading... ฝากแก้ด้วย เป็นแท่งยาว ๆ ก็ได้
+      <div class=" px-4" v-if="loading">
+        <v-progress-linear indeterminate color="primary"></v-progress-linear>
+        <br />
       </div>
       <div v-else>
-        <div class="toggle"><div @click="remain = !remain" >See {{ remain ? "Registered" : "Remain" }}</div></div>
+        <div class="toggle">
+          <div @click="remain = !remain">See {{ remain ? "Registered" : "Remain" }}</div>
+        </div>
         <table class="table table-hover wk-overall-table">
           <tr>
-            <th rowspan="2" align="center" style="text-align: center !important; vertical-align: bottom">Type</th>
-            <th rowspan="2" align="center" style="text-align: center !important; vertical-align: bottom">Code</th>
+            <th
+              rowspan="2"
+              align="center"
+              style="text-align: center !important; vertical-align: bottom"
+            >
+              Type
+            </th>
+            <th
+              rowspan="2"
+              align="center"
+              style="text-align: center !important; vertical-align: bottom"
+            >
+              Code
+            </th>
             <th rowspan="2" align="center" style="vertical-align: bottom">Course Name</th>
-            <th :colspan="this.$config.selectedBatches.length" align="center">{{ remain ? "Remain" : "Registered" }} Student</th>
+            <th :colspan="this.$config.selectedBatches.length" align="center">
+              {{ remain ? "Remain" : "Registered" }} Student
+            </th>
           </tr>
           <tr>
-            <th style="text-align: center !important;" v-for="(batch, i) in $config.selectedBatches" :key="i">{{ batch }}</th>
+            <th
+              style="text-align: center !important;"
+              v-for="(batch, i) in $config.selectedBatches"
+              :key="i"
+            >
+              {{ batch }}
+            </th>
           </tr>
           <template v-for="(course, i) in courses">
-            <tr :key="i" :class="{darken: i%2 == 0}">
+            <tr :key="i" :class="{ darken: i % 2 == 0 }">
               <td align="center">{{ course.category }}</td>
-              <td align="center"><router-link style="text-decoration: none; color:inherit" target="_blank" :to="{ name: 'course_detail', params: { code: course.code.toLowerCase() }}">{{ course.code }}</router-link></td>
-              <td><router-link style="text-decoration: none; color:inherit" target="_blank" :to="{ name: 'course_detail', params: { code: course.code.toLowerCase() }}">{{ course.name }}</router-link></td>
+              <td align="center">
+                <router-link
+                  style="text-decoration: none; color:inherit"
+                  target="_blank"
+                  :to="{ name: 'course_detail', params: { code: course.code.toLowerCase() } }"
+                  >{{ course.code }}</router-link
+                >
+              </td>
+              <td>
+                <router-link
+                  style="text-decoration: none; color:inherit"
+                  target="_blank"
+                  :to="{ name: 'course_detail', params: { code: course.code.toLowerCase() } }"
+                  >{{ course.name }}</router-link
+                >
+              </td>
               <template v-for="j in $config.selectedBatches">
                 <td align="center" :key="j">{{ getRemainOfBatch(j, course) }}</td>
               </template>
@@ -59,7 +96,7 @@ export default {
       courses: [],
       loading: true,
       remain: true,
-      curriculums: []
+      curriculums: [],
     };
   },
   mounted() {
@@ -116,23 +153,34 @@ export default {
               .replace("required_courses", "R")
               .replace("elective_courses", "E");
           });
-          this.curriculums = [...res.data.data.curriculums.curriculums]
-          this.loading = false
+          this.curriculums = [...res.data.data.curriculums.curriculums];
+          this.loading = false;
         })
         .catch((err) => {
           console.log(err);
-          this.loading = false
+          this.loading = false;
         });
     },
     getRemainOfBatch(batch, course) {
-      let check = false
+      let check = false;
       this.curriculums.forEach((curriculum) => {
-        let courses = [...curriculum.courses.core_courses, ...curriculum.courses.required_courses, ...curriculum.courses.elective_courses]
-        if(curriculum.batches.includes(batch) && courses.filter(c => c.code === course.code).length > 0) return check = true
-      })
-      if(check) return this.remain ? course.unregistered.filter((e) => e.batch === batch).length : course.students.filter((e) => e.batch === batch).length
-      return "✕"
-    }
+        let courses = [
+          ...curriculum.courses.core_courses,
+          ...curriculum.courses.required_courses,
+          ...curriculum.courses.elective_courses,
+        ];
+        if (
+          curriculum.batches.includes(batch) &&
+          courses.filter((c) => c.code === course.code).length > 0
+        )
+          return (check = true);
+      });
+      if (check)
+        return this.remain
+          ? course.unregistered.filter((e) => e.batch === batch).length
+          : course.students.filter((e) => e.batch === batch).length;
+      return "✕";
+    },
   },
 };
 </script>
@@ -150,11 +198,11 @@ export default {
 }
 
 .wk-overall-table tr:not(:first-child):not(:nth-child(2)):hover {
-  background: rgba(100,100,100,0.1);
+  background: rgba(100, 100, 100, 0.1);
 }
 
 .darken {
-  background: rgba(100,100,100,0.03);
+  background: rgba(100, 100, 100, 0.03);
 }
 
 .toggle {
