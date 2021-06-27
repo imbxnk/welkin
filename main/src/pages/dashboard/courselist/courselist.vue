@@ -21,7 +21,7 @@
                     icon
                     v-bind="attrs"
                     v-on="on"
-                    class="mx-3"
+                    class="ml-1"
                     @click="$router.push({ name: 'course_overall' })"
                     ><v-icon dark>
                       mdi-information
