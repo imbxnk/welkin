@@ -70,7 +70,6 @@
                       {{ std_details.entry_year }}T{{ std_details.entry_trimester }}<br />
                       Email: {{ checkNull(std_details.email) }}<br />
                       Phone: {{ checkNull(std_details.phone) }}<br />
-                      Line id: {{ checkNull(std_details.lineID) }}<br />
                       <div
                         class="w-100 d-flex justify-content-end align-self-end  mt-sm-16 mt-md-16 "
                       >
@@ -130,9 +129,9 @@ import simplebar from "simplebar-vue";
 import "simplebar/dist/simplebar.min.css";
 export default {
   mounted() {
-    if(this.$route.query.id) {
-      this.student_ID = this.$route.query.id.replace(/[^0-9]+/g, '').substring(0,7)
-      this.getID()
+    if (this.$route.query.id) {
+      this.student_ID = this.$route.query.id.replace(/[^0-9]+/g, "").substring(0, 7);
+      this.getID();
     }
   },
   components: {
@@ -163,7 +162,7 @@ export default {
     },
     getID() {
       if (this.student_ID.length == 7) {
-        this.$router.replace({name: "search_student", query: {id: this.student_ID}})
+        this.$router.replace({ name: "search_student", query: { id: this.student_ID } });
         this.search_ID = this.student_ID;
         this.loading = true;
         this.check = true;
@@ -213,7 +212,7 @@ export default {
                 }
               }
       `;
-      query = query.replace(/\s+/g, ' ').trim()
+      query = query.replace(/\s+/g, " ").trim();
       await this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
