@@ -30,6 +30,7 @@
                 id="dropzone"
                 :options="dropzoneOptions"
                 @vdropzone-success="selectFile"
+                @vdropzone-removed-file="vremoved"
               >
               </vue-dropzone>
             </div>
@@ -167,10 +168,13 @@
                   </v-tooltip>
                 </div>
                 <div class="p-2 bd-highlight">
-                  <v-btn color="error" text @click="clear()">
+                  <v-btn v-if = this.addManually color="error" text @click="clearForm()">
                     Clear
                   </v-btn>
-                  <v-btn color="primary" text @click="toSecondStep(); submitForm();" >
+                  <v-btn v-if = this.addManually color="success" text @click="addData()">
+                    Add
+                  </v-btn>
+                  <v-btn color="primary" text @click="toSecondStep();" >
                     Continue
                   </v-btn>
                 </div>
@@ -180,7 +184,7 @@
 
         <v-stepper-content step="2">
           <div class="d-flex flex-column bd-highlight justify-content-center">
-            <div class="p-2 bd-highlight">
+            <div v-if = importFile class="p-2 bd-highlight">
               <v-select label="Please select academic term" name="sheetName" id="sheetName" :items="sheetNames" @change="getSelectedValue($event)" v-model="sheetNames[0]"></v-select>
             </div>
             <div class="p-2 bd-highlight">
@@ -310,6 +314,7 @@ export default {
       selectedFile: "",
       data: [{}],
       studentsData: [],
+      uniqueData: [],
       allStudentData: [],
       workbook: "",
       file: "",
@@ -327,7 +332,7 @@ export default {
         { text: "Entry Trimester", sortable: false, value: "entryTrimester", width: 100 },
         { text: "Entry Year", sortable: false, value: "entryYear", width: 100 },
         { text: "advisor", sortable: false, value: "Advisor", width: 120 },
-      ]
+      ],
     }
   },
   mounted(){
@@ -337,10 +342,19 @@ export default {
     toggleForm(){
       this.addManually = !this.addManually
       this.importFile = !this.importFile
-      console.log(this.addManually, this.importFile)
+      this.studentsData = []
+      this.clearForm()
+      // this.clear()
     },
     clear(){
-      (this.manuallyData.ID = ""),(this.manuallyData.Program = ""), (this.manuallyData.Prefix = ""), (this.manuallyData.Name = ""), (this.manuallyData.LastName = ""), (this.manuallyData.Advisor = ""), (this.manuallyData.entryTrimester = ""), (this.manuallyData.entryYear = ""),
+      (this.manuallyData.ID = ""),
+      (this.manuallyData.Program = ""), 
+      (this.manuallyData.Prefix = ""), 
+      (this.manuallyData.Name = ""), 
+      (this.manuallyData.LastName = ""), 
+      (this.manuallyData.Advisor = ""), 
+      (this.manuallyData.entryTrimester = ""), 
+      (this.manuallyData.entryYear = ""),
       Object.keys(this.form).forEach((f) => {
         this.$refs[f].reset();
       });
@@ -414,23 +428,50 @@ export default {
         this.studentsData[i].entryTrimester = this.entryTrimester
       }
     },
+    vremoved(file, xhr, error) {
+      this.studentsData = []
+      this.clearForm()
+      this.selectedFile = ''
+    },
+    addData(){
+      if (this.$refs.form.validate()) {
+        let new_data = { ...this.manuallyData };
+        this.uniqueData.push(new_data)
+        this.studentsData = Array.from(new Set(this.uniqueData.map(data => data.ID)))
+        .map(sid => {
+          return this.uniqueData.find(data => data.ID === sid)
+        }).sort((a,b) => (parseInt(a.ID) > parseInt(b.ID)) ? 1 : -1)
+      }
+    },
+    clearForm(){
+      this.manuallyData = {}
+      this.uniqueData = []
+    },
     readMyFile: function(workbook, currentSheetName) {
       return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[currentSheetName]);
     },
-    submitForm() {
-      if (this.manuallyData == {}) {
-        console.log(this.studentsData);
-      } else if (this.$refs.form.validate()) {
-        console.log(this.manuallyData);
-        let new_data = { ...this.manuallyData };
-        this.studentsData.push(new_data);
-        console.log(this.studentsData);
-      } else {
-        this.e6 = 1;
+    toSecondStep(){
+      // console.log(this.studentsData)
+      if(this.importFile){
+        this.selectFile(this.selectedFile)
+      }
+      if(this.studentsData.length > 0){
+        this.e1 = 2
+        this.submitForm()
       }
     },
-    toSecondStep(){
-      this.e1 = 2
+    submitForm() {
+      // console.log(this.manuallyData)
+      // if (this.manuallyData == {}) {
+      //   console.log(this.studentsData);
+      // } else if (this.$refs.form.validate()) {
+      //   console.log(this.manuallyData);
+      //   let new_data = { ...this.manuallyData };
+      //   this.studentsData.push(new_data);
+      //   console.log(this.studentsData);
+      // } else {
+        this.e6 = 1;
+      // }
     },
     upload: async function() {
       //clear the duplicatedStudents
@@ -508,7 +549,7 @@ export default {
         this.e1 = 1
       },
       removefile(){
-
+        
       },
       clearCheck(){
         this.studentsData = []
