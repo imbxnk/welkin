@@ -197,8 +197,6 @@ export default {
   },
   methods: {
     clearText() {
-      this.dialog = false;
-      this.dialog1 = false;
       (this.firstName = ""),
       (this.familyName = ""),
       (this.email = ""),
@@ -226,6 +224,7 @@ export default {
     },
     dialogClose() {
       this.dialog = false;
+      this.dialog1 = false;
       this.clearText();
     },
     addUser() {
@@ -268,7 +267,7 @@ export default {
           let newuser = res.data.data.createUser
           newuser["name"] = [newuser.given_name, newuser.family_name].join(" ");
           this.$emit('addUser', newuser)
-          this.clearText();
+          this.dialogClose();
           this.snackbar = true;
         })
         .catch((err) => {

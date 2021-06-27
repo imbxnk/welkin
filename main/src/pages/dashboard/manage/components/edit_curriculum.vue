@@ -25,7 +25,7 @@
         <v-subheader class="px-0">Curriculum Details</v-subheader>
         <div class="d-flex flex-column">
           <v-text-field v-model="item.name" label="Name" outlined></v-text-field>
-          <v-combobox v-model="item.batches" :items="item.batches" label="Batches" multiple outlined persistent-hint
+          <v-combobox v-model="item.batches" :items="item.batches" label="Batches" multiple deletable-chips outlined persistent-hint
             hint="Please add or select eligible batches for this curriculum" height="48" chips></v-combobox>
         </div>
       </v-container>
@@ -175,6 +175,98 @@
             v-model="item.trimester_milestone.gap" thumb-label="always"></v-slider>
         </div>
       </v-container>
+
+      <!-- COURSES -->
+
+      <v-divider></v-divider>
+
+      <v-container>
+        <div class="d-flex flex-column w-100 p-1">
+          <v-autocomplete
+            v-model="item.courses.core_courses"
+            :items="courses"
+            outlined
+            chips
+            deletable-chips
+            label="Course"
+            multiple
+            small-chips
+            :item-text="item => item.code + ' ' + item.name"
+            return-object
+          ></v-autocomplete>
+
+          <v-data-table
+            v-if="item.courses.core_courses.length > 0"
+            :headers="headers"
+            :items="item.courses.core_courses"
+            hide-default-header
+            class="elevation-1"
+            sort-by.sync="code"
+          >
+          </v-data-table>
+        </div>
+
+      </v-container>
+
+      <v-divider></v-divider>
+
+      <v-container>
+        <div class="d-flex flex-column w-100 p-1">
+          <v-autocomplete
+            v-model="item.courses.required_courses"
+            :items="courses"
+            outlined
+            chips
+            deletable-chips
+            label="Course"
+            multiple
+            small-chips
+            :item-text="item => item.code + ' ' + item.name"
+            return-object
+          ></v-autocomplete>
+
+          <v-data-table
+            v-if="item.courses.required_courses.length > 0"
+            :headers="headers"
+            :items="item.courses.required_courses"
+            hide-default-header
+            class="elevation-1"
+            sort-by.sync="code"
+          >
+          </v-data-table>
+        </div>
+
+      </v-container>
+
+      <v-divider></v-divider>
+
+      <v-container>
+        <div class="d-flex flex-column w-100 p-1">
+          <v-autocomplete
+            v-model="item.courses.elective_courses"
+            :items="courses"
+            outlined
+            chips
+            deletable-chips
+            label="Course"
+            multiple
+            small-chips
+            :item-text="item => item.code + ' ' + item.name"
+            return-object
+          ></v-autocomplete>
+
+          <v-data-table
+            v-if="item.courses.elective_courses.length > 0"
+            :headers="headers"
+            :items="item.courses.elective_courses"
+            hide-default-header
+            class="elevation-1"
+            sort-by.sync="code"
+          >
+          </v-data-table>
+        </div>
+
+      </v-container>
     </v-card>
   </v-dialog>
 </template>
@@ -184,10 +276,49 @@
     props: ['item'],
     mounted() {
       this.item.batches.sort()
+      this.getCourses()
     },
     data() {
       return {
         editDialog: false,
+        headers: [
+          { text: "Code", sortable: true, value: "code", width: "1%" },
+          { text: "Course Name", sortable: false, value: "name", width: "40%" }
+        ],
+      }
+    },
+    methods: {
+      getCourses() {
+        let query = `
+              {
+                courses {
+                  total
+                  courses {
+                    _id
+                    code
+                    name
+                    description
+                    credit
+                    credit_description {
+                      lecture
+                      lab
+                      self_study
+                    }
+                  }
+                }
+              }
+            `;
+        query = query.replace(/\s+/g, ' ').trim()
+        this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+          .then((res) => {
+            this.courses = res.data.data.courses.courses;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      },
+      reset() {
+        this.editDialog = false
       }
     },
   }
