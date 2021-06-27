@@ -34,6 +34,11 @@
           <div class="col-md-4 float-left order-1">
             <div><ShowBatchesSummary></ShowBatchesSummary></div>
           </div>
+          <div class="col-md-8 float-right order-last">
+            <div>
+              <v-card class="pa-4"><ShowConcerned></ShowConcerned></v-card>
+            </div>
+          </div>
           <!-- <div class="col-md-4 float-left order-last">
             <div style="height:50px;width:100%;background-color: yellow;">D</div>
           </div> -->
@@ -121,6 +126,7 @@ import ShowStudentsTable from "./components/show_students_table";
 import ShowAdviseeTable from "./components/show_advisee_table";
 import ShowBatchesSummary from "./components/show_batches_summary";
 import ShowAnnouncement from "./components/show_announce";
+import ShowConcerned from "./components/show_concerned.vue";
 
 export default {
   name: "home",
@@ -129,6 +135,12 @@ export default {
     ShowBatchesSummary,
     ShowAnnouncement,
     ShowAdviseeTable,
+    ShowConcerned,
+  },
+  data() {
+    return {
+      bgcolor: "#000000",
+    };
   },
   mounted() {},
 };
