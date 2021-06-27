@@ -120,7 +120,6 @@
 import ShowStudentsTable from "./components/show_students_table";
 import ShowAdviseeTable from "./components/show_advisee_table";
 import ShowBatchesSummary from "./components/show_batches_summary";
-import ShowStudentGraph from "./components/show_student_graph";
 import ShowAnnouncement from "./components/show_announce";
 
 export default {
@@ -129,10 +128,9 @@ export default {
     ShowStudentsTable,
     ShowBatchesSummary,
     ShowAnnouncement,
-    // ShowStudentGraph,
     ShowAdviseeTable,
   },
-  mounted() { },
+  mounted() {},
 };
 </script>
 
