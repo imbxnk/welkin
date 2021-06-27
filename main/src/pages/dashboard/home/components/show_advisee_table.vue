@@ -82,6 +82,9 @@
         </template>
       </v-data-table>
 
+      <v-divider></v-divider>
+      <ConcernedStd class="ma-3"></ConcernedStd>
+
       <v-dialog v-model="dialog" max-width="700px">
         <v-card>
           <v-card-title class="overline lighten-2">
@@ -97,9 +100,10 @@
 </template>
 <script>
 import StudentInfo from "../../students/components/std_info";
+import ConcernedStd from "./show_concerned.vue";
 export default {
   name: "students_table",
-  components: { StudentInfo },
+  components: { StudentInfo, ConcernedStd },
   data() {
     return {
       loading: true,
