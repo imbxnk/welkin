@@ -383,23 +383,23 @@ export default {
         this.Info.push(this.editedItem);
       }
       // eslint-disable-next-line no-console
-      console.log("TEST")
-      console.log(this.Info[this.editedIndex]);
+      let student = this.Info[this.editedIndex]
       let query = `
           mutation{
-            updateStudent(searchInput: {sid:"${this.Info[this.editedIndex].sid}"}, studentInput:{
-              given_name:"${this.Info[this.editedIndex].given_name}",
-              family_name:"${this.Info[this.editedIndex].family_name}",
-              nick_name: "${this.Info[this.editedIndex].nick_name || ''}"
-              prefix:"${this.Info[this.editedIndex].prefix || ''}",
-              program:"${this.Info[this.editedIndex].program}",
-              ${this.Info[this.editedIndex].entry_trimester ? 'entry_trimester: "' + this.Info[this.editedIndex].entry_trimester + '",': ''}
-              entry_year: "${this.Info[this.editedIndex].entry_year || ''}",
-              phone: "${this.Info[this.editedIndex].phone || ''}",
-              email: "${this.Info[this.editedIndex].email || ''}",
-              },
-              status: "${this.Info[this.editedIndex].status.current}"
-              ){
+            updateStudent(searchInput: {sid:"${student.sid}"}, studentInput:{
+              given_name:"${student.given_name}"
+              family_name:"${student.family_name}"
+              nick_name: "${student.nick_name || ''}"
+              prefix:"${student.prefix || ''}"
+              program:"${student.program}"
+              ${student.entry_trimester ? 'entry_trimester: "' + student.entry_trimester + '",': ''}
+              entry_year: "${student.entry_year || ''}"
+              phone: "${student.phone || ''}"
+              email: "${student.email || ''}"
+              status: {
+                current: "${student.status.current}"
+              }
+              }){
                 sid
                 given_name
                 family_name
@@ -410,10 +410,12 @@ export default {
                 phone
                 email
                 program
-
+                status{
+                  current
+                }
               }
           }
-        `;
+        `
       query = query.replace(/\s+/g, ' ').trim()
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
