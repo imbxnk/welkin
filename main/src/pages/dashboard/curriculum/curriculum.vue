@@ -182,7 +182,7 @@ export default {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .wk-left-col {
     padding: 0px 32px 0 0;
     position: absolute;

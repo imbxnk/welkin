@@ -75,7 +75,6 @@
         :headers="headers"
         :items="students"
         mobile-breakpoint="680"
-        height="528"
         class="home"
         @click:row="showDialog"
       >

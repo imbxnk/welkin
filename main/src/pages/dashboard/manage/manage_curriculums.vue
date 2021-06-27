@@ -4,7 +4,7 @@
       <div class="ml-auto p-2 bd-highlight">
         <div class="d-flex flex-row justify-content-end bd-highlight">
           <div class="p-2 bd-highlight">
-            <v-btn color="primary" @click="classDialog = true"><v-icon>mdi-plus</v-icon> Add Curriculum</v-btn>
+            <AddCurriculum @addCurriculum="addCurriculum"></AddCurriculum>
           </div>
         </div>
       </div>
@@ -36,63 +36,92 @@
             <template v-slot:[`item.batches`]="{ item }">
               {{ (item.batches.toString()).replaceAll(',', '/') }}
             </template>
+            <template v-slot:[`item.passing_conditions`]="{ item }">
+              {{ item.passing_conditions.core_courses + item.passing_conditions.required_courses + item.passing_conditions.elective_courses }}
+            </template>
             <template v-slot:[`item.actions`]="{ item }">
-              <v-icon small @click="editItem(item)">
-                mdi-pencil
-              </v-icon>
+              <edit-curriculum @click="editItem(item, curriculums.indexOf(item))" :item="item"></edit-curriculum>
             </template>
           </v-data-table>
         </v-card>
       </div>
     </div>
-    <v-dialog class="upload-Dialog" v-model="classDialog" max-width="1000px" width="600px" min-height="500px">
-      <v-card>
-        <v-card-title class="card-title"
-          >Add Curriculum
-          <v-spacer></v-spacer>
-          <v-icon @click="classDialog = false">mdi-close</v-icon></v-card-title
-        >
-        <AddCurriculum></AddCurriculum>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
 <script>
 import AddCurriculum from "./components/add_curriculum";
+import EditCurriculum from "./components/edit_curriculum.vue";
 export default {
-  components: { AddCurriculum },
+  components: { AddCurriculum, EditCurriculum },
   data() {
     return {
-      classDialog: false,
       search: "",
       headers: [
-        { text: "Curriculum Name", sortable: true, value: "name", width: "80%" },
+        { text: "Curriculum Name", sortable: true, value: "name", width: "60%" },
         { text: "Batches", sortable: true, value: "batches", width: "19%" },
+        { text: "Total Credits", sortable: false, value: "passing_conditions", width: "20%", align: 'center' },
         { text: "Edit", sortable: false, value: "actions", width: "1%" },
       ],
       curriculums: [],
       total: 0,
+      editedIndex: -1,
+      editedItem: {},
     };
   },
   mounted() {
     this.getCurriculums()
   },
   methods: {
-    async getCurriculums() {
+    getCurriculums() {
       let query = `
             {
               curriculums {
                 total
                 curriculums {
+                  _id
                   name
+                  courses {
+                    core_courses {
+                      _id
+                      code
+                      name
+                    }
+                    required_courses{
+                      _id
+                      code
+                      name
+                    }
+                    elective_courses{
+                      _id
+                      code
+                      name
+                    }
+                  }
+                  passing_conditions {
+                    core_courses
+                    required_courses
+                    elective_courses
+                  }
                   batches
+                  trimester_milestone {
+                    gap
+                    t4
+                    t5
+                    t6
+                    t7
+                    t8
+                    t9
+                    t10
+                    t11
+                    t12
+                  }
                 }
               }
             }
           `;
       query = query.replace(/\s+/g, ' ').trim()
-      await this.axios
+      this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.total = res.data.data.curriculums.total;
@@ -101,6 +130,13 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    addCurriculum(newValue) {
+      this.curriculums.unshift(newValue)
+    },
+    editItem(item, index) {
+      this.editedIndex = index
+      this.editedItem = Object.assign({}, item)
     }
   },
 };

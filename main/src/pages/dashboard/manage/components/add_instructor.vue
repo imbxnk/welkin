@@ -133,7 +133,10 @@ export default {
                       email: "${this.inputData.email}",
                       phone: "${this.inputData.phone}"
                     }){
+                        _id
                         title
+                        given_name
+                        family_name
                         name
                         email
                         phone
@@ -143,7 +146,7 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res);
+          this.$emit('addInstructor', res.data.data.addInstructor)
           this.dialog = false;
           this.dialogCheck = false;
           this.snackbar = true;

@@ -2,7 +2,7 @@
   <v-container class="mx-auto">
     <div class="d-flex flex-column p-2 bd-highlight">
       <div class="ml-auto p-2 bd-highlight">
-        <AddUser ></AddUser>
+        <AddUser @addUser="adduser"></AddUser>
       </div>
       <div class="p-2 bd-highlight">
         <v-card style="max-width: auto"
@@ -74,7 +74,7 @@
       </v-card>
     </v-dialog> -->
 
-    <v-dialog v-model="Editdialog" max-width="500px">
+    <v-dialog persistent v-model="Editdialog" max-width="500px">
       <v-card>
         <v-card-title
           >Edit User
@@ -242,7 +242,6 @@ export default {
       search: "",
       headers: [
         { sortable: false, value: "avatar.small", width: "1%" },
-        { text: "Display Name", sortable: false, value: "display_name", width: "9%" },
         { text: "Username", sortable: false, value: "username", width: "9%" },
         { text: "Name", sortable: false, value: "name", width: "9%" },
         { text: "Group", sortable: false, value: "group", width: "9%" },
@@ -407,6 +406,9 @@ export default {
           console.log(err);
         });
     },
+    adduser(newValue) {
+      this.users.unshift(newValue)
+    }
   },
 };
 </script>

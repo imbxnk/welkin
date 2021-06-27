@@ -448,6 +448,11 @@ main {
   }
 }
 
+.home .v-data-table__wrapper {
+  max-height: 528px !important;
+  overflow-y: auto;
+}
+
 .wk-avatar-upload {
   overflow: visible !important;
 }
@@ -511,9 +516,15 @@ main {
 
 /*  */
 
-.v-sheet.v-card, .v-btn, .v-dialog {
+
+.v-dialog.v-dialog--fullscreen .v-sheet.v-card {
+  border-radius: 0px !important;
+}
+
+.v-sheet.v-card, .v-btn, .v-dialog:not(.v-dialog--fullscreen) {
   border-radius: 1.1rem !important;
 }
+
 
 .wk-btn, .wk-login-btn, .btn-primary {
   border-radius: 1.6rem !important;

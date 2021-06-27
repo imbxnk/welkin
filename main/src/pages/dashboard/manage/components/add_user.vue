@@ -5,7 +5,7 @@
         <v-btn color="primary" @click="dialog = true"><v-icon>mdi-plus</v-icon> Add User</v-btn>
       </div>
     </div>
-    <v-dialog v-model="dialog" max-width="500px">
+    <v-dialog persistent v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title class=""
           ><h3>Add User</h3>
@@ -239,6 +239,7 @@ export default {
                         linked_instructor:  ${this.input.linked_instructor ? (this.input.linked_instructor._id ? '"' + this.input.linked_instructor._id + '"' : null) : null }
                         ${this.input.group ? ', group: "' + this.input.group + '"' : ''}
                     }) {
+                      _id
                       display_name
                       username
                       given_name
@@ -264,7 +265,9 @@ export default {
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
-          console.log(res);
+          let newuser = res.data.data.createUser
+          newuser["name"] = [newuser.given_name, newuser.family_name].join(" ");
+          this.$emit('addUser', newuser)
           this.clearText();
           this.snackbar = true;
         })

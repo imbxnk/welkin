@@ -117,7 +117,7 @@
         </v-container>
       </v-card>
 
-      <v-dialog v-model="announcements.addDialog" max-width="500px">
+      <v-dialog persistent v-model="announcements.addDialog" max-width="500px">
         <v-card>
           <v-card-title
             >Add Announcement
@@ -218,7 +218,7 @@
         </v-card>
       </v-dialog>
       <!-- EDIT ANNOUNCEMENT DIALOG -->
-      <v-dialog v-model="announcements.editDialog" max-width="500px">
+      <v-dialog persistent v-model="announcements.editDialog" max-width="500px">
         <v-card>
           <v-card-title>
             Edit Announcement
