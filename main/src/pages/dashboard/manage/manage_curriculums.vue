@@ -132,7 +132,7 @@ export default {
         });
     },
     addCurriculum(newValue) {
-      this.curriculums.unshift(newValue)
+      this.curriculums.push(newValue)
     },
     editItem(item, index) {
       this.editedIndex = index

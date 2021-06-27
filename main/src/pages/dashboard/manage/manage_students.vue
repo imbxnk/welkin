@@ -166,8 +166,9 @@
                 label="Status"
                 :items="allStatus"
                 outlined
-                v-model="editedItem.status.current"
-                item-value="current"
+                v-model="editedItem.status"
+                return-object
+                item-text="current"
               ></v-select>
             </div>
           </v-form>
@@ -259,6 +260,9 @@ export default {
         lineID: "",
         entry_trimester: "",
         entry_year: "",
+        status: {
+          current: "",
+        },
       },
       Info: [],
       dialog: false,
@@ -287,13 +291,13 @@ export default {
         'ICFS'
       ],
       allStatus: [
-        'Studying',
-        'Leave of absence',
-        'On Exchange',
-        'Retired',
-        'Resigned',
-        'Alumni',
-        'Unknown'
+        { current: 'Studying' },
+        { current: 'Leave of absence' },
+        { current: 'On Exchange' },
+        { current: 'Retired' },
+        { current: 'Resigned' },
+        { current: 'Alumni' },
+        { current: 'Unknown' },
       ]
     };
   },
