@@ -214,7 +214,7 @@
 
         <v-stepper-content step="3">
           <div class="d-flex flex-column bd-highlight justify-content-center">
-            <div class="p-2 bd-highlight" v-if="successData">
+            <!-- <div class="p-2 bd-highlight" v-if="successData">
                <v-data-table class="success-table" id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
               </v-data-table>
             </div>
@@ -225,12 +225,20 @@
             <div class="duplicate-table p-2 bd-highlight" v-else-if="errorData">
                <v-data-table class="error-table"  id="sheetName" :headers="headers" :items="errorStudents" mobile-breakpoint="0" hide-default-footer disable-pagination>
               </v-data-table>
+            </div> -->
+            <div class="p-2 bd-highlight">
+              <v-data-table id="sheetName" :headers="headers" :items="studentResult" mobile-breakpoint="0" hide-default-footer disable-pagination>
+                <template v-slot:[`item.result`]="{ item }">
+                  <v-chip small :color="getColor(item.result)">
+                  </v-chip>
+                </template>
+              </v-data-table>
             </div>
           </div>
             <div class="p-2 bd-highlight">
               <div class="d-flex flex-row bd-highlight justify-content-end">
                 <div class="p-2 bd-highlight">
-                  <v-btn text @click="e1 = 2">
+                  <v-btn text @click="e1 = 2, studentResult = []">
                     Back
                   </v-btn>
                   <v-btn
@@ -331,8 +339,10 @@ export default {
         { text: "Program", sortable: false, value: "Program", width: 80 },
         { text: "Entry Trimester", sortable: false, value: "entryTrimester", width: 100 },
         { text: "Entry Year", sortable: false, value: "entryYear", width: 100 },
-        { text: "advisor", sortable: false, value: "Advisor", width: 120 },
+        { text: "Advisor", sortable: false, value: "Advisor", width: 120 },
+        { text: "Status", sortable: false, value: "result", width: 120 , align: "center"}
       ],
+      studentResult: []
     }
   },
   mounted(){
@@ -433,6 +443,12 @@ export default {
       this.clearForm()
       this.selectedFile = ''
     },
+    getColor(status) {
+      if (status == "error") return "red";
+      else if (status == "warning") return "yellow";
+      else if (status == "success") return "green";
+      else return "grey"
+    },
     addData(){
       if (this.$refs.form.validate()) {
         let new_data = { ...this.manuallyData };
@@ -481,6 +497,7 @@ export default {
       let students = { ...this.studentsData };
       for (var i in students) {
         let std = { ...students[i] };
+        console.log(std)
         //post graphql by using axios
         std.Advisor = std.Advisor.trim()
           .split(". ")
@@ -517,21 +534,27 @@ export default {
                 await this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true }).then(res => {
                     console.log(res);
                     this.e1 = 3;
-                    this.addingSuccessStatus = true
+                    std.result = 'success'
+                    this.studentResult.push(std)
                     this.successData = true
                 }).catch (err => {
+                  console.log(err.response.data.errors[0].status)
+                  this.duplicatedData = false
+                  this.errorData = false
                     switch(err.response.data.errors[0].status){
                       case 409: // duplicated
                         console.log(err.response.data.errors[0].message)
-                        this.duplicateStudents.push(std);
-                        this.duplicateStatus = true;
+                        std.result = 'warning'
+                        this.studentResult.push(std)
+                        // this.duplicateStudents.push(std);
                         this.duplicatedData = true;
                         this.e1 = 3;
                         break
                       default: // other errors
                         console.log(err.response.data.errors[0].message)
-                        this.errorStudents.push(std);
-                        this.errorStatus = true;
+                        std.result = 'error'
+                        this.studentResult.push(std)
+                        // this.errorStudents.push(std);
                         this.errorData = true;
                         break
                     }
@@ -542,7 +565,8 @@ export default {
       },
       reset(){
         this.studentsData = []
-        this.duplicatedData = []
+        // this.duplicatedData = [] // คือเหี้ยไรก่อน
+        this.duplicateStudents = []
         this.sheetName = ""
         this.sheetNames = []
         this.manuallyData = {}
