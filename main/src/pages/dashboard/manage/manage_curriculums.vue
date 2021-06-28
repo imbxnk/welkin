@@ -37,7 +37,7 @@
               {{ (item.batches.toString()).replaceAll(',', '/') }}
             </template>
             <template v-slot:[`item.passing_conditions`]="{ item }">
-              {{ item.passing_conditions.core_courses + item.passing_conditions.required_courses + item.passing_conditions.elective_courses }}
+              {{ ~~item.passing_conditions.core_courses + ~~item.passing_conditions.required_courses + ~~item.passing_conditions.elective_courses }}
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <edit-curriculum @click="editItem(item, curriculums.indexOf(item))" :item="item"></edit-curriculum>
@@ -102,7 +102,7 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.total = res.data.data.curriculums.total;
-          this.curriculums = res.data.data.curriculums.curriculums;
+          this.curriculums = [...res.data.data.curriculums.curriculums];
         })
         .catch((err) => {
           console.log(err);
@@ -111,7 +111,7 @@ export default {
     addCurriculum(newValue) {
       this.curriculums.push(newValue)
     },
-    updateCurriculum(newValue) {
+    updateCurriculum() {
       this.getCurriculums()
     },
     editItem(item, index) {

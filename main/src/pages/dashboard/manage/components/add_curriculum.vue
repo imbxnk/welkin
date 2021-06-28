@@ -49,12 +49,14 @@
                   v-model="item.name"
                   label="Name"
                   outlined
+                  rounded
                 ></v-text-field>
                 <v-combobox
                   v-model="item.batches"
                   :items="item.batches"
                   label="Batches"
                   multiple
+                  rounded
                   outlined
                   persistent-hint
                   hint="Please add or select eligible batches for this curriculum"
@@ -97,6 +99,7 @@
                   label="Core Credits"
                   class="mx-2"
                   outlined
+                  rounded
                   pattern="\d*"
                   onkeydown="return ( event.ctrlKey || event.altKey
                             || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false)
@@ -111,6 +114,7 @@
                   label="Major Required Credits"
                   class="mx-2"
                   outlined
+                  rounded
                   pattern="\d*"
                   onkeydown="return ( event.ctrlKey || event.altKey
                             || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false)
@@ -125,6 +129,7 @@
                   label="Major Required Credits"
                   class="mx-2"
                   outlined
+                  rounded
                   pattern="\d*"
                   onkeydown="return ( event.ctrlKey || event.altKey
                             || (47<event.keyCode && event.keyCode<58 && event.shiftKey==false)
@@ -138,14 +143,14 @@
               <div class="d-flex align-items-center justify-content-between">
                 <v-btn
                   text
-                  @click="stepperAdd = stepperAdd - 1"
+                  @click="stepperAdd--"
                 >
                   Back
                 </v-btn>
                 <v-btn
                   color="primary"
                   class="my-4 mx-2"
-                  @click="stepperAdd = stepperAdd + 1"
+                  @click="stepperAdd++"
                   :disabled="checkStep()"
                 >
                   Continue
@@ -169,6 +174,7 @@
                       v-model="item.trimester_milestone.t4"
                       class="w-100"
                       outlined
+                      rounded
                       label="Total credits earned at 4th trimester"
                       pattern="\d*"
                       onkeydown="return ( event.ctrlKey || event.altKey
@@ -186,6 +192,7 @@
                       v-model="item.trimester_milestone.t5"
                       class="w-100"
                       outlined
+                      rounded
                       label="Total credits earned at 5th trimester"
                       pattern="\d*"
                       onkeydown="return ( event.ctrlKey || event.altKey
@@ -203,6 +210,7 @@
                       v-model="item.trimester_milestone.t6"
                       class="w-100"
                       outlined
+                      rounded
                       label="Total credits earned at 6th trimester"
                       pattern="\d*"
                       onkeydown="return ( event.ctrlKey || event.altKey
@@ -219,6 +227,7 @@
                       v-model="item.trimester_milestone.t7"
                       class="w-100"
                       outlined
+                      rounded
                       label="Total credits earned at 7th trimester"
                       pattern="\d*"
                       onkeydown="return ( event.ctrlKey || event.altKey
@@ -235,6 +244,7 @@
                       v-model="item.trimester_milestone.t8"
                       class="w-100"
                       outlined
+                      rounded
                       label="Total credits earned at 8th trimester"
                       pattern="\d*"
                       onkeydown="return ( event.ctrlKey || event.altKey
@@ -251,6 +261,7 @@
                       v-model="item.trimester_milestone.t9"
                       class="w-100"
                       outlined
+                      rounded
                       label="Total credits earned at 9th trimester"
                       pattern="\d*"
                       onkeydown="return ( event.ctrlKey || event.altKey
@@ -267,6 +278,7 @@
                       v-model="item.trimester_milestone.t10"
                       class="w-100"
                       outlined
+                      rounded
                       label="Total credits earned at 10th trimester"
                       pattern="\d*"
                       onkeydown="return ( event.ctrlKey || event.altKey
@@ -283,6 +295,7 @@
                       v-model="item.trimester_milestone.t11"
                       class="w-100"
                       outlined
+                      rounded
                       label="Total credits earned at 11th trimester"
                       pattern="\d*"
                       onkeydown="return ( event.ctrlKey || event.altKey
@@ -299,6 +312,7 @@
                       v-model="item.trimester_milestone.t12"
                       class="w-100"
                       outlined
+                      rounded
                       label="Total credits earned at 12th trimester"
                       pattern="\d*"
                       onkeydown="return ( event.ctrlKey || event.altKey
@@ -334,7 +348,7 @@
               <div class="d-flex align-items-center justify-content-between">
                 <v-btn
                   text
-                  @click="stepperAdd = stepperAdd - 1"
+                  @click="stepperAdd--"
                 >
                   Back
                 </v-btn>
@@ -360,13 +374,11 @@
               <div class="d-flex flex-column w-100 p-1">
                 <v-autocomplete
                   v-model="item.courses.core_courses"
-                  :items="courses"
+                  :items="availableCourses"
                   outlined
-                  chips
-                  deletable-chips
+                  rounded
                   label="Course"
                   multiple
-                  small-chips
                   :item-text="item => item.code + ' ' + item.name"
                   return-object
                 ></v-autocomplete>
@@ -403,13 +415,11 @@
               <div class="d-flex flex-column w-100 p-1">
                 <v-autocomplete
                   v-model="item.courses.required_courses"
-                  :items="courses"
+                  :items="availableCourses"
                   outlined
-                  chips
-                  deletable-chips
+                  rounded
                   label="Course"
                   multiple
-                  small-chips
                   :item-text="item => item.code + ' ' + item.name"
                   return-object
                 ></v-autocomplete>
@@ -427,7 +437,7 @@
               <div class="d-flex align-items-center justify-content-between">
                 <v-btn
                   text
-                  @click="stepperAdd = stepperAdd - 1"
+                  @click="stepperAdd--"
                 >
                   Back
                 </v-btn>
@@ -451,13 +461,11 @@
               <div class="d-flex flex-column w-100 p-1">
                 <v-autocomplete
                   v-model="item.courses.elective_courses"
-                  :items="courses"
+                  :items="availableCourses"
                   outlined
-                  chips
-                  deletable-chips
+                  rounded
                   label="Course"
                   multiple
-                  small-chips
                   :item-text="item => item.code + ' ' + item.name"
                   return-object
                 ></v-autocomplete>
@@ -475,7 +483,7 @@
               <div class="d-flex align-items-center justify-content-between">
                 <v-btn
                   text
-                  @click="stepperAdd = stepperAdd - 1"
+                  @click="stepperAdd--"
                 >
                   Back
                 </v-btn>
@@ -504,7 +512,8 @@ export default {
       courses: [],
       headers: [
         { text: "Code", sortable: true, value: "code", width: "1%" },
-        { text: "Course Name", sortable: false, value: "name", width: "40%" }
+        { text: "Course Name", sortable: false, value: "name", width: "40%" },
+        { text: "Remove", sortable: false, value: "remove", width: "1%", align: 'end' },
       ],
       item: {
         _id: '',
@@ -538,7 +547,20 @@ export default {
   mounted() {
     this.getCourses()
   },
+  computed: {
+    availableCourses: function() {
+      let selectedCourses = [ ...this.item.courses.core_courses, ...this.item.courses.required_courses, ...this.item.courses.elective_courses ]
+      return this.courses.filter(this.comparer(selectedCourses))
+    }
+  },
   methods: {
+    comparer(otherArray) {
+      return function(current){
+        return otherArray.filter(function(other){
+          return other.code == current.code
+        }).length == 0;
+      }
+    },
     createCurriculum() {
       let query = `
         mutation {
