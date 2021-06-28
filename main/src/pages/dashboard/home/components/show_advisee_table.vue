@@ -249,4 +249,8 @@ export default {
 .performance-card {
   padding: 10px;
 }
+
+.home >>> tr {
+  cursor: pointer;
+}
 </style>
