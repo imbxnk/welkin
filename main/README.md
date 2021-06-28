@@ -1,4 +1,4 @@
-# main-v3
+# main
 
 ## Project setup
 ```
