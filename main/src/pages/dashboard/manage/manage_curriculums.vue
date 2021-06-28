@@ -39,13 +39,68 @@
             <template v-slot:[`item.passing_conditions`]="{ item }">
               {{ ~~item.passing_conditions.core_courses + ~~item.passing_conditions.required_courses + ~~item.passing_conditions.elective_courses }}
             </template>
-            <template v-slot:[`item.actions`]="{ item }">
+            <template v-slot:[`item.edit`]="{ item }">
               <edit-curriculum @click="editItem(item, curriculums.indexOf(item))" :item="item"></edit-curriculum>
+            </template>
+            <template v-slot:[`item.delete`]="{ item }">
+              <v-icon small @click="deleteItem(item, curriculums.indexOf(item))">
+                mdi-delete
+              </v-icon>
             </template>
           </v-data-table>
         </v-card>
       </div>
     </div>
+    <!-- DELETE CURRICULUM DIALOG -->
+    <v-dialog v-model="deleteDialog" max-width="500px">
+      <v-card>
+        <v-card-title
+          >Delete Curriculum ?
+          <v-spacer></v-spacer>
+          <v-icon @click="deleteDialog = false" tabindex="-1">mdi-close</v-icon></v-card-title
+        >
+        <v-card-text class="mt-4">
+          Warning! This cannot be undone and will affect the performance calculation of student ID(s): {{ deletedItem.batches.join('/') }}
+          <div class="mt-3">
+            Curriculum Name: <strong>{{ deletedItem.name }}</strong>
+          </div>
+        </v-card-text>
+        <v-card-actions class="pb-4 d-flex justify-content-end">
+          <v-btn
+            color="gray"
+            text
+            @click="deleteDialog = false"
+          >Cancel</v-btn>
+          <v-btn
+            color="error"
+            @click="deleteConfirmDialog = true"
+          >Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="deleteConfirmDialog" max-width="500px">
+      <v-card>
+        <v-card-title
+          >Delete Confirmation
+          <v-spacer></v-spacer>
+          <v-icon @click="deleteConfirmDialog = false" tabindex="-1">mdi-close</v-icon></v-card-title
+        >
+        <v-card-text class="mt-4">
+          After you press confirm the curriculum (<strong>{{ deletedItem.name }}</strong>) will be deleted forever
+        </v-card-text>
+        <v-card-actions class="pb-4 d-flex justify-content-end">
+          <v-btn
+            color="gray"
+            text
+            @click="deleteConfirmDialog = false"
+          >Cancel</v-btn>
+          <v-btn
+            color="error"
+            @click="deleteCurriculum"
+          >Confirm</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -57,16 +112,42 @@ export default {
   data() {
     return {
       search: "",
+      deleteDialog: false,
+      deleteConfirmDialog: false,
       headers: [
         { text: "Curriculum Name", sortable: true, value: "name", width: "60%" },
         { text: "Batches", sortable: true, value: "batches", width: "19%" },
         { text: "Total Credits", sortable: false, value: "passing_conditions", width: "20%", align: 'center' },
-        { text: "Edit", sortable: false, value: "actions", width: "1%" },
+        { text: "Edit", sortable: false, value: "edit", width: "1%", align: 'center' },
+        { text: "Delete", sortable: false, value: "delete", width: "1%", align: 'center' },
       ],
       curriculums: [],
       total: 0,
       editedIndex: 0,
       editedItem: {},
+      deletedIndex: 0,
+      deletedItem: {
+        _id: '',
+        name: '',
+        batches: [],
+        passing_conditions: {
+          core_courses: '',
+          required_courses: '',
+          elective_courses: ''
+        },
+        trimester_milestone: {
+          gap: 6,
+          t4: '',
+          t5: '',
+          t6: '',
+          t7: '',
+          t8: '',
+          t9: '',
+          t10: '',
+          t11: '',
+          t12: '',
+        },
+      },
     };
   },
   mounted() {
@@ -118,6 +199,32 @@ export default {
       this.editedIndex = index
       this.editedItem = Object.assign({}, item)
     },
+    deleteItem(item, index) {
+      this.deletedIndex = index;
+      this.deletedItem = Object.assign({}, item);
+      this.deleteDialog = true;
+    },
+    deleteCurriculum() {
+      let query = `
+        mutation {
+          deleteCurriculum(curriculumId: "${this.deletedItem._id}") {
+            success
+            message
+          }
+        }
+      `
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.curriculums.splice(this.deletedIndex,1)
+          this.deleteDialog = false
+          this.deleteConfirmDialog = false
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   },
 };
 </script>
