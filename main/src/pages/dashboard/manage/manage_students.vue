@@ -171,10 +171,15 @@
                 item-text="current"
               ></v-select>
             </div>
+            <div class="d-flex justify-content-between">
+              <div class="d-flex align-items-center">
+                LINE: <v-chip class="ms-4" v-if="editedItem.lineUID" color="success">Connected</v-chip><v-chip class="ms-4" v-else>Not Registered</v-chip>
+              </div>
+              <div class="flex-shrink-1 align-items-center" v-if="editedItem.lineUID"><v-btn text small color="red" @click="unlinkedDialog = true">Unlinked</v-btn></div>
+            </div>
           </v-form>
           <v-card-actions>
-            <div class="d-flex justify-content-between w-100">
-              <v-btn class="my-3 me-4 success" text>Line</v-btn>
+            <div class="d-flex justify-content-end mt-4 w-100">
               <div class="d-flex">
                 <v-btn class="my-3 me-4" @click="close()" text>close</v-btn>
                 <v-btn class="my-3" color="primary" @click="dialogCheck = true">Submit</v-btn>
@@ -202,8 +207,22 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text color="error" @click="dialogCheck = false">No</v-btn>
+            <v-btn text color="gray" @click="dialogCheck = false">No</v-btn>
             <v-btn color="primary" @click="save()">Yes</v-btn>
+          </v-card-actions>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="unlinkedDialog" max-width="450px">
+      <v-card>
+        <v-card-title class="headline grey lighten-2">Unlink LINE Account?</v-card-title
+        ><br />
+        <v-card-text>
+          Unlink LINE account from this student will prevent he/she from using some features
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text color="gray" @click="unlinkedDialog = false">No</v-btn>
+            <v-btn color="primary" @click="unlink()">Yes</v-btn>
           </v-card-actions>
         </v-card-text>
       </v-card>
@@ -241,9 +260,9 @@ export default {
         program: "",
         email: "",
         phone: "",
-        lineID: "",
         entry_trimester: "",
         entry_year: "",
+        lineUID: "",
         status: {
           current: "",
         },
@@ -257,7 +276,7 @@ export default {
         program: "",
         email: "",
         phone: "",
-        lineID: "",
+        lineUID: "",
         entry_trimester: "",
         entry_year: "",
         status: {
@@ -267,6 +286,7 @@ export default {
       Info: [],
       dialog: false,
       dialogCheck: false,
+      unlinkedDialog: false,
       prefix: ["Mr.", "Ms.", "Mrs"],
       search: "",
       trimester: ["1", "2", "3"],
@@ -317,7 +337,7 @@ export default {
     async getStudents() {
       let query = `
               {
-                students (sortBy: "status", includeNonCI: true) {
+                students (sortBy: "status", includeNonCI: true, getConnectedApps: true) {
                   total
                   students {
                     sid
@@ -333,6 +353,7 @@ export default {
                     entry_year
                     prefix
                     program
+                    lineUID
                     advisor {
                       given_name
                     }
@@ -431,6 +452,26 @@ export default {
           console.log(err);
         });
     },
+    unlink() {
+      let query = `
+        mutation {
+          unlinkStudentUID(searchInput: {sid: "${this.editedItem.sid}"}) {
+            success
+            message
+          }
+        }
+      `
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.editedItem.lineUID = null
+          this.unlinkedDialog = false
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   },
 };
 </script>
