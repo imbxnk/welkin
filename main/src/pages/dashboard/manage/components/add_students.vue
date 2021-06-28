@@ -1,7 +1,7 @@
 <template>
   <v-container class="mx-auto">
-    <v-stepper v-model="e1">
-      <v-stepper-header>
+    <v-stepper v-model="e1" class="elevation-0">
+      <v-stepper-header class="elevation-0">
         <v-stepper-step
           :complete="e1 > 1"
           step="1"
@@ -22,8 +22,8 @@
       </v-stepper-header>
       <v-stepper-items>
         <v-stepper-content step="1">
-          <div class="d-flex flex-column bd-highlight">
-            <div v-if="importFile" class="p-2 bd-highlight">
+          <div class="d-flex flex-column ">
+            <div v-if="importFile" class="p-2 ">
               <vue-dropzone
                 class="drop-zone"
                 ref="myVueDropzone"
@@ -34,11 +34,11 @@
               >
               </vue-dropzone>
             </div>
-             <div v-else-if="addManually" class="p-2 bd-highlight">
+             <div v-else-if="addManually" class="p-2 ">
               <v-card class="px-5 py-5">
                 <v-form ref="form" lazy-validation>
-                  <div class="d-flex flex-row bd-highlight justify-content-center">
-                    <div class="p-2 bd-highlight">
+                  <div class="d-flex flex-row justify-content-center">
+                    <div class="p-2 ">
                       <v-text-field
                         type="number"
                         class="input"
@@ -51,7 +51,7 @@
                         required
                       ></v-text-field>
                     </div>
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2 ">
                       <v-select
                         class="input"
                         :items="icProgram"
@@ -64,10 +64,10 @@
                       ></v-select>
                     </div>
                   </div>
-                  
 
-                  <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
-                    <div class="p-2 bd-highlight">
+
+                  <div class="d-flex flex-md-row flex-column justify-content-around justify-content-md-center">
+                    <div class="p-2 ">
                       <v-select
                         class="input"
                         :items="prefix"
@@ -79,7 +79,7 @@
                         required
                       ></v-select>
                     </div>
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2 ">
                       <v-text-field
                         class="input"
                         label="Name"
@@ -92,8 +92,8 @@
                     </div>
                   </div>
 
-                   <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
-                    <div class="p-2 bd-highlight">
+                   <div class="d-flex flex-md-row flex-column  justify-content-around justify-content-md-center">
+                    <div class="p-2 ">
                       <v-text-field
                         class="input"
                         label="Lastname"
@@ -104,7 +104,7 @@
                         required
                       ></v-text-field>
                     </div>
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2 ">
                       <v-select
                         class="input"
                         :items="advisorlist"
@@ -118,8 +118,8 @@
                     </div>
                   </div>
 
-                   <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
-                    <div class="p-2 bd-highlight">
+                   <div class="d-flex flex-md-row flex-column justify-content-around justify-content-md-center">
+                    <div class="p-2 ">
                       <v-select
                         type="number"
                         class="input"
@@ -131,7 +131,7 @@
                         outlined
                       ></v-select>
                     </div>
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2 ">
                       <v-text-field
                         type="number"
                         class="input"
@@ -147,8 +147,8 @@
               </v-card>
             </div>
 
-              <div class="d-flex flex-row bd-highlight justify-content-end">
-                <div class="p-2 flex-fill bd-highlight">
+              <div class="d-flex flex-row  justify-content-end">
+                <div class="p-2 flex-fill ">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -167,7 +167,7 @@
                     <span>Change to add manually or import files</span>
                   </v-tooltip>
                 </div>
-                <div class="p-2 bd-highlight">
+                <div class="p-2 ">
                   <v-btn v-if = this.addManually color="error" text @click="clearForm()">
                     Clear
                   </v-btn>
@@ -183,17 +183,17 @@
         </v-stepper-content>
 
         <v-stepper-content step="2">
-          <div class="d-flex flex-column bd-highlight justify-content-center">
-            <div v-if = importFile class="p-2 bd-highlight">
+          <div class="d-flex flex-column justify-content-center">
+            <div v-if = importFile class="p-2 ">
               <v-select label="Please select academic term" name="sheetName" id="sheetName" :items="sheetNames" @change="getSelectedValue($event)" v-model="sheetNames[0]"></v-select>
             </div>
-            <div class="p-2 bd-highlight">
+            <div class="p-2 ">
               <v-data-table id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer >
               </v-data-table>
             </div>
           </div>
-          <div class="d-flex flex-row bd-highlight justify-content-end">
-            <div class="p-2 bd-highlight">
+          <div class="d-flex flex-row justify-content-end">
+            <div class="p-2 ">
               <v-btn text @click="e1 = 1">Back</v-btn>
               <v-btn color="error" text @click="clearCheck()">
                 clear
@@ -213,20 +213,20 @@
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <div class="d-flex flex-column bd-highlight justify-content-center">
-            <!-- <div class="p-2 bd-highlight" v-if="successData">
+          <div class="d-flex flex-column justify-content-center">
+            <!-- <div class="p-2 " v-if="successData">
                <v-data-table class="success-table" id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
               </v-data-table>
             </div>
-            <div class="duplicate-table p-2 bd-highlight" v-else-if="duplicatedData">
+            <div class="duplicate-table p-2 " v-else-if="duplicatedData">
                <v-data-table class="duplicate-table" id="sheetName" :headers="headers" :items="duplicateStudents" mobile-breakpoint="0" hide-default-footer disable-pagination>
               </v-data-table>
             </div>
-            <div class="duplicate-table p-2 bd-highlight" v-else-if="errorData">
-               <v-data-table class="error-table"  id="sheetName" :headers="headers" :items="errorStudents" mobile-breakpoint="0" hide-default-footer disable-pagination>
+            <div class="duplicate-table p-2 " v-else-if="errorData">
+               <v-data-table class="error-table" id="sheetName" :headers="headers" :items="errorStudents" mobile-breakpoint="0" hide-default-footer disable-pagination>
               </v-data-table>
             </div> -->
-            <div class="p-2 bd-highlight">
+            <div class="p-2">
               <v-data-table id="sheetName" :headers="headers" :items="studentResult" mobile-breakpoint="0" hide-default-footer disable-pagination>
                 <template v-slot:[`item.result`]="{ item }">
                   <v-chip small :color="getColor(item.result)">
@@ -235,9 +235,9 @@
               </v-data-table>
             </div>
           </div>
-            <div class="p-2 bd-highlight">
-              <div class="d-flex flex-row bd-highlight justify-content-end">
-                <div class="p-2 bd-highlight">
+            <div class="p-2 ">
+              <div class="d-flex flex-row justify-content-end">
+                <div class="p-2 ">
                   <v-btn text @click="e1 = 2, studentResult = []">
                     Back
                   </v-btn>
@@ -251,7 +251,7 @@
                 </div>
               </div>
             </div>
-          
+
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -358,12 +358,12 @@ export default {
     },
     clear(){
       (this.manuallyData.ID = ""),
-      (this.manuallyData.Program = ""), 
-      (this.manuallyData.Prefix = ""), 
-      (this.manuallyData.Name = ""), 
-      (this.manuallyData.LastName = ""), 
-      (this.manuallyData.Advisor = ""), 
-      (this.manuallyData.entryTrimester = ""), 
+      (this.manuallyData.Program = ""),
+      (this.manuallyData.Prefix = ""),
+      (this.manuallyData.Name = ""),
+      (this.manuallyData.LastName = ""),
+      (this.manuallyData.Advisor = ""),
+      (this.manuallyData.entryTrimester = ""),
       (this.manuallyData.entryYear = ""),
       Object.keys(this.form).forEach((f) => {
         this.$refs[f].reset();
@@ -396,7 +396,6 @@ export default {
           });
       },
       selectFile(file) {
-      console.log(file)
       //get the selected file' info
       this.selectedFile = file
       XLSX.utils.json_to_sheet(this.data, "out.xlsx");
@@ -497,7 +496,6 @@ export default {
       let students = { ...this.studentsData };
       for (var i in students) {
         let std = { ...students[i] };
-        console.log(std)
         //post graphql by using axios
         std.Advisor = std.Advisor.trim()
           .split(". ")
@@ -538,12 +536,10 @@ export default {
                     this.studentResult.push(std)
                     this.successData = true
                 }).catch (err => {
-                  console.log(err.response.data.errors[0].status)
                   this.duplicatedData = false
                   this.errorData = false
                     switch(err.response.data.errors[0].status){
                       case 409: // duplicated
-                        console.log(err.response.data.errors[0].message)
                         std.result = 'warning'
                         this.studentResult.push(std)
                         // this.duplicateStudents.push(std);
@@ -551,7 +547,6 @@ export default {
                         this.e1 = 3;
                         break
                       default: // other errors
-                        console.log(err.response.data.errors[0].message)
                         std.result = 'error'
                         this.studentResult.push(std)
                         // this.errorStudents.push(std);
@@ -559,7 +554,7 @@ export default {
                         break
                     }
                     // console.log(this.duplicateStudents)
-                    
+
                 })
             }
       },
@@ -573,7 +568,7 @@ export default {
         this.e1 = 1
       },
       removefile(){
-        
+
       },
       clearCheck(){
         this.studentsData = []
@@ -594,7 +589,7 @@ export default {
   .duplicate-table{
     color: yellow;
   }
-  
+
   .error-table{
     color: red;
   }
