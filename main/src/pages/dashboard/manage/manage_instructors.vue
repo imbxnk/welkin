@@ -66,7 +66,7 @@
     <v-dialog persistent v-model="editDialog" max-width="550px">
       <v-card>
         <v-card-title class="card-title">
-          Edit Student
+          Edit Instructor
           <v-spacer></v-spacer>
           <v-icon @click="editDialog = false">mdi-close</v-icon>
         </v-card-title>
