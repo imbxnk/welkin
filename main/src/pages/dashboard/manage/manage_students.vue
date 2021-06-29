@@ -80,7 +80,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="dialog" max-width="600px">
+    <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title class="card-title">
           Edit Student
@@ -194,16 +194,16 @@
         <v-card-title class="headline grey lighten-2"> Confirm Student Information </v-card-title
         ><br />
         <v-card-text
-          >Are you sure you want to edit: <br />Student ID: <b>{{ this.editedItem.sid }}</b>
-          <br />Prefix: <b>{{ this.editedItem.prefix }}</b> <br />
-          First Name:<b>{{ this.editedItem.given_name }}</b> <br />
-          Last Name: <b>{{ this.editedItem.family_name }}</b> <br />
-          Nickname: <b>{{ this.editedItem.nick_name || "-" }}</b> <br />
-          Email: <b>{{ this.editedItem.email || "-" }}</b> <br />
-          Phone: <b>{{ this.editedItem.phone || "-" }}</b> <br />
-          Entry Trimester: <b>{{ this.editedItem.entry_trimester }}</b> <br />
-          Entry Year: <b>{{ this.editedItem.entry_year }}</b><br/>
-          Status: <b>{{ this.editedItem.status.current }}</b>
+          >Are you sure you want to edit: <br />Student ID: <b>{{ editedItem.sid }}</b>
+          <br />Prefix: <b>{{ editedItem.prefix }}</b> <br />
+          First Name:<b>{{ editedItem.given_name }}</b> <br />
+          Last Name: <b>{{ editedItem.family_name }}</b> <br />
+          Nickname: <b>{{ editedItem.nick_name || "-" }}</b> <br />
+          Email: <b>{{ editedItem.email || "-" }}</b> <br />
+          Phone: <b>{{ editedItem.phone || "-" }}</b> <br />
+          Entry Trimester: <b>{{ editedItem.entry_trimester }}</b> <br />
+          Entry Year: <b>{{ editedItem.entry_year }}</b><br/>
+          Status: <b>{{ editedItem.status.current }}</b>
 
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -403,7 +403,10 @@ export default {
     },
     save() {
       if (this.editedIndex > -1) {
+        this.editedItem.name = this.editedItem.given_name.trim() + ' ' + this.editedItem.family_name
+        this.editedItem.entry_tri_year = this.editedItem.entry_trimester && this.editedItem.entry_year ? `T${this.editedItem.entry_trimester}/${this.editedItem.entry_year}` : null;
         Object.assign(this.Info[this.editedIndex], this.editedItem);
+        Object.assign(this.students[this.editedIndex], this.editedItem);
       } else {
         this.Info.push(this.editedItem);
       }
@@ -446,7 +449,6 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.close();
-          console.log(res.data.data);
         })
         .catch((err) => {
           console.log(err);
