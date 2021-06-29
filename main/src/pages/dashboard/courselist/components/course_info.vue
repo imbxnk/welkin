@@ -13,7 +13,7 @@
       </div>
       <div class="overline my-n1">{{ code }} : {{ course.name }}</div>
 
-      <div v-if="course.description !== 'No description'">
+      <div v-if="course.description && course.description !== 'No description'">
         <v-card elevation="0" class="pa-3 mt-2 description">
           <span class="caption"
             ><span class="primary--text">Course Description:</span> <br />{{
@@ -97,7 +97,7 @@ export default {
       this.b = [];
       this.tt = [];
       this.p = [];
-      this.batches = {}
+      this.batches = {};
 
       var queryStr = `
                 courseInstructors(course_code:"${code}"){
@@ -122,14 +122,21 @@ export default {
             `;
       this.queryBatches.forEach((batch) => {
         this.$props.curriculums.forEach((curriculum) => {
-          let courses = [...curriculum.courses.core_courses, ...curriculum.courses.required_courses, ...curriculum.courses.elective_courses]
-          if(curriculum.batches.includes(batch) && courses.filter(c => c.code === code).length > 0) {
-            console.log(batch, code)
+          let courses = [
+            ...curriculum.courses.core_courses,
+            ...curriculum.courses.required_courses,
+            ...curriculum.courses.elective_courses,
+          ];
+          if (
+            curriculum.batches.includes(batch) &&
+            courses.filter((c) => c.code === code).length > 0
+          ) {
+            console.log(batch, code);
             queryStr += `batch${batch}:countStudent(course_code: "${code}", batch: "${batch}") { total unregistered { sid given_name family_name } }
                           total${batch}:students (searchInput: { batch : "${batch}"}) { total }
                         `;
           }
-        })
+        });
       });
       let query = `
                 {
@@ -142,6 +149,7 @@ export default {
         .then((res) => {
           this.instuctors = res.data.data.courseInstructors.instructors;
           this.course = res.data.data.course;
+          console.log(this.course);
           delete res.data.data.course;
           var result = { ...res.data.data };
           for (const i in result) {
@@ -171,32 +179,33 @@ export default {
         });
     },
     unescapeHtml(safe) {
-      return safe.replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
+      return safe
+        .replace(/&amp;/g, "&")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
         .replace(/&quot;/g, '"')
         .replace(/&#039;/g, "'");
-    }
+    },
   },
 };
 </script>
 <style scoped>
-  table,
-  th,
-  tr,
-  td {
-    border: 1px solid rgba(139, 139, 139, 0.2);
-    padding: 5px;
-  }
-  .loading-center {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-  }
-  .description {
-    background: #f7f7f8;
-  }
+table,
+th,
+tr,
+td {
+  border: 1px solid rgba(139, 139, 139, 0.2);
+  padding: 5px;
+}
+.loading-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.description {
+  background: #f7f7f8;
+}
 </style>
