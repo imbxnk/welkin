@@ -479,7 +479,6 @@ export default {
     },
     clearForm() {
       this.manuallyData = {};
-      this.uniqueData = [];
     },
     readMyFile: function(workbook, currentSheetName) {
       return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[currentSheetName]);
@@ -592,6 +591,7 @@ export default {
     removefile() {},
     clearCheck() {
       this.studentsData = [];
+      this.uniqueData = [];
     },
   },
 };
