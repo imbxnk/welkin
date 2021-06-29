@@ -2,17 +2,11 @@
   <v-container class="mx-auto">
     <v-stepper v-model="e1" class="elevation-0">
       <v-stepper-header class="elevation-0">
-        <v-stepper-step
-          :complete="e1 > 1"
-          step="1"
-        >
+        <v-stepper-step :complete="e1 > 1" step="1">
           Import File or add manually
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step
-          :complete="e1 > 2"
-          step="2"
-        >
+        <v-stepper-step :complete="e1 > 2" step="2">
           Checking & Uploading
         </v-stepper-step>
         <v-divider></v-divider>
@@ -34,7 +28,7 @@
               >
               </vue-dropzone>
             </div>
-             <div v-else-if="addManually" class="p-2 ">
+            <div v-else-if="addManually" class="p-2 ">
               <v-card class="px-5 py-5">
                 <v-form ref="form" lazy-validation>
                   <div class="d-flex flex-row justify-content-center">
@@ -65,8 +59,9 @@
                     </div>
                   </div>
 
-
-                  <div class="d-flex flex-md-row flex-column justify-content-around justify-content-md-center">
+                  <div
+                    class="d-flex flex-md-row flex-column justify-content-around justify-content-md-center"
+                  >
                     <div class="p-2 ">
                       <v-select
                         class="input"
@@ -92,7 +87,9 @@
                     </div>
                   </div>
 
-                   <div class="d-flex flex-md-row flex-column  justify-content-around justify-content-md-center">
+                  <div
+                    class="d-flex flex-md-row flex-column  justify-content-around justify-content-md-center"
+                  >
                     <div class="p-2 ">
                       <v-text-field
                         class="input"
@@ -118,7 +115,9 @@
                     </div>
                   </div>
 
-                   <div class="d-flex flex-md-row flex-column justify-content-around justify-content-md-center">
+                  <div
+                    class="d-flex flex-md-row flex-column justify-content-around justify-content-md-center"
+                  >
                     <div class="p-2 ">
                       <v-select
                         type="number"
@@ -147,48 +146,64 @@
               </v-card>
             </div>
 
-              <div class="d-flex flex-row  justify-content-end">
-                <div class="p-2 flex-fill ">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        class="speed-dial"
-                        dark
-                        color="#3c84fb"
-                        @click.prevent="toggleForm()"
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-icon>
-                          mdi-account-circle
-                        </v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Change to add manually or import files</span>
-                  </v-tooltip>
-                </div>
-                <div class="p-2 ">
-                  <v-btn v-if = this.addManually color="error" text @click="clearForm()">
-                    Clear
-                  </v-btn>
-                  <v-btn v-if = this.addManually color="success" text @click="addData()">
-                    Add
-                  </v-btn>
-                  <v-btn color="primary" text @click="toSecondStep();" >
-                    Continue
-                  </v-btn>
-                </div>
+            <div class="d-flex flex-row  justify-content-end">
+              <div class="p-2 flex-fill ">
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="speed-dial"
+                      dark
+                      color="#3c84fb"
+                      @click.prevent="toggleForm()"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      <v-icon>
+                        mdi-account-circle
+                      </v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Change to add manually or import files</span>
+                </v-tooltip>
               </div>
+              <div class="p-2 ">
+                <v-btn v-if="this.addManually" color="error" text @click="clearForm()">
+                  Clear
+                </v-btn>
+                <v-btn v-if="this.addManually" color="success" text @click="addData()">
+                  Add
+                </v-btn>
+                <v-btn color="primary" text @click="toSecondStep()">
+                  Continue
+                </v-btn>
+              </div>
+            </div>
           </div>
+          <v-snackbar centered v-model="snackbar" :timeout="2000">
+            Student added! <br />Click 'clear' to continue adding!
+          </v-snackbar>
         </v-stepper-content>
 
         <v-stepper-content step="2">
           <div class="d-flex flex-column justify-content-center">
-            <div v-if = importFile class="p-2 ">
-              <v-select label="Please select academic term" name="sheetName" id="sheetName" :items="sheetNames" @change="getSelectedValue($event)" v-model="sheetNames[0]"></v-select>
+            <div v-if="importFile" class="p-2 ">
+              <v-select
+                label="Please select academic term"
+                name="sheetName"
+                id="sheetName"
+                :items="sheetNames"
+                @change="getSelectedValue($event)"
+                v-model="sheetNames[0]"
+              ></v-select>
             </div>
             <div class="p-2 ">
-              <v-data-table id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer >
+              <v-data-table
+                id="sheetName"
+                :headers="headers"
+                :items="studentsData"
+                mobile-breakpoint="0"
+                hide-default-footer
+              >
               </v-data-table>
             </div>
           </div>
@@ -198,18 +213,11 @@
               <v-btn color="error" text @click="clearCheck()">
                 clear
               </v-btn>
-              <v-btn
-                color="primary"
-                @click="upload()"
-                text
-              >
+              <v-btn color="primary" @click="upload()" text>
                 Upload
               </v-btn>
             </div>
           </div>
-
-
-
         </v-stepper-content>
 
         <v-stepper-content step="3">
@@ -227,31 +235,39 @@
               </v-data-table>
             </div> -->
             <div class="p-2">
-              <v-data-table id="sheetName" :headers="headers" :items="studentResult" mobile-breakpoint="0" hide-default-footer disable-pagination>
+              <v-data-table
+                id="sheetName"
+                :headers="headers"
+                :items="studentResult"
+                mobile-breakpoint="0"
+                hide-default-footer
+                disable-pagination
+              >
                 <template v-slot:[`item.result`]="{ item }">
-                  <v-chip small :color="getColor(item.result)">
-                  </v-chip>
+                  <v-chip small :color="getColor(item.result)"> </v-chip>
                 </template>
               </v-data-table>
             </div>
           </div>
-            <div class="p-2 ">
-              <div class="d-flex flex-row justify-content-end">
-                <div class="p-2 ">
-                  <v-btn text @click="e1 = 2, studentResult = []">
-                    Back
-                  </v-btn>
-                  <v-btn
-                    color="primary"
-                    @click="reset(); removefile();"
-                    text
-                  >
-                    Add more
-                  </v-btn>
-                </div>
+          <div class="p-2 ">
+            <div class="d-flex flex-row justify-content-end">
+              <div class="p-2 ">
+                <v-btn text @click="(e1 = 2), (studentResult = [])">
+                  Back
+                </v-btn>
+                <v-btn
+                  color="primary"
+                  @click="
+                    reset();
+                    removefile();
+                  "
+                  text
+                >
+                  Add more
+                </v-btn>
               </div>
             </div>
-
+          </div>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -263,12 +279,12 @@ import XLSX from "xlsx";
 import vue2Dropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
 export default {
-  components:{
-  vueDropzone: vue2Dropzone
+  components: {
+    vueDropzone: vue2Dropzone,
   },
-  data(){
-    return{
-      e1 : 1,
+  data() {
+    return {
+      e1: 1,
       dropzoneOptions: {
         url: "https://httpbin.org/post",
         thumbnailWidth: 150,
@@ -309,7 +325,7 @@ export default {
         LastName: "",
         Advisor: "",
         entryTrimester: "",
-        entryYear: ""
+        entryYear: "",
       },
       entry_trimester: "",
       entry_year: "",
@@ -327,12 +343,12 @@ export default {
       workbook: "",
       file: "",
       duplicateStudents: [],
-      errorStudents:[],
+      errorStudents: [],
       successData: false,
       duplicatedData: false,
       errorData: false,
       Info: [],
-      headers:[
+      headers: [
         { text: "Student ID", sortable: false, value: "ID", width: "9%" },
         { text: "Prefix", sortable: false, value: "Prefix", width: "1%" },
         { text: "Name", sortable: false, value: "Name", width: 80 },
@@ -340,37 +356,38 @@ export default {
         { text: "Entry Trimester", sortable: false, value: "entryTrimester", width: 100 },
         { text: "Entry Year", sortable: false, value: "entryYear", width: 100 },
         { text: "Advisor", sortable: false, value: "Advisor", width: 120 },
-        { text: "Status", sortable: false, value: "result", width: 120 , align: "center"}
+        { text: "Status", sortable: false, value: "result", width: 120, align: "center" },
       ],
-      studentResult: []
-    }
+      studentResult: [],
+      snackbar: false,
+    };
   },
-  mounted(){
+  mounted() {
     this.loadAdvisors();
   },
-  methods:{
-    toggleForm(){
-      this.addManually = !this.addManually
-      this.importFile = !this.importFile
-      this.studentsData = []
-      this.clearForm()
+  methods: {
+    toggleForm() {
+      this.addManually = !this.addManually;
+      this.importFile = !this.importFile;
+      this.studentsData = [];
+      this.clearForm();
       // this.clear()
     },
-    clear(){
+    clear() {
       (this.manuallyData.ID = ""),
-      (this.manuallyData.Program = ""),
-      (this.manuallyData.Prefix = ""),
-      (this.manuallyData.Name = ""),
-      (this.manuallyData.LastName = ""),
-      (this.manuallyData.Advisor = ""),
-      (this.manuallyData.entryTrimester = ""),
-      (this.manuallyData.entryYear = ""),
-      Object.keys(this.form).forEach((f) => {
-        this.$refs[f].reset();
-      });
+        (this.manuallyData.Program = ""),
+        (this.manuallyData.Prefix = ""),
+        (this.manuallyData.Name = ""),
+        (this.manuallyData.LastName = ""),
+        (this.manuallyData.Advisor = ""),
+        (this.manuallyData.entryTrimester = ""),
+        (this.manuallyData.entryYear = ""),
+        Object.keys(this.form).forEach((f) => {
+          this.$refs[f].reset();
+        });
     },
     async loadAdvisors() {
-        let query = `
+      let query = `
             {
               instructors {
                 total
@@ -383,21 +400,21 @@ export default {
               }
             }
           `;
-        query = query.replace(/\s+/g, ' ').trim()
-        await this.axios
-          .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
-          .then((res) => {
-            res.data.data.instructors.instructors.forEach((instructor) => {
-              this.advisorlist.push(instructor.name)
-            })
-          })
-          .catch((err) => {
-            console.log(err);
+      query = query.replace(/\s+/g, " ").trim();
+      await this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          res.data.data.instructors.instructors.forEach((instructor) => {
+            this.advisorlist.push(instructor.name);
           });
-      },
-      selectFile(file) {
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    selectFile(file) {
       //get the selected file' info
-      this.selectedFile = file
+      this.selectedFile = file;
       XLSX.utils.json_to_sheet(this.data, "out.xlsx");
       //if file is selected
       if (this.selectedFile) {
@@ -416,9 +433,9 @@ export default {
           this.studentsData = this.readMyFile(this.workbook, this.sheetName);
           // get entry_year and entry_trimester
           [this.entryYear, this.entryTrimester] = this.sheetName.split("T");
-          for (var i = 0; i<this.studentsData.length; i++){
-            this.studentsData[i].entryYear = this.entryYear
-            this.studentsData[i].entryTrimester = this.entryTrimester
+          for (var i = 0; i < this.studentsData.length; i++) {
+            this.studentsData[i].entryYear = this.entryYear;
+            this.studentsData[i].entryTrimester = this.entryTrimester;
           }
         };
       }
@@ -432,47 +449,49 @@ export default {
       this.studentsData = this.readMyFile(this.workbook, this.sheetName);
       // get entry_year and entry_trimester
       [this.entryYear, this.entryTrimester] = this.sheetName.split("T");
-      for (var i = 0; i<this.studentsData.length; i++){
-        this.studentsData[i].entryYear = this.entryYear
-        this.studentsData[i].entryTrimester = this.entryTrimester
+      for (var i = 0; i < this.studentsData.length; i++) {
+        this.studentsData[i].entryYear = this.entryYear;
+        this.studentsData[i].entryTrimester = this.entryTrimester;
       }
     },
     vremoved(file, xhr, error) {
-      this.studentsData = []
-      this.clearForm()
-      this.selectedFile = ''
+      this.studentsData = [];
+      this.clearForm();
+      this.selectedFile = "";
     },
     getColor(status) {
       if (status == "error") return "red";
       else if (status == "warning") return "yellow";
       else if (status == "success") return "green";
-      else return "grey"
+      else return "grey";
     },
-    addData(){
+    addData() {
       if (this.$refs.form.validate()) {
         let new_data = { ...this.manuallyData };
-        this.uniqueData.push(new_data)
-        this.studentsData = Array.from(new Set(this.uniqueData.map(data => data.ID)))
-        .map(sid => {
-          return this.uniqueData.find(data => data.ID === sid)
-        }).sort((a,b) => (parseInt(a.ID) > parseInt(b.ID)) ? 1 : -1)
+        this.uniqueData.push(new_data);
+        this.studentsData = Array.from(new Set(this.uniqueData.map((data) => data.ID)))
+          .map((sid) => {
+            return this.uniqueData.find((data) => data.ID === sid);
+          })
+          .sort((a, b) => (parseInt(a.ID) > parseInt(b.ID) ? 1 : -1));
+        this.snackbar = true;
       }
     },
-    clearForm(){
-      this.manuallyData = {}
-      this.uniqueData = []
+    clearForm() {
+      this.manuallyData = {};
+      this.uniqueData = [];
     },
     readMyFile: function(workbook, currentSheetName) {
       return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[currentSheetName]);
     },
-    toSecondStep(){
+    toSecondStep() {
       // console.log(this.studentsData)
-      if(this.importFile){
-        this.selectFile(this.selectedFile)
+      if (this.importFile) {
+        this.selectFile(this.selectedFile);
       }
-      if(this.studentsData.length > 0){
-        this.e1 = 2
-        this.submitForm()
+      if (this.studentsData.length > 0) {
+        this.e1 = 2;
+        this.submitForm();
       }
     },
     submitForm() {
@@ -485,7 +504,7 @@ export default {
       //   this.studentsData.push(new_data);
       //   console.log(this.studentsData);
       // } else {
-        this.e6 = 1;
+      this.e6 = 1;
       // }
     },
     upload: async function() {
@@ -527,70 +546,71 @@ export default {
                                 }
                             }
                         }
-                    `
-                query = query.replace(/\s+/g, ' ').trim()
-                await this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true }).then(res => {
-                    console.log(res);
-                    this.e1 = 3;
-                    std.result = 'success'
-                    this.studentResult.push(std)
-                    this.successData = true
-                }).catch (err => {
-                  this.duplicatedData = false
-                  this.errorData = false
-                    switch(err.response.data.errors[0].status){
-                      case 409: // duplicated
-                        std.result = 'warning'
-                        this.studentResult.push(std)
-                        // this.duplicateStudents.push(std);
-                        this.duplicatedData = true;
-                        this.e1 = 3;
-                        break
-                      default: // other errors
-                        std.result = 'error'
-                        this.studentResult.push(std)
-                        // this.errorStudents.push(std);
-                        this.errorData = true;
-                        break
-                    }
-                    // console.log(this.duplicateStudents)
-
-                })
+                    `;
+        query = query.replace(/\s+/g, " ").trim();
+        await this.axios
+          .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+          .then((res) => {
+            console.log(res);
+            this.e1 = 3;
+            std.result = "success";
+            this.studentResult.push(std);
+            this.successData = true;
+          })
+          .catch((err) => {
+            this.duplicatedData = false;
+            this.errorData = false;
+            switch (err.response.data.errors[0].status) {
+              case 409: // duplicated
+                std.result = "warning";
+                this.studentResult.push(std);
+                // this.duplicateStudents.push(std);
+                this.duplicatedData = true;
+                this.e1 = 3;
+                break;
+              default:
+                // other errors
+                std.result = "error";
+                this.studentResult.push(std);
+                // this.errorStudents.push(std);
+                this.errorData = true;
+                break;
             }
-      },
-      reset(){
-        this.studentsData = []
-        // this.duplicatedData = [] // คือเหี้ยไรก่อน
-        this.duplicateStudents = []
-        this.sheetName = ""
-        this.sheetNames = []
-        this.manuallyData = {}
-        this.e1 = 1
-      },
-      removefile(){
-
-      },
-      clearCheck(){
-        this.studentsData = []
+            // console.log(this.duplicateStudents)
+          });
       }
-  }
-}
+    },
+    reset() {
+      this.studentsData = [];
+      // this.duplicatedData = [] // คือเหี้ยไรก่อน
+      this.duplicateStudents = [];
+      this.sheetName = "";
+      this.sheetNames = [];
+      this.manuallyData = {};
+      this.e1 = 1;
+    },
+    removefile() {},
+    clearCheck() {
+      this.studentsData = [];
+    },
+  },
+};
 </script>
 
 <style>
-  .drop-zone{
-    height: 280px;
-  }
+.drop-zone {
+  height: 280px;
+}
 
-  .success-table{
-    color: green;
-  }
+.success-table {
+  color: green;
+}
 
-  .duplicate-table{
-    color: yellow;
-  }
+.duplicate-table {
+  color: yellow;
+}
 
-  .error-table{
-    color: red;
-  }
+.error-table {
+  color: red;
+}
 </style>
