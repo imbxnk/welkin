@@ -80,7 +80,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="dialog" max-width="600px">
+    <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title class="card-title">
           Edit Student
@@ -166,14 +166,20 @@
                 label="Status"
                 :items="allStatus"
                 outlined
-                v-model="editedItem.status.current"
-                item-value="current"
+                v-model="editedItem.status"
+                return-object
+                item-text="current"
               ></v-select>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="d-flex align-items-center">
+                LINE: <v-chip class="ms-4" v-if="editedItem.lineUID" color="success">Connected</v-chip><v-chip class="ms-4" v-else>Not Registered</v-chip>
+              </div>
+              <div class="flex-shrink-1 align-items-center" v-if="editedItem.lineUID"><v-btn text small color="red" @click="unlinkedDialog = true">Unlinked</v-btn></div>
             </div>
           </v-form>
           <v-card-actions>
-            <div class="d-flex justify-content-between w-100">
-              <v-btn class="my-3 me-4 success" text>Line</v-btn>
+            <div class="d-flex justify-content-end mt-4 w-100">
               <div class="d-flex">
                 <v-btn class="my-3 me-4" @click="close()" text>close</v-btn>
                 <v-btn class="my-3" color="primary" @click="dialogCheck = true">Submit</v-btn>
@@ -188,21 +194,35 @@
         <v-card-title class="headline grey lighten-2"> Confirm Student Information </v-card-title
         ><br />
         <v-card-text
-          >Are you sure you want to edit: <br />Student ID: <b>{{ this.editedItem.sid }}</b>
-          <br />Prefix: <b>{{ this.editedItem.prefix }}</b> <br />
-          First Name:<b>{{ this.editedItem.given_name }}</b> <br />
-          Last Name: <b>{{ this.editedItem.family_name }}</b> <br />
-          Nickname: <b>{{ this.editedItem.nick_name || "-" }}</b> <br />
-          Email: <b>{{ this.editedItem.email || "-" }}</b> <br />
-          Phone: <b>{{ this.editedItem.phone || "-" }}</b> <br />
-          Entry Trimester: <b>{{ this.editedItem.entry_trimester }}</b> <br />
-          Entry Year: <b>{{ this.editedItem.entry_year }}</b><br/>
-          Status: <b>{{ this.editedItem.status.current }}</b>
+          >Are you sure you want to edit: <br />Student ID: <b>{{ editedItem.sid }}</b>
+          <br />Prefix: <b>{{ editedItem.prefix }}</b> <br />
+          First Name:<b>{{ editedItem.given_name }}</b> <br />
+          Last Name: <b>{{ editedItem.family_name }}</b> <br />
+          Nickname: <b>{{ editedItem.nick_name || "-" }}</b> <br />
+          Email: <b>{{ editedItem.email || "-" }}</b> <br />
+          Phone: <b>{{ editedItem.phone || "-" }}</b> <br />
+          Entry Trimester: <b>{{ editedItem.entry_trimester }}</b> <br />
+          Entry Year: <b>{{ editedItem.entry_year }}</b><br/>
+          Status: <b>{{ editedItem.status.current }}</b>
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text color="error" @click="dialogCheck = false">No</v-btn>
+            <v-btn text color="gray" @click="dialogCheck = false">No</v-btn>
             <v-btn color="primary" @click="save()">Yes</v-btn>
+          </v-card-actions>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="unlinkedDialog" max-width="450px">
+      <v-card>
+        <v-card-title class="headline grey lighten-2">Unlink LINE Account?</v-card-title
+        ><br />
+        <v-card-text>
+          Unlink LINE account from this student will prevent he/she from using some features
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text color="gray" @click="unlinkedDialog = false">No</v-btn>
+            <v-btn color="primary" @click="unlink()">Yes</v-btn>
           </v-card-actions>
         </v-card-text>
       </v-card>
@@ -240,9 +260,9 @@ export default {
         program: "",
         email: "",
         phone: "",
-        lineID: "",
         entry_trimester: "",
         entry_year: "",
+        lineUID: "",
         status: {
           current: "",
         },
@@ -256,13 +276,17 @@ export default {
         program: "",
         email: "",
         phone: "",
-        lineID: "",
+        lineUID: "",
         entry_trimester: "",
         entry_year: "",
+        status: {
+          current: "",
+        },
       },
       Info: [],
       dialog: false,
       dialogCheck: false,
+      unlinkedDialog: false,
       prefix: ["Mr.", "Ms.", "Mrs"],
       search: "",
       trimester: ["1", "2", "3"],
@@ -287,13 +311,13 @@ export default {
         'ICFS'
       ],
       allStatus: [
-        'Studying',
-        'Leave of absence',
-        'On Exchange',
-        'Retired',
-        'Resigned',
-        'Alumni',
-        'Unknown'
+        { current: 'Studying' },
+        { current: 'Leave of absence' },
+        { current: 'On Exchange' },
+        { current: 'Retired' },
+        { current: 'Resigned' },
+        { current: 'Alumni' },
+        { current: 'Unknown' },
       ]
     };
   },
@@ -313,7 +337,7 @@ export default {
     async getStudents() {
       let query = `
               {
-                students (sortBy: "status", includeNonCI: true) {
+                students (sortBy: "status", includeNonCI: true, getConnectedApps: true) {
                   total
                   students {
                     sid
@@ -329,6 +353,7 @@ export default {
                     entry_year
                     prefix
                     program
+                    lineUID
                     advisor {
                       given_name
                     }
@@ -378,28 +403,31 @@ export default {
     },
     save() {
       if (this.editedIndex > -1) {
+        this.editedItem.name = this.editedItem.given_name.trim() + ' ' + this.editedItem.family_name
+        this.editedItem.entry_tri_year = this.editedItem.entry_trimester && this.editedItem.entry_year ? `T${this.editedItem.entry_trimester}/${this.editedItem.entry_year}` : null;
         Object.assign(this.Info[this.editedIndex], this.editedItem);
+        Object.assign(this.students[this.editedIndex], this.editedItem);
       } else {
         this.Info.push(this.editedItem);
       }
       // eslint-disable-next-line no-console
-      console.log("TEST")
-      console.log(this.Info[this.editedIndex]);
+      let student = this.Info[this.editedIndex]
       let query = `
           mutation{
-            updateStudent(searchInput: {sid:"${this.Info[this.editedIndex].sid}"}, studentInput:{
-              given_name:"${this.Info[this.editedIndex].given_name}",
-              family_name:"${this.Info[this.editedIndex].family_name}",
-              nick_name: "${this.Info[this.editedIndex].nick_name || ''}"
-              prefix:"${this.Info[this.editedIndex].prefix || ''}",
-              program:"${this.Info[this.editedIndex].program}",
-              ${this.Info[this.editedIndex].entry_trimester ? 'entry_trimester: "' + this.Info[this.editedIndex].entry_trimester + '",': ''}
-              entry_year: "${this.Info[this.editedIndex].entry_year || ''}",
-              phone: "${this.Info[this.editedIndex].phone || ''}",
-              email: "${this.Info[this.editedIndex].email || ''}",
-              },
-              status: "${this.Info[this.editedIndex].status.current}"
-              ){
+            updateStudent(searchInput: {sid:"${student.sid}"}, studentInput:{
+              given_name:"${student.given_name}"
+              family_name:"${student.family_name}"
+              nick_name: "${student.nick_name || ''}"
+              prefix:"${student.prefix || ''}"
+              program:"${student.program}"
+              ${student.entry_trimester ? 'entry_trimester: "' + student.entry_trimester + '",': ''}
+              entry_year: "${student.entry_year || ''}"
+              phone: "${student.phone || ''}"
+              email: "${student.email || ''}"
+              status: {
+                current: "${student.status.current}"
+              }
+              }){
                 sid
                 given_name
                 family_name
@@ -410,21 +438,42 @@ export default {
                 phone
                 email
                 program
-
+                status{
+                  current
+                }
               }
           }
-        `;
+        `
       query = query.replace(/\s+/g, ' ').trim()
       this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.close();
-          console.log(res.data.data);
         })
         .catch((err) => {
           console.log(err);
         });
     },
+    unlink() {
+      let query = `
+        mutation {
+          unlinkStudentUID(searchInput: {sid: "${this.editedItem.sid}"}) {
+            success
+            message
+          }
+        }
+      `
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.editedItem.lineUID = null
+          this.unlinkedDialog = false
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   },
 };
 </script>

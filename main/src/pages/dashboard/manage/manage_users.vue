@@ -1,10 +1,10 @@
 <template>
   <v-container class="mx-auto">
-    <div class="d-flex flex-column p-2 bd-highlight">
-      <div class="ml-auto p-2 bd-highlight">
+    <div class="d-flex flex-column p-2">
+      <div class="ml-auto p-2">
         <AddUser @addUser="adduser"></AddUser>
       </div>
-      <div class="p-2 bd-highlight">
+      <div class="p-2">
         <v-card style="max-width: auto"
           ><v-card-title>
             <div class="d-flex flex-column">
@@ -196,12 +196,19 @@
               <label class="me-3">Account Status</label>
               <span style="color: rgb(153, 153, 153);">{{ `${ editedItem.isActive ? 'Active' : 'Disable' }` }}</span>
             </div>
-            <v-card-actions class="mt-4">
-              <v-spacer></v-spacer>
-              <v-btn class="py-3" style="min-width: 120px" color="primary" @click="confirm1 = true">submit</v-btn>
-            </v-card-actions>
+            <div class="d-flex justify-content-between ms-4" style="margin-top: 30px">
+              <div class="d-flex align-items-center">
+                LINE: <v-chip class="ms-4" v-if="editedItem.lineUID" color="success">Connected</v-chip><v-chip class="ms-4" v-else>Not Registered</v-chip>
+              </div>
+              <div class="flex-shrink-1 align-items-center" v-if="editedItem.lineUID"><v-btn text small color="red" @click="unlinkedDialog = true">Unlinked</v-btn></div>
+            </div>
           </v-form>
+
         </div>
+        <v-card-actions class="py-4">
+          <v-spacer></v-spacer>
+          <v-btn class="py-3" style="min-width: 120px" color="primary" @click="confirm1 = true">submit</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
     <v-dialog v-model="confirm1" max-width="450px">
@@ -222,6 +229,21 @@
             <v-spacer></v-spacer>
             <v-btn text color="gray" @click="confirm1 = false">No</v-btn>
             <v-btn color="primary" style="min-width: 100px" @click="save()">Yes</v-btn>
+          </v-card-actions>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="unlinkedDialog" max-width="450px">
+      <v-card>
+        <v-card-title class="headline grey lighten-2">Unlink LINE Account?</v-card-title
+        ><br />
+        <v-card-text>
+          Unlink LINE account from this user will prevent he/she from using some features
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text color="gray" @click="unlinkedDialog = false">No</v-btn>
+            <v-btn color="primary" @click="unlink()">Yes</v-btn>
           </v-card-actions>
         </v-card-text>
       </v-card>
@@ -252,6 +274,7 @@ export default {
       dialog: false,
       confirm1: false,
       Editdialog: false,
+      unlinkedDialog: false,
       editedIndex: -1,
       editedItem: {
         _id: "",
@@ -264,6 +287,7 @@ export default {
           title: "",
           name: "",
         },
+        lineUID: '',
         isAdvisor: false,
         email: "",
         group: "",
@@ -284,7 +308,7 @@ export default {
     getUser() {
       let query = `
               {
-                users {
+                users (getConnectedApps: true) {
                     total
                     users {
                       _id
@@ -294,6 +318,7 @@ export default {
                       family_name
                       email
                       group
+                      lineUID
                       createdAt
                       isAdvisor
                       linked_instructor {
@@ -408,6 +433,26 @@ export default {
     },
     adduser(newValue) {
       this.users.unshift(newValue)
+    },
+    unlink() {
+      let query = `
+        mutation {
+          unlinkUserUID(searchInput: {_id: "${this.editedItem._id}"}) {
+            success
+            message
+          }
+        }
+      `
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.editedItem.lineUID = null
+          this.unlinkedDialog = false
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   },
 };

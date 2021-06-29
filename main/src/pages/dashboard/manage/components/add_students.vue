@@ -1,7 +1,7 @@
 <template>
   <v-container class="mx-auto">
-    <v-stepper v-model="e1">
-      <v-stepper-header>
+    <v-stepper v-model="e1" class="elevation-0">
+      <v-stepper-header class="elevation-0">
         <v-stepper-step
           :complete="e1 > 1"
           step="1"
@@ -22,22 +22,23 @@
       </v-stepper-header>
       <v-stepper-items>
         <v-stepper-content step="1">
-          <div class="d-flex flex-column bd-highlight">
-            <div v-if="importFile" class="p-2 bd-highlight">
+          <div class="d-flex flex-column ">
+            <div v-if="importFile" class="p-2 ">
               <vue-dropzone
                 class="drop-zone"
                 ref="myVueDropzone"
                 id="dropzone"
                 :options="dropzoneOptions"
                 @vdropzone-success="selectFile"
+                @vdropzone-removed-file="vremoved"
               >
               </vue-dropzone>
             </div>
-             <div v-else-if="addManually" class="p-2 bd-highlight">
+             <div v-else-if="addManually" class="p-2 ">
               <v-card class="px-5 py-5">
                 <v-form ref="form" lazy-validation>
-                  <div class="d-flex flex-row bd-highlight justify-content-center">
-                    <div class="p-2 bd-highlight">
+                  <div class="d-flex flex-row justify-content-center">
+                    <div class="p-2 ">
                       <v-text-field
                         type="number"
                         class="input"
@@ -50,7 +51,7 @@
                         required
                       ></v-text-field>
                     </div>
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2 ">
                       <v-select
                         class="input"
                         :items="icProgram"
@@ -63,10 +64,10 @@
                       ></v-select>
                     </div>
                   </div>
-                  
 
-                  <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
-                    <div class="p-2 bd-highlight">
+
+                  <div class="d-flex flex-md-row flex-column justify-content-around justify-content-md-center">
+                    <div class="p-2 ">
                       <v-select
                         class="input"
                         :items="prefix"
@@ -78,7 +79,7 @@
                         required
                       ></v-select>
                     </div>
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2 ">
                       <v-text-field
                         class="input"
                         label="Name"
@@ -91,8 +92,8 @@
                     </div>
                   </div>
 
-                   <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
-                    <div class="p-2 bd-highlight">
+                   <div class="d-flex flex-md-row flex-column  justify-content-around justify-content-md-center">
+                    <div class="p-2 ">
                       <v-text-field
                         class="input"
                         label="Lastname"
@@ -103,7 +104,7 @@
                         required
                       ></v-text-field>
                     </div>
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2 ">
                       <v-select
                         class="input"
                         :items="advisorlist"
@@ -117,8 +118,8 @@
                     </div>
                   </div>
 
-                   <div class="d-flex flex-md-row flex-column bd-highlight justify-content-around justify-content-md-center">
-                    <div class="p-2 bd-highlight">
+                   <div class="d-flex flex-md-row flex-column justify-content-around justify-content-md-center">
+                    <div class="p-2 ">
                       <v-select
                         type="number"
                         class="input"
@@ -130,7 +131,7 @@
                         outlined
                       ></v-select>
                     </div>
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2 ">
                       <v-text-field
                         type="number"
                         class="input"
@@ -146,8 +147,8 @@
               </v-card>
             </div>
 
-              <div class="d-flex flex-row bd-highlight justify-content-end">
-                <div class="p-2 flex-fill bd-highlight">
+              <div class="d-flex flex-row  justify-content-end">
+                <div class="p-2 flex-fill ">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -166,11 +167,14 @@
                     <span>Change to add manually or import files</span>
                   </v-tooltip>
                 </div>
-                <div class="p-2 bd-highlight">
-                  <v-btn color="error" text @click="clear()">
+                <div class="p-2 ">
+                  <v-btn v-if = this.addManually color="error" text @click="clearForm()">
                     Clear
                   </v-btn>
-                  <v-btn color="primary" text @click="toSecondStep(); submitForm();" >
+                  <v-btn v-if = this.addManually color="success" text @click="addData()">
+                    Add
+                  </v-btn>
+                  <v-btn color="primary" text @click="toSecondStep();" >
                     Continue
                   </v-btn>
                 </div>
@@ -179,17 +183,17 @@
         </v-stepper-content>
 
         <v-stepper-content step="2">
-          <div class="d-flex flex-column bd-highlight justify-content-center">
-            <div class="p-2 bd-highlight">
+          <div class="d-flex flex-column justify-content-center">
+            <div v-if = importFile class="p-2 ">
               <v-select label="Please select academic term" name="sheetName" id="sheetName" :items="sheetNames" @change="getSelectedValue($event)" v-model="sheetNames[0]"></v-select>
             </div>
-            <div class="p-2 bd-highlight">
+            <div class="p-2 ">
               <v-data-table id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer >
               </v-data-table>
             </div>
           </div>
-          <div class="d-flex flex-row bd-highlight justify-content-end">
-            <div class="p-2 bd-highlight">
+          <div class="d-flex flex-row justify-content-end">
+            <div class="p-2 ">
               <v-btn text @click="e1 = 1">Back</v-btn>
               <v-btn color="error" text @click="clearCheck()">
                 clear
@@ -209,24 +213,32 @@
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <div class="d-flex flex-column bd-highlight justify-content-center">
-            <div class="p-2 bd-highlight" v-if="successData">
+          <div class="d-flex flex-column justify-content-center">
+            <!-- <div class="p-2 " v-if="successData">
                <v-data-table class="success-table" id="sheetName" :headers="headers" :items="studentsData" mobile-breakpoint="0" hide-default-footer disable-pagination>
               </v-data-table>
             </div>
-            <div class="duplicate-table p-2 bd-highlight" v-else-if="duplicatedData">
+            <div class="duplicate-table p-2 " v-else-if="duplicatedData">
                <v-data-table class="duplicate-table" id="sheetName" :headers="headers" :items="duplicateStudents" mobile-breakpoint="0" hide-default-footer disable-pagination>
               </v-data-table>
             </div>
-            <div class="duplicate-table p-2 bd-highlight" v-else-if="errorData">
-               <v-data-table class="error-table"  id="sheetName" :headers="headers" :items="errorStudents" mobile-breakpoint="0" hide-default-footer disable-pagination>
+            <div class="duplicate-table p-2 " v-else-if="errorData">
+               <v-data-table class="error-table" id="sheetName" :headers="headers" :items="errorStudents" mobile-breakpoint="0" hide-default-footer disable-pagination>
+              </v-data-table>
+            </div> -->
+            <div class="p-2">
+              <v-data-table id="sheetName" :headers="headers" :items="studentResult" mobile-breakpoint="0" hide-default-footer disable-pagination>
+                <template v-slot:[`item.result`]="{ item }">
+                  <v-chip small :color="getColor(item.result)">
+                  </v-chip>
+                </template>
               </v-data-table>
             </div>
           </div>
-            <div class="p-2 bd-highlight">
-              <div class="d-flex flex-row bd-highlight justify-content-end">
-                <div class="p-2 bd-highlight">
-                  <v-btn text @click="e1 = 2">
+            <div class="p-2 ">
+              <div class="d-flex flex-row justify-content-end">
+                <div class="p-2 ">
+                  <v-btn text @click="e1 = 2, studentResult = []">
                     Back
                   </v-btn>
                   <v-btn
@@ -239,7 +251,7 @@
                 </div>
               </div>
             </div>
-          
+
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -310,6 +322,7 @@ export default {
       selectedFile: "",
       data: [{}],
       studentsData: [],
+      uniqueData: [],
       allStudentData: [],
       workbook: "",
       file: "",
@@ -326,8 +339,10 @@ export default {
         { text: "Program", sortable: false, value: "Program", width: 80 },
         { text: "Entry Trimester", sortable: false, value: "entryTrimester", width: 100 },
         { text: "Entry Year", sortable: false, value: "entryYear", width: 100 },
-        { text: "advisor", sortable: false, value: "Advisor", width: 120 },
-      ]
+        { text: "Advisor", sortable: false, value: "Advisor", width: 120 },
+        { text: "Status", sortable: false, value: "result", width: 120 , align: "center"}
+      ],
+      studentResult: []
     }
   },
   mounted(){
@@ -337,10 +352,19 @@ export default {
     toggleForm(){
       this.addManually = !this.addManually
       this.importFile = !this.importFile
-      console.log(this.addManually, this.importFile)
+      this.studentsData = []
+      this.clearForm()
+      // this.clear()
     },
     clear(){
-      (this.manuallyData.ID = ""),(this.manuallyData.Program = ""), (this.manuallyData.Prefix = ""), (this.manuallyData.Name = ""), (this.manuallyData.LastName = ""), (this.manuallyData.Advisor = ""), (this.manuallyData.entryTrimester = ""), (this.manuallyData.entryYear = ""),
+      (this.manuallyData.ID = ""),
+      (this.manuallyData.Program = ""),
+      (this.manuallyData.Prefix = ""),
+      (this.manuallyData.Name = ""),
+      (this.manuallyData.LastName = ""),
+      (this.manuallyData.Advisor = ""),
+      (this.manuallyData.entryTrimester = ""),
+      (this.manuallyData.entryYear = ""),
       Object.keys(this.form).forEach((f) => {
         this.$refs[f].reset();
       });
@@ -372,7 +396,6 @@ export default {
           });
       },
       selectFile(file) {
-      console.log(file)
       //get the selected file' info
       this.selectedFile = file
       XLSX.utils.json_to_sheet(this.data, "out.xlsx");
@@ -414,23 +437,56 @@ export default {
         this.studentsData[i].entryTrimester = this.entryTrimester
       }
     },
+    vremoved(file, xhr, error) {
+      this.studentsData = []
+      this.clearForm()
+      this.selectedFile = ''
+    },
+    getColor(status) {
+      if (status == "error") return "red";
+      else if (status == "warning") return "yellow";
+      else if (status == "success") return "green";
+      else return "grey"
+    },
+    addData(){
+      if (this.$refs.form.validate()) {
+        let new_data = { ...this.manuallyData };
+        this.uniqueData.push(new_data)
+        this.studentsData = Array.from(new Set(this.uniqueData.map(data => data.ID)))
+        .map(sid => {
+          return this.uniqueData.find(data => data.ID === sid)
+        }).sort((a,b) => (parseInt(a.ID) > parseInt(b.ID)) ? 1 : -1)
+      }
+    },
+    clearForm(){
+      this.manuallyData = {}
+      this.uniqueData = []
+    },
     readMyFile: function(workbook, currentSheetName) {
       return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[currentSheetName]);
     },
-    submitForm() {
-      if (this.manuallyData == {}) {
-        console.log(this.studentsData);
-      } else if (this.$refs.form.validate()) {
-        console.log(this.manuallyData);
-        let new_data = { ...this.manuallyData };
-        this.studentsData.push(new_data);
-        console.log(this.studentsData);
-      } else {
-        this.e6 = 1;
+    toSecondStep(){
+      // console.log(this.studentsData)
+      if(this.importFile){
+        this.selectFile(this.selectedFile)
+      }
+      if(this.studentsData.length > 0){
+        this.e1 = 2
+        this.submitForm()
       }
     },
-    toSecondStep(){
-      this.e1 = 2
+    submitForm() {
+      // console.log(this.manuallyData)
+      // if (this.manuallyData == {}) {
+      //   console.log(this.studentsData);
+      // } else if (this.$refs.form.validate()) {
+      //   console.log(this.manuallyData);
+      //   let new_data = { ...this.manuallyData };
+      //   this.studentsData.push(new_data);
+      //   console.log(this.studentsData);
+      // } else {
+        this.e6 = 1;
+      // }
     },
     upload: async function() {
       //clear the duplicatedStudents
@@ -476,32 +532,36 @@ export default {
                 await this.axios.post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true }).then(res => {
                     console.log(res);
                     this.e1 = 3;
-                    this.addingSuccessStatus = true
+                    std.result = 'success'
+                    this.studentResult.push(std)
                     this.successData = true
                 }).catch (err => {
+                  this.duplicatedData = false
+                  this.errorData = false
                     switch(err.response.data.errors[0].status){
                       case 409: // duplicated
-                        console.log(err.response.data.errors[0].message)
-                        this.duplicateStudents.push(std);
-                        this.duplicateStatus = true;
+                        std.result = 'warning'
+                        this.studentResult.push(std)
+                        // this.duplicateStudents.push(std);
                         this.duplicatedData = true;
                         this.e1 = 3;
                         break
                       default: // other errors
-                        console.log(err.response.data.errors[0].message)
-                        this.errorStudents.push(std);
-                        this.errorStatus = true;
+                        std.result = 'error'
+                        this.studentResult.push(std)
+                        // this.errorStudents.push(std);
                         this.errorData = true;
                         break
                     }
                     // console.log(this.duplicateStudents)
-                    
+
                 })
             }
       },
       reset(){
         this.studentsData = []
-        this.duplicatedData = []
+        // this.duplicatedData = [] // คือเหี้ยไรก่อน
+        this.duplicateStudents = []
         this.sheetName = ""
         this.sheetNames = []
         this.manuallyData = {}
@@ -529,7 +589,7 @@ export default {
   .duplicate-table{
     color: yellow;
   }
-  
+
   .error-table{
     color: red;
   }

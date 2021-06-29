@@ -316,4 +316,8 @@ export default {
 .v-select {
   width: 100px;
 }
+
+.student >>> tr {
+  cursor: pointer;
+}
 </style>

@@ -310,4 +310,7 @@ export default {
 .v-select {
   width: 100px;
 }
+.advisee >>> tr {
+  cursor: pointer;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="add-user">
-    <div class="d-flex flex-row justify-content-end bd-highlight">
-      <div class="p-2 bd-highlight">
+    <div class="d-flex flex-row justify-content-end">
+      <div class="p-2">
         <v-btn color="primary" @click="dialog = true"><v-icon>mdi-plus</v-icon> Add User</v-btn>
       </div>
     </div>
@@ -189,7 +189,7 @@ export default {
         firstName: this.firstName,
         familyName: this.familyName,
         email: this.email,
-        linked_instructor: this.linked_instructor._id,
+        linked_instructor: this.linked_instructor ? this.linked_instructor._id : '',
         password: this.password,
         group: this.group,
       };
@@ -197,17 +197,12 @@ export default {
   },
   methods: {
     clearText() {
-      this.dialog = false;
-      this.dialog1 = false;
       (this.firstName = ""),
       (this.familyName = ""),
       (this.email = ""),
       (this.linked_instructor = null),
       (this.password = ""),
       (this.group = "");
-      Object.keys(this.form).forEach((f) => {
-        this.$refs[f].reset();
-      });
     },
     validate() {
       this.$refs.form.validate();
@@ -226,6 +221,7 @@ export default {
     },
     dialogClose() {
       this.dialog = false;
+      this.dialog1 = false;
       this.clearText();
     },
     addUser() {
@@ -268,7 +264,7 @@ export default {
           let newuser = res.data.data.createUser
           newuser["name"] = [newuser.given_name, newuser.family_name].join(" ");
           this.$emit('addUser', newuser)
-          this.clearText();
+          this.dialogClose();
           this.snackbar = true;
         })
         .catch((err) => {
