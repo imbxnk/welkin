@@ -108,7 +108,7 @@
             <v-btn
               class="py-3"
               style="min-width: 120px"
-              :disabled="!(item.code.length === 7 && item.name.length > 0 && item.credit.toString().length > 0 && item.credit_description.lecture.toString().length > 0 && item.credit_description.toString().self_study.length > 0 && item.credit_description.toString().lab.length > 0)"
+              :disabled="!(item.code.length === 7 && item.name.length > 0 && item.credit.toString().length > 0 && item.credit_description.lecture.toString().length > 0 && item.credit_description.self_study.toString().length > 0 && item.credit_description.lab.toString().length > 0)"
               color="primary"
               @click="createCourse()"
             >submit</v-btn>
