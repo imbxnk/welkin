@@ -390,10 +390,6 @@ export default {
       });
     },
     save() {
-      console.log(this.editedItem)
-      // eslint-disable-next-line no-console
-      console.log(this.Info[this.editedIndex]);
-      console.log("TEST" + JSON.stringify(this.editedItem))
       let query = `
           mutation {
             updateAccount(id: "${this.editedItem._id}", userInput: {
@@ -401,7 +397,7 @@ export default {
               given_name: "${this.editedItem.given_name}",
               family_name:"${this.editedItem.family_name}",
               display_name: "${this.editedItem.display_name || ''}",
-              isAdvisor: ${this.editedItem.isAdvisor},
+              isAdvisor: ${this.editedItem.linked_instructor ? this.editedItem.linked_instructor._id ? this.editedItem.isAdvisor : false : false },
               linked_instructor: ${this.editedItem.linked_instructor ? (this.editedItem.linked_instructor._id ? '"' + this.editedItem.linked_instructor._id + '"' : null) : null },
               email:"${this.editedItem.email}",
               group:"${this.editedItem.group}",
@@ -420,6 +416,12 @@ export default {
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           if (this.editedIndex > -1) {
+            if(this.editedItem.linked_instructor) {
+              if(!this.editedItem.linked_instructor._id) {
+                this.editedItem.linked_instructor = null
+                this.editedItem.isAdvisor = false
+              }
+            }
             Object.assign(this.Info[this.editedIndex], this.editedItem);
           } else {
             this.Info.push(this.editedItem);

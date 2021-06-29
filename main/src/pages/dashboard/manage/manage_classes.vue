@@ -58,18 +58,8 @@
         </v-card>
       </div>
     </div>
-    <v-dialog class="upload-Dialog" v-model="classDialog" max-width="1000px" width="600px" min-height="500px">
-      <v-card>
-        <v-card-title class="card-title">
-          Add Class
-          <v-spacer></v-spacer>
-          <v-icon @click="classDialog = false">mdi-close</v-icon>
-        </v-card-title>
-        <div class="mx-4 mt-4">
-          Please Upload Grade Report File
-        </div>
-        <AddClass></AddClass>
-      </v-card>
+    <v-dialog persistent class="upload-Dialog" v-model="classDialog" max-width="600px">
+        <AddClass @done="closeDialog" @reload="getClasses"></AddClass>
     </v-dialog>
     <!-- DELETE CLASS DIALOG -->
     <v-dialog v-model="deleteDialog" max-width="500px">
@@ -158,7 +148,7 @@ export default {
         },
         trimester: '',
         year: '',
-      }
+      },
     };
   },
   mounted() {
@@ -224,6 +214,9 @@ export default {
           console.log(err);
         });
     },
+    closeDialog() {
+      this.classDialog = false
+    }
   },
 };
 </script>

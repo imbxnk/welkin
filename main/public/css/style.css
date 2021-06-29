@@ -1136,3 +1136,36 @@ main {
   display: block;
   flex: 1;
 }
+
+#dropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#dropzone .dz-preview .dz-details, #dropzone .dz-preview .dz-remove {
+  border-radius: 1.1rem;
+}
+
+#dropzone .dz-preview .dz-details {
+  background: var(--primary);
+}
+
+#dropzone .dz-preview {
+  display: flex;
+  justify-content: center;
+}
+
+#dropzone .dz-preview .dz-remove {
+  text-decoration: none;
+  margin: 0;
+  font-weight: 500;
+}
+
+#dropzone .dz-preview .dz-details .dz-size {
+  margin-bottom: 0px !important;
+}
+
+#dropzone .dropZone {
+  height: unset !important;
+}
