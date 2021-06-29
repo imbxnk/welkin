@@ -78,7 +78,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="deleteConfirmDialog" max-width="500px">
+    <v-dialog v-model="deleteConfirmDialog" max-width="300px">
       <v-card>
         <v-card-title
           >Delete Confirmation

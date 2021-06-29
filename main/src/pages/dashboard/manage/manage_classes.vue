@@ -47,12 +47,10 @@
               {{ item.enrollments.length }}
             </template>
             <template v-slot:[`item.edit`]="{ item }">
-              <v-icon small @click="editItem(item)">
-                mdi-pencil
-              </v-icon>
+              <EditClass :item="item"></EditClass>
             </template>
             <template v-slot:[`item.delete`]="{ item }">
-              <v-icon small @click="deleteItem(item)">
+              <v-icon small @click="deleteItem(item, classes.indexOf(item))">
                 mdi-delete
               </v-icon>
             </template>
@@ -73,13 +71,61 @@
         <AddClass></AddClass>
       </v-card>
     </v-dialog>
+    <!-- DELETE CLASS DIALOG -->
+    <v-dialog v-model="deleteDialog" max-width="500px">
+      <v-card>
+        <v-card-title
+          >Delete Class ?
+          <v-spacer></v-spacer>
+          <v-icon @click="deleteDialog = false" tabindex="-1">mdi-close</v-icon></v-card-title
+        >
+        <v-card-text class="mt-4">
+          Warning! This cannot be undone and may affect GPA of <b>{{ deletedItem.enrollments.length }}</b> students
+        </v-card-text>
+        <v-card-actions class="pb-4 d-flex justify-content-end">
+          <v-btn
+            color="gray"
+            text
+            @click="deleteDialog = false"
+          >Cancel</v-btn>
+          <v-btn
+            color="error"
+            @click="deleteConfirmDialog = true"
+          >Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="deleteConfirmDialog" max-width="300px">
+      <v-card>
+        <v-card-title
+          >Delete Confirmation
+          <v-spacer></v-spacer>
+          <v-icon @click="deleteConfirmDialog = false" tabindex="-1">mdi-close</v-icon></v-card-title
+        >
+        <v-card-text class="mt-4 text-center">
+          After you press confirm the class <b>{{ deletedItem.year + 'T' + deletedItem.trimester + ' SEC' + deletedItem.section }}</b> will be deleted forever
+        </v-card-text>
+        <v-card-actions class="pb-4 d-flex justify-content-end">
+          <v-btn
+            color="gray"
+            text
+            @click="deleteConfirmDialog = false"
+          >Cancel</v-btn>
+          <v-btn
+            color="error"
+            @click="deleteClass"
+          >Confirm</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
 import AddClass from "./components/add_grade";
+import EditClass from "./components/edit_class"
 export default {
-  components: { AddClass },
+  components: { AddClass, EditClass },
   data() {
     return {
       classDialog: false,
@@ -95,13 +141,31 @@ export default {
       ],
       classes: [],
       total: 0,
+      deleteDialog: false,
+      deleteConfirmDialog: false,
+      deletedIndex: 0,
+      deletedItem: {
+        _id: '',
+        course: {
+          code: '',
+          name: ''
+        },
+        enrollments: [],
+        section: '',
+        instructor: {
+          title: '',
+          name: '',
+        },
+        trimester: '',
+        year: '',
+      }
     };
   },
   mounted() {
-    this.getCourses()
+    this.getClasses()
   },
   methods: {
-    async getCourses() {
+    getClasses() {
       let query = `
             {
               classes (searchInput: { course_code: "${this.$route.params.code}" }) {
@@ -111,7 +175,6 @@ export default {
                   course {
                     code
                     name
-                    description
                   }
                   enrollments {
                     _id
@@ -128,7 +191,7 @@ export default {
             }
           `;
       query = query.replace(/\s+/g, ' ').trim()
-      await this.axios
+      this.axios
         .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
         .then((res) => {
           this.total = res.data.data.classes.total;
@@ -137,7 +200,30 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-    }
+    },
+    deleteItem(item, index) {
+      this.deletedIndex = index;
+      this.deletedItem = Object.assign({}, item);
+      this.deleteDialog = true;
+    },
+    deleteClass() {
+      let query = `
+        mutation {
+          delClass(classId: "${this.deletedItem._id}") { success }
+        }
+      `
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.classes.splice(this.deletedIndex,1)
+          this.deleteDialog = false
+          this.deleteConfirmDialog = false
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>
