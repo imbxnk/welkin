@@ -117,6 +117,14 @@ export default {
                     this.$emit('reload')
                     this.isSuccess = true
                     this.isUploading = false
+
+                    var fileRef = firebase.storage().refFromURL(url)
+                    console.log(fileRef)
+                    fileRef.delete().then(() => {
+                      console.log('file is deleted')
+                    }).catch((err) => {
+                      console.log(err)
+                    })
                 }).catch (err => {
                     console.log(err);
                 })
