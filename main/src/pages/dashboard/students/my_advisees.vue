@@ -150,7 +150,20 @@ export default {
   computed: {
     filterStudents: function() {
       return this.advisees.filter((advisee) => {
-        if (advisee.email != null) {
+        if (advisee.email != null && advisee.nick_name != null) {
+          return (
+            advisee.sid.match(this.search) ||
+            advisee.name.toLowerCase().match(this.search.toLowerCase()) ||
+            advisee.nick_name.toLowerCase().match(this.search.toLowerCase()) ||
+            advisee.email.match(this.search)
+          );
+        } else if (advisee.email == null && advisee.nick_name != null) {
+          return (
+            advisee.sid.match(this.search) ||
+            advisee.name.toLowerCase().match(this.search.toLowerCase()) ||
+            advisee.nick_name.toLowerCase().match(this.search.toLowerCase())
+          );
+        } else if (advisee.email != null && advisee.nick_name == null) {
           return (
             advisee.sid.match(this.search) ||
             advisee.name.toLowerCase().match(this.search.toLowerCase()) ||
