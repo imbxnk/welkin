@@ -551,7 +551,7 @@ export default {
                 student.result = {
                   success: false,
                   warning: false,
-                  message: err.response.data.errors[0].status
+                  message: err.response.data.errors[0].message
                 }
                 break
             }
@@ -578,8 +578,8 @@ export default {
       this.sheetNames = []
       this.selectedSheet = []
       this.selectedFile = null
-      this.step = 1
       if(this.importOption === 0 && this.step > 2) this.removeFiles()
+      this.step = 1
       this.importOption = 0
       this.fileFormatError = { show: false, message: ''}
     },
