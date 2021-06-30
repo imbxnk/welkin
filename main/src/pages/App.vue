@@ -32,7 +32,7 @@
                 <v-icon>mdi-bullhorn</v-icon>
                 <v-badge
                   color="pink"
-                  dot
+                  :content="$config.announcements.length - notifications.length <= 9 ? $config.announcements.length - notifications.length : '9+'"
                   offset-x="9"
                   offset-y="-2"
                   v-if="
