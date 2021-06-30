@@ -17,16 +17,6 @@ body {
   height: var(--app-height);
 }
 
-/*
-html, body {
-  min-height: -webkit-fill-available;
-  display: flex;
-  height: 100% !important;
-  width: 100% !important;
-  flex-direction: column;
-  position: relative;
-} */
-
 .v-application, .dz-message {
   font-family: 'Quicksand', sans-serif !important;
 }
@@ -55,8 +45,6 @@ main {
 }
 
 .wk-container {
-  /* height: calc(100vh - 50px); */
-  /* height: var(--app-height); */
   height: calc(var(--app-height) - 50px);
   overflow: auto;
 }
@@ -97,6 +85,15 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.wk-footer > *, .v-card__title {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .wk-footer-icon {
@@ -1168,4 +1165,9 @@ main {
 
 #dropzone .dropZone {
   height: unset !important;
+}
+
+.wk-manage-container {
+  margin: 0px !important;
+  min-height: calc(100vh - 190px);
 }

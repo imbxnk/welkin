@@ -1,6 +1,6 @@
 <template>
   <v-container class="mx-auto">
-    <div class="d-flex flex-column p-2">
+    <div class="d-flex flex-column p-2 wk-manage-container">
       <div class="ml-auto p-2">
         <AddUser @addUser="adduser"></AddUser>
       </div>
@@ -252,13 +252,15 @@
     <v-snackbar centered v-model="snackbar" :timeout="1000">
       {{ snackbartext }}
     </v-snackbar>
+    <WKFooter></WKFooter>
   </v-container>
 </template>
 
 <script>
 import AddUser from "./components/add_user";
+import WKFooter from './components/footer';
 export default {
-  components: { AddUser },
+  components: { AddUser, WKFooter },
   data() {
     return {
       search: "",

@@ -1,6 +1,6 @@
 <template>
   <v-container class="mx-auto">
-    <div class="d-flex flex-column p-2">
+    <div class="d-flex flex-column p-2 wk-manage-container">
       <div class="ml-auto p-2">
         <div class="d-flex flex-row justify-content-end">
           <div class="p-2">
@@ -101,14 +101,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <WKFooter></WKFooter>
   </v-container>
 </template>
 
 <script>
 import AddCurriculum from "./components/add_curriculum";
 import EditCurriculum from "./components/edit_curriculum.vue";
+import WKFooter from './components/footer';
 export default {
-  components: { AddCurriculum, EditCurriculum },
+  components: { AddCurriculum, EditCurriculum, WKFooter },
   data() {
     return {
       search: "",

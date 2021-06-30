@@ -1,6 +1,6 @@
 <template>
   <v-container class="mx-auto">
-    <div class="d-flex flex-column p-2">
+    <div class="d-flex flex-column p-2 wk-manage-container">
       <div class="ml-auto p-2">
         <div class="p-2">
           <v-btn color="primary" @click="dialog = true">
@@ -155,14 +155,17 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <WKFooter></WKFooter>
   </v-container>
 </template>
 
 <script>
 import AddInstuctor from "./components/add_instructor.vue";
+import WKFooter from './components/footer';
 export default {
   components: {
     AddInstuctor,
+    WKFooter
   },
   data() {
     return {

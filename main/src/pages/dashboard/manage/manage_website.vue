@@ -1,6 +1,6 @@
 <template>
 <v-container class="mx-auto">
-  <div class="d-flex flex-column p-2 bd-highlight">
+  <div class="d-flex flex-column p-2 bd-highlight wk-manage-container">
     <div class="p-2 bd-highlight">
       <!-- SELECTED BATCHES -->
       <v-card style="max-width: auto">
@@ -303,11 +303,13 @@
       </v-dialog>
     </div>
   </div>
+  <WKFooter></WKFooter>
 </v-container>
 </template>
 
 <script>
 import WYSIWYG from './components/editor.vue'
+import WKFooter from './components/footer';
 export default {
   data: () => ({
     batches: {
@@ -354,7 +356,8 @@ export default {
   }),
 
   components: {
-    WYSIWYG
+    WYSIWYG,
+    WKFooter
   },
 
   mounted() {

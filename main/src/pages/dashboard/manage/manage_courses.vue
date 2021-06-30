@@ -1,6 +1,6 @@
 <template>
   <v-container class="mx-auto">
-    <div class="d-flex flex-column p-2">
+    <div class="d-flex flex-column p-2 wk-manage-container">
       <div class="ml-auto p-2">
         <AddCourse @addCourse="addCourse"></AddCourse>
       </div>
@@ -160,13 +160,15 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <WKFooter></WKFooter>
   </v-container>
 </template>
 
 <script>
 import AddCourse from "./components/add_course";
+import WKFooter from './components/footer';
 export default {
-  components: { AddCourse },
+  components: { AddCourse, WKFooter },
   data() {
     return {
       editDialog: false,
@@ -277,6 +279,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

@@ -1,6 +1,6 @@
 <template>
   <v-container class="mx-auto">
-    <div class="d-flex flex-column p-2">
+    <div class="d-flex flex-column p-2 wk-manage-container">
       <div class="ml-auto p-2">
         <div class="d-flex flex-row justify-content-end">
           <div class="p-2">
@@ -108,14 +108,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <WKFooter></WKFooter>
   </v-container>
 </template>
 
 <script>
 import AddClass from "./components/add_grade";
 import EditClass from "./components/edit_class"
+import WKFooter from './components/footer';
 export default {
-  components: { AddClass, EditClass },
+  components: { AddClass, EditClass, WKFooter },
   data() {
     return {
       classDialog: false,

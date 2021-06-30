@@ -1,6 +1,6 @@
 <template>
   <v-container class="mx-auto">
-    <div class="d-flex flex-column p-2">
+    <div class="d-flex flex-column p-2 wk-manage-container">
       <div class="ml-auto p-2">
         <div class="d-flex flex-row justify-content-end">
           <AddStudent @addNewStudent="addNewStudent"></AddStudent>
@@ -227,14 +227,17 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <WKFooter></WKFooter>
   </v-container>
 </template>
 
 <script>
 import AddStudent from "./components/add_students.vue"
+import WKFooter from './components/footer';
 export default {
   components:{
-    AddStudent
+    AddStudent,
+    WKFooter
   },
   mounted() {
     this.getInstructors()
