@@ -74,8 +74,7 @@
               icon
               @click="announcements.addDialog = true"
             >
-              <v-icon v-if="!batches.loading">mdi-plus</v-icon>
-              <div v-else class="wk-spinner mx-auto my-4"></div>
+              <v-icon>mdi-plus</v-icon>
             </v-btn>
         </div>
         <v-container>

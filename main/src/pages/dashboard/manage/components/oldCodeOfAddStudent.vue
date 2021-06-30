@@ -1,7 +1,7 @@
 <template>
   <v-container class="mx-auto">
-    <div class="d-flex flex-column bd-highlight">
-      <div class="p-2 bd-highlight">
+    <div class="d-flex flex-column">
+      <div class="p-2">
         <v-stepper
           class="mx-auto"
           v-model="e6"
@@ -10,16 +10,16 @@
           min-width="150px"
         >
           <v-stepper-step :complete="e6 > 1" class="my-auto py-auto step-num" step="1">
-            <div class="d-flex bd-highlight">
-              <div class="p-2 bd-highlight my-auto">
+            <div class="d-flex">
+              <div class="p-2 my-auto">
                 Import File or Add Manually
               </div>
             </div>
           </v-stepper-step>
 
           <v-stepper-content step="1" class="my-3">
-            <div class="d-flex flex-row bd-highlight justify-content-center align-items-center">
-              <div class="p-2 flex-sm-grow-1 bd-highlight md-12">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <div class="p-2 flex-sm-grow-1 md-12">
                 <v-card v-if="importFile" color="#97b8f0" class="mb-12" style="min-width: 100px">
                   <v-card-text>
                     <vue-dropzone
@@ -35,9 +35,9 @@
                 </v-card>
                 <v-form v-if="addManually" ref="form" lazy-validation style="min-width:300px">
                   <div
-                    class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center"
+                    class="d-flex flex-md-row flex-column justify-content-center align-items-center"
                   >
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2">
                       <v-text-field
                         type="number"
                         class="input"
@@ -50,7 +50,7 @@
                         required
                       ></v-text-field>
                     </div>
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2">
                       <v-select
                         class="input"
                         :items="icProgram"
@@ -64,9 +64,9 @@
                     </div>
                   </div>
                   <div
-                    class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center"
+                    class="d-flex flex-md-row flex-column justify-content-center align-items-center"
                   >
-                    <div class="p-2  bd-highlight">
+                    <div class="p-2 ">
                       <v-select
                         class="input"
                         :items="prefix"
@@ -78,7 +78,7 @@
                         required
                       ></v-select>
                     </div>
-                    <div class="p-2  bd-highlight">
+                    <div class="p-2 ">
                       <v-text-field
                         class="input"
                         label="Name"
@@ -91,9 +91,9 @@
                     </div>
                   </div>
                   <div
-                    class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center"
+                    class="d-flex flex-md-row flex-column justify-content-center align-items-center"
                   >
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2">
                       <v-text-field
                         class="input"
                         label="Lastname"
@@ -104,7 +104,7 @@
                         required
                       ></v-text-field>
                     </div>
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2">
                       <!-- <v-text-field class="input" label="Advisor" v-model="manuallyData.Advisor" :rules="[rules.required]" dense outlined></v-text-field -->
                       <v-select
                         class="input"
@@ -119,9 +119,9 @@
                     </div>
                   </div>
                   <div
-                    class="d-flex flex-md-row flex-column bd-highlight justify-content-center align-items-center"
+                    class="d-flex flex-md-row flex-column justify-content-center align-items-center"
                   >
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2">
                       <!-- <v-text-field
                         type="number"
                         class="input"
@@ -142,7 +142,7 @@
                         outlined
                       ></v-select>
                     </div>
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2">
                       <v-text-field
                         type="number"
                         class="input"
@@ -157,8 +157,8 @@
                 </v-form>
               </div>
             </div>
-            <div class="d-flex flex-row bd-highlight">
-              <div class="p-2 bd-highlight">
+            <div class="d-flex flex-row">
+              <div class="p-2">
                 <v-btn
                   color="#3c84fb"
                   @click.prevent="
@@ -173,7 +173,7 @@
                   Cancel
                 </v-btn>
               </div>
-              <div class="ms-auto p-2 bd-highlight justify-content-sm-start">
+              <div class="ms-auto p-2 justify-content-sm-start">
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
@@ -200,8 +200,8 @@
           </v-stepper-step>
 
           <v-stepper-content step="2" class="my-3">
-            <div class="d-flex flex-column bd-highlight justify-content-center align-items-center">
-              <div class="p-2 flex-sm-grow-1 bd-highlight md-12">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+              <div class="p-2 flex-sm-grow-1 md-12">
                 <select
                   class="form-control"
                   name="sheetName"
@@ -217,7 +217,7 @@
                   }}</option>
                 </select>
               </div>
-              <div class="p-2 bd-highlight">
+              <div class="p-2">
                 <v-simple-table height="300px" class="mx-auto my-auto py-2 px-2">
                   <template v-slot:default>
                     <thead>
@@ -255,7 +255,7 @@
                   </template>
                 </v-simple-table>
               </div>
-              <div class="p-2 bd-highlight">
+              <div class="p-2">
                 <v-btn
                   color="#3c84fb"
                   class="my-auto"
@@ -336,7 +336,7 @@
               </template>
             </v-simple-table>
             <div class="d-flex justify-content-end">
-              <div class="p-2 bd-highlight">
+              <div class="p-2">
                 <v-btn color="#3c84fb" text @click="cancelStep3()">
                   Cancel
                 </v-btn>

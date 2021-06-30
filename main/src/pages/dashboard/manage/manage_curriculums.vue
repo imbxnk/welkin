@@ -1,14 +1,14 @@
 <template>
   <v-container class="mx-auto">
-    <div class="d-flex flex-column p-2 bd-highlight">
-      <div class="ml-auto p-2 bd-highlight">
-        <div class="d-flex flex-row justify-content-end bd-highlight">
-          <div class="p-2 bd-highlight">
+    <div class="d-flex flex-column p-2">
+      <div class="ml-auto p-2">
+        <div class="d-flex flex-row justify-content-end">
+          <div class="p-2">
             <AddCurriculum @addCurriculum="addCurriculum" @updateCurriculum="updateCurriculum"></AddCurriculum>
           </div>
         </div>
       </div>
-      <div class="p-2 bd-highlight">
+      <div class="p-2">
         <v-card style="max-width: auto"
           ><v-card-title>
             <div class="d-flex flex-column">

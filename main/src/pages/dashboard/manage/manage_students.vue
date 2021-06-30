@@ -1,16 +1,12 @@
 <template>
   <v-container class="mx-auto">
-    <div class="d-flex flex-column p-2 bd-highlight">
-      <div class="ml-auto p-2 bd-highlight">
-        <div class="d-flex flex-row justify-content-end bd-highlight">
-          <div class="p-2 bd-highlight">
-            <v-btn @click.prevent="importDialog = true" color="#3c84fb" style="color: white;"
-              ><v-icon>mdi-plus</v-icon> Import Students</v-btn
-            >
-          </div>
+    <div class="d-flex flex-column p-2">
+      <div class="ml-auto p-2">
+        <div class="d-flex flex-row justify-content-end">
+          <AddStudent @addNewStudent="addNewStudent"></AddStudent>
         </div>
       </div>
-      <div class="p-2 bd-highlight">
+      <div class="p-2">
         <v-card style="max-width: auto">
           <v-card-title>
             <div class="d-flex flex-column">
@@ -68,17 +64,6 @@
         </v-card>
       </div>
     </div>
-
-    <v-dialog class="upload-Dialog" v-model="importDialog" width="1000px">
-      <v-card>
-        <v-card-title class="card-title"
-          >Import Student
-          <v-spacer></v-spacer>
-          <v-icon @click="importDialog = false">mdi-close</v-icon></v-card-title
-        >
-        <AddStudent></AddStudent>
-      </v-card>
-    </v-dialog>
 
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
@@ -170,6 +155,21 @@
                 return-object
                 item-text="current"
               ></v-select>
+              <v-select
+                label="Advisor"
+                :items="instructors"
+                outlined
+                v-model="editedItem.advisor"
+                item-text="_id"
+                return-object
+              >
+                <template v-slot:selection="data">
+                  {{ data.item._id ? "" : "-" }}{{ data.item.title }} {{ data.item.name }}
+                </template>
+                <template v-slot:item="data">
+                  {{ data.item._id ? "" : "-" }}{{ data.item.title }} {{ data.item.name }}
+                </template>
+              </v-select>
             </div>
             <div class="d-flex justify-content-between">
               <div class="d-flex align-items-center">
@@ -236,6 +236,10 @@ export default {
   components:{
     AddStudent
   },
+  mounted() {
+    this.getInstructors()
+    this.getStudents()
+  },
   data() {
    return {
       headers: [
@@ -266,6 +270,12 @@ export default {
         status: {
           current: "",
         },
+        advisor: {
+          _id: '',
+          title: '',
+          name: '',
+          given_name: '',
+        }
       },
       defaultItem: {
         sid: "",
@@ -318,11 +328,9 @@ export default {
         { current: 'Resigned' },
         { current: 'Alumni' },
         { current: 'Unknown' },
-      ]
+      ],
+      instructors: []
     };
-  },
-  mounted() {
-    this.getStudents();
   },
   watch: {
     dialog(value) {
@@ -355,7 +363,10 @@ export default {
                     program
                     lineUID
                     advisor {
+                      _id
+                      title
                       given_name
+                      name
                     }
                     status {
                       current
@@ -423,7 +434,8 @@ export default {
               ${student.entry_trimester ? 'entry_trimester: "' + student.entry_trimester + '",': ''}
               entry_year: "${student.entry_year || ''}"
               phone: "${student.phone || ''}"
-              email: "${student.email || ''}"
+              email: "${student.email || ''}",
+              advisor: ${student.advisor._id ? '"' + student.advisor._id + '"' : '""'},
               status: {
                 current: "${student.status.current}"
               }
@@ -454,6 +466,30 @@ export default {
           console.log(err);
         });
     },
+    getInstructors() {
+      let query = `
+            {
+              instructors {
+                total
+                instructors {
+                  _id
+                  title
+                  given_name
+                  name
+                }
+              }
+            }
+          `;
+      query = query.replace(/\s+/g, ' ').trim()
+      this.axios
+        .post(process.env.VUE_APP_GRAPHQL_URL, { query }, { withCredentials: true })
+        .then((res) => {
+          this.instructors = [ this.instructors, ...res.data.data.instructors.instructors ]
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     unlink() {
       let query = `
         mutation {
@@ -473,6 +509,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    addNewStudent() {
+      this.getStudents()
     }
   },
 };

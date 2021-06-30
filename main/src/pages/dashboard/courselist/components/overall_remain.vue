@@ -20,7 +20,7 @@
       <v-card-title>Overall Student Registration</v-card-title>
       <div class=" px-4" v-if="loading">
         <v-progress-linear indeterminate color="primary"></v-progress-linear>
-        <br />
+        <div class="d-flex justify-content-center small mt-4">This might take a few seconds to process the data ...</div>
       </div>
       <div v-else>
         <div class="toggle">

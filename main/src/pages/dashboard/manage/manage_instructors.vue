@@ -1,12 +1,14 @@
 <template>
   <v-container class="mx-auto">
-    <div class="d-flex flex-column p-2 bd-highlight">
-      <div class="ml-auto p-2 bd-highlight">
-        <v-btn color="primary" @click="dialog = true"
-          ><v-icon>mdi-plus</v-icon>Add Instructor</v-btn
-        >
+    <div class="d-flex flex-column p-2">
+      <div class="ml-auto p-2">
+        <div class="p-2">
+          <v-btn color="primary" @click="dialog = true">
+            <v-icon>mdi-plus</v-icon>Add Instructor
+          </v-btn>
+        </div>
       </div>
-      <div class="p-2 bd-highlight">
+      <div class="p-2">
         <v-card style="max-width: auto"
           ><v-card-title>
             <div class="d-flex flex-column">
@@ -117,7 +119,7 @@
             </div>
           </v-form>
           <v-card-actions>
-            <div class="d-flex flex-row w-100 justify-content-end bd-highlight">
+            <div class="d-flex flex-row w-100 justify-content-end">
               <v-btn class="mt-4 me-4" text @click="clear">clear</v-btn>
               <v-btn class="mt-4" color="primary" @click="update()">Submit</v-btn>
             </div>
