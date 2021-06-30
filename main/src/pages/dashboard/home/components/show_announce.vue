@@ -9,7 +9,7 @@
             color="#f7f7f8"
             v-for="(announcement, i) in $config.announcements"
             :key="i"
-            class="announce-card"
+            class="announce-card mb-4"
           >
             <v-card-title class="m-0 p-0 d-flex justify-content-between" style="font-size: 1.1rem">
               {{ announcement.title }}
