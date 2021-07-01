@@ -23,7 +23,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 class="me-3"
-                style="border-radius: 50% !important;"
+                style="border-radius: 50% !important; width: 35px; height: 35px"
                 v-bind="attrs"
                 v-on="on"
                 icon

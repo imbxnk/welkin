@@ -235,8 +235,8 @@
                 class="elevation-1"
                 sort-by.sync="code"
               >
-                <template v-slot:[`item.remove`]="{ data }">
-                  <v-icon @click="deleteCourses('core', item.courses.core_courses.indexOf(data))">
+                <template v-slot:[`item.remove`]="{ item }">
+                  <v-icon @click="deleteCourses('core', $props.item.courses.core_courses.indexOf(item))">
                     mdi-close-circle
                   </v-icon>
                 </template>
@@ -269,8 +269,8 @@
                 class="elevation-1"
                 sort-by.sync="code"
               >
-                <template v-slot:[`item.remove`]="{ data }">
-                  <v-icon @click="deleteCourses('required', item.courses.core_courses.indexOf(data))">
+                <template v-slot:[`item.remove`]="{ item }">
+                  <v-icon @click="deleteCourses('required', $props.item.courses.required_courses.indexOf(item))">
                     mdi-close-circle
                   </v-icon>
                 </template>
@@ -302,8 +302,8 @@
                 class="elevation-1"
                 sort-by.sync="code"
               >
-                <template v-slot:[`item.remove`]="{ data }">
-                  <v-icon @click="deleteCourses('elective', item.courses.core_courses.indexOf(data))">
+                <template v-slot:[`item.remove`]="{ item }">
+                  <v-icon @click="deleteCourses('elective', $props.item.courses.elective_courses.indexOf(item))">
                     mdi-close-circle
                   </v-icon>
                 </template>
