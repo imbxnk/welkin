@@ -12,7 +12,7 @@
     <span class="" v-if="students.length">
       <ul>
         <template v-for="(student, i) in students">
-          <li :key="i">{{ student.name }} [Student ID: {{ student.sid }}]</li>
+          <li :key="i"><router-link :to="{name : 'student_record', params: { sid: student.sid }}">{{ student.name }}</router-link> [Student ID: {{ student.sid }}]</li>
           <ul :key="'sublist' + i">
             <template v-for="(concernedCourse, j) in students[i].concernedCourses">
               <li :key="'concernlist' + j">
