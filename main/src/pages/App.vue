@@ -36,7 +36,7 @@
                   offset-x="9"
                   offset-y="-2"
                   v-if="
-                    notifications.length != $config.announcements.length &&
+                    $config.announcements.length - notifications.length > 0 &&
                       $config.announcements.length !== 0
                   "
                 >
