@@ -23,7 +23,10 @@
         >
       </div>
       <v-divider></v-divider>
-      <remainChart :batch="b" :total="tt" :passed="p" :code="code"></remainChart>
+      <remainChart v-if="b.length > 0" :batch="b" :total="tt" :passed="p" :code="code"></remainChart>
+      <div class="" v-else>
+        This course is not included in any curriculums
+      </div>
       <!-- <table style="width:100%;">
         <tr>
           <th class="text-left">Year:</th>
