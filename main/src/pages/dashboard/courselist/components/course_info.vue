@@ -25,7 +25,7 @@
       <v-divider></v-divider>
       <remainChart v-if="b.length > 0" :batch="b" :total="tt" :passed="p" :code="code"></remainChart>
       <div class="" v-else>
-        This course is not included in any curriculums
+        Course <strong>{{ code }}</strong> is not included in any curriculums
       </div>
       <!-- <table style="width:100%;">
         <tr>
